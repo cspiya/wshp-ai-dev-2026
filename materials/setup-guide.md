@@ -1,47 +1,47 @@
-# Setup Guide — before the workshop (~30–40 minutes)
+# Felkészülési útmutató — a workshop előtt (~30–40 perc)
 
-Everything below is **free and requires no credit card** — the only paid item is your Claude subscription.
+Minden lenti regisztráció **ingyenes és bankkártya nélkül** elvégezhető — az egyetlen fizetős elem a Claude-előfizetésed.
 
-## 1. Accounts to create
+## 1. Fiókok, amiket előre hozz létre
 
-| Account | What we use it for | Tip |
+| Fiók | Mire használjuk | Tipp |
 |---|---|---|
-| **GitHub** — github.com | Your own repo — you work in it all day | An existing account is fine. We'll create a **public** repo (public → you can publish/deploy from it) |
-| **Vercel** — vercel.com | Free hosting — every change gets a live preview URL | Sign up with **"Continue with GitHub"** so the two are linked immediately |
-| **Neon** — neon.com | Free serverless Postgres behind your project | "Sign in with GitHub" works here too |
-| **Linear** — linear.app | Task management — AI agents will pick up work from here | Free plan is enough |
-| **v0** — v0.app | AI UI/design generation for your site | Log in with your Vercel account |
+| **GitHub** — github.com | Itt lesz a saját repód — ebben dolgozol egész nap | Meglévő fiók tökéletes. **Public** repót hozunk létre (abból lehet publikálni/deployolni) |
+| **Vercel** — vercel.com | Ingyenes hosting — minden változtatásod élő preview-linket kap | Regisztrálj a **"Continue with GitHub"** gombbal, így azonnal össze is kapcsolódnak |
+| **Neon** — neon.com | Ingyenes serverless Postgres adatbázis a projekted mögé | Itt is jó a "Sign in with GitHub" |
+| **Linear** — linear.app | Feladatkezelő — innen dolgoznak majd az AI-agentek (MCP-n át) | Az ingyenes csomag elég |
+| **v0** — v0.app | AI-alapú UI/dizájn-generálás a weboldaladhoz | A Vercel-fiókoddal lépj be |
 
-## 2. Claude subscription + installs
+## 2. Claude-előfizetés + telepítések
 
-- **Claude subscription** (claude.ai): we work with **Claude Code** all day — an active subscription is
-  required (minimum **Pro**; **Max** is even more comfortable). *This is the only paid prerequisite.*
-- Install on your laptop (Windows / macOS / Linux all fine):
+- **Claude-előfizetés** (claude.ai): egész nap a **Claude Code**-dal dolgozunk — aktív előfizetés kell
+  (minimum **Pro**; a **Max** még kényelmesebb). *Ez az egyetlen fizetős előfeltétel.*
+- Telepítsd a gépedre (Windows / macOS / Linux egyaránt jó):
   - **Git** — git-scm.com
   - **Node.js LTS** — nodejs.org
-  - **Claude Code CLI** — follow the guide at claude.ai/code
-  - *(recommended)* **VS Code** or your favourite editor
+  - **Claude Code CLI** — a claude.ai/code útmutatója szerint
+  - *(ajánlott)* **VS Code** vagy a kedvenc editorod
 
-## 3. Verify (2 minutes)
+## 3. Ellenőrzés (2 perc)
 
-Open a terminal and run:
+Nyiss egy terminált, és futtasd:
 
 ```
 claude --version
 claude
 ```
 
-Log in when prompted. If that works, you're ready. The MCP connectors (GitHub, Vercel, Neon, Linear)
-will be configured **together at the workshop** — you'll get a ready-made config.
+Jelentkezz be, amikor kéri. Ha ez megy, készen állsz. Az MCP-konnektorokat (GitHub, Vercel, Neon, Linear)
+**a workshopon közösen** állítjuk be — kész konfigurációt kapsz hozzá.
 
-## 4. What to bring
+## 4. Mit hozz magaddal
 
-- **Laptop + charger**
-- **A website idea!** During the day everyone builds their own small website **from zero** with the most
-  modern AI-assisted methods — by the end of the day it's live on a public URL. Hobby project, internal
-  tool, product idea — anything you care about.
-- Business analysts: think ahead about 1–2 **business rules / acceptance criteria** for your idea —
-  we'll work with them in the specification block.
+- **Laptop + töltő**
+- **Egy weboldal-ötletet!** A nap során mindenki a saját ötletéből, **nulláról** épít fel egy kis weboldalt
+  a legmodernebb AI-asszisztált módszerekkel — a nap végére élő, publikus URL-en fut. Lehet hobbiprojekt,
+  belső tool, termékötlet — bármi, ami érdekel.
+- Üzleti elemzőknek: gondolj végig előre 1–2 **üzleti szabályt / elfogadási kritériumot** az ötletedhez —
+  ezekkel dolgozunk a specifikációs blokkban.
 
-Stuck on any step? Ask in the workshop Discord channel (invite link comes by email) and we'll help before
-the day, so July 14 starts with building, not troubleshooting.
+Ha bármelyik lépésnél elakadsz, kérdezz a workshop Discord-csatornáján (a meghívót e-mailben kaptad) —
+még a nap előtt segítünk, hogy 14-én az első perctől építéssel teljen az idő, ne hibakereséssel.

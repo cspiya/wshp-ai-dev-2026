@@ -1,0 +1,574 @@
+﻿<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MX — Modulcím · AI Workshop 2026.06.18</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --surface-2: #f4f4f5;
+    --border: #e4e4e7;
+    --text: #18181b;
+    --text-secondary: #52525b;
+    --text-muted: #71717a;
+    --accent: #4f46e5;
+    --accent-soft: #eef2ff;
+    --highlight: #fef3c7;
+    --code-bg: #1e1e2e;
+    --code-text: #cdd6f4;
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+    --space-6: 3rem;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --sidebar-width: 260px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+  }
+
+  /* === LAYOUT: sidebar + main === */
+  .layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-2) var(--space-4) var(--space-3);
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .sidebar-eyebrow {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-1);
+  }
+  .sidebar-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 var(--space-3) 0;
+    line-height: 1.3;
+  }
+  .sidebar nav {
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-2);
+  }
+  .sidebar nav .toc-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-1);
+    display: block;
+  }
+  .sidebar nav ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+  }
+  .sidebar nav li {
+    margin: 0;
+    counter-increment: toc;
+  }
+  .sidebar nav a {
+    display: block;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    border-bottom: none;
+    text-decoration: none;
+    transition: background 0.12s, color 0.12s;
+    line-height: 1.35;
+  }
+  .sidebar nav a::before {
+    content: counter(toc) ". ";
+    color: var(--text-muted);
+    margin-right: 0.25rem;
+  }
+  .sidebar nav a:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .sidebar nav a.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .sidebar nav a.active::before {
+    color: var(--accent);
+  }
+  .sidebar-footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Mobile sidebar toggle (button is hidden on desktop) */
+  .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 30;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  /* === MAIN CONTENT === */
+  .main {
+    padding: var(--space-4) var(--space-4) var(--space-6) var(--space-4);
+    max-width: 880px;
+  }
+  header.hero {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  .hero-eyebrow {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-1);
+  }
+  h1 {
+    font-size: 2.25rem;
+    margin: 0 0 var(--space-2) 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .hero-sub {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    margin: 0;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+  h2 {
+    font-size: 1.5rem;
+    margin: var(--space-6) 0 var(--space-2) 0;
+    letter-spacing: -0.01em;
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: var(--space-2);
+  }
+  h3 {
+    font-size: 1.15rem;
+    margin: var(--space-3) 0 var(--space-1) 0;
+    color: var(--text);
+  }
+  h4 {
+    font-size: 1rem;
+    margin: var(--space-2) 0 0.3rem 0;
+    color: var(--text-secondary);
+  }
+  p { margin: 0 0 var(--space-2) 0; }
+  ul, ol { margin: 0 0 var(--space-2) 0; padding-left: 1.4rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+  a:hover { border-bottom-color: var(--accent); }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    margin: var(--space-3) 0;
+  }
+  .gamma-card {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+  }
+  .gamma-card a {
+    color: white;
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+  .gamma-card a:hover { border-bottom-color: white; }
+  .gamma-card .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+    margin-bottom: var(--space-1);
+  }
+  .gamma-card h3 { color: white; margin-top: 0; font-size: 1.25rem; }
+  .gamma-card p { margin-bottom: 0; opacity: 0.95; }
+
+  /* Callouts */
+  .callout {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: var(--space-2) var(--space-3);
+    margin: var(--space-3) 0;
+  }
+  .callout strong { color: var(--accent); }
+  .callout-warning {
+    background: var(--highlight);
+    border-left-color: #f59e0b;
+  }
+  .callout-warning strong { color: #92400e; }
+
+  /* Grids */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    margin: var(--space-2) 0;
+  }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-2 .card { margin: 0; }
+  .grid-2 .card h3 { margin-top: 0; font-size: 1rem; }
+  .grid-2 .card p { font-size: 0.9rem; margin-bottom: 0; color: var(--text-secondary); }
+
+  /* Prompt box */
+  .prompt-box {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: var(--space-3);
+    border-radius: var(--radius);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    position: relative;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: var(--space-2) 0;
+  }
+  .prompt-box .copy-hint {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255,255,255,0.1);
+    color: #cdd6f4;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    font-family: -apple-system, sans-serif;
+  }
+  .prompt-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-2) 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    text-align: left;
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--surface-2);
+  }
+
+  /* Timeline (M1-szerű) */
+  .timeline {
+    list-style: none;
+    padding-left: 0;
+    margin: var(--space-2) 0;
+    border-left: 2px solid var(--border);
+  }
+  .timeline li {
+    position: relative;
+    padding-left: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+  }
+  .timeline .year {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  /* Lifecycle (M7-szerű) */
+  .lifecycle {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-2);
+    margin: var(--space-3) 0;
+  }
+  @media (max-width: 900px) { .lifecycle { grid-template-columns: 1fr 1fr; } }
+  .lifecycle-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-2);
+    text-align: center;
+  }
+  .lifecycle-step .num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 50%;
+    margin-bottom: 0.4rem;
+  }
+  .lifecycle-step strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .lifecycle-step span { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* Use-case kártya (M5-szerű) */
+  .usecase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    margin: var(--space-3) 0;
+  }
+  .usecase-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: var(--space-1);
+  }
+
+  /* Linkek lista */
+  .links-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .links-list li {
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .links-list li:last-child { border-bottom: none; }
+  .links-list .topic {
+    display: inline-block;
+    background: var(--surface-2);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    margin-right: var(--space-1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .links-list .desc {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+  }
+
+  footer.main-footer {
+    margin-top: var(--space-6);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      z-index: 20;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar-toggle { display: block; }
+    .main { padding: var(--space-3); }
+    h1 { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<button class="sidebar-toggle" aria-label="Tartalomjegyzék" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ Tartalom</button>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-eyebrow">MX · HH:MM – HH:MM</div>
+    <h2 class="sidebar-title" style="border:none; padding:0; margin: 0 0 var(--space-3) 0;">MODULCÍM</h2>
+    <nav aria-label="Tartalomjegyzék">
+      <span class="toc-label">Tartalom</span>
+      <ol id="toc">
+        <!-- Töltsd ki: <li><a href="#section-id">Szekció címe</a></li> per szekció -->
+        <li><a href="#section-1">Szekció 1</a></li>
+        <li><a href="#section-2">Szekció 2</a></li>
+      </ol>
+    </nav>
+    <div class="sidebar-footer">
+      <strong>AI Workshop 2026.06.18</strong><br>
+      Wenova.io
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="hero">
+      <div class="hero-eyebrow">MX · HH:MM – HH:MM</div>
+      <h1>Modulcím</h1>
+      <p class="hero-sub">Rövid összegzés egy mondatban — mi a modul lényege.</p>
+      <div class="meta">
+        <span>📅 2026.06.18</span>
+        <span>⏱️ XX perc</span>
+        <span>🎤 Csaba Piya</span>
+        <span>🇭🇺 Magyar</span>
+      </div>
+    </header>
+
+    <!-- Minden szekció <section id="..."> wrapper-ben. Az ID egyezzen a sidebar linkkel. -->
+    <section id="section-1">
+      <h2>1. Szekció címe</h2>
+      <p>Tartalom...</p>
+    </section>
+
+    <section id="section-2">
+      <h2>2. Szekció címe</h2>
+      <p>Tartalom...</p>
+    </section>
+
+    <footer class="main-footer">
+      <p><strong>MX — Modulcím · AI Workshop 2026.06.18</strong> · Wenova.io</p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // Scroll-spy: a sidebar TOC linkje aktív, ha a kapcsolódó szekció a viewport felső harmadában van.
+  (function() {
+    const sections = document.querySelectorAll('main.main section[id]');
+    const links = document.querySelectorAll('.sidebar nav a');
+    if (!sections.length || !links.length) return;
+
+    const linkById = {};
+    links.forEach(l => {
+      const href = l.getAttribute('href');
+      if (href && href.startsWith('#')) linkById[href.slice(1)] = l;
+    });
+
+    function setActive(id) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = linkById[id];
+      if (a) {
+        a.classList.add('active');
+        // ha a sidebar görgethető, görgessük be az aktív linket
+        const sb = document.querySelector('.sidebar');
+        if (sb) {
+          const r = a.getBoundingClientRect();
+          const sr = sb.getBoundingClientRect();
+          if (r.top < sr.top || r.bottom > sr.bottom) {
+            a.scrollIntoView({ block: 'nearest' });
+          }
+        }
+      }
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      // Vegyük azt a szekciót, ami legjobban látszik a felső sávban
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length) {
+        setActive(visible[0].target.id);
+      }
+    }, {
+      rootMargin: '-15% 0px -65% 0px',
+      threshold: [0, 0.25, 0.5, 1]
+    });
+    sections.forEach(s => observer.observe(s));
+
+    // Click-on-link: bezárjuk a mobil sidebar-t
+    links.forEach(l => l.addEventListener('click', () => {
+      const sb = document.querySelector('.sidebar');
+      if (sb && sb.classList.contains('open')) sb.classList.remove('open');
+    }));
+  })();
+</script>
+
+</body>
+</html>

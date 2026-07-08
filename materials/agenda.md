@@ -1,19 +1,20 @@
-# Agenda — Advanced AI Software Development (2026-07-14, 09:00–17:00)
+# Napirend — Advanced AI Software Development (2026.07.14, 09:00–17:00)
 
-| Time | Block |
+| Idő | Blokk |
 |---|---|
-| 09:00–09:45 | **Intro** — agentic development fundamentals, tools & economics, how Claude Code works, setup check |
-| 09:45–10:45 | **Greenfield setup + AI-ready architecture** — scaffold your own project; boundaries, golden path |
-| 10:45–11:00 | Break |
-| 11:00–11:45 | **Spec-driven SDLC + the BA gate** — spec → plan → tasks with human validation gates; Given-When-Then acceptance criteria |
-| 11:45–12:30 | **Orchestrator + Repeat-Until-Good** — multi-agent done right, reviewer agents, when multi-agent pays off |
-| 12:30–13:15 | Lunch |
-| 13:15–14:00 | **Rules, skills, hooks, project memory** — enforce your standards; Design Guideline + v0/shadcn UI generation |
-| 14:00–14:45 | **QA in every phase + e2e + token/cost** — reviewing AI-generated tests, Playwright on real previews, context budget |
-| 14:45–15:00 | Break |
-| 15:00–16:15 | **Legacy block: .NET / MS-SQL / Azure DevOps** — safety nets (characterization + tSQLt), strangler-fig, Azure DevOps MCP loop |
-| 16:15–16:50 | **Team operating model + 30/60/90 adoption** — squad model, agent-ready issues, metrics |
-| 16:50–17:00 | Wrap-up, Q&A, feedback |
+| 09:00–09:45 | **Bevezető** — az agentikus fejlesztés alapfogalmai, eszközök és költségek, hogyan működik a Claude Code, setup-ellenőrzés |
+| 09:45–10:45 | **Greenfield setup + AI-ready architektúra** — a saját projekted felállítása; boundary-k, golden path |
+| 10:45–11:00 | Szünet |
+| 11:00–11:45 | **Spec-vezérelt SDLC + a BA-kapu** — spec → terv → feladatok, emberi jóváhagyási kapukkal; Given-When-Then elfogadási kritériumok |
+| 11:45–12:30 | **Orchestrátor + Repeat-Until-Good** — több-agentes fejlesztés jól: bíráló-agentek; mikor éri meg a multi-agent |
+| 12:30–13:15 | Ebéd |
+| 13:15–14:00 | **Szabályok, skillek, hookok, projekt-memória** — a saját standardjeid kikényszerítése; Design Guideline + v0/shadcn UI-generálás |
+| 14:00–14:45 | **QA minden fázisban + e2e + token/költség** — AI-generált tesztek review-ja, Playwright valódi preview-n, kontextus-büdzsé |
+| 14:45–15:00 | Szünet |
+| 15:00–16:15 | **Legacy blokk: .NET / MS-SQL / Azure DevOps** — biztonsági háló (characterization + tSQLt), strangler-fig, TFS/Azure DevOps demó |
+| 16:15–16:50 | **Csapat operating model + 30/60/90 bevezetés** — squad-modell, agent-ready feladatok, mérőszámok |
+| 16:50–17:00 | Zárás, Q&A, visszajelzés |
 
-Working language: explanation and discussion in Hungarian; all technical material, AI instructions, and
-code in English. Business specs may be written in Hungarian.
+A magyarázat és a beszélgetés magyarul folyik; minden technikai anyag, AI-instrukció és kód angolul készül
+(a modellek abban a leghatékonyabbak). Az üzleti specifikációk magyarul is íródhatnak. A nem egyértelmű
+szakszavakhoz lásd a [fogalomtárat](fogalomtar.md).
