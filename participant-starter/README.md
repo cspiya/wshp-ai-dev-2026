@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Résztvevői starter — a saját weboldalad kiindulópontja
 
-## Getting Started
+Ez a **Wenova AI-Assisted Development Workshop** résztvevői sablonja: egy
+szándékosan minimális **Next.js (App Router) + TypeScript + Tailwind +
+shadcn/ui** projekt. A nap során ebből építed fel a **saját weboldal-ötleted**
+— nulláról, AI-agenttel (Claude Code), spec-vezérelt folyamattal.
 
-First, run the development server:
+Adatbázis, API-réteg és a többi "nagyágyú" **szándékosan nincs benne** — azok
+a nap későbbi blokkjaiban kerülnek be, lépésről lépésre.
+
+## Hogyan használd
+
+1. **Másold le a saját GitHub-repódba.** A "Use this template" gombot később
+   kapcsoljuk be — addig klónozd/másold a `participant-starter` mappát egy új,
+   saját (public) repóba.
+2. Telepítés és indítás:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Nyisd meg a `src/app/page.tsx`-et — ez a kezdőoldalad. Mentés után a
+   böngésző azonnal frissül.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Parancsok
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Parancs | Mit csinál |
+|---|---|
+| `npm run dev` | fejlesztői szerver |
+| `npm run typecheck` | típusellenőrzés (`tsc --noEmit`) |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest (egy minta-teszt már van) |
+| `npm run build` | éles build — a Vercel is ezt futtatja |
 
-## Learn More
+## Fontos fájlok
 
-To learn more about Next.js, take a look at the following resources:
+- **`AGENTS.md`** — a "szabálykönyv a gépeknek": ezt olvassa be minden
+  agent-futás. A workshopon folyamatosan bővítjük.
+- **`DESIGN-GUIDELINE.md`** — a dizájn-szabálykönyv váza; az agent minden
+  UI-munkánál ezt követi. A nap során töltöd fel.
+- **`src/components/ui/`** — shadcn/ui komponensek (helyi forráskód — az agent
+  olvashatja és szerkesztheti). Újat így adsz hozzá:
+  `npx shadcn@latest add <komponens>`.
+- **`.env.example`** — még üres; a `DATABASE_URL` a nap adatbázis-blokkjában
+  kerül ide.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Ha elakadsz
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Szakszavak: [fogalomtár](../materials/fogalomtar.md)
+- Felkészülés / telepítés: [setup-guide](../materials/setup-guide.md)
+- Napirend: [agenda](../materials/agenda.md)

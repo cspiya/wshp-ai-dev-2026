@@ -8,13 +8,16 @@ development with **Claude Code CLI** on a modern stack — **Linear + GitHub + V
 
 ```
 wshp-ai-dev-2026/
-├── materials/        ← participant materials: setup guide, agenda, checklists, templates
-├── toolkit/          ← take-home toolkit: AGENTS.md starter, hooks, skills, orchestrator, spec templates
-└── reference-app/    ← the greenfield reference project (modular vertical-slice architecture)
+├── materials/            ← participant materials: setup guide, agenda, checklists, templates
+├── toolkit/              ← take-home toolkit: AGENTS.md starter, hooks, skills, orchestrator, spec templates
+├── participant-starter/  ← minimal Next.js + Tailwind + shadcn starter — participants build their own site from this
+└── reference-app/        ← the greenfield reference project (modular vertical-slice architecture)
 ```
 
 - **`materials/`** — everything a participant needs before and during the day.
 - **`toolkit/`** — the reusable kit you take home and drop into your own projects.
+- **`participant-starter/`** — the hands-on starting point: clone/copy it into your own repo
+  and build your website idea from it during the day (Hungarian README inside).
 - **`reference-app/`** — the "golden path" reference implementation the workshop builds on:
   a Next.js (App Router) + shadcn/ui + Drizzle + tRPC/Zod app on Vercel + Neon, structured as a
   modular monolith of vertical slices ("one bounded context = one subagent's working set").
