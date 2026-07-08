@@ -1,4 +1,4 @@
-# Fogalomtár — AI Dev Workshop (2026.07.14)
+# Fogalomtár — Wenova AI-Assisted Development Workshop (2026.07)
 
 > A workshop tananyaga magyarul íródik, de a szakma angol kifejezéseit használjuk (ezek a mindennapi
 > munkában is így jönnek szembe). Ami nem magától értetődő, azt itt találod. Két rész: **agentikus

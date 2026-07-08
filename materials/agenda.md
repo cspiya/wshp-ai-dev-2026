@@ -1,4 +1,4 @@
-# Napirend — Advanced AI Software Development (2026.07.14, 09:00–17:00)
+# Napirend — Wenova AI-Assisted Development Workshop (2026.07.14, 09:00–17:00)
 
 | Idő | Blokk |
 |---|---|

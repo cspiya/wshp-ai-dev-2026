@@ -1,8 +1,8 @@
-# wshp-ai-dev-2026 — Advanced AI Software Development Workshop
+# Wenova AI-Assisted Development Workshop — 2026.07
 
-Materials and reference project for the **Wenova 1-day Advanced AI Software Development workshop**
-(2026-07-14, Budapest). One day, hands-on: professional AI-assisted (agentic) development with
-**Claude Code CLI** on a modern stack — **Linear + GitHub + Vercel + Neon + Next.js/React**.
+Materials and reference project for the **Wenova AI-Assisted Development Workshop** (1 day, 2026-07-14,
+Budapest; repo slug: `wshp-ai-dev-2026`). One day, hands-on: professional AI-assisted (agentic)
+development with **Claude Code CLI** on a modern stack — **Linear + GitHub + Vercel + Neon + Next.js/React**.
 
 ## What's in this repo
 
