@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reference App — the golden path
 
-## Getting Started
+Greenfield reference project of the **Wenova AI-Assisted Development Workshop**:
+**Next.js (App Router) + shadcn/ui + Tailwind + Drizzle + Neon + tRPC + Zod +
+TanStack Query** on **Vercel**, structured as a **modular monolith of vertical
+slices** — one bounded context = one module = one agent's working set.
 
-First, run the development server:
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env        # fill in DATABASE_URL (Neon) — not needed for the health check
+npm run dev                 # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The homepage renders a live health check that exercises the whole chain:
+React → TanStack Query → tRPC → Zod → server.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | What |
+|---|---|
+| `npm run dev` | dev server |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint (includes the architecture boundary rules) |
+| `npm run test` | Vitest |
+| `npm run build` | production build |
+| `npm run db:generate` / `db:push` | Drizzle migrations (needs `DATABASE_URL`) |
 
-## Learn More
+CI (GitHub Actions) runs typecheck + lint + test + build on every push/PR.
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/                      Next.js App Router shell (routes, layout, tRPC endpoint)
+  components/ui/            shadcn/ui components (local source — agents read/edit them)
+  modules/                  feature modules = bounded contexts = vertical slices
+    identity/               ← GOLDEN PATH structure template (copy this to add a module)
+      domain/               pure logic — imports nothing outward
+      application/          use-cases + ports
+      infra/                Drizzle schema + adapters
+      ui/                   React components of this slice
+      acceptance/           Gherkin acceptance criteria
+      identity.contract.ts  the ONLY import surface for other modules
+      AGENTS.md, README.md  module-scoped rules + docs
+  platform/                 cross-cutting: db client (Neon+Drizzle), env, tRPC init
+  contracts/                zod schemas shared across module boundaries
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Why this shape:** a slice is self-contained, so a task's whole context fits one
+folder — contained blast radius, slice-scoped tests, cheap tokens, and safe
+multi-agent parallelism. Boundaries are lint-enforced (`eslint.config.mjs`), not
+aspirational. Rules for humans and agents: [`AGENTS.md`](AGENTS.md).
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel + Neon with a DB branch per preview deployment — manual one-time setup
+steps in [`SETUP-STATUS.md`](SETUP-STATUS.md). MCP servers for Linear / GitHub /
+Neon / Vercel: copy `.mcp.json.example` to `.mcp.json`.
