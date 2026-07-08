@@ -1,0 +1,21 @@
+{
+  "$comment": "Copy to .mcp.json (gitignored if it ever holds secrets — these entries hold none: all four authenticate via OAuth in the browser on first use, e.g. `claude mcp` / /mcp in Claude Code).",
+  "mcpServers": {
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    }
+  }
+}
