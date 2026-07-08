@@ -34,6 +34,13 @@ with a 30/60/90 adoption plan.
 2. Bring a **website idea** — you'll build it from zero during the day.
 3. The agenda: [`materials/agenda.md`](materials/agenda.md).
 
+## Scope & tracking
+
+This repo contains **only participant-shareable materials and the reference implementation** — presentations,
+internal prep notes, and client documents live elsewhere. Build progress is tracked in the Linear project of the
+same name: [wshp-ai-dev-2026 (Linear)](https://linear.app/wenova/project/wshp-ai-dev-2026-3eae5243953d)
+*(workspace members only)*.
+
 ## Language policy
 
 All AI instructions, rules, code, and technical documentation in this repo are **English** (models are
