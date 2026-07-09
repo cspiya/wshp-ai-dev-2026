@@ -35,12 +35,18 @@ const nonModuleAreas = dirsIn("./src")
   .filter((dir) => dir !== "modules")
   .map((dir) => `./src/${dir}`); // app, components, contracts, lib, platform
 
+// Code OUTSIDE src/ that imports app code is fenced exactly like src/:
+// scripts/ (thin runners) and e2e/ (Playwright specs) may only reach a
+// module through its contract.
+const outsideSrcAreas = ["./scripts", "./e2e"];
+
 const boundaryZones = [
   // Rule 1 — a module's ONLY public surface is its `<name>.contract.ts`.
   // target = every src/ area EXCEPT the module itself (intra-module imports stay free).
   ...modules.map((mod) => ({
     target: [
       ...nonModuleAreas,
+      ...outsideSrcAreas,
       ...modules.filter((other) => other !== mod).map((other) => `./src/modules/${other}`),
     ],
     from: `./src/modules/${mod}`,
@@ -57,10 +63,15 @@ const boundaryZones = [
     message: "`domain` imports nothing outward — keep it pure (types + logic only).",
   })),
 
-  // Rule 3 — only a module's infra/ adapters (and platform itself) may touch the DB.
+  // Rule 3 — only a module's infra/ adapters (and platform itself) may touch
+  // the DB. scripts/ is deliberately NOT in the target list: thin runners are
+  // composition roots (they wire a db handle into module seeders), so like
+  // platform they may import @/platform/db. e2e/ drives the browser and IS
+  // fenced off the db.
   {
     target: [
       ...nonModuleAreas.filter((area) => area !== "./src/platform"),
+      "./e2e",
       // ...and everything inside a module except its infra/:
       ...modules.flatMap((mod) =>
         fs
@@ -87,7 +98,7 @@ const eslintConfig = defineConfig([
   ]),
 
   {
-    files: ["src/**"],
+    files: ["src/**", "scripts/**", "e2e/**"],
     rules: {
       "import/no-restricted-paths": ["error", { basePath, zones: boundaryZones }],
     },

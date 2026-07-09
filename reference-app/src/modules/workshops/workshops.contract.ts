@@ -18,5 +18,8 @@ export { createWorkshopsRouter } from "./application/workshops.router";
 export { createDrizzleWorkshopRepo } from "./infra/drizzle-workshop-repo";
 export { createInMemoryWorkshopRepo } from "./infra/in-memory-workshop-repo";
 
+// Demo data seeding — consumed by the thin runner scripts/seed.ts.
+export { seedDemoWorkshops } from "./infra/seed";
+
 // The slice's UI entry — rendered by src/app/workshops/page.tsx.
 export { WorkshopsView } from "./ui/workshops-view";

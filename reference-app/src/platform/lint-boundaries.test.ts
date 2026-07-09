@@ -105,6 +105,42 @@ describe("architecture boundary lint rules", () => {
     );
 
     it(
+      "scripts/ deep-importing module internals (runners are fenced like src/)",
+      async () => {
+        const errors = await boundaryErrors(
+          "scripts/fixture.ts",
+          `import { placeholder } from "../src/modules/identity/infra/schema";\nexport const use = placeholder;\n`,
+        );
+        expect(errors).not.toHaveLength(0);
+      },
+      TIMEOUT,
+    );
+
+    it(
+      "e2e/ deep-importing module internals (specs are fenced like src/)",
+      async () => {
+        const errors = await boundaryErrors(
+          "e2e/fixture.spec.ts",
+          `import { placeholder } from "@/modules/identity/infra/schema";\nexport const use = placeholder;\n`,
+        );
+        expect(errors).not.toHaveLength(0);
+      },
+      TIMEOUT,
+    );
+
+    it(
+      "e2e/ importing the db client (specs drive the browser, not the db)",
+      async () => {
+        const errors = await boundaryErrors(
+          "e2e/fixture.spec.ts",
+          `import { getDb } from "@/platform/db/client";\nexport const use = getDb;\n`,
+        );
+        expect(errors).not.toHaveLength(0);
+      },
+      TIMEOUT,
+    );
+
+    it(
       "ui importing the db client (@/platform/db is infra-only)",
       async () => {
         const errors = await boundaryErrors(
@@ -159,6 +195,30 @@ describe("architecture boundary lint rules", () => {
       async () => {
         const errors = await boundaryErrors(
           "src/modules/identity/infra/repo.ts",
+          `import { getDb } from "@/platform/db/client";\nexport const use = getDb;\n`,
+        );
+        expect(errors).toHaveLength(0);
+      },
+      TIMEOUT,
+    );
+
+    it(
+      "scripts/ importing a module's public contract",
+      async () => {
+        const errors = await boundaryErrors(
+          "scripts/fixture.ts",
+          `import { userIdSchema } from "@/modules/identity/identity.contract";\nexport const use = userIdSchema;\n`,
+        );
+        expect(errors).toHaveLength(0);
+      },
+      TIMEOUT,
+    );
+
+    it(
+      "scripts/ importing the db client (thin runners are composition roots)",
+      async () => {
+        const errors = await boundaryErrors(
+          "scripts/fixture.ts",
           `import { getDb } from "@/platform/db/client";\nexport const use = getDb;\n`,
         );
         expect(errors).toHaveLength(0);
