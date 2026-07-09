@@ -15,4 +15,8 @@ describe("health.ping", () => {
     const result = await caller.health.ping({ name: "workshop" });
     expect(result.message).toBe("pong, workshop");
   });
+
+  it("rejects an empty name at the schema boundary", async () => {
+    await expect(caller.health.ping({ name: "" })).rejects.toThrow();
+  });
 });

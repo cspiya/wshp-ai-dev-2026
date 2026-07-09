@@ -8,7 +8,10 @@ import { trpc } from "@/platform/api/client";
 
 /** Wires tRPC + TanStack Query for all client components. Used once, in the root layout. */
 export function ApiProvider({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
+  // staleTime > 0 is the golden-path default: it avoids refetch storms on window focus/remount.
+  const [queryClient] = useState(
+    () => new QueryClient({ defaultOptions: { queries: { staleTime: 30_000 } } }),
+  );
   const [trpcClient] = useState(() =>
     trpc.createClient({ links: [httpBatchLink({ url: "/api/trpc" })] }),
   );
