@@ -64,13 +64,17 @@ wshp-ai-dev-2026/
 └── reference-app/        ← a referencia-implementáció: a „golden path", amiről mindenki másol
 ```
 
-- **`reference-app`** — a mintakód: egy **képzés-jelentkezés mini-app** (`workshops/` kurzus-CRUD +
-  `registrations/` jelentkezés-státuszfolyam + `pricing/` tiszta üzleti logika: listaár − kupon −
-  csoportkedvezmény + ÁFA). *Miért ez a téma?* Mert az árazási szabályai a saját ajánlatunk **valódi**
-  szabályai — a BA-gyakorlaton így igazi magyar üzleti szabályból lesz angol elfogadási kritérium és
-  tesztelt domain-függvény. Az architektúra (vertical slice + kikényszerített boundary-k) maga a tananyag:
-  azt demonstrálja, hogy **a jó architektúra az AI-minőség első számú karja** („egy modul = egy agent
-  munkaterülete" → kevesebb token, kisebb hibaterjedés, párhuzamosítható agent-munka).
+- **`reference-app`** — a mintakód: egy **képzés-webshop** (`workshops/` kurzus-CRUD + bejelentkezés
+  (**Neon Auth** — a userek a saját Postgresünkben!) + `registrations/` jelentkezés és **visszamondás**
+  státusz-szabályokkal + `pricing/` tiszta üzleti logika: listaár − kupon − csoportkedvezmény + ÁFA +
+  `checkout/` fizetési folyamat). *Miért ez a téma?* (1) Az árazási és lemondási szabályok a saját
+  ajánlatunk **valódi** szabályai — a BA-gyakorlaton igazi magyar üzleti szabályból lesz angol elfogadási
+  kritérium és tesztelt domain-függvény. (2) A workshop után **valódi termékké érik**: az edu.wenova.io
+  webshop-magja lesz — a fizetés a héten `PaymentPort` mögött fake adapterrel épül (végigkattintható,
+  tesztelhető), utána Stripe-adapterre cserélődik **a checkout-kód érintése nélkül** — ez maga a
+  ports-and-adapters lecke, éles bizonyítékkal. Az architektúra (vertical slice + kikényszerített
+  boundary-k) maga a tananyag: **a jó architektúra az AI-minőség első számú karja** („egy modul = egy
+  agent munkaterülete" → kevesebb token, kisebb hibaterjedés, párhuzamosítható agent-munka).
 - **`participant-starter`** — szándékosan butított kiinduló: 15 perc alatt zöld build + élő preview, hogy
   az első élmény a *siker* legyen, ne a konfiguráció.
 - **`toolkit`** — a workshop után ez a maradandó érték: bármely projektbe bedobható.
