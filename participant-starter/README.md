@@ -47,6 +47,8 @@ npm run dev        # http://localhost:3000
 
 ## Ha elakadsz
 
-- Szakszavak: [fogalomtár](../materials/fogalomtar.md)
-- Felkészülés / telepítés: [setup-guide](../materials/setup-guide.md)
-- Napirend: [agenda](../materials/agenda.md)
+Abszolút linkek, hogy a saját repódba másolás után is működjenek:
+
+- Szakszavak: [fogalomtár](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/fogalomtar.md)
+- Felkészülés / telepítés: [setup-guide](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/setup-guide.md)
+- Napirend: [agenda](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/agenda.md)

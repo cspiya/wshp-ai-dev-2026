@@ -1,29 +1,32 @@
 # Design guideline
 
-A ház stílus-szabálykönyve — az agent minden UI-munkánál ezt követi.
-A workshop során töltöd fel tartalommal (v0 / shadcn segít); az üres szakasz
-is szakasz: jelzi az agentnek, hogy a döntés még nyitott.
+The house style rulebook — the agent follows it in every UI task.
+You fill it in during the workshop (v0 / shadcn will help); an empty section
+is still a section: it tells the agent that the decision is still open.
+
+> You may write your VALUES in Hungarian if that feels more comfortable —
+> English is recommended, as models follow English instructions best.
 
 ## Brand & tone
 
-<!-- Mi az oldal hangulata? (pl. játékos / professzionális / minimalista) -->
+<!-- What is the site's mood? (e.g. playful / professional / minimalist) -->
 
 ## Colors
 
-<!-- Elsődleges / másodlagos színek. Tailwind-tokenekkel add meg, pl. `bg-emerald-600`. -->
+<!-- Primary / secondary colors. Use Tailwind tokens, e.g. `bg-emerald-600`. -->
 
 ## Typography
 
-<!-- Betűtípusok és méret-skála. Alapból: Geist (már be van kötve a layoutban). -->
+<!-- Font families and the size scale. Default: Geist (already wired up in the layout). -->
 
 ## Layout & spacing
 
-<!-- Max szélesség, térközök ritmusa, mobil-először szabályok. -->
+<!-- Max width, spacing rhythm, mobile-first rules. -->
 
 ## Components
 
-<!-- Melyik shadcn-komponenst mire használjuk; saját variánsok szabályai. -->
+<!-- Which shadcn component is used for what; rules for custom variants. -->
 
 ## Don'ts
 
-<!-- Amit az agent SOHA ne csináljon a UI-ban (pl. inline style, új UI-lib). -->
+<!-- What the agent must NEVER do in the UI (e.g. inline styles, new UI libraries). -->
