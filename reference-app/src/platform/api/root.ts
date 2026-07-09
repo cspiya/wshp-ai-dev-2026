@@ -1,14 +1,45 @@
 import { z } from "zod";
 
-import { workshopsRouter } from "@/modules/workshops/workshops.contract";
+import {
+  createDrizzleWorkshopRepo,
+  createInMemoryWorkshopRepo,
+  createWorkshopsRouter,
+} from "@/modules/workshops/workshops.contract";
 import { publicProcedure, router } from "@/platform/api/trpc";
 
 /**
- * Root router. Feature modules contribute sub-routers here,
- * always imported from the module's public contract.
+ * COMPOSITION ROOT. This is the one place that turns factories into a
+ * running app: it picks concrete adapters and injects them into each
+ * module's router factory (always imported from the module's public
+ * contract). Modules never compose themselves.
  */
+
+/**
+ * Adapter choice for the workshops slice.
+ *
+ * `E2E_IN_MEMORY_DB=1` is a LOCAL-E2E-ONLY seam: playwright.config.ts sets
+ * it so the Playwright happy path runs against a plain `next start` with no
+ * database. The guard below makes misuse impossible, not just documented:
+ * on Vercel the flag kills the server at startup instead of silently
+ * serving an empty throwaway store. (`NODE_ENV === "production"` cannot be
+ * part of the guard — the local e2e run itself is a production build.)
+ */
+function createWorkshopRepo() {
+  if (process.env.E2E_IN_MEMORY_DB === "1") {
+    if (process.env.VERCEL) {
+      throw new Error(
+        "E2E_IN_MEMORY_DB is a local-e2e-only seam and must never be set on a " +
+          "deployment — remove the env var (data would live in one server " +
+          "process and vanish on every restart).",
+      );
+    }
+    return createInMemoryWorkshopRepo();
+  }
+  return createDrizzleWorkshopRepo();
+}
+
 export const appRouter = router({
-  workshops: workshopsRouter,
+  workshops: createWorkshopsRouter(createWorkshopRepo()),
 
   health: router({
     // End-to-end wiring proof: Zod-validated input, typed output,

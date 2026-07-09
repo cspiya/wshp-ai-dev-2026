@@ -5,7 +5,8 @@ import { defineConfig } from "@playwright/test";
  *
  * - Local (default): `npm run test:e2e` builds and starts the production
  *   server itself, with E2E_IN_MEMORY_DB=1 so no database is needed
- *   (see src/modules/workshops/infra/workshop-repo.ts).
+ *   (the composition root wires the in-memory repo — src/platform/api/root.ts;
+ *   the same file hard-blocks the flag on Vercel).
  * - Preview: set PLAYWRIGHT_BASE_URL to a deployed URL and the same tests
  *   run against it, no local server started:
  *   `PLAYWRIGHT_BASE_URL=https://<preview>.vercel.app npm run test:e2e`
@@ -21,7 +22,9 @@ export default defineConfig({
         command: "npm run build && npm run start",
         url: "http://localhost:3000",
         env: { E2E_IN_MEMORY_DB: "1" },
-        reuseExistingServer: false,
+        // Locally, reuse a server you already started (fast iteration);
+        // in CI always build fresh so the run is reproducible.
+        reuseExistingServer: !process.env.CI,
         timeout: 180_000,
       },
 });

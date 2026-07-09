@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { appRouter } from "@/platform/api/root";
 
@@ -18,5 +18,20 @@ describe("health.ping", () => {
 
   it("rejects an empty name at the schema boundary", async () => {
     await expect(caller.health.ping({ name: "" })).rejects.toThrow();
+  });
+});
+
+describe("composition root guard", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.resetModules();
+  });
+
+  it("refuses to start when E2E_IN_MEMORY_DB is set on Vercel", async () => {
+    vi.stubEnv("E2E_IN_MEMORY_DB", "1");
+    vi.stubEnv("VERCEL", "1");
+    vi.resetModules();
+
+    await expect(import("@/platform/api/root")).rejects.toThrow(/local-e2e-only/);
   });
 });
