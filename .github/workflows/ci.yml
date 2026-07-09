@@ -5,38 +5,30 @@ on:
     branches: [main]
   pull_request:
 
-jobs:
-  reference-app:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: reference-app
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: reference-app/package-lock.json
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm run lint
-      - run: npm run test
-      - run: npm run build
+# A newer push to the same ref cancels the still-running older run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
-  participant-starter:
+jobs:
+  checks:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [reference-app, participant-starter]
     defaults:
       run:
-        working-directory: participant-starter
+        working-directory: ${{ matrix.app }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: participant-starter/package-lock.json
+          cache-dependency-path: ${{ matrix.app }}/package-lock.json
       - run: npm ci
+      # This is the single type gate: `next build` skips its own type check
+      # (typescript.ignoreBuildErrors in next.config.ts) so types are checked once.
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run test
