@@ -23,8 +23,9 @@ empty-module boundary demo, not the template. Each module has its own
 
 Rules 1–3 are **lint-enforced on resolved import paths** (alias, relative, or
 multi-hop `../..` spelling makes no difference) — see `eslint.config.mjs`.
-The lint rules themselves are regression-tested:
-`src/platform/lint-boundaries.test.ts`.
+The fences cover `src/`, `scripts/`, and `e2e/` alike: runners and specs may
+only reach a module through its contract. The lint rules themselves are
+regression-tested: `src/platform/lint-boundaries.test.ts`.
 
 1. Modules import other modules **only** via their `<name>.contract.ts`.
 2. `domain/` imports nothing outward: no platform, no React/Next, no other
