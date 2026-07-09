@@ -31,11 +31,18 @@ Check them off as you go.
 - [ ] **`.mcp.json`:** copy `.mcp.json.example` → `.mcp.json`, then run the
       OAuth flow for each server on first use (`/mcp` in Claude Code).
 
+## Done code-side, waiting on the clicks above
+
+- **DB schema/migrations:** the `workshops` golden-path slice is built
+  (Drizzle schema + tRPC CRUD + UI + tests); the migration is committed in
+  `drizzle/`. Once Neon exists: `npm run db:push` (or apply the migration),
+  then `npm run db:seed`. `getDb()` stays lazy, so build/tests pass without
+  `DATABASE_URL`.
+- **Playwright-on-preview:** the happy path runs locally with no DB
+  (`npm run test:e2e`, in-memory repo). Once previews deploy, point it at one:
+  `PLAYWRIGHT_BASE_URL=https://<preview-url> npm run test:e2e`.
+
 ## Deliberately NOT done (stubs, by design)
 
-- **DB schema/migrations:** no tables yet — the `tasks` golden-path slice
-  (Drizzle schema + tRPC CRUD) is Day 2 of the prep plan. `getDb()` is lazy,
-  so build/tests pass without `DATABASE_URL`.
-- **Auth/RBAC:** stub only — not the lesson.
-- **Playwright-on-preview:** arrives with the Day 2 plumbing (highest-risk
-  item, validate first).
+- **Auth/RBAC:** stub only — Neon Auth arrives with the registrations flow,
+  real RBAC is not the lesson.

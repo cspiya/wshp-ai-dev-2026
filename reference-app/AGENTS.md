@@ -12,9 +12,12 @@ folder = one agent's working set.
 
 ## Golden path
 
-To add a feature module, **copy `src/modules/identity/`** (its folder layout,
-contract, and patterns) and imitate it. Do not invent a new structure. Each
-module has its own `AGENTS.md` and `README.md` — read them before working there.
+To add a feature module, **copy `src/modules/workshops/`** (its folder layout,
+contract, and patterns) and imitate it — it is the fully-built reference slice
+(schema + tRPC CRUD + UI + tests; see `docs/adr/0001-workshops-is-the-golden-path.md`).
+Do not invent a new structure. `src/modules/identity/` is only the minimal
+empty-module boundary demo, not the template. Each module has its own
+`AGENTS.md` and `README.md` — read them before working there.
 
 ## Boundary rules
 
@@ -52,9 +55,11 @@ npm run typecheck && npm run lint && npm run test
 
 - `npm run dev` — local dev server
 - `npm run build` — production build (CI runs it too)
-- `npm run db:generate` / `npm run db:push` — Drizzle migrations (needs
-  `DATABASE_URL`; until the Day 2 schema lands both are clean no-ops — the
-  identity schema.ts is a placeholder with zero tables)
+- `npm run test:e2e` — Playwright happy path (builds + starts the app with an
+  in-memory repo, no DB needed; `PLAYWRIGHT_BASE_URL` retargets it)
+- `npm run db:generate` / `npm run db:push` — Drizzle migrations (need
+  `DATABASE_URL`); `npm run db:seed` — sample data. A schema change without a
+  committed migration in `drizzle/` is not done.
 
 If a check fails: read the output, fix, re-run. Report done only when all green.
 

@@ -23,9 +23,11 @@ React → TanStack Query → tRPC → Zod → server.
 | `npm run dev` | dev server |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint (includes the architecture boundary rules) |
-| `npm run test` | Vitest |
+| `npm run test` | Vitest (unit + router contract tests + lint-rule regression tests) |
+| `npm run test:e2e` | Playwright happy path — no DB needed locally (in-memory repo); set `PLAYWRIGHT_BASE_URL` to run against a deployment |
 | `npm run build` | production build |
-| `npm run db:generate` / `db:push` | Drizzle migrations (needs `DATABASE_URL`; clean no-ops until the Day 2 schema lands — the identity schema is a zero-table placeholder) |
+| `npm run db:generate` / `db:push` | Drizzle migrations (need `DATABASE_URL`) |
+| `npm run db:seed` | insert sample workshops (idempotent) |
 
 CI (GitHub Actions) runs typecheck + lint + test + build on every push/PR.
 
@@ -36,16 +38,20 @@ src/
   app/                      Next.js App Router shell (routes, layout, tRPC endpoint)
   components/ui/            shadcn/ui components (local source — agents read/edit them)
   modules/                  feature modules = bounded contexts = vertical slices
-    identity/               ← GOLDEN PATH structure template (copy this to add a module)
-      domain/               pure logic — imports nothing outward
-      application/          use-cases + ports
-      infra/                Drizzle schema + adapters
-      ui/                   React components of this slice
-      acceptance/           Gherkin acceptance criteria
-      identity.contract.ts  the ONLY import surface for other modules
+    workshops/              ← GOLDEN PATH: fully-built slice (copy this to add a module)
+      domain/               entity Zod schemas + pure logic — imports nothing outward
+      application/          use-cases (tRPC router factory) + ports, contract tests
+      infra/                Drizzle schema + repo adapters (real + in-memory double)
+      ui/                   shadcn table + create/edit form (RHF + Zod resolver)
+      acceptance/           Gherkin acceptance criteria (map to tests)
+      workshops.contract.ts the ONLY import surface for other modules
       AGENTS.md, README.md  module-scoped rules + docs
+    identity/               minimal empty-module boundary demo (NOT the template)
   platform/                 cross-cutting: db client (Neon+Drizzle), env, tRPC init
   contracts/                zod schemas shared across module boundaries
+docs/adr/                   architecture decision records
+drizzle/                    generated SQL migrations (committed)
+e2e/                        Playwright specs (one happy path per slice)
 ```
 
 **Why this shape:** a slice is self-contained, so a task's whole context fits one

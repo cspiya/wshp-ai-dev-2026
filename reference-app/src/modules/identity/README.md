@@ -1,9 +1,12 @@
-# `identity` module — the golden-path slice (structure stub)
+# `identity` module — boundary-demo stub (the golden path is `workshops/`)
 
 One bounded context = one vertical slice = one subagent's working set.
-This module is the **structural template**: to add a feature module, copy this
-folder layout and imitate its patterns. The first fully-built slice (schema +
-tRPC CRUD + UI + tests) lands as the `tasks` module on workshop Day 2 prep.
+This module is deliberately kept as the **minimal empty-module boundary demo**:
+it shows the smallest shape a module can have, and the lint-boundary regression
+tests (`src/platform/lint-boundaries.test.ts`) reference its files as fixtures.
+**Do NOT copy this to add a feature** — copy the fully-built golden path,
+[`src/modules/workshops/`](../workshops/README.md) (schema + tRPC CRUD + UI +
+tests; see `docs/adr/0001-workshops-is-the-golden-path.md`).
 
 ## Layout
 
