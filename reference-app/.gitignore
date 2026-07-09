@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local MCP config may hold tokens — only .mcp.json.example is tracked
+.mcp.json
+
 # vercel
 .vercel
 

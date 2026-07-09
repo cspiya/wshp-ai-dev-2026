@@ -1,5 +1,5 @@
 {
-  "$comment": "Copy to .mcp.json (gitignored if it ever holds secrets — these entries hold none: all four authenticate via OAuth in the browser on first use, e.g. `claude mcp` / /mcp in Claude Code).",
+  "$comment": "Copy to .mcp.json (gitignored, so it may safely hold tokens later — these four entries hold none: all authenticate via OAuth in the browser on first use, e.g. `claude mcp` / /mcp in Claude Code).",
   "mcpServers": {
     "linear": {
       "type": "http",
