@@ -1,0 +1,45 @@
+import { asc, eq } from "drizzle-orm";
+
+import { getDb } from "@/platform/db/client";
+
+import type { WorkshopRepo } from "../application/workshops.router";
+import { workshops } from "./schema";
+
+/**
+ * Drizzle/Neon adapter for the WorkshopRepo port. `getDb()` is a lazy
+ * singleton, so merely constructing this repo needs no DATABASE_URL —
+ * a missing one surfaces as a clear error on the first actual query
+ * (see src/platform/env.ts), and the UI shows its error state.
+ */
+export function createDrizzleWorkshopRepo(): WorkshopRepo {
+  return {
+    list: () => getDb().select().from(workshops).orderBy(asc(workshops.date)),
+
+    getById: async (id) => {
+      const rows = await getDb().select().from(workshops).where(eq(workshops.id, id));
+      return rows[0] ?? null;
+    },
+
+    create: async (input) => {
+      const rows = await getDb().insert(workshops).values(input).returning();
+      return rows[0];
+    },
+
+    update: async (id, input) => {
+      const rows = await getDb()
+        .update(workshops)
+        .set(input)
+        .where(eq(workshops.id, id))
+        .returning();
+      return rows[0] ?? null;
+    },
+
+    delete: async (id) => {
+      const rows = await getDb()
+        .delete(workshops)
+        .where(eq(workshops.id, id))
+        .returning({ id: workshops.id });
+      return rows.length > 0;
+    },
+  };
+}

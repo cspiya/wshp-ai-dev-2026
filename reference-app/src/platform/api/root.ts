@@ -1,12 +1,15 @@
 import { z } from "zod";
 
+import { workshopsRouter } from "@/modules/workshops/workshops.contract";
 import { publicProcedure, router } from "@/platform/api/trpc";
 
 /**
- * Root router. Feature modules contribute sub-routers here
- * (e.g. `tasks: tasksRouter` imported from the module's contract).
+ * Root router. Feature modules contribute sub-routers here,
+ * always imported from the module's public contract.
  */
 export const appRouter = router({
+  workshops: workshopsRouter,
+
   health: router({
     // End-to-end wiring proof: Zod-validated input, typed output,
     // consumed by the homepage via TanStack Query.

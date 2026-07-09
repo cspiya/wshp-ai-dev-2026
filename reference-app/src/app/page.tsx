@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import {
   Card,
   CardContent,
@@ -29,7 +31,8 @@ export default function Home() {
           <HealthCheck />
           <p className="text-sm text-muted-foreground">
             Start with <code>AGENTS.md</code>, then copy the golden path in{" "}
-            <code>src/modules/identity/</code> to add a feature module.
+            <code>src/modules/workshops/</code> to add a feature module. See it
+            live: <Link href="/workshops" className="underline">/workshops</Link>.
           </p>
         </CardContent>
       </Card>
