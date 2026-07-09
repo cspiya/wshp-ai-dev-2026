@@ -26,11 +26,12 @@ export type WorkshopInput = z.infer<typeof workshopInputSchema>;
 
 export const workshopSchema = workshopInputSchema.extend({
   id: z.uuid(),
-  // Timestamps read back from Postgres are strings in Postgres' own format
-  // (e.g. "2026-07-14 09:00:00+00"), so the READ side is a plain string —
-  // strict ISO is enforced only at the write boundary (workshopInputSchema).
-  date: z.string(),
-  createdAt: z.string(),
+  // The READ side is strict UTC ISO 8601 ("…Z"). Postgres would hand back
+  // its own text format ("2026-01-15 09:00:00+00"), so every repo adapter
+  // normalizes timestamps on the way out (infra/timestamps.ts) — consumers
+  // see ONE date shape no matter which adapter served the data.
+  date: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
 });
 
 export type Workshop = z.infer<typeof workshopSchema>;

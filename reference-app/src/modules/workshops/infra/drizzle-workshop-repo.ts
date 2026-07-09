@@ -3,7 +3,14 @@ import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/platform/db/client";
 
 import type { WorkshopRepo } from "../application/workshops.router";
+import type { Workshop } from "../domain/workshop";
 import { workshops } from "./schema";
+import { toIsoTimestamp } from "./timestamps";
+
+/** Postgres text timestamps → the strict UTC ISO shape the domain promises. */
+function toWorkshop(row: typeof workshops.$inferSelect): Workshop {
+  return { ...row, date: toIsoTimestamp(row.date), createdAt: toIsoTimestamp(row.createdAt) };
+}
 
 /**
  * Drizzle/Neon adapter for the WorkshopRepo port. `getDb()` is a lazy
@@ -13,16 +20,19 @@ import { workshops } from "./schema";
  */
 export function createDrizzleWorkshopRepo(): WorkshopRepo {
   return {
-    list: () => getDb().select().from(workshops).orderBy(asc(workshops.date)),
-
-    getById: async (id) => {
-      const rows = await getDb().select().from(workshops).where(eq(workshops.id, id));
-      return rows[0] ?? null;
+    // Lists are always bounded: an unbounded SELECT is a slow-motion outage.
+    list: async () => {
+      const rows = await getDb()
+        .select()
+        .from(workshops)
+        .orderBy(asc(workshops.date))
+        .limit(50);
+      return rows.map(toWorkshop);
     },
 
     create: async (input) => {
       const rows = await getDb().insert(workshops).values(input).returning();
-      return rows[0];
+      return toWorkshop(rows[0]);
     },
 
     update: async (id, input) => {
@@ -31,7 +41,7 @@ export function createDrizzleWorkshopRepo(): WorkshopRepo {
         .set(input)
         .where(eq(workshops.id, id))
         .returning();
-      return rows[0] ?? null;
+      return rows[0] ? toWorkshop(rows[0]) : null;
     },
 
     delete: async (id) => {

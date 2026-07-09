@@ -22,7 +22,7 @@ const formSchema = workshopInputSchema.extend({
 
 type FormValues = z.infer<typeof formSchema>;
 
-/** "2026-07-14 09:00:00+00" (Postgres) or ISO → local "YYYY-MM-DDTHH:mm". */
+/** UTC ISO (the read-side shape all adapters return) → local "YYYY-MM-DDTHH:mm". */
 function toDatetimeLocal(value: string): string {
   const d = new Date(value);
   const pad = (n: number) => String(n).padStart(2, "0");
