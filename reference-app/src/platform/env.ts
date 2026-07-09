@@ -1,6 +1,7 @@
 /**
  * Minimal env access. Values are read lazily (at call time, not import time)
  * so `next build` and unit tests pass without secrets.
+ * Two call sites today: src/platform/db/client.ts and drizzle.config.ts.
  */
 // Extend this union as the app grows — typos become compile errors.
 type KnownEnvVar = "DATABASE_URL";
