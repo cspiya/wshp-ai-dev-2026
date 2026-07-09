@@ -18,6 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDate, formatHuf } from "@/lib/format";
 import { trpc } from "@/platform/api/client";
 
 import type { Workshop } from "../domain/workshop";
@@ -25,10 +26,6 @@ import { WorkshopForm } from "./workshop-form";
 
 /** Which form is open: none, the create form, or an edit form for one row. */
 type FormState = { mode: "closed" } | { mode: "create" } | { mode: "edit"; workshop: Workshop };
-
-function formatDate(value: string): string {
-  return new Date(value).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
-}
 
 export function WorkshopsView() {
   const [formState, setFormState] = useState<FormState>({ mode: "closed" });
@@ -46,6 +43,22 @@ export function WorkshopsView() {
     onSuccess: () => utils.workshops.list.invalidate(),
   });
 
+  // Mutation state (a stale error especially) must not leak from one form
+  // session into the next, so every open/close transition resets it.
+  const openCreate = () => {
+    create.reset();
+    setFormState({ mode: "create" });
+  };
+  const openEdit = (workshop: Workshop) => {
+    update.reset();
+    setFormState({ mode: "edit", workshop });
+  };
+  const closeForm = () => {
+    create.reset();
+    update.reset();
+    setFormState({ mode: "closed" });
+  };
+
   return (
     <main className="mx-auto w-full max-w-4xl space-y-6 p-8">
       <Card>
@@ -58,7 +71,7 @@ export function WorkshopsView() {
               </CardDescription>
             </div>
             {formState.mode === "closed" && (
-              <Button onClick={() => setFormState({ mode: "create" })}>New workshop</Button>
+              <Button onClick={openCreate}>New workshop</Button>
             )}
           </div>
         </CardHeader>
@@ -69,7 +82,7 @@ export function WorkshopsView() {
               submitting={create.isPending}
               submitError={create.error?.message}
               onSubmit={(input) => create.mutate(input)}
-              onCancel={() => setFormState({ mode: "closed" })}
+              onCancel={closeForm}
             />
           )}
           {formState.mode === "edit" && (
@@ -79,7 +92,7 @@ export function WorkshopsView() {
               submitting={update.isPending}
               submitError={update.error?.message}
               onSubmit={(input) => update.mutate({ id: formState.workshop.id, data: input })}
-              onCancel={() => setFormState({ mode: "closed" })}
+              onCancel={closeForm}
             />
           )}
 
@@ -93,6 +106,13 @@ export function WorkshopsView() {
               </p>
               <p className="text-sm text-muted-foreground">{list.error.message}</p>
             </div>
+          )}
+          {/* Failed deletes surface here: the row is still in the table
+              (invalidate never ran), so the message sits right above it. */}
+          {remove.isError && (
+            <p className="text-sm text-destructive">
+              Could not delete workshop: {remove.error.message}
+            </p>
           )}
           {list.isSuccess && list.data.length === 0 && (
             <p className="text-sm text-muted-foreground">
@@ -118,7 +138,7 @@ export function WorkshopsView() {
                     <TableCell>{formatDate(workshop.date)}</TableCell>
                     <TableCell>{workshop.location}</TableCell>
                     <TableCell className="text-right">
-                      {workshop.listPriceHuf.toLocaleString("en-US")}
+                      {formatHuf(workshop.listPriceHuf)}
                     </TableCell>
                     <TableCell className="text-right">{workshop.capacity}</TableCell>
                     <TableCell className="text-right">
@@ -126,7 +146,7 @@ export function WorkshopsView() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => setFormState({ mode: "edit", workshop })}
+                          onClick={() => openEdit(workshop)}
                         >
                           Edit
                         </Button>
