@@ -16,17 +16,21 @@ To add a feature module, **copy `src/modules/identity/`** (its folder layout,
 contract, and patterns) and imitate it. Do not invent a new structure. Each
 module has its own `AGENTS.md` and `README.md` — read them before working there.
 
-## Boundary rules (lint-enforced — see eslint.config.mjs)
+## Boundary rules
+
+Rules 1–3 are **lint-enforced on resolved import paths** (alias, relative, or
+multi-hop `../..` spelling makes no difference) — see `eslint.config.mjs`.
+The lint rules themselves are regression-tested:
+`src/platform/lint-boundaries.test.ts`.
 
 1. Modules import other modules **only** via their `<name>.contract.ts`.
-2. `domain/` imports nothing outward: pure TS types + logic, no platform, no
-   React/Next, no other modules.
-3. `infra/` implements ports defined in `application/`; only `infra/` may touch
-   `@/platform/db`.
-4. Inside a module use relative imports; the `@/` alias is only for crossing
-   boundaries.
-5. Schemas shared by 2+ modules go to `src/contracts/` — the strictest review
-   gate in the repo.
+2. `domain/` imports nothing outward: no platform, no React/Next, no other
+   modules — and no packages at all, except `zod`.
+3. Only a module's `infra/` (and platform itself) may import `@/platform/db`.
+4. *(convention)* Inside a module use relative imports; the `@/` alias is only
+   for crossing boundaries. `infra/` implements ports defined in `application/`.
+5. *(convention)* Schemas shared by 2+ modules go to `src/contracts/` — the
+   strictest review gate in the repo.
 
 ## SOLID without scaffolding
 
@@ -48,7 +52,9 @@ npm run typecheck && npm run lint && npm run test
 
 - `npm run dev` — local dev server
 - `npm run build` — production build (CI runs it too)
-- `npm run db:generate` / `npm run db:push` — Drizzle migrations (needs `DATABASE_URL`)
+- `npm run db:generate` / `npm run db:push` — Drizzle migrations (needs
+  `DATABASE_URL`; until the Day 2 schema lands both are clean no-ops — the
+  identity schema.ts is a placeholder with zero tables)
 
 If a check fails: read the output, fix, re-run. Report done only when all green.
 

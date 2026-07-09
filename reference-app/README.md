@@ -25,7 +25,7 @@ React → TanStack Query → tRPC → Zod → server.
 | `npm run lint` | ESLint (includes the architecture boundary rules) |
 | `npm run test` | Vitest |
 | `npm run build` | production build |
-| `npm run db:generate` / `db:push` | Drizzle migrations (needs `DATABASE_URL`) |
+| `npm run db:generate` / `db:push` | Drizzle migrations (needs `DATABASE_URL`; clean no-ops until the Day 2 schema lands — the identity schema is a zero-table placeholder) |
 
 CI (GitHub Actions) runs typecheck + lint + test + build on every push/PR.
 
@@ -50,8 +50,10 @@ src/
 
 **Why this shape:** a slice is self-contained, so a task's whole context fits one
 folder — contained blast radius, slice-scoped tests, cheap tokens, and safe
-multi-agent parallelism. Boundaries are lint-enforced (`eslint.config.mjs`), not
-aspirational. Rules for humans and agents: [`AGENTS.md`](AGENTS.md).
+multi-agent parallelism. Boundaries are lint-enforced on **resolved** import
+paths (`eslint.config.mjs`), not aspirational — and the lint rules themselves
+have regression tests (`src/platform/lint-boundaries.test.ts`). Rules for
+humans and agents: [`AGENTS.md`](AGENTS.md).
 
 ## Deployment
 

@@ -20,4 +20,5 @@ tRPC CRUD + UI + tests) lands as the `tasks` module on workshop Day 2 prep.
 
 - Other modules import **only** `identity.contract.ts` (lint-enforced).
 - Auth is a **stub** in this workshop — real auth/RBAC is deliberately out of scope.
-- Inside the module use relative imports; the `@/` alias is for crossing boundaries.
+- *(convention)* Inside the module use relative imports; the `@/` alias is for
+  crossing boundaries.
