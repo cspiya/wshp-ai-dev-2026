@@ -91,14 +91,18 @@ sikerülni), hanem hogy a hibája **ne jusson el a felhasználóig**.
 ```mermaid
 flowchart LR
     subgraph ELOTTE["❌ Előtte: szöveg-minta alapú lint"]
-        U1["billing/ui"] -- "@/modules/identity/infra<br/>TILTVA ✋" --> ID1["identity<br/>belseje"]
+        U1["egy MÁSIK modul<br/>(a teszthez kreált fiktív<br/>'billing' — bármi lehetne)"] -- "@/modules/identity/infra<br/>TILTVA ✋" --> ID1["identity<br/>belseje"]
         U1 -- "../../identity/infra<br/>ÁTCSÚSZOTT 🕳️" --> ID1
     end
     subgraph UTANA["✅ Utána: feloldott útvonal alapú zóna"]
-        U2["billing/ui"] -- "BÁRMILYEN írásmód<br/>TILTVA ✋" --> ID2["identity<br/>belseje"]
+        U2["egy MÁSIK modul"] -- "BÁRMILYEN írásmód<br/>TILTVA ✋" --> ID2["identity<br/>belseje"]
         U2 -- "identity.contract.ts<br/>SZABAD ✅" --> C2["a modul<br/>publikus kapuja"]
     end
 ```
+
+*(A „billing" nem létező modul: a bíráló hozta létre ideiglenesen a kerülőút bizonyítására, és azóta a
+lint-regressziós teszt is így, szintetikus szomszéd-modullal rögzíti az esetet — lásd
+`reference-app/src/platform/lint-boundaries.test.ts`.)*
 
 A legfontosabb eset (fent az ábrán): a modulhatár-lint **az import szövegét** nézte, nem azt, hogy a
 feloldott útvonal hová mutat — így a relatív írásmód átcsúszott rajta. A javítás nem több minta lett,
