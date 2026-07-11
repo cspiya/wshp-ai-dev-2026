@@ -66,6 +66,23 @@ npm run typecheck && npm run lint && npm run test
 
 If a check fails: read the output, fix, re-run. Report done only when all green.
 
+## Hard-won gotchas (do not re-learn)
+
+- **Lockfiles must be generated with npm 10** (`npx npm@10 install`): the CI runner
+  pairs Node 22 + npm 10; npm-11 lockfiles break `npm ci`.
+- **`shadcn` IS a runtime dependency** (globals.css imports `shadcn/tailwind.css`) —
+  do not "clean it up".
+- **`E2E_IN_MEMORY_DB=1` is a local-e2e-only seam**, guarded by a startup throw on
+  Vercel (`src/platform/api/root.ts`) — never weaken the guard; composition lives at
+  the composition root, never at module import time.
+- **Test lint-boundary rules with REAL files** — eslint zones are generated from
+  existing module folders, so stdin tests against non-existent paths false-pass.
+- **Both repo adapters must stay contract-equal:** the shared port-contract suite
+  (`workshop-repo.contract.test.ts`) runs on in-memory always + Drizzle when
+  `TEST_DATABASE_URL` is set (point it at a disposable Neon branch for a zero-skip run).
+- Playwright against a preview:
+  `PLAYWRIGHT_BASE_URL=<url> npx playwright test --grep @happy-path`.
+
 ## Scope guardrails
 
 - Neon Auth has an explicitly approved **thin integration** scope under

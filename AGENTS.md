@@ -3,8 +3,10 @@
 Wenova AI-Assisted Development Workshop (delivery 2026-07-14): participant materials
 (`materials/`, Hungarian), take-home toolkit (`toolkit/`), participant starter
 (`participant-starter/`), and a reference app (`reference-app/`). We build it **with the
-method we teach** (dogfooding). Session context bridge: `HANDOFF.md`; the big picture:
-`materials/big-picture.md`.
+method we teach** (dogfooding). Work state lives in Linear (issues + lease comments — no
+handoff file); the big picture: `materials/big-picture.md`. Internal, non-public materials:
+Drive `Wenova-Shared/Trainings/2026.07.14-AI-Dev-1-day/10_Internal/` (design, production,
+sales, delivery run-of-show — never into this repo).
 
 Each subproject has its own rules — read them before working there:
 `reference-app/AGENTS.md` · `participant-starter/AGENTS.md` · `toolkit/AGENTS.md`.
@@ -18,8 +20,9 @@ Each subproject has its own rules — read them before working there:
    constraints, prior decisions, task breakdown, verification criteria. Explore and
    refine the spec until it stands; only then implement. Templates:
    `toolkit/spec-templates/`.
-3. **RUG loop:** builder → independent fresh-context review → bounce-back fix →
-   re-verify → trace comment on the issue (full contract: `HANDOFF.md` §4).
+3. **RUG loop:** builder (restates acceptance criteria first) → independent
+   fresh-context review (multi-angle finders → dedup → verify) → bounce-back fix →
+   re-verify → close with a trace comment on the issue.
 4. **Canonical standards, injected:** engineering work follows
    `toolkit/standards/engineering-standards.md`; material work follows
    `toolkit/standards/material-standards.md`. Maker AND reviewer reference the SAME
@@ -33,4 +36,13 @@ Each subproject has its own rules — read them before working there:
    `materials/fogalomtar.md`); code, prompts, AI instructions, commits, and technical
    artifacts are English.
 8. **Public repo hygiene:** no client names, pricing, invite links, or personal data.
-   Sample data is "lifelike but INVENTED" — never "realistic".
+   Sample data is "lifelike but INVENTED" — never "realistic" (that instruction already
+   leaked real numbers once; caught by review).
+9. **Journal with the build, never after:** every build day ends with
+   `materials/epitesi-naplo/day-N.md` in the FIXED format — (1) the day in one mermaid
+   diagram, (2) synthesis (what the day proved), (3) 🧑 human-loop vs 🤖 agent-loop
+   lessons SEPARATED, (4) cases collapsed in `<details>`, tagged. Diagrams over prose;
+   mark fictitious examples as fictitious. Update `materials/big-picture.md` if the
+   picture shifts.
+10. **Review feedback is not gospel:** verify before implementing (see the shadcn case,
+    day-1 journal) — and builders may deviate from spec IF they say so and document why.

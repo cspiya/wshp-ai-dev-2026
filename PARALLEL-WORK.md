@@ -10,7 +10,7 @@ but each session gets its own Git worktree, branch, Linear issue, and file scope
 | Materials | `AI lane / materials` | `materials/**`, participant-facing `toolkit/**`, delivery documentation |
 | Reference app | `AI lane / reference-app` | `reference-app/**`, `participant-starter/**`, app-specific CI and setup |
 
-Root files, `.github/**`, and `HANDOFF.md` belong to the coordinating session unless the active issue
+Root files and `.github/**` belong to the coordinating session unless the active issue
 explicitly transfers ownership. Do not edit a file owned by the other lane without first releasing and
 reassigning it in Linear.
 
