@@ -1,0 +1,7 @@
+{
+  "checks": [
+    { "name": "lint", "command": "npm", "args": ["run", "lint"], "cwd": "../../your-app", "timeoutMs": 60000 },
+    { "name": "typecheck", "command": "npm", "args": ["run", "typecheck"], "cwd": "../../your-app", "timeoutMs": 60000 },
+    { "name": "tests", "command": "npm", "args": ["test"], "cwd": "../../your-app", "timeoutMs": 120000 }
+  ]
+}

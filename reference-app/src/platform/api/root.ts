@@ -5,6 +5,16 @@ import {
   createInMemoryWorkshopRepo,
   createWorkshopsRouter,
 } from "@/modules/workshops/workshops.contract";
+import {
+  createCheckoutRouter,
+  createFakePaymentAdapter,
+} from "@/modules/checkout/checkout.contract";
+import { createPricingRouter } from "@/modules/pricing/pricing.contract";
+import {
+  createDrizzleRegistrationRepo,
+  createInMemoryRegistrationRepo,
+  createRegistrationsRouter,
+} from "@/modules/registrations/registrations.contract";
 import { publicProcedure, router } from "@/platform/api/trpc";
 
 /**
@@ -33,13 +43,49 @@ function createWorkshopRepo() {
           "process and vanish on every restart).",
       );
     }
-    return createInMemoryWorkshopRepo();
+    return createInMemoryWorkshopRepo([
+      {
+        id: "3f8a2c1e-0000-4000-8000-000000000001",
+        title: "Sample Workshop: Checkout Flow",
+        description: "Generic local-e2e fixture.",
+        date: "2028-01-15T09:00:00.000Z",
+        location: "Online",
+        listPriceHuf: 10_000,
+        capacity: 20,
+        createdAt: "2027-01-01T00:00:00.000Z",
+      },
+    ]);
   }
   return createDrizzleWorkshopRepo();
 }
 
+function shouldUseLocalE2eStore() {
+  if (process.env.E2E_IN_MEMORY_DB !== "1") return false;
+  if (process.env.VERCEL) {
+    throw new Error(
+      "E2E_IN_MEMORY_DB is a local-e2e-only seam and must never be set on a deployment.",
+    );
+  }
+  return true;
+}
+
+function createRegistrationRepo() {
+  return shouldUseLocalE2eStore()
+    ? createInMemoryRegistrationRepo()
+    : createDrizzleRegistrationRepo();
+}
+
+const workshopRepo = createWorkshopRepo();
+const workshopSchedule = {
+  getStartsAt: async (workshopId: string) =>
+    (await workshopRepo.getById(workshopId))?.date ?? null,
+};
+
 export const appRouter = router({
-  workshops: createWorkshopsRouter(createWorkshopRepo()),
+  workshops: createWorkshopsRouter(workshopRepo),
+  pricing: createPricingRouter(),
+  checkout: createCheckoutRouter(createFakePaymentAdapter()),
+  registrations: createRegistrationsRouter(createRegistrationRepo(), workshopSchedule),
 
   health: router({
     // End-to-end wiring proof: Zod-validated input, typed output,

@@ -1,0 +1,4 @@
+interface:
+  display_name: "RUG Review"
+  short_description: "Run independent review and verified fixes"
+  default_prompt: "Use $rug-review to review this change with fresh context and verify every accepted fix."

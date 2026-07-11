@@ -66,3 +66,17 @@ humans and agents: [`AGENTS.md`](AGENTS.md).
 Vercel + Neon with a DB branch per preview deployment — manual one-time setup
 steps in [`SETUP-STATUS.md`](SETUP-STATUS.md). MCP servers for Linear / GitHub /
 Neon / Vercel: copy `.mcp.json.example` to `.mcp.json`.
+
+## WEN-141 vertical slices
+
+- `npm run test:e2e` runs `/shop` database-free through the guarded local
+  in-memory seam: integer pricing → fake payment authorization → pending
+  registration → confirmation → cancellation. A normal `npm run dev` uses
+  the configured Drizzle/Neon adapters and therefore needs `DATABASE_URL` for
+  the registration steps.
+- `pricing/` fixes the calculation order and rounding in pure domain tests.
+- `checkout/` isolates the changing payment vendor behind `PaymentPort`.
+- `registrations/` has in-memory and Drizzle adapters plus a deterministic,
+  injected clock for the 48-hour cancellation rule.
+- Neon Auth is not claimed complete: provisioning, package installation, and
+  environment variables are external blockers listed in `SETUP-STATUS.md`.

@@ -36,6 +36,11 @@ export function createInMemoryWorkshopRepo(seed: Workshop[] = []): WorkshopRepo 
         .slice(0, 50)
         .map((w) => ({ ...w })),
 
+    getById: async (id) => {
+      const workshop = rows.get(id);
+      return workshop ? { ...workshop } : null;
+    },
+
     create: async (input) => {
       const workshop: Workshop = {
         ...input,

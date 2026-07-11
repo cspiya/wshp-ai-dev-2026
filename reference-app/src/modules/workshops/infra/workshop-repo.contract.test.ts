@@ -102,6 +102,16 @@ function describeWorkshopRepoContract(makeRepo: () => WorkshopRepo) {
     expect(updated?.date).toBe("2027-02-01T09:00:00.000Z");
   });
 
+  it("gets an authoritative snapshot by id and returns null when missing", async () => {
+    const created = await createTracked(genericInput());
+
+    const found = await repo.getById(created.id);
+    expect(found?.date).toBe(created.date);
+    found!.title = "MUTATED";
+    expect((await repo.getById(created.id))?.title).toBe(created.title);
+    await expect(repo.getById("3f8a2c1e-0000-4000-8000-00000000dead")).resolves.toBeNull();
+  });
+
   it("update returns null for a missing id", async () => {
     expect(await repo.update("3f8a2c1e-0000-4000-8000-00000000dead", genericInput())).toBeNull();
   });

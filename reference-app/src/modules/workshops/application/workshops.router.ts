@@ -21,6 +21,7 @@ import {
 export interface WorkshopRepo {
   /** Chronological by date, bounded (first 50) — see the adapters. */
   list(): Promise<Workshop[]>;
+  getById(id: string): Promise<Workshop | null>;
   create(input: WorkshopInput): Promise<Workshop>;
   update(id: string, input: WorkshopInput): Promise<Workshop | null>;
   delete(id: string): Promise<boolean>;

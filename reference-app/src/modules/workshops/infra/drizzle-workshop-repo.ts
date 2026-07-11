@@ -30,6 +30,11 @@ export function createDrizzleWorkshopRepo(): WorkshopRepo {
       return rows.map(toWorkshop);
     },
 
+    getById: async (id) => {
+      const rows = await getDb().select().from(workshops).where(eq(workshops.id, id)).limit(1);
+      return rows[0] ? toWorkshop(rows[0]) : null;
+    },
+
     create: async (input) => {
       const rows = await getDb().insert(workshops).values(input).returning();
       return toWorkshop(rows[0]);

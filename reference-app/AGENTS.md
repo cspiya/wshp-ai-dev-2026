@@ -66,7 +66,11 @@ If a check fails: read the output, fix, re-run. Report done only when all green.
 
 ## Scope guardrails
 
-- Auth/RBAC is a **stub** — do not build real auth here.
+- Neon Auth has an explicitly approved **thin integration** scope under
+  WEN-141, but it remains incomplete until the external Neon provisioning,
+  package, environment, session, and preview checks in `SETUP-STATUS.md` are
+  done. Do not build custom auth or full RBAC, and never describe the current
+  unauthenticated teaching flow as deploy-ready.
 - No realtime, uploads, or multi-tenancy — out of scope for this artifact.
 - Optimize for pedagogical clarity over production robustness: smallest
   working form, readable configs, comments only where a constraint is not

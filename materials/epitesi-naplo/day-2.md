@@ -26,6 +26,27 @@ flowchart LR
 
 A 10 hiba nem tíz független apróság volt, hanem **egyetlen rossz szerkezeti döntés következmény-lánca**:
 
+#### Előbb .NET-es fejjel
+
+Képzeld el, hogy egy ASP.NET Core feature nem konstruktoron keresztül kapja meg az
+`IWorkshopRepository` implementációját. Ehelyett az osztály vagy egy statikus modul saját maga példányosítja
+a konkrét SQL repositoryt, ráadásul már a típus/modul betöltésekor. Ezzel megkerüli a DI-containert és a
+`Program.cs`-ben lévő központi bekötést. A függőség kívülről már nem cserélhető tisztán.
+
+TypeScript/Next.js környezetben ugyanez történt: a feature publikus contractja már importáláskor
+összedrótozta a routert a konkrét adattárral. Elsőre ez kényelmes rövidítésnek látszik, de elvette a tiszta
+cserepontot. Emiatt egyre több kerülőmegoldás kellett, és minden kerülőmegoldás új kockázatot hozott.
+
+1. Az e2e teszt nem tudta a központi bekötésnél lecserélni a valódi adatbázist in-memory adapterre.
+2. Ezért környezeti kapcsoló került a production kód közelébe.
+3. Ha a kapcsoló preview-n vagy élesben bekapcsolva marad, a rendszer nem a valódi adatbázist használja.
+4. A publikus importútvonal szerveroldali DB-kódot húzhatott volna a böngészőnek készülő csomag felé.
+5. Az e2e csak a helyettesítő adattárat gyakorolta, amely közben eltért a valódi adapter viselkedésétől.
+6. Így minden teszt zöld lehetett, miközben a valódi adapter dátumformátuma Safari alatt hibát okozott.
+
+> **Tanítási pont:** ez nem egyszerűen „az AI rossz kódot írt”. Egy gyenge architekturális cserepont
+> engedte, hogy egymásra épülő hibák rejtve maradjanak.
+
 ```mermaid
 flowchart TD
     ROOT["🔴 GYÖKÉR-OK: a modul a contractjában,<br/>IMPORT-IDŐBEN komponálta össze magát<br/>(repo + router már betöltéskor összedrótozva)"]
@@ -41,6 +62,9 @@ az e2e-seam kemény guardot kapott (Vercelen beállítva az app **induláskor do
 a dátum-normalizálás az adapterbe került, és született egy **közös contract-tesztsuite**, ami mindkét
 adaptert ugyanazzal a szerződéssel méri. *Egy mozdulat a gyökérnél = öt tünet eltűnik.*
 
+**A tartós védelem négy eleme:** központi composition root; dependency injection jellegű bekötés; közös
+contract test a fake és a valódi adapteren; kemény környezeti guard és gépileg kikényszerített modulhatár.
+
 ### B) A teszt-double hűsége maga is szerződés
 
 A „zöld teszt" csak annyit ér, amennyire a double hasonlít a valóságra. Nálunk a double másképp rendezett,
@@ -52,8 +76,8 @@ implementáción fut* — ez teszi becsületessé a portot.
 
 ### 🧑 Humán hurok (az instrukciókat javítja)
 
-1. **Instrukció-szivárgás, 2. eset:** a seed-adatba és a teszt-fixture-be a **valódi engagement számai**
-   kerültek (ár, létszám, dátum együtt) — mert **az orchestráló prompt kérte így** („legyen egy
+1. **Instrukció-szivárgás, 2. eset:** a seed-adatba és a teszt-fixture-be **nem publikálható konkrét
+   adatok** kerültek együtt — mert **az orchestráló prompt kérte így** („legyen egy
    realisztikus példa"). A builder hibátlanul követte a rossz instrukciót; a review fogta meg.
    *Tanulság: a „realisztikus példa" kérés publikus repóban veszélyes instrukció — a jó kérés:
    „életszerű, de kitalált".* (Day 1-en a nyelvi szabály torzult a láncban, ma az adat-hygiene — a minta

@@ -30,6 +30,15 @@
 | **Golden path / referencia-slice** | Egy tökéletesen megcsinált minta-feature, amiről minden továbbit (ember és agent) másol. Az agentek a legközelebbi mintát utánozzák — adjunk nekik jót! |
 | **Vertical slice** | A feature minden rétege (DB → API → UI → teszt → doksi) **egy mappában** — nem szétszórva rétegek szerint. Egy feladat = egy mappa = kis kontextus. |
 | **Bounded context / boundary** | Modul-határ: mit importálhat egy modul a másikból (nálunk: csak a `*.contract.ts`-t). Erős határok = kis hibaterjedés + párhuzamosítható agent-munka. |
+| **Composition root** | Az alkalmazás központi bekötési pontja: itt választjuk ki és drótozzuk össze a konkrét függőségeket. .NET-analógia: a `Program.cs` / `Startup.cs`, ahol a DI-container regisztrációi élnek. Next.js-ben is itt dől el, hogy egy port mögé valódi vagy tesztadapter kerül; a feature ne `new`-zza magának az infrastruktúrát. |
+| **Seam / cserepont** | Tudatos illesztés, ahol egy külső függőség vagy viselkedés lecserélhető anélkül, hogy a domain-logikát átírnánk. .NET-ben ilyen az `IWorkshopRepo` konstruktor-injektálása. Az **e2e seam** ennek tesztelési változata: lokálisan in-memory adaptert köthetünk be, de preview/production környezetben kemény guard tiltja. |
+| **Port** | A domain felől megfogalmazott interface/absztrakció egy valóban változó külső függőséghez. .NET-analógia: egy `IPaymentGateway` vagy `IWorkshopRepository`; nem minden osztályhoz kell interface. |
+| **Adapter** | Egy port konkrét technikai megvalósítása. Például ugyanazt a repository-portot megvalósíthatja Drizzle/Postgres adapter vagy in-memory tesztadapter. .NET-analógia: `SqlWorkshopRepository : IWorkshopRepository`. |
+| **Test double** | Tesztben használt helyettesítő implementáció (fake, stub, mock). Nem „második éles implementáció”, hanem kontrollált vizsgálati eszköz. .NET-ben például kézzel írt in-memory repository vagy Moq-val létrehozott mock. |
+| **Double drift** | Amikor a test double viselkedése eltér a valódi adapterétől: másképp rendez, más formátumot ad vagy más hibát dob. Ettől zöld teszt igazolhat egy nem létező rendszert. A közös contract test csökkenti ezt a kockázatot. |
+| **Contract test** | Ugyanazt a viselkedési tesztsuite-ot futtatjuk minden adapteren — például az in-memory és a valódi Postgres repositoryn. .NET-ben ez egy absztrakt/base tesztosztály vagy közös teszt-fixture lehet, amelyhez implementációt injektálunk. |
+| **Browser bundle** | A böngészőnek elküldött kliensoldali JavaScript-csomag. .NET-analógia: a Blazor WebAssembly kliensbe kerülő assembly-készlet; szerveroldali titok, DB-driver és connection string nem kerülhet bele. |
+| **Boundary lint** | Gépileg kikényszerített modulhatár. Olyan, mint egy architektúra-fitness teszt vagy NetArchTest-szabály: nemcsak dokumentáljuk, hogy egy modul mit importálhat, hanem a lint/CI el is buktatja a tiltott függést. A szabályt valódi fájlokkal és kerülőutakkal is regressziósan tesztelni kell. |
 | **Blast radius** | Egy változtatás "robbanási sugara": hány helyet érint, mennyit kell újratesztelni. A jó architektúra ezt minimalizálja. |
 | **Context engineering** | A kontextus tudatos menedzselése: tiszta sessionök, izolált subagentek, csak a releváns fájlok beolvasása — minőség + token-spórolás. |
 | **RAG** (Retrieval-Augmented Generation) | Kereshető tudástár (vektor-adatbázis) a modell mögé — nálunk **dokumentációra** használjuk; kódra inkább LSP + struktúra. |
@@ -71,4 +80,5 @@
 | **Gamma** | AI-prezentáció eszköz — a workshop diái ebben készültek | PowerPoint + AI | [gamma.app](https://gamma.app) |
 
 ---
-*Ha egy fogalom hiányzik vagy nem világos: szólj a workshopon, vagy írd meg a Discord-csatornán — bővítjük.*
+*Ha egy fogalom hiányzik vagy nem világos: szólj a workshopon, vagy jelezd a szervező által megadott
+kapcsolattartási csatornán — bővítjük.*

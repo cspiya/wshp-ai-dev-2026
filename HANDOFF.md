@@ -8,7 +8,7 @@
 > **This repo is PUBLIC.** Keep this file hygiene-clean: no client names, no pricing/offer details,
 > no invite links, no personal data. Those live on the internal Drive (below).
 
-*Last updated: 2026-07-10 · owner of next session: (take it over, put your marker here)*
+*Last updated: 2026-07-10 late · owner of next session: (take it over, put your marker here)*
 
 ---
 
@@ -39,11 +39,18 @@ method we teach** (dogfooding): Linear issue = spec → builder agent → indepe
   https://linear.app/wenova/project/wshp-ai-dev-2026-3eae5243953d — milestones Day 1–5 → Delivery
   (07-14) → Post-workshop. Update issue status as you work; RUG results go into issue comments.
 
-## 3. State snapshot (2026-07-10 morning)
+## 3. State snapshot (2026-07-10 late)
 
 | Done ✅ | In flight / next 🔜 | Blocked ⛔ |
 |---|---|---|
-| WEN-113 skeleton · WEN-114 participant starter · WEN-117 workshops golden-path slice — each through a full RUG round (traces in the Linear issue comments + journals) | **WEN-116** plumbing validation (PR→preview+Neon branch+Playwright) — START THE MOMENT the block clears · WEN-141 auth(Neon Auth)+registrations+pricing+checkout · WEN-118 orchestrator/toolkit distillation (MUST implement standards-injection, see §4) · WEN-129 HU notebooks (sources: journals+big-picture) · WEN-122/123 legacy sample + Gamma decks · WEN-124 dry-run (PROTECT IT) | **Manual clicks in `reference-app/SETUP-STATUS.md`** (Vercel project + Neon integration + branch-per-preview + Neon Auth enable) — owner: Csaba. Gates WEN-116, the live URL, AND the 6 skipped Drizzle contract tests (`TEST_DATABASE_URL` leg — run once right after setup) |
+| WEN-113 skeleton · WEN-114 participant starter · WEN-117 workshops golden path · WEN-118 toolkit implementation (RUG workflow, canonical maker/reviewer/fixer standard, hooks, templates, checklists, validated skill) · WEN-129 P0 material pass (all 8 notebooks exist; 00 + 03 full, six participant-facing outlines) · WEN-141 local subset after independent RUG + bounce-back (pricing + PaymentPort/fake checkout + authoritative registration schedule + atomic status transitions + confirm/cancel UI) | **WEN-116** plumbing validation — start immediately after setup · finish WEN-118 fallback recording · editorial/browser QA and deepen the six outline notebooks · WEN-122/123 legacy sample + Gamma decks · WEN-124 dry-run (PROTECT IT) | **Manual clicks in `reference-app/SETUP-STATUS.md`**: Vercel project, Neon integration, branch-per-preview, DB/env, Neon Auth provisioning. Gates live preview, auth, and 11 skipped real-Drizzle contract tests. Post-bounce-back typecheck/lint + 59 local tests are green; post-fix build/e2e still needs a network-enabled rerun (main sandbox could not fetch Google Fonts). |
+
+### Parallel prep run evidence (2026-07-10)
+
+- **Materials:** 8/8 standalone notebook files; structural HTML shell + placeholder scan passed; public-content guard passed. `00-bevezeto.html` and `03-orchestrator-rug.html` are full teaching artifacts; `01/02/04/05/06/07` are meaningful outlines and still need editorial + visual browser QA.
+- **Toolkit:** independent audit PASS; `rug-review` skill validation PASS; hook syntax PASS; 3/3 hook regression tests PASS (safe/blocked guard, child failure propagation, timeout propagation); stop-check smoke PASS.
+- **Reference app:** independent review initially FAILed on a client-forgeable cancellation cutoff. Bounce-back made workshop start server-owned, added CAS transitions, generalized the PaymentPort contract, surfaced UI errors, added cancellation to e2e, aligned auth docs, and removed the hard-coded preview workshop ID. Delta re-review: **PASS local subset**, one accepted LOW residual risk (preview e2e leaves a cancelled row). Main rerun: typecheck PASS, lint PASS, 59 tests PASS / 11 DB-dependent skips. Builder ran build + Playwright 2/2 before the final bounce-back; rerun both after setup/network access.
+- **Linear trace:** WEN-118, WEN-129, and WEN-141 were moved to In Progress and received lane-start comments. The final evidence/status sync was rejected by the connector usage limit; add the detailed results above to WEN-116/118/129/141/124 at the start of the next session. Do not mark 118/129/141 Done yet: recording, notebook QA, and external preview/Auth evidence remain.
 
 ## 4. Operating contract (how we work — non-negotiable rules)
 
@@ -82,6 +89,8 @@ method we teach** (dogfooding): Linear issue = spec → builder agent → indepe
 
 1. `git pull` · read `materials/big-picture.md` + the latest `epitesi-naplo/day-*.md`.
 2. Check the Linear project board for current issue states.
-3. If the SETUP-STATUS block cleared: run WEN-116 immediately (it is the critical path and the workshop's
-   technical centerpiece), then the Drizzle contract-test leg, then continue per the milestone order.
-4. Take ownership of this file: update the snapshot + date, put your marker on it.
+3. Complete the manual checklist in `reference-app/SETUP-STATUS.md`, then run WEN-116 immediately: test PR → preview URL → isolated Neon DB branch → migrations/seed → Playwright against preview.
+4. Set `TEST_DATABASE_URL` to a disposable Neon branch and run `npm run test`; require **zero skips**. Then rerun `npm run build` and `npm run test:e2e` on the final bounce-back state.
+5. Finish WEN-118's fallback recording; visually QA all eight notebooks and deepen the six outlines only as live delivery needs.
+6. Protect WEN-124 on July 13. After the dry-run, accept only workshop-blocking fixes.
+7. Take ownership of this file: update the snapshot + date, put your marker on it.

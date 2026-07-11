@@ -1,0 +1,7 @@
+{
+  "checks": [
+    { "name": "public-content guard syntax", "command": "node", "args": ["--check", "guard-public-content.mjs"], "timeoutMs": 5000 },
+    { "name": "stop runner syntax", "command": "node", "args": ["--check", "run-stop-checks.mjs"], "timeoutMs": 5000 },
+    { "name": "hook regression tests", "command": "node", "args": ["--test", "hooks.test.mjs"], "timeoutMs": 15000 }
+  ]
+}

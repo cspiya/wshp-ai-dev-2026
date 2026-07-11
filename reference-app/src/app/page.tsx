@@ -32,7 +32,9 @@ export default function Home() {
           <p className="text-sm text-muted-foreground">
             Start with <code>AGENTS.md</code>, then copy the golden path in{" "}
             <code>src/modules/workshops/</code> to add a feature module. See it
-            live: <Link href="/workshops" className="underline">/workshops</Link>.
+            live: <Link href="/workshops" className="underline">/workshops</Link>
+            {" "}or run the cross-slice flow at{" "}
+            <Link href="/shop" className="underline">/shop</Link>.
           </p>
         </CardContent>
       </Card>
