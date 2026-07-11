@@ -22,20 +22,22 @@ Branch format:
 ai/<linear-id>-<short-slug>
 ```
 
-Recommended worktree root on this machine:
+Worktree root convention on this machine:
 
 ```text
-C:\tmp\wshp-ai-worktrees\
+C:\Zulu\git_wt\<repo-slug>\<linear-issue>\
 ```
+
+For this repository the repo slug is `wshp-ai-dev-2026`.
 
 Create worktrees from a clean, pushed `main` checkpoint:
 
 ```powershell
 git switch main
 git pull --ff-only
-New-Item -ItemType Directory -Force C:\tmp\wshp-ai-worktrees | Out-Null
-git worktree add C:\tmp\wshp-ai-worktrees\wen-129 -b ai/wen-129-notebook-qa main
-git worktree add C:\tmp\wshp-ai-worktrees\wen-116 -b ai/wen-116-preview-plumbing main
+New-Item -ItemType Directory -Force C:\Zulu\git_wt\wshp-ai-dev-2026 | Out-Null
+git worktree add C:\Zulu\git_wt\wshp-ai-dev-2026\wen-129 -b ai/wen-129-notebook-qa main
+git worktree add C:\Zulu\git_wt\wshp-ai-dev-2026\wen-116 -b ai/wen-116-preview-plumbing main
 git worktree list
 ```
 
@@ -54,7 +56,7 @@ When a session takes an issue:
 ## AI lane lease — ACTIVE
 
 - Lane: `materials` or `reference-app`
-- Worktree: `C:\tmp\wshp-ai-worktrees\<issue>`
+- Worktree: `C:\Zulu\git_wt\wshp-ai-dev-2026\<issue>`
 - Branch: `ai/<linear-id>-<short-slug>`
 - Session: `<short human-readable session marker>`
 - Scope: `<owned directories/files>`
@@ -97,7 +99,7 @@ Run the complete cross-repo validation after both merges. Remove finished worktr
 merged and pushed:
 
 ```powershell
-git worktree remove C:\tmp\wshp-ai-worktrees\wen-129
-git worktree remove C:\tmp\wshp-ai-worktrees\wen-116
+git worktree remove C:\Zulu\git_wt\wshp-ai-dev-2026\wen-129
+git worktree remove C:\Zulu\git_wt\wshp-ai-dev-2026\wen-116
 git worktree prune
 ```
