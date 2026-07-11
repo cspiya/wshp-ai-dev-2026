@@ -6,28 +6,31 @@ Check them off as you go.
 
 ## Vercel
 
-- [ ] **Create the Vercel project from the repo:** vercel.com → *Add New… →
-      Project* → import `cspiya/wshp-ai-dev-2026` → set **Root Directory** to
-      `reference-app` → Framework preset: Next.js → Deploy.
+- [x] **Create the Vercel project from the repo:** done 2026-07-11 — team
+      `wenova-projects`, project `wshp-ai-dev-2026`, Root Directory
+      `reference-app`, Next.js preset; first production deploy green.
 - [ ] **Verify preview deployments:** open a test PR and confirm a preview URL
-      appears on the PR.
+      appears on the PR. *(this PR is that test)*
 
 ## Neon
 
-- [ ] **Create a Neon project** (neon.com console) — region close to the Vercel
-      deployment region.
-- [ ] **Install the Neon integration on the Vercel project:** Vercel →
-      *Integrations → Neon* (or Neon console → *Integrations → Vercel*) →
-      connect it to this Vercel project.
+- [x] **Create a Neon project:** done 2026-07-11 — project `wshp-ai-dev-2026`,
+      region `eu-central-1` (Frankfurt).
+- [x] **Install the Neon integration on the Vercel project:** done 2026-07-11
+      (Previews Integration, linked Neon account).
 - [ ] **Enable "database branch per preview deployment"** in the integration
       settings — this is the workshop centerpiece (per-PR DB branches).
-- [ ] **Confirm env vars:** the integration should inject `DATABASE_URL` into
-      Production/Preview. If not, set it manually in Vercel → Project →
-      Settings → Environment Variables (value from Neon → Connect).
+      *(verified by this PR: the preview must get its own Neon branch)*
+- [x] **Confirm env vars:** `DATABASE_URL` + `DATABASE_URL_UNPOOLED` injected
+      into Development/Production 2026-07-11; preview values are injected
+      per-deployment by the integration.
+- [x] **Schema + seed on the production branch:** `npm run db:push` +
+      `npm run db:seed` ran 2026-07-11 (3 invented sample workshops).
 
 ## Local
 
-- [ ] **`.env`:** copy `.env.example` → `.env`, paste the Neon `DATABASE_URL`.
+- [x] **`.env`:** pulled via `npx vercel env pull .env --environment=production`
+      (project linked with `npx vercel link`), 2026-07-11.
 - [ ] **`.mcp.json`:** copy `.mcp.json.example` → `.mcp.json`, then run the
       OAuth flow for each server on first use (`/mcp` in Claude Code).
 
