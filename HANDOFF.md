@@ -67,6 +67,12 @@ method we teach** (dogfooding): Linear issue = spec → builder agent → indepe
 ### Parallel execution contract
 
 - Follow `PARALLEL-WORK.md`: one Linear issue = one branch = one worktree lease.
+- **Root init landed (WEN-161):** root `AGENTS.md` + `CLAUDE.md` + squad-parity status line
+  (`.claude/`). The spec-first + Linear-execution-gate rule is codified in root `AGENTS.md` §1–2
+  and applies to material work too. Material-plane canonical checklist: WEN-162 →
+  `toolkit/standards/material-standards.md`.
+- **WEN-116** is claimed by the reference-app lane session; local evidence green on `1333d4f`
+  (typecheck/lint/59 tests/build/e2e 2/2) — external Vercel/Neon plumbing still pending.
 - Stable Linear labels are `AI lane / materials` and `AI lane / reference-app`; session identity and
   worktree path live in an ACTIVE/PAUSED/RELEASED issue comment.
 - `HANDOFF.md`, root files, and `.github/**` remain coordinator-owned during parallel work.
