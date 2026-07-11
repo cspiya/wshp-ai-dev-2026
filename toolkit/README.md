@@ -1,6 +1,16 @@
-# Take-home toolkit
+# Take-home toolkit — az agent-ready fejlesztési rendszer alkatrészei
 
-Ez a résztvevőkkel megosztható minimum toolkit a spec → build → independent review → verified fix munkamódhoz. Az AI-instrukciók és a futtatható elemek angolul vannak, hogy közvetlenül használhatók legyenek coding agentekkel.
+Ez a workshop **elsődleges hazavihető termékének** hordozható alkatrészkészlete: az üres repóból
+felépíthető agent-ready működés a spec → build → independent review → verified fix teljes útjához.
+Az alkalmazás nem helyettesíti ezt a rendszert; real-life workloadként validálja. A checkpoint-térkép:
+[`materials/agent-ready-repo.md`](../materials/agent-ready-repo.md).
+
+A toolkit szándékosan runtime- és modellfüggetlen mag. A spec, standard, RUG-szerepek, finding-formátum és
+gate-parancsok maradnak stabilak; csak a subagent-indítás, hook-esemény és modellkonfiguráció kap
+termék-specifikus adaptert. Így egy szolgáltatáskiesés, költségváltozás vagy jobb modell megjelenése nem
+írja újra a fejlesztési módszert.
+
+Az AI-instrukciók és a futtatható elemek angolul vannak, hogy közvetlenül használhatók legyenek coding agentekkel.
 
 ## 10 perces quickstart
 

@@ -1,5 +1,10 @@
 # Reference App — the golden path
 
+> This application is a **realistic validation workload** for the workshop's agent-ready development
+> system. It is deliberately representative rather than product-complete: business rules, multiple
+> slices, persistence, a varying external port, failure paths, review findings, and e2e deployment
+> evidence test whether the operating model can actually deliver software.
+
 Greenfield reference project of the **Wenova AI-Assisted Development Workshop**:
 **Next.js (App Router) + shadcn/ui + Tailwind + Drizzle + Neon + tRPC + Zod +
 TanStack Query** on **Vercel**, structured as a **modular monolith of vertical

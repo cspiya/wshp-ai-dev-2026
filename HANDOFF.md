@@ -8,7 +8,7 @@
 > **This repo is PUBLIC.** Keep this file hygiene-clean: no client names, no pricing/offer details,
 > no invite links, no personal data. Those live on the internal Drive (below).
 
-*Last updated: 2026-07-10 late · owner of next session: (take it over, put your marker here)*
+*Last updated: 2026-07-11 · owner of next session: parallel-worktree coordinator*
 
 ---
 
@@ -43,7 +43,7 @@ method we teach** (dogfooding): Linear issue = spec → builder agent → indepe
 
 | Done ✅ | In flight / next 🔜 | Blocked ⛔ |
 |---|---|---|
-| WEN-113 skeleton · WEN-114 participant starter · WEN-117 workshops golden path · WEN-118 toolkit implementation (RUG workflow, canonical maker/reviewer/fixer standard, hooks, templates, checklists, validated skill) · WEN-129 P0 material pass (all 8 notebooks exist; 00 + 03 full, six participant-facing outlines) · WEN-141 local subset after independent RUG + bounce-back (pricing + PaymentPort/fake checkout + authoritative registration schedule + atomic status transitions + confirm/cancel UI) | **WEN-116** plumbing validation — start immediately after setup · finish WEN-118 fallback recording · editorial/browser QA and deepen the six outline notebooks · WEN-122/123 legacy sample + Gamma decks · WEN-124 dry-run (PROTECT IT) | **Manual clicks in `reference-app/SETUP-STATUS.md`**: Vercel project, Neon integration, branch-per-preview, DB/env, Neon Auth provisioning. Gates live preview, auth, and 11 skipped real-Drizzle contract tests. Post-bounce-back typecheck/lint + 59 local tests are green; post-fix build/e2e still needs a network-enabled rerun (main sandbox could not fetch Google Fonts). |
+| WEN-113 skeleton · WEN-114 participant starter · WEN-117 workshops golden path · WEN-118 toolkit implementation (RUG workflow, canonical maker/reviewer/fixer standard, hooks, templates, checklists, validated skill) · WEN-129 P0 material pass (all 8 notebooks exist; 00 + 03 full, six participant-facing outlines) · WEN-141 local subset after independent RUG + bounce-back (pricing + PaymentPort/fake checkout + authoritative registration schedule + atomic status transitions + confirm/cancel UI) · full local checkpoint on 2026-07-11: both builds green, 59 reference tests + 1 starter test green, Playwright 2/2 green, toolkit/HTML/link/public guards green | **WEN-116** plumbing validation — start immediately after setup · finish WEN-118 fallback recording · editorial/browser QA and deepen the six outline notebooks · WEN-122/123 legacy sample + Gamma decks · WEN-124 dry-run (PROTECT IT) | **Manual clicks in `reference-app/SETUP-STATUS.md`**: Vercel project, Neon integration, branch-per-preview, DB/env, Neon Auth provisioning. Gates live preview, auth, and 11 skipped real-Drizzle contract tests. |
 
 ### Parallel prep run evidence (2026-07-10)
 
@@ -51,6 +51,26 @@ method we teach** (dogfooding): Linear issue = spec → builder agent → indepe
 - **Toolkit:** independent audit PASS; `rug-review` skill validation PASS; hook syntax PASS; 3/3 hook regression tests PASS (safe/blocked guard, child failure propagation, timeout propagation); stop-check smoke PASS.
 - **Reference app:** independent review initially FAILed on a client-forgeable cancellation cutoff. Bounce-back made workshop start server-owned, added CAS transitions, generalized the PaymentPort contract, surfaced UI errors, added cancellation to e2e, aligned auth docs, and removed the hard-coded preview workshop ID. Delta re-review: **PASS local subset**, one accepted LOW residual risk (preview e2e leaves a cancelled row). Main rerun: typecheck PASS, lint PASS, 59 tests PASS / 11 DB-dependent skips. Builder ran build + Playwright 2/2 before the final bounce-back; rerun both after setup/network access.
 - **Linear trace:** WEN-118, WEN-129, and WEN-141 were moved to In Progress and received lane-start comments. The final evidence/status sync was rejected by the connector usage limit; add the detailed results above to WEN-116/118/129/141/124 at the start of the next session. Do not mark 118/129/141 Done yet: recording, notebook QA, and external preview/Auth evidence remain.
+
+### Drive-side and editorial follow-ups merged from archived handoffs
+
+- Before the dry-run, sync the internal Drive syllabus with the repo: per-block takeaways, B0's “AI as a
+  junior developer” framing, and the Vercel/Neon Plan B.
+- **Open human decision:** keep the current agenda grid or adopt the review's shorter legacy block and
+  longer closing/personal-adoption segment. Do not silently change the run-of-show.
+- Check/chase WEN-128 in its separate site repository; WEN-127 remains a post-workshop follow-up.
+- GitHub Pages is enabled at `https://cspiya.github.io/wshp-ai-dev-2026/`; include rendered notebook URLs
+  in the visual QA, not only local files.
+- The material-review checklist is now canonical in `materials/notebooks/README.md` and must be injected
+  into future material-reviewer prompts.
+
+### Parallel execution contract
+
+- Follow `PARALLEL-WORK.md`: one Linear issue = one branch = one worktree lease.
+- Stable Linear labels are `AI lane / materials` and `AI lane / reference-app`; session identity and
+  worktree path live in an ACTIVE/PAUSED/RELEASED issue comment.
+- `HANDOFF.md`, root files, and `.github/**` remain coordinator-owned during parallel work.
+- The two source handoffs were processed and archived under `archive/handoffs/`; only this file is active.
 
 ## 4. Operating contract (how we work — non-negotiable rules)
 
@@ -87,7 +107,7 @@ method we teach** (dogfooding): Linear issue = spec → builder agent → indepe
 
 ## 6. First actions for the taker
 
-1. `git pull` · read `materials/big-picture.md` + the latest `epitesi-naplo/day-*.md`.
+1. `git pull` · read `materials/big-picture.md`, `PARALLEL-WORK.md`, and the latest `epitesi-naplo/day-*.md`.
 2. Check the Linear project board for current issue states.
 3. Complete the manual checklist in `reference-app/SETUP-STATUS.md`, then run WEN-116 immediately: test PR → preview URL → isolated Neon DB branch → migrations/seed → Playwright against preview.
 4. Set `TEST_DATABASE_URL` to a disposable Neon branch and run `npm run test`; require **zero skips**. Then rerun `npm run build` and `npm run test:e2e` on the final bounce-back state.

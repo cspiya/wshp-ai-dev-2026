@@ -4,39 +4,46 @@ Materials and reference project for the **Wenova AI-Assisted Development Worksho
 Budapest; repo slug: `wshp-ai-dev-2026`). One day, hands-on: professional AI-assisted (agentic)
 development with **Claude Code CLI** on a modern stack — **Linear + GitHub + Vercel + Neon + Next.js/React**.
 
+> **Primary outcome:** build an agent-ready development system from an empty greenfield repository,
+> then validate it by delivering a realistic application slice end to end. The app is the operating
+> model's integration test; the reusable development framework is the product participants take home.
+> Models and agent tools are replaceable executors: repository contracts, deterministic gates, independent
+> review and evidence keep the quality bar stable across outages, cost changes and rapid model upgrades.
+
 ## What's in this repo
 
 ```
 wshp-ai-dev-2026/
 ├── materials/            ← participant materials: setup guide, agenda, glossary, notebooks (checklists land during prep week)
 ├── toolkit/              ← take-home toolkit: AGENTS.md starter, hooks, skills, orchestrator, spec templates
-├── participant-starter/  ← minimal Next.js + Tailwind + shadcn starter — participants build their own site from this
-└── reference-app/        ← the greenfield reference project (modular vertical-slice architecture)
+├── participant-starter/  ← minimal technical substrate — participants make the repo agent-ready first
+└── reference-app/        ← realistic validation workload for the operating model
 ```
 
 - **`materials/`** — everything a participant needs before and during the day.
 - **`toolkit/`** — the reusable kit you take home and drop into your own projects.
-- **`participant-starter/`** — the hands-on starting point: clone/copy it into your own repo
-  and build your website idea from it during the day (Hungarian README inside).
-- **`reference-app/`** — the "golden path" reference implementation the workshop builds on:
+- **`participant-starter/`** — the hands-on technical substrate: clone/copy it, then add the rules,
+  standards, specs, gates and RUG workflow that make the repository agent-ready.
+- **`reference-app/`** — the realistic validation workload and "golden path" reference implementation:
   a Next.js (App Router) + shadcn/ui + Drizzle + tRPC/Zod app on Vercel + Neon, structured as a
   modular monolith of vertical slices ("one bounded context = one subagent's working set").
 
 ## The day in one paragraph
 
-Short theory intro (agentic development fundamentals), then hands-on: everyone scaffolds **their own
-project in their own GitHub repo** and builds a small website from zero using spec-driven development
-with human validation gates, an orchestrator with a Repeat-Until-Good review loop, enforced rules
-(AGENTS.md + hooks), QA in every phase with e2e tests on real per-PR previews — plus a dedicated block
+Short theory intro, then hands-on: everyone turns an **operationally empty repository** into an
+agent-ready development system with explicit rules, canonical standards, spec gates, a Repeat-Until-Good
+review loop and deterministic validation. A realistic application slice then tests whether that system
+can actually deliver software through a real preview and e2e path — plus a dedicated block
 on applying all of this to **legacy .NET / MS-SQL / Azure DevOps** estates, and a team operating model
 with a 30/60/90 adoption plan.
 
 ## Start here (participants) / Kezdd itt (résztvevők)
 
-1. [`materials/setup-guide.md`](materials/setup-guide.md) — fiókok + telepítés (~30–40 perc, minden ingyenes).
-2. Hozz egy **weboldal-ötletet** — a nap során nulláról építed fel.
-3. Napirend: [`materials/agenda.md`](materials/agenda.md) · Szakszavak: [`materials/fogalomtar.md`](materials/fogalomtar.md).
-4. Tananyag-notebookok modulonként: [`materials/notebooks/`](materials/notebooks/).
+1. [`materials/agent-ready-repo.md`](materials/agent-ready-repo.md) — mit építünk, és milyen checkpointokon jutunk el az üres repótól a bizonyított operating modelig.
+2. [`materials/setup-guide.md`](materials/setup-guide.md) — fiókok + telepítés (~30–40 perc, minden ingyenes).
+3. Hozz egy **egyszerű alkalmazásötletet és üzleti szabályt** — ez lesz a saját fejlesztési rendszered validációs workloadja.
+4. Napirend: [`materials/agenda.md`](materials/agenda.md) · Szakszavak: [`materials/fogalomtar.md`](materials/fogalomtar.md).
+5. Tananyag-notebookok modulonként: [`materials/notebooks/`](materials/notebooks/).
 
 ## Scope & tracking
 

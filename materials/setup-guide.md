@@ -57,7 +57,9 @@ bekötése a tréner által kijelölt rövid időkeretben nem áll össze:
 2. a preview deployt és a PR-hez tartozó adatbázis-branchet a tréner közös demó-környezetben mutatja meg;
 3. a saját integrációdat a workshop után, a működő kód birtokában fejezd be.
 
-Ez nem csökkenti a gyakorlat értékét: a cél a spec → build → verifikáció → review folyamat megtanulása.
+Ez lehetővé teszi a lokális működési rétegek validálását, de a keretrendszer külső integrációs
+bizonyítéka addig **nem teljes**. A tréner demója mutatja meg a preview + izolált DB ágat, a saját
+evidence-csomagban pedig őszintén jelöld a hiányzó ellenőrzést.
 Az éles/preview környezetben in-memory kapcsolót nem használunk; azt kemény guard védi.
 
 ## 5. Publikus repó hygiene — feltöltés előtt
@@ -70,9 +72,10 @@ Az éles/preview környezetben in-memory kapcsolót nem használunk; azt kemény
 ## 6. Mit hozz magaddal
 
 - **Laptop + töltő**
-- **Egy weboldal-ötletet!** A nap során mindenki a saját ötletéből, **nulláról** épít fel egy kis weboldalt
-  a legmodernebb AI-asszisztált módszerekkel — a nap végére élő, publikus URL-en fut. Lehet hobbiprojekt,
-  belső tool, termékötlet — bármi, ami érdekel.
+- **Egy egyszerű alkalmazásötletet és legalább egy valódi üzleti szabályt!** Nem maga az app a workshop
+  elsődleges terméke: ez lesz az általad felépített agent-ready fejlesztési rendszer real-life
+  validációs workloadja. Legyen elég kicsi egy naphoz, de tartalmazzon megfigyelhető happy pathot és
+  legalább egy hiba- vagy állapotágat.
 - Üzleti elemzőknek: gondolj végig előre 1–2 **üzleti szabályt / elfogadási kritériumot** az ötletedhez —
   ezekkel dolgozunk a specifikációs blokkban.
 

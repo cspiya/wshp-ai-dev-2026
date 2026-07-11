@@ -6,6 +6,22 @@
 > mi a célállapot, és miért pont ezen az úton megyünk. Minden további anyag (notebookok, építési napló,
 > fogalomtár) ehhez a képhez igazodik. Szakszavak: [fogalomtár](fogalomtar.md).
 
+## A workshop központi tézise
+
+> **Nem egy webalkalmazást építünk AI-val. Felépítünk egy megbízható AI-assisted fejlesztési
+> rendszert, majd egy real-life jellegű alkalmazás fejlesztésével bizonyítjuk, hogy működik.**
+
+A nap **elsődleges terméke** az agent-ready repo: szabályokkal, kanonikus standarddal, spec-kapuval,
+RUG-folyamattal, mechanikus gate-ekkel és visszakereshető bizonyítékokkal. Az alkalmazás a rendszer
+**validációs workloadja**: reprezentatív üzleti, architekturális és infrastruktúra-terhelés, amelyen
+kiderül, hogy a működési modell valóban alkalmas-e szoftverfejlesztésre. A teljes checkpoint-sor:
+[Az agent-ready repo](agent-ready-repo.md).
+
+**A modell nem a módszer.** A tartós minőséget a repóban élő szerződések és visszacsatolási körök adják;
+a modell, provider és coding agent cserélhető végrehajtó. Kiesés, korlátozás, technikai hiba, magas költség
+vagy egy jobb modell megjelenése nem kényszerítheti ki a teljes fejlesztési működés újratervezését. A váltást
+reprezentatív evalon, változatlan acceptance criteria és evidence-léc mellett validáljuk.
+
 ---
 
 ## 1. Honnan indulunk — az alapprobléma
@@ -30,8 +46,11 @@ a saját (részben legacy) világunkba?**
 ## 2. Hová akarunk eljutni — a célállapot
 
 **A nap végén (személyes szint):**
-- Mindenkinek van egy **saját, nulláról felépített, élő weboldala** a saját GitHub-repójában — nem azért,
-  mert a weboldal a cél, hanem mert ez a **bizonyíték**, hogy a módszer működik a kezük alatt.
+- Mindenkinek van egy **saját agent-ready fejlesztési rendszere** a saját GitHub-repójában: repo-szabály,
+  kanonikus standard, spec/plan/tasks, humán kapu, RUG, mechanikus ellenőrzések és run log.
+- Van egy **real-life jellegű, élő alkalmazási út**, amely nem puszta sikerélmény, hanem a fejlesztési
+  rendszer end-to-end acceptance tesztje: bizonyítja, hogy üzleti szabállyal, adattal, hibával és
+  deploymenttel is lehet vele dolgozni.
 - Mindenki **végigcsinálta** (nem csak látta) a teljes kört: spec → terv → implementáció → verifikáció,
   emberi kapukkal; futtatott RUG-review-t; írt szabályt és hookot; látta, hogyan fogja meg a független
   bíráló azt, amit a zöld pipeline átengedett.
@@ -49,8 +68,10 @@ a saját (részben legacy) világunkba?**
 | Szakasz | Miért itt van? |
 |---|---|
 | **Elméleti bevezető** (rövid!) | Közös fogalmi alap kell (agent, kontextus, spec-driven, RUG) — de csak annyi, hogy a gyakorlat érthető legyen. A tudás a csinálásból jön. |
-| **Greenfield először** | Zöldmezőn a legjobb gyakorlat **tisztán** tanítható — nincs legacy-teher, minden döntés friss. Aki a tiszta mintát ismeri, az tudja majd adaptálni a nehezebb terepre; fordítva nem megy. |
-| **Saját projekt (golden thread)** | A tudás akkor tapad, ha a sajátodon csinálod. A tréner referencia-appja a **másolható minta**; a résztvevő saját oldala a **gyakorlóterep**. |
+| **Üres repo → agent-ready repo** | Előbb a fejlesztési működést építjük fel: mission, határok, standard, valódi gate-ek. A technikai starter csak hordozó, nem kész keretrendszer. |
+| **Spec + RUG + mechanikus garanciák** | Minden következő blokk ugyanahhoz a repohoz ad egy új képességet. A résztvevő nem különálló toolokat lát, hanem fokozatosan felépít egy működési rendszert. |
+| **Saját projekt mint validation workload** | A tudás akkor bizonyított, ha a rendszer reprezentatív fejlesztési terhelést is elbír. A referencia-app a másolható golden path; a saját alkalmazás a keretrendszer valós rendszerpróbája. |
+| **Modell- és eszközcsere próba** | A működés akkor hordozható, ha ugyanazt a feladatot másik modellel vagy agent harnessszel is végig tudjuk vinni a spec, DoD és gate-ek újraírása nélkül. A váltás eredményét minőség, költség, latencia és review-terhelés alapján mérjük. |
 | **Legacy blokk ezután** | Most már van viszonyítási alap: „így néz ki jól" → „így visszük be egy meglévő enterprise rendszerbe". A TFS/Azure DevOps demó kézzelfogható, de nem kell hozzá résztvevői környezet. |
 | **Csapat + bevezetés a végén** | Az egyéni élményből itt lesz szervezeti terv — amikor már mindenki átélte, mit érdemes bevezetni. |
 
@@ -74,9 +95,10 @@ wshp-ai-dev-2026/
   érintése nélkül** — ez maga a ports-and-adapters lecke. Az architektúra (vertical slice + kikényszerített
   boundary-k) maga a tananyag: **a jó architektúra az AI-minőség első számú karja** („egy modul = egy
   agent munkaterülete" → kevesebb token, kisebb hibaterjedés, párhuzamosítható agent-munka).
-- **`participant-starter`** — szándékosan butított kiinduló: 15 perc alatt zöld build + élő preview, hogy
-  az első élmény a *siker* legyen, ne a konfiguráció.
-- **`toolkit`** — a workshop után ez a maradandó érték: bármely projektbe bedobható.
+- **`participant-starter`** — szándékosan minimális technikai hordozó. Nem agent-ready késztermék: a
+  résztvevő a workshopon építi köré a működési rendszert, majd az alkalmazással validálja azt.
+- **`toolkit`** — a workshop elsődleges, maradandó termékének hordozható alkatrészkészlete: bármely
+  projektben az agent-ready operating model kiindulópontja.
 - **`materials`** — a tudás írott formája, magyarul, minden döntésnél a „miérttel".
 
 ## 5. Hogyan készül maga az anyag? (dogfooding — a folyamat a termék)
@@ -87,6 +109,11 @@ wshp-ai-dev-2026/
 **Repeat-Until-Good** élesben. Az építés közben történteket az [építési napló](epitesi-naplo/) rögzíti —
 a hibáinkkal együtt, mert **a megfogott hibák a legjobb tananyag** (lásd: Day 1, amikor a zöld CI után a
 review 10 valódi hibát talált).
+
+Ez egyben a modellfüggetlenség élő próbája is. A részfeladatok átadhatók különböző agenteknek, a sessionök
+handoff-fájlokkal folytathatók, és a végrehajtó lecserélhető, miközben a közös spec, standard, review-protokoll
+és mechanikus ellenőrzés változatlan marad. A tananyag minőségét a keretrendszer fogja össze, nem egyetlen
+modell emlékezete vagy stílusa.
 
 ## 6. Térkép a többi dokumentumhoz
 

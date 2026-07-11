@@ -1,7 +1,9 @@
 <!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Next.js: always read the version-matched docs before coding
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+Before any Next.js work, find and read the relevant documentation in
+`node_modules/next/dist/docs/`. The installed documentation is the source of
+truth for this project's Next.js version.
 <!-- END:nextjs-agent-rules -->
 
 # Reference App — agent rules
