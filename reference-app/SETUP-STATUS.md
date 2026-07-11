@@ -9,8 +9,13 @@ Check them off as you go.
 - [x] **Create the Vercel project from the repo:** done 2026-07-11 — team
       `wenova-projects`, project `wshp-ai-dev-2026`, Root Directory
       `reference-app`, Next.js preset; first production deploy green.
-- [ ] **Verify preview deployments:** open a test PR and confirm a preview URL
-      appears on the PR. *(this PR is that test)*
+- [x] **Verify preview deployments:** verified 2026-07-11 — PR #1 produced a
+      preview URL; Playwright happy path 2/2 green against it.
+- [x] **Deployment Protection decision:** Vercel Authentication DISABLED for
+      this project (2026-07-11) — previews must be publicly reachable for
+      participants and Playwright; the repo is public and all data is
+      invented. Enterprise alternative (kept for the legacy block): a
+      Protection Bypass for Automation token in CI.
 
 ## Neon
 
@@ -18,9 +23,10 @@ Check them off as you go.
       region `eu-central-1` (Frankfurt).
 - [x] **Install the Neon integration on the Vercel project:** done 2026-07-11
       (Previews Integration, linked Neon account).
-- [ ] **Enable "database branch per preview deployment"** in the integration
-      settings — this is the workshop centerpiece (per-PR DB branches).
-      *(verified by this PR: the preview must get its own Neon branch)*
+- [x] **"Database branch per preview deployment" works:** verified 2026-07-11 —
+      PR #1's preview got its own `preview/ai/wen-116-preview-plumbing` Neon
+      branch, and the full test suite ran against it with zero skips (70/70,
+      Drizzle contract tests included).
 - [x] **Confirm env vars:** `DATABASE_URL` + `DATABASE_URL_UNPOOLED` injected
       into Development/Production 2026-07-11; preview values are injected
       per-deployment by the integration.

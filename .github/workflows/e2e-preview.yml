@@ -1,0 +1,39 @@
+# WEN-116: run the Playwright happy path against every Vercel preview.
+# Vercel reports each deployment through the GitHub Deployments API; this
+# workflow reacts to the success status and targets the preview URL, so the
+# e2e suite exercises the real preview + its isolated Neon DB branch.
+name: E2E on preview
+
+on:
+  deployment_status:
+
+concurrency:
+  group: e2e-preview-${{ github.event.deployment.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment_status.environment == 'Preview'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: reference-app
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: reference-app/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --grep @happy-path
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.environment_url }}
