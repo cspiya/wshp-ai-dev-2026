@@ -1,3 +1,8 @@
+> **OBSOLETE — retired 2026-07-11 (WEN-171).** The handoff-file era is over: work state
+> lives in Linear (execution gate + ACTIVE/PAUSED/RELEASED lease comments per
+> `PARALLEL-WORK.md`), operating rules live in the root `AGENTS.md`, and the §5 gotchas
+> moved to `reference-app/AGENTS.md`. Kept for history only — do not work from this file.
+
 # HANDOFF — session continuation point
 
 > **Lifecycle rule:** there is always exactly ONE handoff file, here at the repo root. Whoever picks up
