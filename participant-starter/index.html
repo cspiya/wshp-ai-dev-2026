@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+  <title>Résztvevői starter</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; --ink:#172033; --muted:#526078; --line:#cfd7e6; --brand:#2949c7; --soft:#eef2ff; --ok:#e9f8f1; --later:#fff4e8; }
+    * { box-sizing: border-box; }
+    body { margin:0; color:var(--ink); background:#f6f8fc; line-height:1.6; }
+    main { width:min(1080px, calc(100% - 2rem)); margin:auto; padding:2rem 0 5rem; }
+    h1 { margin:.2rem 0; font-size:clamp(2.1rem, 6vw, 4rem); line-height:1.05; }
+    h2 { margin-top:0; }
+    a { color:#183083; text-underline-offset:.18em; }
+    a:focus-visible, summary:focus-visible { outline:3px solid #e86f2d; outline-offset:3px; }
+    .eyebrow { color:var(--brand); font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .lead { max-width:72ch; font-size:1.15rem; }
+    .takeaway { border-left:4px solid var(--brand); padding:.7rem 1rem; background:var(--soft); font-weight:700; }
+    .grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1rem; margin:1rem 0; }
+    .card, figure, .steps { min-width:0; padding:1.2rem; border:1px solid var(--line); border-radius:1rem; background:#fff; box-shadow:0 8px 24px rgba(30,43,77,.05); }
+    .ready { background:var(--ok); }
+    .later { background:var(--later); }
+    figure { margin:1.5rem 0; overflow-wrap:anywhere; }
+    figure svg { display:block; width:100%; height:auto; }
+    figcaption { margin-top:.8rem; color:var(--muted); }
+    .text-equivalent { margin-top:.8rem; border-top:1px solid var(--line); padding-top:.6rem; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:.55rem; border:1px solid var(--line); text-align:left; vertical-align:top; overflow-wrap:anywhere; }
+    code { overflow-wrap:anywhere; }
+    pre { margin:.7rem 0; padding:1rem; overflow:auto; border-radius:.7rem; background:#111a31; color:#fff; }
+    .steps > ol { padding-left:1.3rem; }
+    .steps li { margin:.7rem 0; }
+    .download-list { display:grid; gap:.6rem; padding-left:1.2rem; }
+    .label { display:inline-block; margin-left:.35rem; padding:.08rem .45rem; border-radius:999px; background:var(--soft); font-size:.78rem; font-weight:800; }
+    @media (max-width:700px) {
+      .grid { grid-template-columns:1fr; }
+      main { width:min(100% - 1rem, 1080px); }
+      figure { padding:.75rem; }
+      figure svg { display:none; }
+      .text-equivalent { border-top:0; padding-top:0; }
+      .text-equivalent > summary { font-weight:800; }
+      .text-equivalent[open] table { display:table; }
+    }
+    @media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior:auto !important; animation:none !important; transition:none !important; } }
+    @media print {
+      body { background:#fff; }
+      main { width:100%; padding:0; }
+      .card, figure, .steps { box-shadow:none; break-inside:avoid-page; }
+      a { color:#000; text-decoration:none; }
+      details { display:block; }
+      details > * { display:block; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Biztonságos kiindulópont</p>
+    <h1>Résztvevői starter</h1>
+    <p class="lead">Egy szándékosan kicsi Next.js projektet kapsz. Az alkalmazás elindul és vannak ellenőrzési parancsai, de a csapatod működési szabályait, specifikációját és későbbi szolgáltatásait még neked kell hozzáadnod.</p>
+    <p class="takeaway"><strong>Lényeg:</strong> a starter technikai alap, nem kész fejlesztési rendszer és nem kész termék.</p>
+  </header>
+
+  <figure id="fig-starter-boundary">
+    <h2>Mi van készen, és hol dolgozhatsz?</h2>
+    <svg viewBox="0 0 940 330" role="img" aria-labelledby="starter-boundary-title starter-boundary-desc">
+      <title id="starter-boundary-title">A workshop forrása, a saját repo és a későbbi szolgáltatások határa</title>
+      <desc id="starter-boundary-desc">Balra a workshop forrásrepo csak olvasásra, középen a résztvevő saját repója írható munkatérként, jobbra pedig az adatbázis és a preview mint később csatlakozó szolgáltatások. Nyilak mutatják, hogy a startert a saját repóba másoljuk, a szolgáltatásokat pedig csak később kötjük hozzá.</desc>
+      <defs><marker id="starter-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#526078"/></marker></defs>
+      <rect x="20" y="55" width="250" height="190" rx="18" fill="#eef2ff" stroke="#2949c7" stroke-width="2"/>
+      <text x="145" y="90" text-anchor="middle" font-size="18" font-weight="700">Workshop forrásrepo</text>
+      <text x="145" y="125" text-anchor="middle" font-size="15">tananyag és starter</text>
+      <text x="145" y="155" text-anchor="middle" font-size="15">csak olvasd / másold</text>
+      <text x="145" y="205" text-anchor="middle" font-size="14" fill="#526078">ne itt végezd a gyakorlatot</text>
+      <rect x="345" y="30" width="250" height="240" rx="18" fill="#e9f8f1" stroke="#176346" stroke-width="3"/>
+      <text x="470" y="70" text-anchor="middle" font-size="18" font-weight="700">Saját résztvevői repo</text>
+      <text x="470" y="108" text-anchor="middle" font-size="15">írható munkatér</text>
+      <text x="470" y="140" text-anchor="middle" font-size="15">szabályok + specifikáció</text>
+      <text x="470" y="172" text-anchor="middle" font-size="15">kód + ellenőrzési eredmények</text>
+      <text x="470" y="224" text-anchor="middle" font-size="14" font-weight="700" fill="#176346">ITT DOLGOZOL</text>
+      <rect x="670" y="55" width="250" height="190" rx="18" fill="#fff4e8" stroke="#a75a16" stroke-width="2"/>
+      <text x="795" y="90" text-anchor="middle" font-size="18" font-weight="700">Későbbi szolgáltatások</text>
+      <text x="795" y="125" text-anchor="middle" font-size="15">preview és CI</text>
+      <text x="795" y="155" text-anchor="middle" font-size="15">API és adatbázis</text>
+      <text x="795" y="205" text-anchor="middle" font-size="14" fill="#526078">csak a megfelelő modulban</text>
+      <line x1="270" y1="150" x2="335" y2="150" stroke="#526078" stroke-width="3" marker-end="url(#starter-arrow)"/>
+      <line x1="595" y1="150" x2="660" y2="150" stroke="#526078" stroke-width="3" marker-end="url(#starter-arrow)"/>
+      <text x="302" y="135" text-anchor="middle" font-size="13">másolat</text>
+      <text x="627" y="135" text-anchor="middle" font-size="13">később</text>
+    </svg>
+    <figcaption>A határtérkép megmutatja, mit szabad módosítanod. <strong>Röviden:</strong> a workshop repójából indulj, de minden gyakorlatot a saját repódban végezz.</figcaption>
+    <details class="text-equivalent" id="fig-starter-boundary-text">
+      <summary>Az ábra teljes szöveges megfelelője</summary>
+      <table><thead><tr><th>Terület</th><th>Szerep</th><th>Mit tehetsz?</th></tr></thead><tbody>
+        <tr><td>Workshop forrásrepo</td><td>Tananyag és másolható starter</td><td>Olvasd és másold; ne itt végezd a gyakorlatot.</td></tr>
+        <tr><td>Saját résztvevői repo</td><td>Írható munkatér</td><td>Itt alakítsd ki a szabályokat, specifikációt, kódot és ellenőrzési eredményeket.</td></tr>
+        <tr><td>Későbbi szolgáltatások</td><td>CI, preview, API és adatbázis</td><td>Csak annál a modulnál kösd be őket, ahol már ellenőrizni is tudod a kapcsolatot.</td></tr>
+      </tbody></table>
+    </details>
+  </figure>
+
+  <section class="grid" aria-label="A starter tartalma és szándékos hiányai">
+    <article class="card ready">
+      <h2>Ami már készen áll</h2>
+      <ul>
+        <li>Next.js App Router, TypeScript és Tailwind alap.</li>
+        <li>Egy kicsi, futtatható példaoldal és mintateszt.</li>
+        <li><code>typecheck</code>, <code>lint</code>, <code>test</code> és <code>build</code> parancs.</li>
+        <li>Kiinduló repo- és dizájnszabályok, amelyeket a saját projektedhez igazítasz.</li>
+      </ul>
+    </article>
+    <article class="card later">
+      <h2>Ami szándékosan nincs benne</h2>
+      <ul>
+        <li>Nincs kész üzleti feature vagy előre eldöntött specifikáció.</li>
+        <li>Nincs adatbázis, API-kapcsolat vagy valódi környezeti titok.</li>
+        <li>Nincs helyetted elfogadott <a data-route="/materials/fogalomtar/#repository-rules">repo-szabályrendszer</a>.</li>
+        <li>Nincs automatikus bizonyíték arra, hogy a csapatod munkamódja működik.</li>
+      </ul>
+    </article>
+  </section>
+
+  <figure id="fig-starter-mely-retegek-adottak-es-mit">
+    <h2>Mely rétegek adottak, és mit építesz te?</h2>
+    <svg viewBox="0 0 940 360" role="img" aria-labelledby="starter-layers-title starter-layers-desc">
+      <title id="starter-layers-title">A starter egymásra épülő rétegei</title>
+      <desc id="starter-layers-desc">Négy egymás fölötti réteg: technikai alap, repo működési szabályai, specifikált változtatás és külső szolgáltatások. Az alsó technikai alap adott; a két középső réteget a résztvevő építi; a felső szolgáltatások később kapcsolódnak.</desc>
+      <rect x="120" y="270" width="700" height="64" rx="12" fill="#e9f8f1" stroke="#176346" stroke-width="2"/><text x="470" y="307" text-anchor="middle" font-size="18" font-weight="700">1. Adott: futtatható technikai alap és ellenőrzési parancsok</text>
+      <rect x="165" y="190" width="610" height="64" rx="12" fill="#eef2ff" stroke="#2949c7" stroke-width="2"/><text x="470" y="227" text-anchor="middle" font-size="18" font-weight="700">2. Te építed: repo célja, szabályai és készültségi feltételei</text>
+      <rect x="210" y="110" width="520" height="64" rx="12" fill="#eef2ff" stroke="#2949c7" stroke-width="2"/><text x="470" y="147" text-anchor="middle" font-size="18" font-weight="700">3. Te építed: jóváhagyott specifikáció és változtatás</text>
+      <rect x="255" y="30" width="430" height="64" rx="12" fill="#fff4e8" stroke="#a75a16" stroke-width="2"/><text x="470" y="67" text-anchor="middle" font-size="18" font-weight="700">4. Később: preview, API és adatbázis</text>
+    </svg>
+    <figcaption>A technikai projekt csak az alsó réteg. <strong>Röviden:</strong> előbb alakíts ki ellenőrizhető munkarendet, utána építs feature-t és külső kapcsolatokat.</figcaption>
+    <details class="text-equivalent" id="fig-starter-layers-text">
+      <summary>Az ábra teljes szöveges megfelelője</summary>
+      <ol>
+        <li><strong>Adott:</strong> futtatható technikai alap és ellenőrzési parancsok.</li>
+        <li><strong>Te építed:</strong> a repo célja, határai, szabályai és közös készültségi feltételei.</li>
+        <li><strong>Te építed:</strong> a jóváhagyott specifikáció alapján végrehajtott változtatás.</li>
+        <li><strong>Később kapcsolódik:</strong> preview, API és adatbázis.</li>
+      </ol>
+    </details>
+  </figure>
+
+  <section class="steps">
+    <h2>Első biztonságos lépések</h2>
+    <p><strong>Előfeltétel:</strong> a starter már a saját, írható repódban van, és Node.js 22 fut a gépeden.</p>
+    <ol>
+      <li><strong>Ellenőrizd a környezetet.</strong><pre><code>node --version
+npm --version</code></pre><p>Elvárt eredmény: mindkét parancs verziószámot ír ki.</p></li>
+      <li><strong>Telepítsd a zárolt függőségeket.</strong><pre><code>npm ci</code></pre><p>Elvárt eredmény: a parancs hibakód nélkül befejeződik. Ne másolj titkot az <code>.env.example</code> fájlba.</p></li>
+      <li><strong>Futtasd a teljes helyi preflightot.</strong><pre><code>npm run typecheck
+npm run lint
+npm run test
+npm run build</code></pre><p>Elvárt eredmény: mind a négy parancs sikeres. A teszt jelenleg egy szándékosan kicsi mintát ellenőriz.</p></li>
+      <li><strong>Olvasd el, majd igazítsd a saját repohoz</strong> az <code>AGENTS.md</code> és <code>DESIGN-GUIDELINE.md</code> fájlokat. Ne tekintsd késznek az általános kiinduló szöveget.</li>
+      <li><strong>Állj meg a feature előtt.</strong> A következő modulban rögzítsd a repo célját, határait és kötelező ellenőrzési pontjait.</li>
+    </ol>
+    <p><strong>Sikerfeltétel:</strong> egy friss agent chatelőzmény nélkül meg tudja mondani, hol dolgozhat, mely parancsokat kell futtatnia, és mely döntéseket nem hozhatja meg helyetted.</p>
+    <p><strong>Ha elakadsz:</strong> hálózati vagy telepítési hiba esetén használd a tréner SHA-hoz kötött, kitalált adatokkal készült preflight-eredményét. Jelöld <em>REPLAY</em>-ként; ne állítsd, hogy helyben lefutott.</p>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Jóváhagyott technikai források</h2>
+      <p>Ezek másolható forrásfájlok, nem magyarázó tananyagok:</p>
+      <ul class="download-list">
+        <li><a href="../downloads/participant-starter/DESIGN-GUIDELINE.md">Dizájn-szabálykönyv váza</a><span class="label">forrásfájl</span></li>
+        <li><a href="../downloads/participant-starter/.env.example">Környezeti változók mintája</a><span class="label">titok nélkül</span></li>
+        <li><a href="../downloads/participant-starter/.mcp.json.example">MCP konfigurációs minta</a><span class="label">forrásfájl</span></li>
+      </ul>
+    </article>
+    <article class="card">
+      <h2>Innen folytasd</h2>
+      <ol>
+        <li><a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. modul: szerepek, korlátok és kontextus</a></li>
+        <li><a data-route="/materials/modulok/02-repo-felkeszitese/">2. modul: a repo felkészítése</a></li>
+        <li><a data-route="/toolkit/utmutatok/repo-szabalyok/">Toolkit: a repo célja és szabályai</a></li>
+      </ol>
+      <p><strong>Átadás:</strong> a sikeres preflight és a tisztázott munkatérhatár lesz a 2. modul bemenete.</p>
+    </article>
+  </section>
+</main>
+</body>
+</html>
