@@ -13,7 +13,7 @@
       "figureSelector": "#fig-m04-overview",
       "svgSelector": "#fig-m04-overview svg",
       "textFallbackSelector": "#fig-m04-overview-text",
-      "inlineSvgHash": "8966ba0780e2d4cf193f4790d9249353fdff55b1265ac1067dd257a99654186f"
+      "inlineSvgHash": "a7a15e1103ae39c5b86420ed5dd004f4f6a0361fab6b90601adeeb16e4b4a27f"
     },
     {
       "visualQuestionId": "q-m04-cycle-1",
@@ -38,7 +38,7 @@
       "figureSelector": "#fig-m04-hogyan-vandorol-a-munkadarab-a",
       "svgSelector": "#fig-m04-hogyan-vandorol-a-munkadarab-a svg",
       "textFallbackSelector": "#fig-m04-handoff-text",
-      "inlineSvgHash": "2857e84926e16a6620170af4035e8c83565ff3df384d08b417cbed9a9392996d"
+      "inlineSvgHash": "369eb23bcad44211d81a7b3e17af460bda2fcfd31e3ba5768f8aeb9d133915ae"
     },
     {
       "id": "fig-m04-milyen-eletuton-megy-vegig-egy",
@@ -53,7 +53,7 @@
       "figureSelector": "#fig-m04-milyen-eletuton-megy-vegig-egy",
       "svgSelector": "#fig-m04-milyen-eletuton-megy-vegig-egy svg",
       "textFallbackSelector": "#fig-m04-finding-text",
-      "inlineSvgHash": "a2b8bf3131e9007a5709b20928323f3df93d1267a395ab769ef3f783a775b665"
+      "inlineSvgHash": "806e7755510426f4a0987fff9ba7ca4c2a9c3283e8a3cb64a84cae8bfc9280a2"
     },
     {
       "id": "fig-m04-miben-mas-az-emberi-review",
