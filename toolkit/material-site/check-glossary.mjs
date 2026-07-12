@@ -21,18 +21,48 @@ function pageForRoute(site, route) {
   const relative = route === '/' ? 'index.html' : `${route.replace(/^\//, '')}index.html`;
   return path.join(site, ...relative.split('/'));
 }
+function teachingContent(html) {
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
+  return (main?.[1] ?? html)
+    // First-use links belong in explanatory prose. Figure labels/fallbacks,
+    // headings, file names and the module clock are useful teaching aids, but
+    // forcing glossary links into them would make the content less readable.
+    .replace(/<figure\b[\s\S]*?<\/figure>/gi, '')
+    .replace(/<pre\b[\s\S]*?<\/pre>/gi, '')
+    .replace(/<code\b[\s\S]*?<\/code>/gi, '')
+    .replace(/<h[1-6]\b[\s\S]*?<\/h[1-6]>/gi, '')
+    .replace(/<ol\b[^>]*class=(?:"[^"]*\b(?:time-plan|times)\b[^"]*"|'[^']*\b(?:time-plan|times)\b[^']*')[^>]*>[\s\S]*?<\/ol>/gi, '');
+}
+function firstTermIndex(text, term) {
+  const lower = text.toLocaleLowerCase('hu-HU');
+  const needle = String(term).toLocaleLowerCase('hu-HU');
+  let at = lower.indexOf(needle);
+  while (at >= 0) {
+    const before = at === 0 ? '' : lower[at - 1];
+    const tail = lower.slice(at + needle.length);
+    const suffix = tail.match(/^[\p{L}]+/u)?.[0] ?? '';
+    const inflected = /^(?:[aeoö]?k)?(?:hoz|hez|höz|nak|nek|ban|ben|ba|be|ból|ből|ról|ről|tól|től|ra|re|val|vel|kal|kel|sal|sel|tal|tel|nál|nél|on|en|ön|ért|ig|ként|at|et|ot|öt|t)?$/u.test(suffix)
+      || /^(?:a|e|ja|je|já|jé|juk|jük|ai|ei|jai|jei)(?:t|k|nak|nek|ban|ben|ba|be|hoz|hez|höz|nál|nél|on|en|ön)?$/u.test(suffix);
+    if (!/[\p{L}\p{N}]/u.test(before) && inflected) return at;
+    at = lower.indexOf(needle, at + 1);
+  }
+  return -1;
+}
 function firstOccurrence(html, candidates) {
   let activeHref = null;
-  for (const token of html.replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<style\b[\s\S]*?<\/style>/gi, '').match(/<[^>]+>|[^<]+/g) ?? []) {
+  for (const token of teachingContent(html).replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<style\b[\s\S]*?<\/style>/gi, '').match(/<[^>]+>|[^<]+/g) ?? []) {
     if (/^<a\b/i.test(token)) activeHref = token.match(/href=(?:"([^"]*)"|'([^']*)')/i)?.[1] ?? token.match(/href=(?:"([^"]*)"|'([^']*)')/i)?.[2] ?? null;
     else if (/^<\/a/i.test(token)) activeHref = null;
     else if (!token.startsWith('<')) {
-      const lower = token.toLocaleLowerCase('hu-HU');
-      const found = candidates.map((term) => ({ term, at: lower.indexOf(String(term).toLocaleLowerCase('hu-HU')) })).filter(({ at }) => at >= 0).sort((a, b) => a.at - b.at)[0];
+      const found = candidates.map((term) => ({ term, at: firstTermIndex(token, term) })).filter(({ at }) => at >= 0).sort((a, b) => a.at - b.at)[0];
       if (found) return { ...found, href: activeHref };
     }
   }
   return null;
+}
+function exactGlossaryHref(href, slug, route) {
+  if (route === '/materials/fogalomtar/' && href?.toLocaleLowerCase('hu-HU') === `#${slug.toLocaleLowerCase('hu-HU')}`) return true;
+  return Boolean(href && new RegExp(`fogalomtar/(?:index\\.html)?#${slug}$`, 'i').test(href));
 }
 
 export function validateGlossary({ source, site, phase }) {
@@ -74,7 +104,7 @@ export function validateGlossary({ source, site, phase }) {
       const candidates = [record.preferred, record.english, ...array(record.aliases)].filter(Boolean);
       const found = firstOccurrence(html, candidates);
       if (!found) { failures.push(`${record.slug}: usedIn page does not use the term: ${route}`); continue; }
-      if (!found.href || !new RegExp(`fogalomtar/(?:index\\.html)?#${record.slug}$`, 'i').test(found.href)) failures.push(`${record.slug}: first use is not linked to its exact glossary anchor on ${route}`);
+      if (!exactGlossaryHref(found.href, record.slug, route)) failures.push(`${record.slug}: first use is not linked to its exact glossary anchor on ${route}`);
     }
   }
   return failures;
