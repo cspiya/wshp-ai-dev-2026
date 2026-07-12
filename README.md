@@ -97,10 +97,8 @@ rögzíti.
 ## Közreműködőknek
 
 This public repository contains participant-shareable material and the invented reference
-workload only. Internal design, production, sales, and delivery run-of-show artifacts stay
-outside the repository. Work state lives in the
-[wshp-ai-dev-2026 Linear project](https://linear.app/wenova/project/wshp-ai-dev-2026-3eae5243953d)
-(workspace members only).
+workload only. Internal design, production, sales, delivery run-of-show, and work-state
+artifacts stay outside the repository.
 
 Before changing anything, follow [AGENTS.md](AGENTS.md) and [PARALLEL-WORK.md](PARALLEL-WORK.md):
 one Linear issue, one branch, one worktree, an independent RUG review, trace evidence, and
