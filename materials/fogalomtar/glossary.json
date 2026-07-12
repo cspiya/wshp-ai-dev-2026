@@ -207,7 +207,7 @@
       "definitionHu": "A döntések, commitok, ellenőrzések és review-eredmények rendezett kapcsolata, amelyből utólag megállapítható, mi és miért történt.",
       "aliases": ["audit trail"],
       "avoid": ["tracker-trace", "futásnyom"],
-      "exampleHu": "A visszakövetési napló összeköti a maker commitját, a review-megállapításokat és a javítás utáni teszteredményt.",
+      "exampleHu": "A visszakövetési napló összeköti a készítő commitját, a review-megállapításokat és a javítás utáni teszteredményt.",
       "related": ["commit", "provenance", "review-finding"],
       "usedIn": ["/materials/modulok/04-fuggetlen-review/", "/materials/modulok/08-csapatbevezetes/"]
     },
@@ -537,7 +537,7 @@
       "definitionHu": "Tudatos illesztési vagy cserepont, ahol egy függőség vagy viselkedés a környező rendszer nagyobb átírása nélkül leválasztható.",
       "aliases": ["cserepont"],
       "avoid": ["varrás", "e2e seam magyarázat nélkül"],
-      "exampleHu": "Az adatbázis-hozzáférés interface-e seamet ad, így először csak egy adaptert cserélünk le.",
+      "exampleHu": "Az adatbázis-hozzáférés interface-e biztosítja azt a seamet, ahol először csak egy adaptert cserélünk le.",
       "related": ["legacy-system", "strangler-pattern", "rollback"],
       "usedIn": ["/materials/modulok/07-legacy-rendszer/"]
     },
