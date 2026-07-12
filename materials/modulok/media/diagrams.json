@@ -15,7 +15,7 @@
       "figureSelector": "#fig-modulok-roadmap",
       "svgSelector": "#fig-modulok-roadmap svg",
       "textFallbackSelector": "#fig-modulok-roadmap-text",
-      "inlineSvgHash": "bf717bb38f97fab6be14f6eefb6cfd9f9e28d4d25df9d5537ebd62cc96d821a4"
+      "inlineSvgHash": "911bcd0bfe1ba51648147a507d767c4848b683e194e60c998f70e87136d0c3ae"
     },
     {
       "id": "fig-modules-hogyan-epul-egymasra-a-nyolc",
@@ -32,7 +32,7 @@
       "figureSelector": "#fig-modules-hogyan-epul-egymasra-a-nyolc",
       "svgSelector": "#fig-modules-hogyan-epul-egymasra-a-nyolc svg",
       "textFallbackSelector": "#fig-modules-hogyan-epul-egymasra-a-nyolc-text",
-      "inlineSvgHash": "5309d57d4dae68b775dde34113beb091a68ed0604b2e65e1969bac263f8c85d5"
+      "inlineSvgHash": "f44ac2c182167f0e432f9882eee6d166f040837c7b56090d136c3b36595a5e89"
     }
   ]
 }

@@ -18,7 +18,7 @@
       "figureSelector": "#fig-responsibility-map",
       "svgSelector": "#fig-responsibility-map svg",
       "textFallbackSelector": "#fig-responsibility-map-text",
-      "inlineSvgHash": "b3c162a37bb7fc9aabddc673287ba65d422289e894050cdc1c3147c4093eaa7d"
+      "inlineSvgHash": "b03dc15f9b7de5841fa9a805724c478192c6bd2c713566892dd8455734a54365"
     },
     {
       "id": "fig-tools-hogyan-dontesz-szabaly-skill-hook",
@@ -38,7 +38,7 @@
       "figureSelector": "#fig-tools-hogyan-dontesz-szabaly-skill-hook",
       "svgSelector": "#fig-tools-hogyan-dontesz-szabaly-skill-hook svg",
       "textFallbackSelector": "#fig-tools-hogyan-dontesz-szabaly-skill-hook-text",
-      "inlineSvgHash": "c141c6a2f7dbee4164eebaffb948e5a141c3fafa89072a23bd44696658a1e57f"
+      "inlineSvgHash": "a81d006a4f7509e3545c227821523953ceafd64d4b4922c021d499f5bc2f996a"
     }
   ]
 }

@@ -15,7 +15,7 @@
       "figureSelector": "#fig-day-timeline",
       "svgSelector": "#fig-day-timeline svg",
       "textFallbackSelector": "#fig-day-timeline-text",
-      "inlineSvgHash": "d3207782f3fdcc0ae1388d35a0a6468f5c7b5d9db8b677f14be43da456360757"
+      "inlineSvgHash": "d98c81b95d46a36266bb759276e4fa7f668e00b3d197a833adc0ef96042b396d"
     },
     {
       "id": "fig-agenda-mikor-melyik-modul-fut-es",
@@ -32,7 +32,7 @@
       "figureSelector": "#fig-agenda-mikor-melyik-modul-fut-es",
       "svgSelector": "#fig-agenda-mikor-melyik-modul-fut-es svg",
       "textFallbackSelector": "#fig-agenda-mikor-melyik-modul-fut-es-text",
-      "inlineSvgHash": "9621d88793eaa9d31889328e680bd987f87cc2b7f4563aabc02c63496156ccb9"
+      "inlineSvgHash": "b6f6dcd31ba6724e091a38e8018863a4d66ca483cff21082a94a193191920edd"
     },
     {
       "visualQuestionId": "q-agenda-timeline-2",
