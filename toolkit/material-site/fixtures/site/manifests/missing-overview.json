@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "routes": [
+    {
+      "id": "/",
+      "source": "index.html",
+      "output": "index.html",
+      "title": "Fixture root",
+      "parent": null,
+      "order": 0,
+      "owner": "SHELL-BUILD",
+      "alias": null
+    },
+    {
+      "id": "/fogalomtar/",
+      "source": "f/index.html",
+      "output": "f/index.html",
+      "title": "Fixture glossary",
+      "parent": "/",
+      "order": 1,
+      "owner": "GLOSSARY",
+      "alias": null,
+      "didactic": {
+        "overviewQuestion": "Fixture?",
+        "overviewDiagramId": "fig-fixture-2",
+        "visualQuestions": []
+      }
+    }
+  ],
+  "assets": {
+    "required": [],
+    "optional": []
+  },
+  "mediaRoots": [],
+  "downloads": []
+}

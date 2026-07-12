@@ -2,44 +2,1078 @@
   "schemaVersion": 1,
   "comment": "Sole authoritative route table for the participant site (v3 spec section 5). No other route tree is authoritative. Route IDs start with '/' only inside this manifest; emitted href/src values are calculated page-relative by build-site.mjs.",
   "routes": [
-    { "id": "/", "source": "index.html", "output": "index.html", "title": "AI-assisted fejlesztési workshop", "parent": null, "order": 0, "owner": "SHELL-BUILD", "alias": null },
-    { "id": "/materials/", "source": "materials/index.html", "output": "materials/index.html", "title": "Tananyag és haladási térkép", "parent": "/", "order": 1, "owner": "MATERIALS-HUB", "alias": null },
-    { "id": "/materials/felkeszules/", "source": "materials/felkeszules/index.html", "output": "materials/felkeszules/index.html", "title": "Felkészülés a workshopra", "parent": "/materials/", "order": 1, "owner": "MATERIALS-HUB", "alias": "setup-guide.md stub" },
-    { "id": "/materials/napirend/", "source": "materials/napirend/index.html", "output": "materials/napirend/index.html", "title": "A workshop menete", "parent": "/materials/", "order": 2, "owner": "MATERIALS-HUB", "alias": "agenda.md stub" },
-    { "id": "/materials/modszertan/", "source": "materials/modszertan/index.html", "output": "materials/modszertan/index.html", "title": "Mit építünk, és hogyan ellenőrizzük?", "parent": "/materials/", "order": 3, "owner": "MATERIALS-HUB", "alias": "big-picture.md stub" },
-    { "id": "/materials/agent-ready-repo/", "source": "materials/agent-ready-repo/index.html", "output": "materials/agent-ready-repo/index.html", "title": "Az agent-ready repo felépítése", "parent": "/materials/", "order": 4, "owner": "MATERIALS-HUB", "alias": "agent-ready-repo.md stub" },
-    { "id": "/materials/minoseg/", "source": "materials/minoseg/index.html", "output": "materials/minoseg/index.html", "title": "Közös mérnöki minőség", "parent": "/materials/", "order": 5, "owner": "MATERIALS-HUB", "alias": "mernoki-standardok.md stub" },
-    { "id": "/materials/eszkozok/", "source": "materials/eszkozok/index.html", "output": "materials/eszkozok/index.html", "title": "Pluginek, skillek és automatizálás", "parent": "/materials/", "order": 6, "owner": "MATERIALS-HUB", "alias": "plugins-es-skillek.md stub" },
-    { "id": "/materials/fogalomtar/", "source": "materials/fogalomtar/index.html", "output": "materials/fogalomtar/index.html", "title": "Fejlesztői fogalomtár", "parent": "/materials/", "order": 7, "owner": "GLOSSARY", "alias": "fogalomtar.md stub" },
-    { "id": "/materials/modulok/", "source": "materials/modulok/index.html", "output": "materials/modulok/index.html", "title": "A workshop nyolc modulja", "parent": "/materials/", "order": 8, "owner": "MATERIALS-HUB", "alias": "notebooks/README.md" },
-    { "id": "/materials/modulok/01-agentikus-fejlesztes/", "source": "materials/modulok/01-agentikus-fejlesztes/index.html", "output": "materials/modulok/01-agentikus-fejlesztes/index.html", "title": "1. Agentikus fejlesztés: szerepek és korlátok", "parent": "/materials/modulok/", "order": 1, "owner": "MODULE-01", "alias": "notebooks/00-bevezeto.html" },
-    { "id": "/materials/modulok/02-repo-felkeszitese/", "source": "materials/modulok/02-repo-felkeszitese/index.html", "output": "materials/modulok/02-repo-felkeszitese/index.html", "title": "2. A repo felkészítése AI-agentekkel végzett fejlesztésre", "parent": "/materials/modulok/", "order": 2, "owner": "MODULE-02", "alias": "notebooks/01-greenfield-setup.html" },
-    { "id": "/materials/modulok/03-specifikacio/", "source": "materials/modulok/03-specifikacio/index.html", "output": "materials/modulok/03-specifikacio/index.html", "title": "3. Specifikációból végrehajtható terv", "parent": "/materials/modulok/", "order": 3, "owner": "MODULE-03", "alias": "notebooks/02-spec-driven.html" },
-    { "id": "/materials/modulok/04-fuggetlen-review/", "source": "materials/modulok/04-fuggetlen-review/index.html", "output": "materials/modulok/04-fuggetlen-review/index.html", "title": "4. Független review és javítási ciklus", "parent": "/materials/modulok/", "order": 4, "owner": "MODULE-04", "alias": "notebooks/03-orchestrator-rug.html" },
-    { "id": "/materials/modulok/05-szabalyok-es-kapuk/", "source": "materials/modulok/05-szabalyok-es-kapuk/index.html", "output": "materials/modulok/05-szabalyok-es-kapuk/index.html", "title": "5. Szabályok, skillek és automatizált kapuk", "parent": "/materials/modulok/", "order": 5, "owner": "MODULE-05", "alias": "notebooks/04-rules-skills-hooks.html" },
-    { "id": "/materials/modulok/06-rendszerellenorzes/", "source": "materials/modulok/06-rendszerellenorzes/index.html", "output": "materials/modulok/06-rendszerellenorzes/index.html", "title": "6. Ellenőrzés a böngészőtől az adatbázisig", "parent": "/materials/modulok/", "order": 6, "owner": "MODULE-06", "alias": "notebooks/05-qa-e2e-token.html" },
-    { "id": "/materials/modulok/07-legacy-rendszer/", "source": "materials/modulok/07-legacy-rendszer/index.html", "output": "materials/modulok/07-legacy-rendszer/index.html", "title": "7. Legacy rendszer biztonságos változtatása", "parent": "/materials/modulok/", "order": 7, "owner": "MODULE-07", "alias": "notebooks/06-legacy-dotnet.html" },
-    { "id": "/materials/modulok/08-csapatbevezetes/", "source": "materials/modulok/08-csapatbevezetes/index.html", "output": "materials/modulok/08-csapatbevezetes/index.html", "title": "8. Csapatszintű bevezetés", "parent": "/materials/modulok/", "order": 8, "owner": "MODULE-08", "alias": "notebooks/07-team-adoption.html" },
-    { "id": "/materials/epitesi-naplo/", "source": "materials/epitesi-naplo/index.html", "output": "materials/epitesi-naplo/index.html", "title": "Építési napló: döntések és tanulságok", "parent": "/materials/", "order": 9, "owner": "JOURNAL", "alias": "journal README merged" },
-    { "id": "/materials/epitesi-naplo/01-repoinditas/", "source": "materials/epitesi-naplo/01-repoinditas/index.html", "output": "materials/epitesi-naplo/01-repoinditas/index.html", "title": "1. Repoindítás", "parent": "/materials/epitesi-naplo/", "order": 1, "owner": "JOURNAL", "alias": "day-1.md stub" },
-    { "id": "/materials/epitesi-naplo/02-elso-vertical-slice/", "source": "materials/epitesi-naplo/02-elso-vertical-slice/index.html", "output": "materials/epitesi-naplo/02-elso-vertical-slice/index.html", "title": "2. Az első vertical slice", "parent": "/materials/epitesi-naplo/", "order": 2, "owner": "JOURNAL", "alias": "day-2.md stub" },
-    { "id": "/materials/epitesi-naplo/03-rug-es-preview/", "source": "materials/epitesi-naplo/03-rug-es-preview/index.html", "output": "materials/epitesi-naplo/03-rug-es-preview/index.html", "title": "3. RUG és preview", "parent": "/materials/epitesi-naplo/", "order": 3, "owner": "JOURNAL", "alias": "day-3.md stub" },
-    { "id": "/materials/epitesi-naplo/04-gepi-ellenorzes/", "source": "materials/epitesi-naplo/04-gepi-ellenorzes/index.html", "output": "materials/epitesi-naplo/04-gepi-ellenorzes/index.html", "title": "4. Gépi ellenőrzések", "parent": "/materials/epitesi-naplo/", "order": 4, "owner": "JOURNAL", "alias": "day-4.md stub" },
-    { "id": "/toolkit/", "source": "toolkit/index.html", "output": "toolkit/index.html", "title": "Hazavihető fejlesztési toolkit", "parent": "/", "order": 2, "owner": "TOOLKIT-WEB", "alias": "toolkit/README.md" },
-    { "id": "/toolkit/utmutatok/repo-szabalyok/", "source": "toolkit/utmutatok/repo-szabalyok/index.html", "output": "toolkit/utmutatok/repo-szabalyok/index.html", "title": "A repo célja és szabályai", "parent": "/toolkit/", "order": 1, "owner": "TOOLKIT-WEB", "alias": "#repo-szabalyok" },
-    { "id": "/toolkit/utmutatok/specifikacio/", "source": "toolkit/utmutatok/specifikacio/index.html", "output": "toolkit/utmutatok/specifikacio/index.html", "title": "Jóváhagyható specifikáció", "parent": "/toolkit/", "order": 2, "owner": "TOOLKIT-WEB", "alias": "#specifikacio" },
-    { "id": "/toolkit/utmutatok/fuggetlen-review/", "source": "toolkit/utmutatok/fuggetlen-review/index.html", "output": "toolkit/utmutatok/fuggetlen-review/index.html", "title": "Független review és javítás", "parent": "/toolkit/", "order": 3, "owner": "TOOLKIT-WEB", "alias": "#fuggetlen-review" },
-    { "id": "/toolkit/utmutatok/automatizalt-kapuk/", "source": "toolkit/utmutatok/automatizalt-kapuk/index.html", "output": "toolkit/utmutatok/automatizalt-kapuk/index.html", "title": "Automatizált minőségi kapuk", "parent": "/toolkit/", "order": 4, "owner": "TOOLKIT-WEB", "alias": "#automatizalt-kapuk" },
-    { "id": "/toolkit/utmutatok/projektmemoria/", "source": "toolkit/utmutatok/projektmemoria/index.html", "output": "toolkit/utmutatok/projektmemoria/index.html", "title": "Projektmemória és visszakeresés", "parent": "/toolkit/", "order": 5, "owner": "TOOLKIT-WEB", "alias": "#projektmemoria" },
-    { "id": "/toolkit/utmutatok/legacy-es-bevezetes/", "source": "toolkit/utmutatok/legacy-es-bevezetes/index.html", "output": "toolkit/utmutatok/legacy-es-bevezetes/index.html", "title": "Legacy és csapatszintű bevezetés", "parent": "/toolkit/", "order": 6, "owner": "TOOLKIT-WEB", "alias": "#legacy-es-bevezetes" },
-    { "id": "/participant-starter/", "source": "participant-starter/index.html", "output": "participant-starter/index.html", "title": "Résztvevői starter", "parent": "/", "order": 3, "owner": "STARTER-WEB", "alias": "participant-starter/README.md" },
-    { "id": "/reference-app/", "source": "reference-app/index.html", "output": "reference-app/index.html", "title": "Referenciaalkalmazás", "parent": "/", "order": 4, "owner": "REFERENCE-WEB", "alias": "reference-app/README.md" }
+    {
+      "id": "/",
+      "source": "index.html",
+      "output": "index.html",
+      "title": "AI-assisted fejlesztési workshop",
+      "parent": null,
+      "order": 0,
+      "owner": "SHELL-BUILD",
+      "alias": null,
+      "didactic": {
+        "overviewQuestion": "Mi a workshop terméke, és melyik úton indulj el?",
+        "overviewDiagramId": "fig-product-reference",
+        "visualQuestions": [
+          {
+            "question": "Melyik élethelyzetből melyik területre vezet az utad?",
+            "type": "relationship",
+            "slugs": [],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan épül egymásra a nyolc modul?",
+            "type": "timeline",
+            "slugs": [],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/",
+      "source": "materials/index.html",
+      "output": "materials/index.html",
+      "title": "Tananyag és haladási térkép",
+      "parent": "/",
+      "order": 1,
+      "owner": "MATERIALS-HUB",
+      "alias": null,
+      "didactic": {
+        "overviewQuestion": "Hol kezdd, hol dolgozol, és hogyan ellenőrzöd az eredményt?",
+        "overviewDiagramId": "fig-workspaces",
+        "visualQuestions": [
+          {
+            "question": "Mi a tanulási út a felkészüléstől a zárásig?",
+            "type": "process",
+            "slugs": [],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan áll össze az eredmény és annak ellenőrzése?",
+            "type": "process",
+            "slugs": [
+              "quality-gate"
+            ],
+            "coverage": "shared:fig-evidence-chain"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/felkeszules/",
+      "source": "materials/felkeszules/index.html",
+      "output": "materials/felkeszules/index.html",
+      "title": "Felkészülés a workshopra",
+      "parent": "/materials/",
+      "order": 1,
+      "owner": "MATERIALS-HUB",
+      "alias": "setup-guide.md stub",
+      "didactic": {
+        "overviewQuestion": "Mit kell előkészítened, és mi függ mitől?",
+        "overviewDiagramId": "fig-setup-flow",
+        "visualQuestions": [
+          {
+            "question": "Milyen sorrendben épülnek egymásra az előkészületi lépések?",
+            "type": "process",
+            "slugs": [
+              "ci",
+              "preview"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/napirend/",
+      "source": "materials/napirend/index.html",
+      "output": "materials/napirend/index.html",
+      "title": "A workshop menete",
+      "parent": "/materials/",
+      "order": 2,
+      "owner": "MATERIALS-HUB",
+      "alias": "agenda.md stub",
+      "didactic": {
+        "overviewQuestion": "Hogyan épül fel a nap, és mit adsz le az egyes blokkok végén?",
+        "overviewDiagramId": "fig-day-timeline",
+        "visualQuestions": [
+          {
+            "question": "Mikor melyik modul fut, és mi a kimenete?",
+            "type": "timeline",
+            "slugs": [],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan kapcsolódnak a modulok egymáshoz?",
+            "type": "timeline",
+            "slugs": [],
+            "coverage": "shared:fig-learning-roadmap"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modszertan/",
+      "source": "materials/modszertan/index.html",
+      "output": "materials/modszertan/index.html",
+      "title": "Mit építünk, és hogyan ellenőrizzük?",
+      "parent": "/materials/",
+      "order": 3,
+      "owner": "MATERIALS-HUB",
+      "alias": "big-picture.md stub",
+      "didactic": {
+        "overviewQuestion": "Milyen elemekből áll a fejlesztési rendszer, és hogyan ellenőrzi önmagát?",
+        "overviewDiagramId": "fig-method-components",
+        "visualQuestions": [
+          {
+            "question": "Hogyan zajlik a döntés–review–kapu kör?",
+            "type": "cycle",
+            "slugs": [
+              "rug",
+              "review",
+              "decision-gate"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan áll össze az ellenőrzési eredmények lánca?",
+            "type": "process",
+            "slugs": [
+              "quality-gate",
+              "trace"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/agent-ready-repo/",
+      "source": "materials/agent-ready-repo/index.html",
+      "output": "materials/agent-ready-repo/index.html",
+      "title": "Az agent-ready repo felépítése",
+      "parent": "/materials/",
+      "order": 4,
+      "owner": "MATERIALS-HUB",
+      "alias": "agent-ready-repo.md stub",
+      "didactic": {
+        "overviewQuestion": "Milyen rétegekből áll az agent-ready repo, és ki mit birtokol?",
+        "overviewDiagramId": "fig-repo-layers",
+        "visualQuestions": [
+          {
+            "question": "Hogyan függ össze a szabály, a munka és az ellenőrzési eredmény?",
+            "type": "structure",
+            "slugs": [
+              "agent-ready-repo",
+              "repository-rules"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mi a legkisebb biztonságos változtatás útja?",
+            "type": "structure",
+            "slugs": [
+              "scope"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/minoseg/",
+      "source": "materials/minoseg/index.html",
+      "output": "materials/minoseg/index.html",
+      "title": "Közös mérnöki minőség",
+      "parent": "/materials/",
+      "order": 5,
+      "owner": "MATERIALS-HUB",
+      "alias": "mernoki-standardok.md stub",
+      "didactic": {
+        "overviewQuestion": "Milyen védelmi rétegek őrzik a közös minőséget?",
+        "overviewDiagramId": "fig-quality-defense",
+        "visualQuestions": [
+          {
+            "question": "Hogyan lesz egy megerősített hibából tartós automatikus védelem?",
+            "type": "process",
+            "slugs": [
+              "review-finding",
+              "quality-gate",
+              "fixture"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/eszkozok/",
+      "source": "materials/eszkozok/index.html",
+      "output": "materials/eszkozok/index.html",
+      "title": "Pluginek, skillek és automatizálás",
+      "parent": "/materials/",
+      "order": 6,
+      "owner": "MATERIALS-HUB",
+      "alias": "plugins-es-skillek.md stub",
+      "didactic": {
+        "overviewQuestion": "Melyik mechanizmus melyik feladatra való?",
+        "overviewDiagramId": "fig-responsibility-map",
+        "visualQuestions": [
+          {
+            "question": "Hogyan döntesz szabály, skill, hook és MCP között?",
+            "type": "decision",
+            "slugs": [
+              "rule",
+              "skill",
+              "hook",
+              "mcp"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/fogalomtar/",
+      "source": "materials/fogalomtar/index.html",
+      "output": "materials/fogalomtar/index.html",
+      "title": "Fejlesztői fogalomtár",
+      "parent": "/materials/",
+      "order": 7,
+      "owner": "GLOSSARY",
+      "alias": "fogalomtar.md stub",
+      "didactic": {
+        "overviewQuestion": "Hogyan kapcsolódnak egymáshoz a workshop fogalmai?",
+        "overviewDiagramId": "fig-concept-families",
+        "visualQuestions": [
+          {
+            "question": "Melyik fogalom melyik modulban kerül elő?",
+            "type": "relationship",
+            "slugs": [],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/",
+      "source": "materials/modulok/index.html",
+      "output": "materials/modulok/index.html",
+      "title": "A workshop nyolc modulja",
+      "parent": "/materials/",
+      "order": 8,
+      "owner": "MATERIALS-HUB",
+      "alias": "notebooks/README.md",
+      "didactic": {
+        "overviewQuestion": "Melyik modul mit ad hozzá, és honnan hová lépsz?",
+        "overviewDiagramId": "fig-modulok-roadmap",
+        "visualQuestions": [
+          {
+            "question": "Hogyan épül egymásra a nyolc modul kimenete?",
+            "type": "timeline",
+            "slugs": [],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/01-agentikus-fejlesztes/",
+      "source": "materials/modulok/01-agentikus-fejlesztes/index.html",
+      "output": "materials/modulok/01-agentikus-fejlesztes/index.html",
+      "title": "1. Agentikus fejlesztés: szerepek és korlátok",
+      "parent": "/materials/modulok/",
+      "order": 1,
+      "owner": "MODULE-01",
+      "alias": "notebooks/00-bevezeto.html",
+      "didactic": {
+        "overviewQuestion": "Mi a különbség a modell, a coding agent és a fejlesztési rendszer között?",
+        "overviewDiagramId": "fig-m01-overview",
+        "visualQuestions": [
+          {
+            "question": "Hogyan rétegződik a modell, az agent és a köré épített rendszer?",
+            "type": "structure",
+            "slugs": [
+              "coding-agent",
+              "agent-ready-repo"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan szűkül a kontextus a hasznos munkadarabig?",
+            "type": "process",
+            "slugs": [
+              "context",
+              "scope"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan lesz a homályos kérésből munkára fogható kérés?",
+            "type": "process",
+            "slugs": [
+              "scope"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Miben más az önellenőrzés és a független review?",
+            "type": "relationship",
+            "slugs": [
+              "review"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mi a termék és mi a referenciafeladat?",
+            "type": "relationship",
+            "slugs": [
+              "reference-task"
+            ],
+            "coverage": "shared:fig-product-reference"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/02-repo-felkeszitese/",
+      "source": "materials/modulok/02-repo-felkeszitese/index.html",
+      "output": "materials/modulok/02-repo-felkeszitese/index.html",
+      "title": "2. A repo felkészítése AI-agentekkel végzett fejlesztésre",
+      "parent": "/materials/modulok/",
+      "order": 2,
+      "owner": "MODULE-02",
+      "alias": "notebooks/01-greenfield-setup.html",
+      "didactic": {
+        "overviewQuestion": "Mitől lesz egy repo AI-agentekkel művelhető?",
+        "overviewDiagramId": "fig-m02-overview",
+        "visualQuestions": [
+          {
+            "question": "Hol a határ a három munkaterület között?",
+            "type": "structure",
+            "slugs": [
+              "worktree",
+              "branch"
+            ],
+            "coverage": "shared:fig-workspaces"
+          },
+          {
+            "question": "Hogyan függnek össze a repo szabályai?",
+            "type": "structure",
+            "slugs": [
+              "repository-rules",
+              "definition-of-done"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan jut el a változtatás a helyi ellenőrzéstől a preview-ig?",
+            "type": "process",
+            "slugs": [
+              "ci",
+              "preview",
+              "pull-request"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mi a PR, a preview és az adatbázis kapcsolata?",
+            "type": "structure",
+            "slugs": [
+              "preview"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mikor állsz meg, és hogyan állsz helyre?",
+            "type": "decision",
+            "slugs": [
+              "quality-gate"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/03-specifikacio/",
+      "source": "materials/modulok/03-specifikacio/index.html",
+      "output": "materials/modulok/03-specifikacio/index.html",
+      "title": "3. Specifikációból végrehajtható terv",
+      "parent": "/materials/modulok/",
+      "order": 3,
+      "owner": "MODULE-03",
+      "alias": "notebooks/02-spec-driven.html",
+      "didactic": {
+        "overviewQuestion": "Hogyan lesz a kérésből jóváhagyható specifikáció és végrehajtható terv?",
+        "overviewDiagramId": "fig-m03-overview",
+        "visualQuestions": [
+          {
+            "question": "Hogyan függ össze az öt spec-fájl?",
+            "type": "structure",
+            "slugs": [
+              "spec"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Milyen állapotokon megy át a jóváhagyás?",
+            "type": "cycle",
+            "slugs": [
+              "decision-gate"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan követhető az elfogadási feltétel a taskig és az ellenőrzésig?",
+            "type": "relationship",
+            "slugs": [
+              "acceptance-criteria",
+              "given-when-then"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan adja át egymásnak a munkát a BA és a fejlesztő?",
+            "type": "process",
+            "slugs": [
+              "scope"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/04-fuggetlen-review/",
+      "source": "materials/modulok/04-fuggetlen-review/index.html",
+      "output": "materials/modulok/04-fuggetlen-review/index.html",
+      "title": "4. Független review és javítási ciklus",
+      "parent": "/materials/modulok/",
+      "order": 4,
+      "owner": "MODULE-04",
+      "alias": "notebooks/03-orchestrator-rug.html",
+      "didactic": {
+        "overviewQuestion": "Miért kell szétválasztani a készítést, a bírálatot és a javítást?",
+        "overviewDiagramId": "fig-m04-overview",
+        "visualQuestions": [
+          {
+            "question": "Hogyan zárul a készítés–review–javítás kör?",
+            "type": "cycle",
+            "slugs": [
+              "rug",
+              "maker",
+              "reviewer",
+              "fixer"
+            ],
+            "coverage": "shared:fig-review-loop"
+          },
+          {
+            "question": "Hogyan vándorol a munkadarab a szerepek között?",
+            "type": "process",
+            "slugs": [
+              "trace"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Milyen életúton megy végig egy review-találat?",
+            "type": "cycle",
+            "slugs": [
+              "review-finding"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Miben más az emberi review és a gépi ellenőrzés?",
+            "type": "relationship",
+            "slugs": [
+              "review",
+              "quality-gate"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/05-szabalyok-es-kapuk/",
+      "source": "materials/modulok/05-szabalyok-es-kapuk/index.html",
+      "output": "materials/modulok/05-szabalyok-es-kapuk/index.html",
+      "title": "5. Szabályok, skillek és automatizált kapuk",
+      "parent": "/materials/modulok/",
+      "order": 5,
+      "owner": "MODULE-05",
+      "alias": "notebooks/04-rules-skills-hooks.html",
+      "didactic": {
+        "overviewQuestion": "Hova kerüljön a tartós tudás, és hogyan lesz belőle automatikus védelem?",
+        "overviewDiagramId": "fig-m05-overview",
+        "visualQuestions": [
+          {
+            "question": "Melyik mechanizmus mire felel?",
+            "type": "structure",
+            "slugs": [
+              "rule",
+              "skill",
+              "hook"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan döntesz a mechanizmusok között?",
+            "type": "decision",
+            "slugs": [
+              "rule",
+              "skill",
+              "hook",
+              "quality-gate",
+              "project-memory"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan kerül elő a projektmemóriából a tudás?",
+            "type": "process",
+            "slugs": [
+              "project-memory",
+              "mcp"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan lesz a találatból blokkoló védelem?",
+            "type": "process",
+            "slugs": [
+              "review-finding",
+              "fixture"
+            ],
+            "coverage": "shared:fig-finding-to-guard"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/06-rendszerellenorzes/",
+      "source": "materials/modulok/06-rendszerellenorzes/index.html",
+      "output": "materials/modulok/06-rendszerellenorzes/index.html",
+      "title": "6. Ellenőrzés a böngészőtől az adatbázisig",
+      "parent": "/materials/modulok/",
+      "order": 6,
+      "owner": "MODULE-06",
+      "alias": "notebooks/05-qa-e2e-token.html",
+      "didactic": {
+        "overviewQuestion": "Hogyan bizonyítod a változást a böngészőtől az adatbázisig?",
+        "overviewDiagramId": "fig-m06-overview",
+        "visualQuestions": [
+          {
+            "question": "Melyik kockázatra melyik tesztréteg felel?",
+            "type": "relationship",
+            "slugs": [
+              "unit-test",
+              "contract-test",
+              "e2e"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan fut végig az ellenőrzés a böngészőtől az adatbázisig?",
+            "type": "process",
+            "slugs": [
+              "e2e",
+              "preview",
+              "provenance"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hol lokalizálod a hibát, ha valamelyik réteg elbukik?",
+            "type": "structure",
+            "slugs": [
+              "reference-task"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mit bizonyít és mibe kerül az egyes rétegek eredménye?",
+            "type": "structure",
+            "slugs": [
+              "context-budget"
+            ],
+            "coverage": "shared:fig-evidence-chain"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/07-legacy-rendszer/",
+      "source": "materials/modulok/07-legacy-rendszer/index.html",
+      "output": "materials/modulok/07-legacy-rendszer/index.html",
+      "title": "7. Legacy rendszer biztonságos változtatása",
+      "parent": "/materials/modulok/",
+      "order": 7,
+      "owner": "MODULE-07",
+      "alias": "notebooks/06-legacy-dotnet.html",
+      "didactic": {
+        "overviewQuestion": "Hogyan változtatsz biztonságosan egy ismeretlen viselkedésű rendszeren?",
+        "overviewDiagramId": "fig-m07-overview",
+        "visualQuestions": [
+          {
+            "question": "Mi a különbség a védtelen és a védőhálós változtatás között?",
+            "type": "relationship",
+            "slugs": [
+              "safety-net"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan rögzíted a megfigyelt viselkedést characterization teszttel?",
+            "type": "process",
+            "slugs": [
+              "characterization-test",
+              "legacy-system"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hol a cserepont a komponensek között?",
+            "type": "structure",
+            "slugs": [
+              "seam",
+              "strangler-pattern"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mikor bővítesz, mikor állsz meg, és hogyan lépsz vissza?",
+            "type": "decision",
+            "slugs": [
+              "rollback"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/modulok/08-csapatbevezetes/",
+      "source": "materials/modulok/08-csapatbevezetes/index.html",
+      "output": "materials/modulok/08-csapatbevezetes/index.html",
+      "title": "8. Csapatszintű bevezetés",
+      "parent": "/materials/modulok/",
+      "order": 8,
+      "owner": "MODULE-08",
+      "alias": "notebooks/07-team-adoption.html",
+      "didactic": {
+        "overviewQuestion": "Hogyan lesz a módszerből a csapat saját, mérhető működése?",
+        "overviewDiagramId": "fig-m08-overview",
+        "visualQuestions": [
+          {
+            "question": "Hogyan épül fel a képességek útja a nap végére?",
+            "type": "timeline",
+            "slugs": [
+              "operating-model"
+            ],
+            "coverage": "shared:fig-learning-roadmap"
+          },
+          {
+            "question": "Ki miért felel a körben?",
+            "type": "cycle",
+            "slugs": [
+              "owner"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan zajlik a kontrollált modell-/eszközértékelés?",
+            "type": "process",
+            "slugs": [
+              "eval",
+              "golden-path"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Mi történik 30, 60 és 90 nap múlva?",
+            "type": "timeline",
+            "slugs": [
+              "pilot"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Milyen jelekből látod a rendszer egészségét?",
+            "type": "structure",
+            "slugs": [
+              "plan-b"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/epitesi-naplo/",
+      "source": "materials/epitesi-naplo/index.html",
+      "output": "materials/epitesi-naplo/index.html",
+      "title": "Építési napló: döntések és tanulságok",
+      "parent": "/materials/",
+      "order": 9,
+      "owner": "JOURNAL",
+      "alias": "journal README merged",
+      "didactic": {
+        "overviewQuestion": "Milyen döntések és tanulságok mentén épült ez a tananyag?",
+        "overviewDiagramId": "fig-naplo-overview",
+        "visualQuestions": [
+          {
+            "question": "Melyik naplófejezet melyik modul tanulságát adja?",
+            "type": "timeline",
+            "slugs": [],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/epitesi-naplo/01-repoinditas/",
+      "source": "materials/epitesi-naplo/01-repoinditas/index.html",
+      "output": "materials/epitesi-naplo/01-repoinditas/index.html",
+      "title": "1. Repoindítás",
+      "parent": "/materials/epitesi-naplo/",
+      "order": 1,
+      "owner": "JOURNAL",
+      "alias": "day-1.md stub",
+      "didactic": {
+        "overviewQuestion": "Mit tanultunk a repo elindításából?",
+        "overviewDiagramId": "fig-j01-synthesis",
+        "visualQuestions": [
+          {
+            "question": "Mi a termék és mi a referenciafeladat viszonya?",
+            "type": "relationship",
+            "slugs": [],
+            "coverage": "shared:fig-product-reference"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/epitesi-naplo/02-elso-vertical-slice/",
+      "source": "materials/epitesi-naplo/02-elso-vertical-slice/index.html",
+      "output": "materials/epitesi-naplo/02-elso-vertical-slice/index.html",
+      "title": "2. Az első vertical slice",
+      "parent": "/materials/epitesi-naplo/",
+      "order": 2,
+      "owner": "JOURNAL",
+      "alias": "day-2.md stub",
+      "didactic": {
+        "overviewQuestion": "Mit tanultunk az első vertical slice-ból?",
+        "overviewDiagramId": "fig-j02-synthesis",
+        "visualQuestions": [
+          {
+            "question": "Hogyan állt össze az első teljes ellenőrzési lánc?",
+            "type": "process",
+            "slugs": [],
+            "coverage": "shared:fig-evidence-chain"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/epitesi-naplo/03-rug-es-preview/",
+      "source": "materials/epitesi-naplo/03-rug-es-preview/index.html",
+      "output": "materials/epitesi-naplo/03-rug-es-preview/index.html",
+      "title": "3. RUG és preview",
+      "parent": "/materials/epitesi-naplo/",
+      "order": 3,
+      "owner": "JOURNAL",
+      "alias": "day-3.md stub",
+      "didactic": {
+        "overviewQuestion": "Mit tanultunk a RUG-körből és a preview-ból?",
+        "overviewDiagramId": "fig-j03-synthesis",
+        "visualQuestions": [
+          {
+            "question": "Hol javított valódi hibát a független review?",
+            "type": "cycle",
+            "slugs": [],
+            "coverage": "shared:fig-review-loop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/materials/epitesi-naplo/04-gepi-ellenorzes/",
+      "source": "materials/epitesi-naplo/04-gepi-ellenorzes/index.html",
+      "output": "materials/epitesi-naplo/04-gepi-ellenorzes/index.html",
+      "title": "4. Gépi ellenőrzések",
+      "parent": "/materials/epitesi-naplo/",
+      "order": 4,
+      "owner": "JOURNAL",
+      "alias": "day-4.md stub",
+      "didactic": {
+        "overviewQuestion": "Mit tanultunk a gépi ellenőrzések bevezetéséből?",
+        "overviewDiagramId": "fig-j04-synthesis",
+        "visualQuestions": [
+          {
+            "question": "Hogyan lett a találatokból tartós védelem?",
+            "type": "process",
+            "slugs": [],
+            "coverage": "shared:fig-finding-to-guard"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/",
+      "source": "toolkit/index.html",
+      "output": "toolkit/index.html",
+      "title": "Hazavihető fejlesztési toolkit",
+      "parent": "/",
+      "order": 2,
+      "owner": "TOOLKIT-WEB",
+      "alias": "toolkit/README.md",
+      "didactic": {
+        "overviewQuestion": "Melyik feladathoz melyik hazavihető útmutató és eszköz tartozik?",
+        "overviewDiagramId": "fig-toolkit-routes",
+        "visualQuestions": [
+          {
+            "question": "Melyik úton indulj a hat feladat közül?",
+            "type": "decision",
+            "slugs": [],
+            "coverage": "local"
+          },
+          {
+            "question": "Mi található a toolkitben, és hol?",
+            "type": "structure",
+            "slugs": [],
+            "coverage": "local"
+          },
+          {
+            "question": "Hogyan másolod, igazítod és ellenőrzöd az átvett elemet?",
+            "type": "process",
+            "slugs": [],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/utmutatok/repo-szabalyok/",
+      "source": "toolkit/utmutatok/repo-szabalyok/index.html",
+      "output": "toolkit/utmutatok/repo-szabalyok/index.html",
+      "title": "A repo célja és szabályai",
+      "parent": "/toolkit/",
+      "order": 1,
+      "owner": "TOOLKIT-WEB",
+      "alias": "#repo-szabalyok",
+      "didactic": {
+        "overviewQuestion": "Hogyan írod meg a saját repód célját és szabályait?",
+        "overviewDiagramId": "fig-guide-repo",
+        "visualQuestions": [
+          {
+            "question": "Milyen elemekből áll a működő reposzabályzat?",
+            "type": "structure",
+            "slugs": [
+              "repository-rules",
+              "definition-of-done"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/utmutatok/specifikacio/",
+      "source": "toolkit/utmutatok/specifikacio/index.html",
+      "output": "toolkit/utmutatok/specifikacio/index.html",
+      "title": "Jóváhagyható specifikáció",
+      "parent": "/toolkit/",
+      "order": 2,
+      "owner": "TOOLKIT-WEB",
+      "alias": "#specifikacio",
+      "didactic": {
+        "overviewQuestion": "Hogyan készítesz jóváhagyható specifikációt a sablonokból?",
+        "overviewDiagramId": "fig-guide-spec",
+        "visualQuestions": [
+          {
+            "question": "Hogyan épül fel az öt sablon egymásra?",
+            "type": "process",
+            "slugs": [
+              "spec",
+              "acceptance-criteria"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/utmutatok/fuggetlen-review/",
+      "source": "toolkit/utmutatok/fuggetlen-review/index.html",
+      "output": "toolkit/utmutatok/fuggetlen-review/index.html",
+      "title": "Független review és javítás",
+      "parent": "/toolkit/",
+      "order": 3,
+      "owner": "TOOLKIT-WEB",
+      "alias": "#fuggetlen-review",
+      "didactic": {
+        "overviewQuestion": "Hogyan futtatsz független review-t a saját csapatodban?",
+        "overviewDiagramId": "fig-guide-review",
+        "visualQuestions": [
+          {
+            "question": "Hogyan zajlik a kör a készítőtől az újraellenőrzésig?",
+            "type": "cycle",
+            "slugs": [
+              "rug",
+              "reviewer"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/utmutatok/automatizalt-kapuk/",
+      "source": "toolkit/utmutatok/automatizalt-kapuk/index.html",
+      "output": "toolkit/utmutatok/automatizalt-kapuk/index.html",
+      "title": "Automatizált minőségi kapuk",
+      "parent": "/toolkit/",
+      "order": 4,
+      "owner": "TOOLKIT-WEB",
+      "alias": "#automatizalt-kapuk",
+      "didactic": {
+        "overviewQuestion": "Hogyan építesz blokkoló automatikus ellenőrzési pontokat?",
+        "overviewDiagramId": "fig-guide-gates",
+        "visualQuestions": [
+          {
+            "question": "Hol kapcsolódnak a kapuk a munkafolyamathoz?",
+            "type": "process",
+            "slugs": [
+              "quality-gate",
+              "hook",
+              "fixture"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/utmutatok/projektmemoria/",
+      "source": "toolkit/utmutatok/projektmemoria/index.html",
+      "output": "toolkit/utmutatok/projektmemoria/index.html",
+      "title": "Projektmemória és visszakeresés",
+      "parent": "/toolkit/",
+      "order": 5,
+      "owner": "TOOLKIT-WEB",
+      "alias": "#projektmemoria",
+      "didactic": {
+        "overviewQuestion": "Hogyan őrzöd meg és keresed vissza a projekt tudását?",
+        "overviewDiagramId": "fig-guide-memory",
+        "visualQuestions": [
+          {
+            "question": "Hogyan jut vissza a tárolt tudás a munkába?",
+            "type": "process",
+            "slugs": [
+              "project-memory"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/toolkit/utmutatok/legacy-es-bevezetes/",
+      "source": "toolkit/utmutatok/legacy-es-bevezetes/index.html",
+      "output": "toolkit/utmutatok/legacy-es-bevezetes/index.html",
+      "title": "Legacy és csapatszintű bevezetés",
+      "parent": "/toolkit/",
+      "order": 6,
+      "owner": "TOOLKIT-WEB",
+      "alias": "#legacy-es-bevezetes",
+      "didactic": {
+        "overviewQuestion": "Hogyan viszed be a módszert legacy környezetbe és a csapatba?",
+        "overviewDiagramId": "fig-guide-legacy",
+        "visualQuestions": [
+          {
+            "question": "Milyen lépcsőkön halad a bevezetés?",
+            "type": "timeline",
+            "slugs": [
+              "legacy-system",
+              "pilot"
+            ],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/participant-starter/",
+      "source": "participant-starter/index.html",
+      "output": "participant-starter/index.html",
+      "title": "Résztvevői starter",
+      "parent": "/",
+      "order": 3,
+      "owner": "STARTER-WEB",
+      "alias": "participant-starter/README.md",
+      "didactic": {
+        "overviewQuestion": "Mi van készen a starterben, és mi hiányzik belőle szándékosan?",
+        "overviewDiagramId": "fig-starter-boundary",
+        "visualQuestions": [
+          {
+            "question": "Mely rétegek adottak, és mit építesz te?",
+            "type": "structure",
+            "slugs": [],
+            "coverage": "local"
+          }
+        ]
+      }
+    },
+    {
+      "id": "/reference-app/",
+      "source": "reference-app/index.html",
+      "output": "reference-app/index.html",
+      "title": "Referenciaalkalmazás",
+      "parent": "/",
+      "order": 4,
+      "owner": "REFERENCE-WEB",
+      "alias": "reference-app/README.md",
+      "didactic": {
+        "overviewQuestion": "Miért létezik a referenciaalkalmazás, és hogyan igazolja a módszert?",
+        "overviewDiagramId": "fig-app-topology",
+        "visualQuestions": [
+          {
+            "question": "Hogyan épül fel az alkalmazás és a környezete?",
+            "type": "structure",
+            "slugs": [
+              "reference-task"
+            ],
+            "coverage": "local"
+          },
+          {
+            "question": "Merre fut az ellenőrzés útja a felülettől az adatig?",
+            "type": "process",
+            "slugs": [
+              "e2e",
+              "provenance"
+            ],
+            "coverage": "shared:fig-evidence-chain"
+          }
+        ]
+      }
+    }
   ],
   "assets": {
-    "required": ["assets/site.css", "assets/site.js"],
-    "optional": ["assets/diagram.css"]
+    "required": [
+      "assets/site.css",
+      "assets/site.js"
+    ],
+    "optional": [
+      "assets/diagram.css"
+    ]
   },
-  "mediaRoots": ["index-media"],
+  "mediaRoots": [
+    "index-media"
+  ],
   "downloads": [
     "participant-starter/DESIGN-GUIDELINE.md",
     "participant-starter/.mcp.json.example",

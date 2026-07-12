@@ -57,9 +57,21 @@ function parseArgs(argv) {
   return opts;
 }
 
-function loadManifest() {
-  const raw = fs.readFileSync(path.join(HERE, "site-manifest.json"), "utf8");
-  const manifest = JSON.parse(raw);
+const VISUAL_QUESTION_TYPES = [
+  "key-concept",
+  "process",
+  "cycle",
+  "structure",
+  "relationship",
+  "decision",
+  "timeline",
+  "quantitative-data",
+];
+
+// v3.4: every canonical teaching page declares its overview question,
+// overview figure id and typed visual questions with an explicit coverage
+// disposition — complex questions can never be closed as prose-only.
+export function validateManifest(manifest) {
   const errors = [];
   const ids = new Set();
   const outputs = new Set();
@@ -79,12 +91,68 @@ function loadManifest() {
   }
   for (const r of manifest.routes) {
     if (r.parent !== null && !ids.has(r.parent)) errors.push(`${r.id}: parent ${r.parent} not in manifest`);
+    const d = r.didactic;
+    if (!d || typeof d.overviewQuestion !== "string" || d.overviewQuestion.length === 0) {
+      errors.push(`${r.id}: missing didactic.overviewQuestion (v3.4 — every teaching page needs an overview)`);
+      continue;
+    }
+    if (!/^fig-[a-z0-9-]+$/.test(d.overviewDiagramId ?? ""))
+      errors.push(`${r.id}: missing or invalid didactic.overviewDiagramId`);
+    if (!Array.isArray(d.visualQuestions)) {
+      errors.push(`${r.id}: didactic.visualQuestions must be an array`);
+      continue;
+    }
+    for (const v of d.visualQuestions) {
+      const label = `${r.id}: question "${String(v.question ?? "?").slice(0, 48)}"`;
+      if (typeof v.question !== "string" || v.question.length === 0) errors.push(`${r.id}: visual question without text`);
+      if (!VISUAL_QUESTION_TYPES.includes(v.type)) errors.push(`${label}: invalid type "${v.type}"`);
+      if (!Array.isArray(v.slugs)) errors.push(`${label}: slugs must be an array of glossary slugs`);
+      if (!(v.coverage === "local" || /^shared:fig-[a-z0-9-]+$/.test(v.coverage ?? "")))
+        errors.push(`${label}: undisposed — coverage must be "local" or "shared:fig-…"; complex questions cannot stay prose-only`);
+    }
   }
+  // Glossary search terms may be owned by exactly one canonical route.
+  const glossaryOwners = manifest.routes.filter((r) => r.owner === "GLOSSARY");
+  if (glossaryOwners.length === 0)
+    errors.push("glossary ownership missing — no route with owner GLOSSARY to carry the shared search terms");
+  if (glossaryOwners.length > 1)
+    errors.push(`duplicate glossary ownership — ${glossaryOwners.length} routes claim owner GLOSSARY`);
+  return errors;
+}
+
+function loadManifest() {
+  const manifest = JSON.parse(fs.readFileSync(path.join(HERE, "site-manifest.json"), "utf8"));
+  const errors = validateManifest(manifest);
   if (errors.length > 0) {
     for (const e of errors) console.error(`[manifest] ${e}`);
     process.exit(1);
   }
   return manifest;
+}
+
+// Accepted glossary v2 registry; foundation phase substitutes the neutral
+// fixture registry until the GLOSSARY lane's file exists in the tree.
+function loadGlossary(phase, substitutions, errors) {
+  const canonical = path.join(REPO_ROOT, "materials", "fogalomtar", "glossary.json");
+  let source = canonical;
+  if (!fs.existsSync(canonical)) {
+    if (phase === "final") {
+      errors.push("materials/fogalomtar/glossary.json missing — final phase requires the accepted registry");
+      return null;
+    }
+    source = path.join(FIXTURES, "glossary.json");
+    if (!fs.existsSync(source)) {
+      errors.push("foundation glossary fixture missing (fixtures/site/glossary.json)");
+      return null;
+    }
+    substitutions.push("glossary registry <- fixtures/site/glossary.json");
+  }
+  const registry = JSON.parse(fs.readFileSync(source, "utf8"));
+  if (!Array.isArray(registry.terms)) {
+    errors.push(`${path.relative(REPO_ROOT, source)}: glossary registry has no terms[] array`);
+    return null;
+  }
+  return registry;
 }
 
 // Neutral fixture shape for a route whose source is not yet authored.
@@ -287,7 +355,33 @@ function copyDirIfExists(srcDir, destDir) {
   }
 }
 
+function selfTest() {
+  const cases = [
+    ["missing-overview.json", "missing didactic.overviewQuestion"],
+    ["undisposed-question.json", "undisposed"],
+    ["invalid-ownership.json", "glossary ownership"],
+  ];
+  let ok = true;
+  for (const [file, expected] of cases) {
+    const fixture = JSON.parse(fs.readFileSync(path.join(FIXTURES, "manifests", file), "utf8"));
+    const errors = validateManifest(fixture);
+    if (!errors.some((e) => e.includes(expected))) {
+      console.error(`[build-site] self-test FAILED: ${file} did not produce "${expected}" (got: ${errors.join(" | ") || "no errors"})`);
+      ok = false;
+    }
+  }
+  const real = JSON.parse(fs.readFileSync(path.join(HERE, "site-manifest.json"), "utf8"));
+  if (validateManifest(real).length > 0) {
+    console.error("[build-site] self-test FAILED: the shipped manifest does not validate cleanly");
+    ok = false;
+  }
+  if (!ok) process.exit(1);
+  console.log(`[build-site] self-test passed (${cases.length} invalid manifest fixtures rejected for the intended reason, shipped manifest clean)`);
+  process.exit(0);
+}
+
 function main() {
+  if (process.argv[2] === "--self-test") return selfTest();
   const opts = parseArgs(process.argv.slice(2));
   const manifest = loadManifest();
   const nav = buildNavModel(manifest);
@@ -387,7 +481,24 @@ function main() {
   }
 
   // 4. Search index (classic script, immutable assignment, no fetch).
-  const indexBody = JSON.stringify({ pages: searchEntries }, null, 1);
+  // Glossary terms are emitted ONLY on the canonical GLOSSARY-owned route:
+  // preferred Hungarian term, retained English term and aliases all resolve
+  // to that single route with the term slug as the exact anchor.
+  const glossaryRegistry = loadGlossary(opts.phase, substitutions, errors);
+  const glossaryRoute = manifest.routes.find((r) => r.owner === "GLOSSARY");
+  const glossaryBlock =
+    glossaryRegistry && glossaryRoute
+      ? {
+          path: glossaryRoute.output,
+          terms: glossaryRegistry.terms.map((t) => ({
+            slug: t.slug,
+            preferred: t.preferred,
+            english: t.english,
+            aliases: Array.isArray(t.aliases) ? t.aliases : [],
+          })),
+        }
+      : null;
+  const indexBody = JSON.stringify({ pages: searchEntries, glossary: glossaryBlock }, null, 1);
   fs.writeFileSync(
     path.join(outRoot, "assets", "search-index.js"),
     `// Generated by build-site.mjs — do not edit.\nwindow.WorkshopSearchIndex = Object.freeze(${indexBody});\n`

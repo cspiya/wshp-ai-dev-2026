@@ -35,6 +35,25 @@
       });
     }
   }
+  // Glossary terms live ONLY on the canonical glossary route: the preferred
+  // Hungarian term, the retained English term and every alias resolve to
+  // that single page with the term slug as the exact anchor.
+  if (index.glossary && index.glossary.terms) {
+    for (var g = 0; g < index.glossary.terms.length; g++) {
+      var term = index.glossary.terms[g];
+      var names = [term.preferred, term.english].concat(term.aliases || []);
+      var key = "";
+      for (var n = 0; n < names.length; n++) {
+        if (names[n]) key += norm(names[n]) + " ";
+      }
+      entries.push({
+        label: term.preferred + (term.english && term.english !== term.preferred ? " (" + term.english + ")" : ""),
+        page: "Fogalomtár",
+        href: siteRoot + index.glossary.path + "#" + term.slug,
+        key: key
+      });
+    }
+  }
 
   function render(list) {
     while (results.firstChild) results.removeChild(results.firstChild);
