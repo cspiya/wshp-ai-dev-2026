@@ -1,0 +1,50 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-workspaces",
+      "visualQuestionId": "q-materials-overview",
+      "question": "Hol kezdd, hol dolgozol, és hogyan ellenőrzöd az eredményt?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "quality-gate"
+      ],
+      "figureSelector": "#fig-workspaces",
+      "svgSelector": "#fig-workspaces svg",
+      "textFallbackSelector": "#fig-workspaces-text",
+      "inlineSvgHash": "de0695ccb1913ef053e13f715c8178246be2e6d4fbc3e9ab35b8797b2961e07e"
+    },
+    {
+      "id": "fig-materials-mi-a-tanulasi-ut-a",
+      "visualQuestionId": "q-materials-process-1",
+      "question": "Mi a tanulási út a felkészüléstől a zárásig?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "quality-gate"
+      ],
+      "figureSelector": "#fig-materials-mi-a-tanulasi-ut-a",
+      "svgSelector": "#fig-materials-mi-a-tanulasi-ut-a svg",
+      "textFallbackSelector": "#fig-materials-mi-a-tanulasi-ut-a-text",
+      "inlineSvgHash": "27aa7b28b85f01c1e7cada85e55117dc86c91b7c66ae121cc8c226a35a03865c"
+    },
+    {
+      "visualQuestionId": "q-materials-process-2",
+      "question": "Hogyan áll össze az eredmény és annak ellenőrzése?",
+      "type": "process",
+      "disposition": "shared",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "quality-gate"
+      ],
+      "sharedDiagramId": "fig-evidence-chain",
+      "sharedHref": "modszertan/index.html#fig-evidence-chain"
+    }
+  ]
+}

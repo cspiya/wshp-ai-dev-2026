@@ -1,0 +1,44 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-responsibility-map",
+      "visualQuestionId": "q-tools-overview",
+      "question": "Melyik mechanizmus melyik feladatra való?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "rule",
+        "skill",
+        "hook",
+        "mcp"
+      ],
+      "figureSelector": "#fig-responsibility-map",
+      "svgSelector": "#fig-responsibility-map svg",
+      "textFallbackSelector": "#fig-responsibility-map-text",
+      "inlineSvgHash": "b3c162a37bb7fc9aabddc673287ba65d422289e894050cdc1c3147c4093eaa7d"
+    },
+    {
+      "id": "fig-tools-hogyan-dontesz-szabaly-skill-hook",
+      "visualQuestionId": "q-tools-decision-1",
+      "question": "Hogyan döntesz szabály, skill, hook és MCP között?",
+      "type": "decision",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "decision-tree",
+      "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli.",
+      "glossarySlugs": [
+        "rule",
+        "skill",
+        "hook",
+        "mcp"
+      ],
+      "figureSelector": "#fig-tools-hogyan-dontesz-szabaly-skill-hook",
+      "svgSelector": "#fig-tools-hogyan-dontesz-szabaly-skill-hook svg",
+      "textFallbackSelector": "#fig-tools-hogyan-dontesz-szabaly-skill-hook-text",
+      "inlineSvgHash": "c141c6a2f7dbee4164eebaffb948e5a141c3fafa89072a23bd44696658a1e57f"
+    }
+  ]
+}

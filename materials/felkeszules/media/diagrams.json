@@ -1,0 +1,40 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-setup-flow",
+      "visualQuestionId": "q-preparation-overview",
+      "question": "Mit kell előkészítened, és mi függ mitől?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "ci",
+        "preview"
+      ],
+      "figureSelector": "#fig-setup-flow",
+      "svgSelector": "#fig-setup-flow svg",
+      "textFallbackSelector": "#fig-setup-flow-text",
+      "inlineSvgHash": "37b427391a4f300056a40636e69593ea89e2d8eaa07a2c28cd9bd6bd9a1c4cd0"
+    },
+    {
+      "id": "fig-preparation-milyen-sorrendben-epulnek-egymasra-az",
+      "visualQuestionId": "q-preparation-process-1",
+      "question": "Milyen sorrendben épülnek egymásra az előkészületi lépések?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "ci",
+        "preview"
+      ],
+      "figureSelector": "#fig-preparation-milyen-sorrendben-epulnek-egymasra-az",
+      "svgSelector": "#fig-preparation-milyen-sorrendben-epulnek-egymasra-az svg",
+      "textFallbackSelector": "#fig-preparation-milyen-sorrendben-epulnek-egymasra-az-text",
+      "inlineSvgHash": "02a410cc9e42a952eae8577f91e2730da30711050bdc9c0e4b28540e84cc23b3"
+    }
+  ]
+}
