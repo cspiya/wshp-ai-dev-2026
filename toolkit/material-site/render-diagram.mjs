@@ -64,7 +64,7 @@ const SECURITY_RULES = [
   ["script element", /<script\b/i],
   ["event handler attribute", /\son[a-z]+\s*=/i],
   ["foreignObject element", /<foreignObject\b/i],
-  ["external URL reference", /(?:href|src|xlink:href)\s*=\s*["'](?:https?:)?\/\//i],
+  ["external URL reference", /(?:href|src|xlink:href)\s*=\s*["'](?:(?:https?:)?\/\/|javascript:)/i],
   ["external CSS/font reference", /@import\b|url\(\s*["']?(?:https?:)?\/\//i],
   ["data:text/html payload", /data:text\/html/i],
 ];
@@ -87,6 +87,12 @@ function loadPageManifest(pageDir) {
     for (const field of ["id", "learnerQuestion", "source", "output", "fallbackSelector"]) {
       if (typeof e[field] !== "string" || e[field].length === 0) {
         throw new Error(`diagrams.json entry ${e.id ?? "?"}: missing required field "${field}"`);
+      }
+    }
+    // Paths reach a shell on Windows (.cmd shim): keep them boring.
+    for (const field of ["source", "output"]) {
+      if (!/^[\w./-]+$/.test(e[field])) {
+        throw new Error(`diagrams.json entry ${e.id}: ${field} contains characters outside [\\w./-]: ${e[field]}`);
       }
     }
   }
@@ -127,9 +133,11 @@ function processPage(mode, pageDir) {
       continue;
     }
     const mmdNormalized = fs.readFileSync(srcPath, "utf8").replace(/\r\n/g, "\n");
-    problems.push(...securityScan(`${entry.id} source`, mmdNormalized));
+    const sourceProblems = securityScan(`${entry.id} source`, mmdNormalized);
+    problems.push(...sourceProblems);
 
     if (mode === "render") {
+      if (sourceProblems.length > 0) continue; // never render a flagged source
       renderOne(pageDir, entry);
     }
     if (!fs.existsSync(outPath)) {
@@ -174,10 +182,19 @@ export function checkPageHtml(html, file) {
     if (!alt || alt[1].trim().length === 0) problems.push(`${label}: missing or empty alt text`);
     if (!/\bwidth\s*=\s*["']\d+["']/i.test(tag) || !/\bheight\s*=\s*["']\d+["']/i.test(tag))
       problems.push(`${label}: missing intrinsic width/height`);
-    const before = html.slice(0, m.index);
-    const figureOpen = before.lastIndexOf("<figure");
-    const figureClose = html.indexOf("</figure>", m.index);
-    if (figureOpen === -1 || figureClose === -1 || html.lastIndexOf("</figure>", m.index) > figureOpen)
+    // Depth-counted, case-insensitive figure containment (handles nesting).
+    const lower = html.toLowerCase();
+    let depth = 0;
+    let figureOpen = -1;
+    for (const t of lower.slice(0, m.index).matchAll(/<figure\b|<\/figure>/g)) {
+      if (t[0] === "</figure>") depth = Math.max(0, depth - 1);
+      else {
+        depth += 1;
+        figureOpen = t.index;
+      }
+    }
+    const figureClose = lower.indexOf("</figure>", m.index);
+    if (depth === 0 || figureClose === -1)
       problems.push(`${label}: not inside a <figure>`);
     else if (!/<figcaption\b/i.test(html.slice(figureOpen, figureClose)))
       problems.push(`${label}: enclosing <figure> has no <figcaption>`);
@@ -241,7 +258,7 @@ function selfTest() {
   process.exit(0);
 }
 
-function main() {
+export function main() {
   const [mode, target] = process.argv.slice(2);
   if (mode === "--self-test") return selfTest();
   if (!mode || !["render", "check", "check-page"].includes(mode) || (!target && mode !== "--self-test")) {
@@ -266,4 +283,8 @@ function main() {
   console.log(`[render-diagram] ${mode} OK (${target})`);
 }
 
-main();
+// CLI entry point only when executed directly — importing the exported
+// helpers (securityScan, checkPageHtml) must not trigger argument parsing.
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
+}
