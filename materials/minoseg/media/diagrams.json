@@ -1,0 +1,42 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-quality-defense",
+      "visualQuestionId": "q-quality-overview",
+      "question": "Milyen védelmi rétegek őrzik a közös minőséget?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "review-finding",
+        "quality-gate",
+        "fixture"
+      ],
+      "figureSelector": "#fig-quality-defense",
+      "svgSelector": "#fig-quality-defense svg",
+      "textFallbackSelector": "#fig-quality-defense-text",
+      "inlineSvgHash": "b791d2592badea6cea49110e1e0c4d574a9c16592688bf6a45cfdfc0d77a2288"
+    },
+    {
+      "id": "fig-quality-hogyan-lesz-egy-megerositett-hibabol",
+      "visualQuestionId": "q-quality-process-1",
+      "question": "Hogyan lesz egy megerősített hibából tartós automatikus védelem?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "review-finding",
+        "quality-gate",
+        "fixture"
+      ],
+      "figureSelector": "#fig-quality-hogyan-lesz-egy-megerositett-hibabol",
+      "svgSelector": "#fig-quality-hogyan-lesz-egy-megerositett-hibabol svg",
+      "textFallbackSelector": "#fig-quality-hogyan-lesz-egy-megerositett-hibabol-text",
+      "inlineSvgHash": "b864b206761156a936f060d625f466dd45fc9f9978dd31292ba11f6e6296faf6"
+    }
+  ]
+}

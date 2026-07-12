@@ -1,0 +1,50 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-day-timeline",
+      "visualQuestionId": "q-agenda-overview",
+      "question": "Hogyan épül fel a nap, és mit adsz le az egyes blokkok végén?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "checkpoint"
+      ],
+      "figureSelector": "#fig-day-timeline",
+      "svgSelector": "#fig-day-timeline svg",
+      "textFallbackSelector": "#fig-day-timeline-text",
+      "inlineSvgHash": "d98c81b95d46a36266bb759276e4fa7f668e00b3d197a833adc0ef96042b396d"
+    },
+    {
+      "id": "fig-agenda-mikor-melyik-modul-fut-es",
+      "visualQuestionId": "q-agenda-timeline-1",
+      "question": "Mikor melyik modul fut, és mi a kimenete?",
+      "type": "timeline",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "timeline",
+      "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
+      "glossarySlugs": [
+        "checkpoint"
+      ],
+      "figureSelector": "#fig-agenda-mikor-melyik-modul-fut-es",
+      "svgSelector": "#fig-agenda-mikor-melyik-modul-fut-es svg",
+      "textFallbackSelector": "#fig-agenda-mikor-melyik-modul-fut-es-text",
+      "inlineSvgHash": "b6f6dcd31ba6724e091a38e8018863a4d66ca483cff21082a94a193191920edd"
+    },
+    {
+      "visualQuestionId": "q-agenda-timeline-2",
+      "question": "Hogyan kapcsolódnak a modulok egymáshoz?",
+      "type": "timeline",
+      "disposition": "shared",
+      "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
+      "glossarySlugs": [
+        "checkpoint"
+      ],
+      "sharedDiagramId": "fig-learning-roadmap",
+      "sharedHref": "../../index.html#fig-learning-roadmap"
+    }
+  ]
+}

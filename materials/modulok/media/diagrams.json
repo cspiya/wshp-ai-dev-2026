@@ -1,0 +1,38 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-modulok-roadmap",
+      "visualQuestionId": "q-modules-overview",
+      "question": "Melyik modul mit ad hozzá, és honnan hová lépsz?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "checkpoint"
+      ],
+      "figureSelector": "#fig-modulok-roadmap",
+      "svgSelector": "#fig-modulok-roadmap svg",
+      "textFallbackSelector": "#fig-modulok-roadmap-text",
+      "inlineSvgHash": "911bcd0bfe1ba51648147a507d767c4848b683e194e60c998f70e87136d0c3ae"
+    },
+    {
+      "id": "fig-modules-hogyan-epul-egymasra-a-nyolc",
+      "visualQuestionId": "q-modules-timeline-1",
+      "question": "Hogyan épül egymásra a nyolc modul kimenete?",
+      "type": "timeline",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "timeline",
+      "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
+      "glossarySlugs": [
+        "checkpoint"
+      ],
+      "figureSelector": "#fig-modules-hogyan-epul-egymasra-a-nyolc",
+      "svgSelector": "#fig-modules-hogyan-epul-egymasra-a-nyolc svg",
+      "textFallbackSelector": "#fig-modules-hogyan-epul-egymasra-a-nyolc-text",
+      "inlineSvgHash": "f44ac2c182167f0e432f9882eee6d166f040837c7b56090d136c3b36595a5e89"
+    }
+  ]
+}
