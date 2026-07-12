@@ -21,7 +21,7 @@ visszakereshető [evidence](../materials/fogalomtar.md#1-agentikus-fejlesztés--
 | A repó célja, határai és valódi parancsai még nincsenek a repóban | [C1 — repóidentitás](#c1--a-repó-tudja-mi-ő) | Az agent nem találgatja a munkateret és a szabályokat. |
 | A repó szabályai megvannak, de a kérés még nem jóváhagyható munkaszerződés | [C3 — spec-kapu](#c3--a-kérésből-jóváhagyott-munkaszerződés-lesz) | A viselkedés, scope és bizonyítás implementáció előtt ellenőrizhető. |
 | Van jóváhagyott spec, de a szerző önmagát ellenőrzi, vagy a kapuk csak leírások | [C4–C5 — RUG és mechanikus kapuk](#c4c5--független-review-és-mechanikus-kapuk) | A review független, a kötelező minimum pedig narráció helyett fut. |
-| Egy reprezentatív slice már végigment a teljes úton | [C6–C7 — rendszerpróba és hordozhatóság](#c6c7--rendszerpróba-legacy-transzfer-és-hordozhatóság) | Ugyanaz a működés valós terhelésen, legacy kódon és a következő csapatnál is ismételhető. |
+| Egy reprezentatív slice már végigment a teljes úton | [C6–C7 — rendszerpróba és hordozhatóság](#c6c7--rendszerpróba-és-választható-hordozhatósági-út) | Ugyanaz a működés valós terhelésen és a repóhoz illő következő kontextusban is ismételhető. |
 
 Ha egy sor állítása csak dokumentálva van, de nincs hozzá futási bizonyíték, még az előző
 checkpointnál tartasz. A C2 közös szakmai lécét nem ugorjuk át: a C1 csomaggal együtt kell
@@ -33,18 +33,22 @@ kanonizálni, mielőtt C3-ra lépsz.
 a tiltott területeket és a valódi ellenőrző parancsokat.
 
 **Legkisebb hasznos csomag:** [`AGENTS.md`](AGENTS.md) + az egyetlen kanonikus
-[`engineering-standards.md`](standards/engineering-standards.md) + a valódi gate-ekre szabott
-[`checks.project.example.json`](hooks/checks.project.example.json) másolata.
+[`engineering-standards.md`](standards/engineering-standards.md), benne a repo közvetlenül
+futtatható valódi ellenőrző parancsaival és közös Definition of Done-jával.
 
 **Másold és igazítsd:** a starter szabályait a célrepo gyökerébe; nevezd meg a missiont,
 [scope boundaryt](../materials/fogalomtar.md#scope-boundary), adat- és publikus szabályokat,
-tiltott útvonalakat és tényleges parancsokat. Az example check-konfigurációból készíts
-repo-saját, nem-example fájlt; töröld a nem létező parancsokat, ne találj ki helyettük újakat.
-A maker és a reviewer ugyanarra a standardfájlra hivatkozzon.
+tiltott útvonalakat és tényleges parancsokat. A
+[`checks.project.example.json`](hooks/checks.project.example.json) konfigurációból készíts
+repo-saját, nem-example fájlt csak akkor, ha már a későbbi mechanikus bekötést készíted elő;
+ez **opcionális C5-előkészítés**, nem a C1 készültségi feltétele. Töröld a nem létező
+parancsokat, ne találj ki helyettük újakat. A maker és a reviewer ugyanarra a
+standardfájlra hivatkozzon.
 
-**Minimum proof:** egy friss agent visszamondja a célt, az engedett scope-ot és a parancsokat;
-a konfigurált stop-check runner egy zöld smoke-úton `0`-val zár, egy szándékosan hibás negatív
-fixture-t pedig blokkol. Az issue-ban legyen exact parancs, exit code és kimeneti összefoglaló.
+**Minimum proof:** egy friss agent a repóból visszamondja a célt, az engedett scope-ot, a
+tiltott területeket és a közös minőségi lécet; a standardban dokumentált valódi parancsok
+közvetlenül lefutnak, az issue pedig rögzíti az exact parancsot és az eredményt. Stop-runner,
+CI-bekötés és blokkoló negatív fixture majd a C4–C5 út bizonyítéka.
 
 ## C3 — A kérésből jóváhagyott munkaszerződés lesz
 
@@ -89,34 +93,43 @@ stop hookba vagy CI fallbackbe. A negatív fixture bizonyítsa, hogy a hibás ú
 független findingokat, elfogadott/elutasított dispositiont, javítást és újrafuttatást. Legalább
 egy blokkoló negatív út bukik, a javított út zöld, és nincs ellenőrizetlen critical/high finding.
 
-## C6–C7 — Rendszerpróba, legacy-transzfer és hordozhatóság
+## C6–C7 — Rendszerpróba és választható hordozhatósági út
 
 **Ezt válaszd, ha:** a teljes C1–C5 út már működik egy kis változtatáson, és most azt kell
 bizonyítani, hogy nem egyszeri demo vagy egyetlen modellhez kötött trükk.
 
-**Legkisebb hasznos csomag:** a [`memory/retrieval kit`](memory/README.md) és
-[`context-budget`](checklists/context-budget.md), továbbá legacy környezethez a már létező,
-**INVENTED** adatokkal dolgozó [`legacy playbook`](legacy-playbook/README.md), a
-[`strangler-fig/YARP`](legacy-playbook/strangler-fig-yarp.md) lépés és a
-[`legacy/adoption minimum`](checklists/legacy-adoption.md). Generált UI-nál a memória része a
-meglévő [`Design Guideline`](../participant-starter/DESIGN-GUIDELINE.md) és az
-[`MCP-konfigurációs példa`](../participant-starter/.mcp.json.example); ezeket se másold vissza
-új, párhuzamos leírásként.
+**Legkisebb hasznos csomag (közös C6-alap):** a már bizonyított C1–C5 operating model alkalmazása egy
+reprezentatív workloadra, kiegészítve a [`memory/retrieval kittel`](memory/README.md) és a
+[`context-budget`](checklists/context-budget.md) ellenőrzésével. Ehhez válassz **egy**, a repód
+helyzetéhez illő C7 ágat; a többi ág nem előfeltétel.
+
+| Válaszd ezt a C7 ágat, ha… | Legkisebb kiegészítés | Az ág minimum evidence-e |
+|---|---|---|
+| A következő feature-rel akarod bizonyítani az ismételhetőséget | Ugyanaz a spec → RUG → gate → trace szerződés | Egy második, külön issue-ban végigvitt változtatás teljes trace-e ugyanazzal a minőségi léccel |
+| Modellt vagy agent harnesst cserélnél | Változatlan reprezentatív eval-workload és acceptance criteria | Összehasonlított sikeresség, minőség, költség/latencia és emberi review-terhelés; emberi váltási döntés |
+| A célrepo legacy .NET/MS-SQL környezet | Az **INVENTED** mintájú [`legacy playbook`](legacy-playbook/README.md), a [`strangler-fig/YARP`](legacy-playbook/strangler-fig-yarp.md) lépés és a [`legacy/adoption minimum`](checklists/legacy-adoption.md) | `dotnet test`: 3 passed; kontrollált mutációt elkapó characterization test; választott seam, rollback és fallback |
+| Csapatszintű bevezetés a cél | A [`legacy/adoption minimum`](checklists/legacy-adoption.md) adoption pontjai | Pilot owner, mérce, fallback és bizonyítékhoz kötött 30/60/90 kapuk |
+
+**Csak ha generált UI is van:** a meglévő
+[`Design Guideline`](../participant-starter/DESIGN-GUIDELINE.md) és
+[`MCP-konfigurációs példa`](../participant-starter/.mcp.json.example) egészíti ki a memóriát.
+Ez önmagában nem külön C7 ág; a hozzá tartozó evidence a guideline-ra hivatkozó prompt és a
+vizuális review. Ne készíts róluk párhuzamos leírást.
 
 **Másold és igazítsd:** a döntéseket
 [ADR-be](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak), a tartós szabályokat a legközelebbi `AGENTS.md`-be,
 a work state-et a trackerbe tedd. A reprezentatív workloadon tartsd változatlanul a specet,
-DoD-ot és gate-eket. Legacy kódnál előbb
+DoD-ot és gate-eket. Ezután csak a kiválasztott C7 ág assetjeit és evidence-szerződését
+igazítsd a repóhoz. Ha a legacy ágat választottad, előbb
 [characterization test](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak), majd a legolcsóbb
 [seam](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak) és egy kis
-[vertical slice](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak); rewrite csak külön emberi döntéssel. Pilotnál nevezz meg ownert, fallbacket
-és 30/60/90 kapukat.
+[vertical slice](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak); rewrite csak
+külön emberi döntéssel.
 
-**Minimum proof:** legalább egy teljes browser/preview/API/adat út és egy valódi hibaág
-evidence-e visszakereshető; a legacy sample `dotnet test` futása 3 passed eredményt ad, majd
-egy kontrollált mutációt a characterization test elkap; a következő változtatás vagy egy
-kontrollált modell/agent-harness eval ugyanazzal a minőségi léccel megismételhető. A C7 audit
-rögzíti az ownert, a maradó kockázatot és a következő bevezetési kaput.
+**Minimum proof:** C6-hoz legalább egy teljes browser/preview/API/adat út és egy valódi hibaág
+evidence-e visszakereshető. C7-hez ehhez add hozzá **csak a kiválasztott ág** fenti evidence-ét.
+A záró audit minden ágban rögzíti az ownert, a maradó kockázatot és a következő bevezetési
+kaput; nem követel legacy- vagy generált-UI bizonyítékot olyan repótól, ahol ez nem releváns.
 
 ## Kattintható, kanonikus asset-térkép
 
@@ -132,8 +145,8 @@ meglévő assetjeire mutat; egyik sort sem kell újraalkotni.
 | WEN-118 | [`trace/sample-run.md`](orchestrator/trace/sample-run.md) | Valódi, visszajátszható RUG run és hamis finding elutasítása | C4 | Run log + gépi journal + emberi merge gate |
 | WEN-185 | [`check-placeholders`](hooks/check-placeholders.mjs), [`check-notebooks`](hooks/check-notebooks.mjs), [`check-links`](hooks/check-links.mjs), [`check-public-content`](hooks/check-public-content.mjs) | Négy repószintű validator; a bekötési szerződés a [`hooks/README.md`](hooks/README.md#repo-quality-gates-wen-185) oldalon van | C5 | Exact parancs/exit code; zöld pozitív és blokkolt negatív út |
 | WEN-120 | [`memory/README.md`](memory/README.md) | Szabály, döntés, work state és retrieval helyének szétválasztása | C5–C7 | Egyetlen kanonikus forrás, tracker-trace, visszakereshető ADR/rule |
-| WEN-120 | [`DESIGN-GUIDELINE.md`](../participant-starter/DESIGN-GUIDELINE.md) | Generált UI tartós vizuális memóriája | C5–C6 | Kitöltött guideline-ra hivatkozó prompt és vizuális review |
-| WEN-122 | [`legacy-playbook/README.md`](legacy-playbook/README.md) | Safety net → seam → strangler, INVENTED .NET/MS-SQL mintán | C6–C7 | 3 passing characterization test + mutációs bukás + rollback/fallback |
+| WEN-120 | [`DESIGN-GUIDELINE.md`](../participant-starter/DESIGN-GUIDELINE.md) | Generált UI tartós vizuális memóriája, ha a repóban van generált UI | C5–C6 kiegészítő | Kitöltött guideline-ra hivatkozó prompt és vizuális review |
+| WEN-122 | [`legacy-playbook/README.md`](legacy-playbook/README.md) | Választható legacy ág: safety net → seam → strangler, INVENTED .NET/MS-SQL mintán | C6–C7, csak legacy kontextusban | 3 passing characterization test + mutációs bukás + rollback/fallback |
 
 ## Közös zárókapu
 
