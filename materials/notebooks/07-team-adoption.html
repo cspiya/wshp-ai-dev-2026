@@ -1,1 +1,224 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zárás — Hordozható operating model</title><style>body{font:18px/1.6 system-ui;max-width:960px;margin:auto;padding:32px;color:#172033}h1,h2{line-height:1.2}nav,.box{padding:16px 20px;border-radius:12px;background:#eef4ff;margin:20px 0}.check{background:#edfff4;border-left:5px solid #16864b}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd5e0;padding:10px;text-align:left}a{color:#0759b8}</style></head><body><nav><a href="00-bevezeto.html">Kezdés</a> · <a href="06-legacy-dotnet.html">← Legacy</a> · <a href="../agent-ready-repo.md">Checkpointok</a></nav><p>Csapat operating model · C7 checkpoint</p><h1>A workshop valódi záróterméke</h1><div class="box check"><strong>A rendszer új képessége:</strong> a módszer nem egyetlen ember sessionjében működik, hanem a csapat számára ismételhető, mérhető és továbbfejleszthető operating modellé válik.</div><h2>Nem a kész alkalmazás a vizsga</h2><p>A zárókérdés nem az, hogy „elkészült-e a webapp?”, hanem ez: <strong>egy következő, eddig nem ismert üzleti változtatást is végig tud-e vinni a csapat ugyanazon a megbízható úton?</strong> Az alkalmazás ennek első, real-life validációja. A valódi deliverable az újrahasználható rendszer és a bizonyíték arra, hogy működik.</p><h2>Agent-ready repo audit</h2><table><thead><tr><th>Checkpoint</th><th>Auditkérdés</th></tr></thead><tbody><tr><td>C0–C2</td><td>Egy új agent gyorsan megérti a célt, a határokat, a parancsokat és a Definition of Done-t?</td></tr><tr><td>C3</td><td>Megállítja-e a folyamatot a bizonytalan vagy nem tesztelhető üzleti igény?</td></tr><tr><td>C4</td><td>Elkülönül-e a készítő, a reviewer és a fixer szerepe, közös standard alapján?</td></tr><tr><td>C5</td><td>A fontos invariánsokat hook vagy CI kényszeríti-e ki?</td></tr><tr><td>C6</td><td>Van-e valós környezetű, végigkövethető alkalmazási bizonyíték?</td></tr><tr><td>C7</td><td>Megismételhető-e mindez másik feature-rel, emberrel, repóval, modellel vagy agent harnessszel?</td></tr></tbody></table><h2>Gyakorlat — a következő validation workload</h2><ol><li>Pontozd a saját repódat checkpointonként: nincs / részleges / bizonyított.</li><li>Válaszd ki a leggyengébb rendszerszintű láncszemet.</li><li>Fogalmazz meg egy kicsi, valós üzleti változtatást, amely ezt megterheli.</li><li>Rögzítsd előre a sikerhez szükséges evidence-et és a tulajdonost.</li></ol><p><strong>Kész, ha:</strong> van egy végrehajtható következő kísérlet, amely nem csak funkciót szállít, hanem a fejlesztési rendszer egy állítását is próbára teszi.</p><p><strong>Tipikus elakadás:</strong> az adoptációt licencvásárlásnak tekintjük; csak outputot mérünk; nincs közös standard; a pilot szándékosan túl egyszerű, ezért semmit nem bizonyít.</p><h2>A workshop mint élő portability case</h2><p>Ennek az anyagnak az elkészítése ugyanazt az állítást teszteli, mint a referenciaalkalmazás: a minőség túléli-e a session-, agent- és végrehajtóváltást? A feladatok párhuzamosan készülnek, handoff-fájlok adják át az állapotot, a review külön kontextusból érkezik, a javítást közös standard vezeti, a guardok pedig modelltől függetlenül futnak.</p><p><strong>A bizonyíték:</strong> nem minden rész ugyanolyan stílusban születik elsőre, mégis ugyanahhoz a fő gondolatmenethez, Definition of Done-hoz és ellenőrizhető állapothoz konvergál. Ez a keretrendszer feladata.</p><h2>Gyakorlat — egynapos modellváltási drill</h2><ol><li>Válassz 5–10 reprezentatív, korábban elfogadott feladatot.</li><li>Futtasd őket a jelenlegi és a jelölt végrehajtóval változatlan szerződés mellett.</li><li>Hasonlítsd össze a task successt, findingokat, költséget, latenciát és emberi review-időt.</li><li>Dokumentáld az adapterkülönbséget, a maradó kockázatot és a rollbacket.</li></ol><p><strong>Kész, ha:</strong> a csapat bizonyíték alapján egy munkanapon belül tud váltani vagy visszaállni anélkül, hogy a minőségi rendszert újratervezné.</p><h2>30 / 60 / 90 nap</h2><ul><li><strong>30 nap:</strong> egy repo, egy golden path, explicit szabályok, mérhető baseline.</li><li><strong>60 nap:</strong> több valós változtatás, RUG és mechanikus gate-ek; hibákból új regressziós védelem.</li><li><strong>90 nap:</strong> második csapat vagy repo; összehasonlítható átfutási idő, visszanyitás, review-terhelés és escaped defect.</li></ul><h2>Hazavihető csomag</h2><p>Repo-misszió és szabályok, spec- és DoD-sablon, RUG-protokoll, skillek és hookok, quality gate-ek, egy reális validation workload teljes evidence csomagja, valamint a következő 30 nap kísérleti terve.</p><div class="box"><strong>Végső állítás:</strong> az AI-assisted fejlesztés akkor vált szervezeti képességgé, amikor a megbízható eredmény nem egy jó prompttól vagy egyetlen szakértőtől függ, hanem a repóba és a csapat működésébe van beépítve — ezért a mögötte dolgozó modell szükség esetén cserélhető.</div></body></html>
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zárás — Csapat operating model és agent-ready audit</title>
+<style>
+:root{--ink:#172033;--muted:#526071;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--code:#172033}*{box-sizing:border-box}html{scroll-behavior:smooth}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1080px;margin:auto;padding:28px;color:var(--ink);background:#fff}h1,h2,h3{line-height:1.25}h1{font-size:2.15rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.6rem}nav,.box,.exercise,.decision{padding:18px 22px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint{background:var(--green);border-left:5px solid #16864b}.warning{background:var(--amber);border-left:5px solid #c47a00}.failure{background:var(--red);border-left:5px solid #ba3030}.exercise{border:2px solid #6b7f99;background:#fff}.decision{border-left:5px solid #6b4cc5;background:#f5f0ff}.label{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}code{background:var(--code);color:#f6f8ff;padding:2px 6px;border-radius:5px}.prompt{white-space:pre-wrap;background:var(--code);color:#f6f8ff;padding:16px;border-radius:9px;overflow:auto;font:14px/1.5 ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.96rem}th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid .box{margin:0}.score{white-space:nowrap;font-weight:700}.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.timeline>div{border:1px solid var(--line);border-top:5px solid var(--blue);border-radius:10px;padding:15px}@media(max-width:780px){body{padding:18px}.grid,.timeline{grid-template-columns:1fr}h1{font-size:1.7rem}table{font-size:.88rem}}.blank{display:block;border-bottom:1px dashed #77869a;min-height:1.7rem;margin:.25rem 0 1rem}footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav aria-label="Modulnavigáció"><a href="00-bevezeto.html">Kezdés</a> · <a href="06-legacy-dotnet.html">← Előző: legacy belépési terv</a> · <a href="../agent-ready-repo.md">Checkpointok és végső DoD →</a></nav>
+
+<header>
+<p class="label">Csapat operating model · C7 checkpoint · 45 perc</p>
+<h1>Az egyéni trükkből ismételhető csapatképesség</h1>
+<p>A workshop záróterméke nem egy elkészült webapp és nem egy jól sikerült AI-session. Egy olyan fejlesztési működés, amelyben a következő ismeretlen változtatást is ugyanazon spec-, review-, gate- és evidence-láncon tudja végigvinni egy másik ember vagy modell.</p>
+</header>
+
+<section class="box checkpoint">
+<p class="label">Checkpoint és résztvevői artifact először</p>
+<p><strong>C7 új képesség:</strong> a rendszer tulajdonosokkal, közös mércével, auditálható trace-szel, kontrollált modell- és agent-futtatókörnyezet-cserével (agent harness) és fokozatos bevezetési tervvel csapat-szinten ismételhető.</p>
+<p><strong>A blokk végére elkészül:</strong> (1) teljes C0–C7 evidence audit; (2) egy következő validációs workload; (3) személyes <code>adoption-30-60-90.md</code> ownerrel, mércével, stop-feltétellel és Plan B-vel.</p>
+<p><strong>Validáció:</strong> az audit nem azt kérdezi, hogy „megvan-e a fájl?”, hanem hogy van-e reprodukálható bizonyíték arra, hogy a rendszer blokkol, javít és újrafuttatható.</p>
+</section>
+
+<section>
+<h2>1. Mi épült fel a nap során?</h2>
+<table>
+<thead><tr><th>Ív</th><th>Operating artifact</th><th>Megbízható új képesség</th><th>Validációs evidence</th></tr></thead>
+<tbody>
+<tr><td>C0 → C2</td><td>Mission, scope, repo-instrukció, kanonikus standard, DoD, valódi gate-ek</td><td>Az agent nem találgatja a célt és a minőségi lécet.</td><td>Egy új session megtalálja és helyesen futtatja a kapukat.</td></tr>
+<tr><td>C3</td><td>Spec, plan, tasks, acceptance criteria, humán döntéskapu</td><td>A bizonytalan kérés implementálás előtt megáll.</td><td><code>DECISION REQUIRED</code> és jóváhagyott példák.</td></tr>
+<tr><td>C4</td><td>Maker, friss kontextusú reviewer, fixer, <a href="../fogalomtar.md">RUG</a> trace</td><td>A zöld pipeline-on túli hibát független kontroll keresi.</td><td>Finding → reprodukció → fix → regresszió → re-review.</td></tr>
+<tr><td>C5</td><td>Hookok, CI, negatív fixture, public-content guard</td><td>A kötelező szabály nem csak promptban él.</td><td>Dokumentált failing és passing exit code.</td></tr>
+<tr><td>C6</td><td>Real-life validációs workload</td><td>A framework üzleti szabályon, adaton, boundaryn és deployon is működik.</td><td>Unit/contract/E2E, preview és független review evidence.</td></tr>
+<tr><td>C7</td><td>Legacy belépési terv, toolkit, eval, owner és 30/60/90 terv</td><td>A működés másik feature-re, repóra és végrehajtóra átvihető.</td><td>Második kontrollált futás és auditálható összehasonlítás.</td></tr>
+</tbody>
+</table>
+<div class="box"><strong>Végső vizsgakérdés:</strong> egy új, valós üzleti változtatást ugyanebben a repóban ismét végig tudnánk vinni a specifikációtól a függetlenül review-zott, valódi környezetben bizonyított eredményig?</div>
+</section>
+
+<section>
+<h2>2. Döntés: miért egy csapat, egy repo, egy golden path?</h2>
+<div class="decision">
+<p class="label">Miért-először döntési doboz</p>
+<p><strong>Az alapprobléma:</strong> ha egyszerre sok csapat, tool és use case indul, nem különíthető el, hogy a módszer hibája, a lokális környezet vagy a bevezetési zaj okozta az eredményt.</p>
+<p><strong>A választásunk:</strong> egy ownerrel rendelkező squad, egy reprezentatív repo, egy kicsi golden-path változtatás és előre rögzített evidence-léc.</p>
+<p><strong>Miért ez?</strong> A kis pilot gyors visszacsatolást ad, a hibákból regressziós védelem készül, és a következő repo már bizonyított csomagot kap. A cél nem a legnagyobb első output, hanem az ismételhetőség bizonyítása.</p>
+<p><strong>Alternatívák:</strong> a vállalati big-bang gyorsnak látszik, de összekeveri a problémákat; a csak licencvásárlás eszközt ad működési modell nélkül; az önkéntes egyéni kísérletek tanulsága nehezen összehasonlítható. Ezek később skálázhatnak, de nem jó első kontrollált lépésként.</p>
+</div>
+</section>
+
+<section>
+<h2>3. BA–fejlesztő–platform konvergencia</h2>
+<p>A csapat akkor konvergál, ha nem külön átadásokat optimalizál, hanem ugyanazt a bizonyítékláncot birtokolja.</p>
+<table><thead><tr><th>Szerep</th><th>Elsődleges felelősség</th><th>Nem delegálható kapu</th><th>Közös artifact</th></tr></thead><tbody>
+<tr><td>BA / product</td><td>Tesztelhető üzleti példák, scope, prioritás, döntési státusz</td><td>Az agent nem találhat ki üzleti szabályt vagy acceptance értéket.</td><td>Jóváhagyott spec és Given–When–Then táblázat</td></tr>
+<tr><td>Fejlesztő</td><td>Határ, implementáció, automatizált teszt, reprodukálható parancs</td><td>A „működik nálam” nem helyettesíti a gate-et és a trace-t.</td><td>Diff, teszteredmény, run log</td></tr>
+<tr><td>Reviewer / QA</td><td>Friss kontextusú kockázatkeresés és finding-verifikáció</td><td>A review-javaslatot is reprodukálni kell; nem gospel.</td><td>Finding → evidence → disposition</td></tr>
+<tr><td>Platform / security</td><td>Hozzáférés, CI, secret-, adat- és deploy-policy</td><td>A safety boundary nem prompt-szintű kérés.</td><td>Policy, negatív fixture és audit log</td></tr>
+<tr><td>Operating-model owner</td><td>Standard, kivételek, metrikák, tanulságok visszaforgatása</td><td>Név szerinti owner nélkül a rendszer elavul.</td><td>Kanonikus standard és döntésnapló</td></tr>
+</tbody></table>
+</section>
+
+<section>
+<h2>4. Hands-on A — teljes agent-ready repo és evidence audit</h2>
+<div class="exercise">
+<p class="label">Résztvevői gyakorlat · 15 perc</p>
+<h3>Cél</h3>
+<p>A saját repó C0–C7 állapotát bizonyíték alapján pontozni, és kiválasztani a leggyengébb rendszerszintű láncszemet.</p>
+<h3>Előfeltételek</h3>
+<ul><li>A workshop során készített repo és artifactok, vagy a résztvevői starter.</li><li>Hozzáférés a saját git diffhez és a lefuttatott gate-ek kimenetéhez.</li></ul>
+<h3>Pontozási szabály</h3>
+<ul><li><strong>0 — nincs:</strong> artifact vagy owner sem azonosítható.</li><li><strong>1 — dokumentált:</strong> le van írva, de nincs futási bizonyíték.</li><li><strong>2 — bizonyított:</strong> van reprodukálható passing evidence és ahol releváns, bizonyított failing út.</li></ul>
+<h3>Pontos lépések</h3>
+<ol>
+<li>Nyisd meg az <a href="../agent-ready-repo.md">agent-ready Definition of Done</a> dokumentumot.</li>
+<li>A lenti táblában minden sorhoz adj 0/1/2 pontot. Pusztán a fájl meglétéért legfeljebb 1 jár.</li>
+<li>Minden 2 ponthoz írj reprodukálható evidence-hivatkozást: fájl + parancs/run + eredmény.</li>
+<li>Jelöld a legalacsonyabb pontú sort. Holtversenynél azt válaszd, amelynek hibája a legtöbb további kaput teszi bizonytalanná.</li>
+<li>Fogalmazz meg egy kicsi következő workloadot, amely ezt a láncszemet terheli, és írd le előre a passing és failing evidence-et.</li>
+</ol>
+<table><thead><tr><th>Checkpoint</th><th>Mit kell látnod?</th><th>Saját pont</th><th>Evidence / hiány</th></tr></thead><tbody>
+<tr><td>C0</td><td>A repo technikai kiinduló állapota és a még hiányzó működési elemek visszakereshetők.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C1</td><td>Mission, scope, boundaries, nyelv/adat szabály, valódi parancsok; egy új session helyesen tájékozódik.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C2</td><td>Egy kanonikus standard, DoD, architecture boundary és gépi gate; maker és reviewer ugyanarra hivatkozik.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C3</td><td>Jóváhagyott spec, tesztelhető acceptance, in/out scope és működő döntéskapu.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C4</td><td>Elkülönült maker/reviewer/fixer, deduplikált finding, reprodukció, fix és re-review trace.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C5</td><td>Automatikus gate-ek, public guard, negatív fixture, pontos parancs és exit code.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C6</td><td>Valós környezetű teljes út üzleti szabállyal, adattal, boundaryval, böngészős ellenőrzéssel és review-fixszel.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+<tr><td>C7</td><td>Következő feature, legacy leképezés, másik végrehajtó evalja, owner, mérce és bevezetési terv.</td><td class="score">0 / 1 / 2</td><td>________________________________</td></tr>
+</tbody></table>
+<h3>Várt eredmény</h3>
+<p>Nem általános „érettségi érzés”, hanem egy pontozott evidence-térkép és egy név szerint megfogalmazott következő kísérlet.</p>
+<h3>Kész, ha</h3>
+<ul><li>mind a nyolc, C0–C7 audit-sor kapott pontot és indoklást;</li><li>minden 2 ponthoz reprodukálható evidence tartozik;</li><li>van egy leggyengébb láncszem, owner és következő validációs workload;</li><li>a workload sikere és blokkoló/failing útja előre megfigyelhető.</li></ul>
+<h3>Elmentendő evidence</h3>
+<p>A kitöltött audit; a hivatkozott commitok/runok; a következő workload specifikációja; a pontozást jóváhagyó BA és fejlesztő neve/szerepe.</p>
+<h3>Tipikus elakadások</h3>
+<table><thead><tr><th>Elakadás</th><th>Helyreállítás</th></tr></thead><tbody>
+<tr><td>Minden sor 2 pont, de nincs linkelt run.</td><td>Minősítsd vissza 1-re; a dokumentált szándék nem futási evidence.</td></tr>
+<tr><td>Csak az elkészült feature-t értékelitek.</td><td>Térj vissza a spec, review, failing gate és trace artifactjaihoz.</td></tr>
+<tr><td>Nincs valódi környezet vagy szolgáltatás.</td><td>Jelöld a hiányt; használj lokális/recorded evidence-et, de ne nevezd production-bizonyítéknak.</td></tr>
+</tbody></table>
+<p><strong>Plan B:</strong> ha a saját repo nem elérhető, auditáld a participant startert. A hiányzó evidence legitim 0/1 pont; a cél a rés felismerése, nem a hibátlan pontszám.</p>
+</div>
+</section>
+
+<section>
+<h2>5. Modell- és agent-harness csere: eval, nem hitvita</h2>
+<div class="decision">
+<p class="label">Miért-először döntési doboz</p>
+<p><strong>Az alapprobléma:</strong> modell vagy tool elérhetősége, költsége és képessége változhat. Ha a minőségi rendszer prompttrükkökben él, a váltáskor újra kell építeni.</p>
+<p><strong>A választásunk:</strong> ugyanazt a reprezentatív, korábban elfogadott workloadot változatlan spec, DoD, standard és gate mellett futtatjuk a jelölt végrehajtóval.</p>
+<p><strong>Miért ez?</strong> Így az eltérés a végrehajtóhoz köthető, és összevethető a feladatsikeresség, a valid findingok, a költség, a latencia és az emberi review-idő. A döntést evidence, nem márkapreferencia zárja.</p>
+<p><strong>Alternatívák:</strong> az új modell azonnali alapértelmezetté tétele gyors, de kontroll nélküli; a szintetikus benchmark tájékoztató, de nem a saját boundarykat és gate-eket terheli; a régi modell örök rögzítése üzletmeneti kockázat.</p>
+</div>
+<ol>
+<li>Válassz egy kicsi, korábban elfogadott és publikus-safe feladatot.</li>
+<li>Fagyaszd be a specet, standardot, teszteket, token-/költségmérési módot és review-lécet.</li>
+<li>Futtasd tiszta sessionben a jelenlegi és a jelölt végrehajtóval.</li>
+<li>Független reviewerrel ellenőriztesd mindkét eredményt; azonosítsd a harness-specifikus adapterkülönbséget.</li>
+<li>Rögzítsd: elfogadás, maradó kockázat, alapértelmezett döntés és rollback.</li>
+</ol>
+<div class="warning box"><strong>Plan B:</strong> ha nincs idő vagy kvóta két teljes futásra, készítsd elő az eval-csomagot, és csak a jelölt végrehajtóval futtasd. Ne állíts modellparitást összehasonlító evidence nélkül.</div>
+</section>
+
+<section>
+<h2>6. Hands-on B — saját 30 / 60 / 90 napos bevezetési terv</h2>
+<div class="exercise">
+<p class="label">Résztvevői gyakorlat · 15 perc</p>
+<h3>Cél</h3>
+<p>Az audit legfontosabb rését egy végrehajtható, ownerrel és megfigyelhető eredménnyel rendelkező bevezetési tervvé alakítani.</p>
+<h3>Előfeltételek</h3>
+<ul><li>Az előző gyakorlat kitöltött C0–C7 auditja és kiválasztott leggyengébb láncszeme.</li><li>Egy megnevezhető, publikus-safe pilot repo; ha ilyen még nincs, használd a workshop gyakorló repóját.</li><li>A BA/product és fejlesztői jóváhagyó szerep azonosítható, vagy döntési kapuként jelölhető.</li></ul>
+<h3>Pontos lépések</h3>
+<ol>
+<li>Hozd létre a repo gyökerében az <code>adoption-30-60-90.md</code> fájlt.</li>
+<li>Másold be az alábbi technikai artifact-sablont.</li>
+</ol>
+<div class="prompt"># Agent-ready adoption plan
+
+## Baseline
+- Pilot squad and repository:
+- Weakest audited checkpoint:
+- Operating-model owner:
+- Baseline evidence:
+
+## First 30 days — prove one path
+- Change/workload:
+- Spec and human gate owner:
+- Required mechanical gates:
+- Independent review owner:
+- Success evidence:
+- Stop condition and fallback:
+
+## Days 31–60 — repeat and harden
+- Additional representative changes:
+- Findings converted into regression protection:
+- Metrics reviewed as signals, not quotas:
+- Model/harness portability drill:
+- Success evidence:
+- Stop condition and fallback:
+
+## Days 61–90 — transfer carefully
+- Second team or repository:
+- Toolkit elements transferred:
+- Local adaptations and owners:
+- Evidence required before expansion:
+- Rollback:
+
+## Decision log
+| Date | Evidence | Decision | Owner | Revisit trigger |
+|---|---|---|---|---|</div>
+<ol start="3">
+<li>A 30 napos szakaszban nevezz meg pontosan egy pilot repót, egy workloadot, egy operating-model ownert és egy humán spec-kaput.</li>
+<li>A 60 napos szakaszban adj meg legalább két reprezentatív változtatást és azt, hogyan lesz a review findingból regressziós védelem.</li>
+<li>A 90 napos szakaszban csak evidence-feltétellel engedd a második repo/csapat bevonását. Ne másold át vakon a stack-specifikus részeket.</li>
+<li>Minden szakaszhoz írj stop-feltételt és fallbacket. Példa: ha a failing gate nem reprodukálható, nincs további agent-autonómia.</li>
+<li>Olvassátok át BA és fejlesztő párosban: a siker üzleti és technikai oldala is megfigyelhető? Név szerint van owner és döntési pont?</li>
+<li>Mentsd el. Ha új, még nem követett fájl, futtasd a <code>git add -N adoption-30-60-90.md</code> parancsot, majd nézd meg a diffet: <code>git diff -- adoption-30-60-90.md</code>.</li>
+</ol>
+<h3>Várt eredmény</h3>
+<p>Egy személyre és szervezeti valóságra szabott terv, amely nem AI-eszközök bevezetési listája, hanem egy bizonyítékkal bővülő operating model.</p>
+<h3>Kész, ha</h3>
+<ul><li>a 30/60/90 szakaszoknak konkrét workloadja, ownerje és evidence-e van;</li><li>a BA/product és fejlesztői kapu egyaránt látható;</li><li>a findingból regressziós védelem készül;</li><li>a második csapat csak előre rögzített feltétellel indul;</li><li>minden fázishoz stop-feltétel, fallback és rollback tartozik.</li></ul>
+<h3>Elmentendő evidence</h3>
+<p>A terv diffje; az audit baseline; a jóváhagyott pilot issue; havonta a run logok, findingok és döntésnapló. A Linear issue legyen a munkaállapot és lease forrása; ne hozz létre párhuzamos aktív handoff fájlt.</p>
+<h3>Tipikus elakadások</h3>
+<table><thead><tr><th>Elakadás</th><th>Helyreállítás</th></tr></thead><tbody>
+<tr><td>„Minden fejlesztő kapjon hozzáférést” a 30 napos cél.</td><td>Írj helyette egy bizonyítandó üzleti utat, ownerrel és minőségi gate-ekkel.</td></tr>
+<tr><td>A metrika egyéni teljesítménykvótává válik.</td><td>Használd rendszerszintű jelként: átfutás, valid finding, visszanyitás, review-terhelés és agent-költség.</td></tr>
+<tr><td>A második csapat más stacken dolgozik.</td><td>A mission/spec/RUG/evidence részt vidd át; a parancsokat, boundarykat és hookokat lokálisan validáld.</td></tr>
+</tbody></table>
+<p><strong>Plan B:</strong> ha most nincs szervezeti felhatalmazás, készíts személyes 30 napos tervet egy saját, publikus-safe gyakorló repóra. A 60/90 szakaszt jelöld döntési kapuként, ne találj ki szervezeti ownert.</p>
+</div>
+</section>
+
+<section>
+<h2>7. Minimális mérőkép — jelzések, nem kvóták</h2>
+<table><thead><tr><th>Jelzés</th><th>Mit segít megérteni?</th><th>Mit nem bizonyít önmagában?</th></tr></thead><tbody>
+<tr><td>Spec-kaputól elfogadott evidence-ig eltelt idő</td><td>Hol vár a rendszer döntésre, review-ra vagy környezetre?</td><td>Nem bizonyít minőséget.</td></tr>
+<tr><td>Valid reviewer finding és visszanyitás</td><td>A friss review talál-e reprodukálható problémát, és tanul-e belőle a rendszer?</td><td>A sok finding nem automatikusan jó vagy rossz.</td></tr>
+<tr><td>Regressziós védelemmé alakított finding</td><td>A hiba egyszeri javításból tartós guarddá vált-e?</td><td>Nem helyettesíti a kockázatalapú review-t.</td></tr>
+<tr><td>Emberi review-idő és agent-költség</td><td>A konfiguráció teljes ráfordítása javul-e?</td><td>Az olcsó vagy gyors futás nem egyenlő elfogadható eredménnyel.</td></tr>
+<tr><td>Escaped defect / rollback</td><td>Mely bizonyíték hiányzott kiadás előtt?</td><td>Kis mintán nem versenytábla.</td></tr>
+</tbody></table>
+</section>
+
+<section>
+<h2>8. Záró kapu — mit viszel haza?</h2>
+<div class="timeline">
+<div><p class="label">Holnap</p><strong>Audit + egy pilot</strong><p>A leggyengébb checkpointot terhelő kis workload, név szerinti ownerrel.</p></div>
+<div><p class="label">30 nap</p><strong>Bizonyított golden path</strong><p>Specből review-zott evidence-ig legalább egy teljes, reprodukálható út.</p></div>
+<div><p class="label">90 nap</p><strong>Kontrollált átvitel</strong><p>Második környezet csak akkor, ha az elsőből ismételhető toolkit és döntési trace lett.</p></div>
+</div>
+<div class="box checkpoint"><strong>Vidd haza:</strong> az AI-assisted fejlesztés akkor szervezeti képesség, amikor a minőség a repóban élő szerződésből, a csapat szerepeiből és reprodukálható evidence-ből következik — ezért a következő feature, a következő repo és szükség esetén a következő modell is kontrolláltan kezelhető.</div>
+<p><strong>Végső önellenőrzés:</strong> audit kitöltve · leggyengébb checkpoint kiválasztva · következő workload megnevezve · 30/60/90 terv elmentve · owner és BA/dev kapu látható · Plan B és rollback rögzítve.</p>
+</section>
+
+<footer><a href="06-legacy-dotnet.html">← Előző: legacy adaptáció</a> · <a href="../agent-ready-repo.md">Agent-ready Definition of Done és checkpointok</a> · <a href="../fogalomtar.md">Fogalomtár</a></footer>
+</body>
+</html>

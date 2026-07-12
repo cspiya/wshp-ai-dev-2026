@@ -1,1 +1,173 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Legacy — A validált működési modell átvitele</title><style>body{font:18px/1.6 system-ui;max-width:960px;margin:auto;padding:32px;color:#172033}h1,h2{line-height:1.2}nav,.box{padding:16px 20px;border-radius:12px;background:#eef4ff;margin:20px 0}.check{background:#edfff4;border-left:5px solid #16864b}code{background:#172033;color:#f6f8ff;padding:2px 6px;border-radius:5px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd5e0;padding:10px;text-align:left}a{color:#0759b8}</style></head><body><nav><a href="00-bevezeto.html">Kezdés</a> · <a href="05-qa-e2e-token.html">← G5</a> · <a href="07-team-adoption.html">Adoptáció →</a> · <a href="../agent-ready-repo.md">Checkpointok</a></nav><p>Legacy blokk · C7 checkpoint</p><h1>A validált működési modell átvitele .NET/SQL Server/Azure DevOps környezetbe</h1><div class="box check"><strong>A rendszer új képessége:</strong> a greenfieldben bizonyított operációs modell technológiától független részei kontrolláltan átvihetők egy meglévő rendszerbe.</div><h2>Mit viszünk át?</h2><p>Nem a Next.js alkalmazást és nem annak mappastruktúráját másoljuk. A hordozható érték: küldetés és határok, agent-szabályok, jóváhagyott spec, Definition of Done, kis változtatási egység, RUG, mechanikus gate-ek és auditálható bizonyíték.</p><table><thead><tr><th>Greenfield tanulság</th><th>Legacy megfelelő</th></tr></thead><tbody><tr><td>Golden path</td><td>Egy jól körülhatárolt, teljesen bizonyított referencia-változtatás.</td></tr><tr><td>Port és adapter</td><td>Cserélhető seam, például interface mögötti adat- vagy külső szolgáltatás.</td></tr><tr><td>Unit + contract + E2E</td><td>Characterization test + komponens/contract teszt + kritikus üzleti út.</td></tr><tr><td>GitHub gate</td><td>Azure Repos branch policy és Azure Pipeline quality gate.</td></tr><tr><td>Kis vertical slice</td><td>Strangler lépés, nem big-bang újraírás.</td></tr></tbody></table><h2>Biztonsági sorrend</h2><ol><li>Repo-térkép: build, teszt, deploy, tulajdonosok, kockázatos határok.</li><li>Characterization test a jelenlegi viselkedésre.</li><li>Legkisebb seam kialakítása.</li><li>Egy kis üzleti változtatás specből, RUG-gal.</li><li>Pipeline-bizonyíték és visszagörgetési terv.</li></ol><h2>Gyakorlat — legacy belépési terv</h2><p>Válassz egy valós, alacsony blast-radiusú változtatást. Írd le az ismert jelenlegi viselkedést, a hiányzó biztonsági hálót, a seamet, a szükséges gate-eket és az első olyan evidence csomagot, amely alapján kiadható.</p><p><strong>Kész, ha:</strong> a terv nem feltételez teljes újraírást, megnevezi a visszagörgetést, és az első lépés önmagában is csökkenti a bizonytalanságot.</p><p><strong>Tipikus elakadás:</strong> az agent dokumentáció nélkül kapja meg az egész solutiont; refaktor és üzleti változtatás összekeveredik; a zöld buildet valós viselkedési bizonyítéknak tekintjük.</p><h2>Mit bizonyított előtte a referenciaalkalmazás?</h2><p>Tiszta környezetben láthatóvá tette, hogyan néz ki az ép bizonyítéklánc. Ez összehasonlítási alap a legacy hiányainak felismeréséhez — nem kód, amit vakon át kell másolni.</p><div class="box"><strong>Hazavihető mondat:</strong> legacy környezetben először a változtatás biztonságos útját építjük meg, és csak azon küldjük át az agent által készített funkciót.</div><h2>Modellfüggetlenség legacy környezetben</h2><p>A characterization test, a seam, a kis változtatási egység, a pipeline gate és a rollback-terv nem függhet egyetlen providertől. Legacy rendszerben különösen fontos, hogy modellkieséskor se vesszen el a változtatás biztonságos útja.</p></body></html>
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Legacy — Biztonsági háló az első változtatás előtt</title>
+<style>
+:root{--ink:#172033;--muted:#526071;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--code:#172033}*{box-sizing:border-box}html{scroll-behavior:smooth}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1040px;margin:auto;padding:28px;color:var(--ink);background:#fff}h1,h2,h3{line-height:1.25}h1{font-size:2.15rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.6rem}nav,.box,.exercise,.decision{padding:18px 22px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint{background:var(--green);border-left:5px solid #16864b}.warning{background:var(--amber);border-left:5px solid #c47a00}.failure{background:var(--red);border-left:5px solid #ba3030}.exercise{border:2px solid #6b7f99;background:#fff}.decision{border-left:5px solid #6b4cc5;background:#f5f0ff}.label{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}code{background:var(--code);color:#f6f8ff;padding:2px 6px;border-radius:5px}.prompt{white-space:pre-wrap;background:var(--code);color:#f6f8ff;padding:16px;border-radius:9px;overflow:auto;font:14px/1.5 ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid .box{margin:0}@media(max-width:760px){body{padding:18px}.grid{grid-template-columns:1fr}h1{font-size:1.7rem}}.blank{display:block;border-bottom:1px dashed #77869a;min-height:1.7rem;margin:.25rem 0 1rem}footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav aria-label="Modulnavigáció"><a href="00-bevezeto.html">Kezdés</a> · <a href="05-qa-e2e-token.html">← Előző: real-life rendszerpróba</a> · <a href="07-team-adoption.html">Következő: csapat-adoptáció →</a> · <a href="../agent-ready-repo.md">Agent-ready checkpointok</a></nav>
+
+<header>
+<p class="label">Legacy blokk · C7 checkpoint · 75 perc</p>
+<h1>Előbb biztonsági háló, utána modernizáció</h1>
+<p>Nem a greenfield stackjét másoljuk át. A már bizonyított fejlesztési működést visszük be egy meglévő .NET / SQL Server / Azure DevOps környezetbe úgy, hogy az első lépés <strong>csökkentse a bizonytalanságot</strong>, és ne növelje a változtatás kockázatát.</p>
+</header>
+
+<section class="box checkpoint">
+<p class="label">Checkpoint és résztvevői artifact először</p>
+<p><strong>C7 új képesség:</strong> a csapat egy rosszul ismert legacy viselkedéshez ismételhető, auditálható belépési utat tud építeni, amely modelltől és agent harness-től függetlenül véd.</p>
+<p><strong>A blokk végére elkészül:</strong> egy <code>legacy-entry-plan.md</code>, benne viselkedési leltár, biztonsági háló, legkisebb cserepont, egy kis változtatási egység, BA/dev kapu, gate-ek, evidence és rollback.</p>
+<p><strong>Alkalmazási bizonyíték:</strong> egy teljesen <em>kitalált</em> jelentkezés-besorolási esethez előbb rögzítjük a jelenlegi viselkedést, és csak utána tervezünk változtatást.</p>
+</section>
+
+<section>
+<h2>1. Mit viszünk át a greenfield rendszerpróbából?</h2>
+<p>Az előző modulban az alkalmazás azt bizonyította, hogy a spec → maker → független review → javítás → gépi gate → evidence lánc valós terhelésen is működik. Legacy környezetben ugyanennek a láncnak először a <strong>biztonságos belépési pontját</strong> kell megteremteni.</p>
+<table>
+<thead><tr><th>Agent-ready elem</th><th>.NET / SQL Server / Azure DevOps megfelelő</th><th>Elmentendő evidence</th></tr></thead>
+<tbody>
+<tr><td>Mission, scope, boundary</td><td>Solution-térkép, érinthető projektek, tiltott adat- és deploy-területek, owner</td><td>Jóváhagyott scope és boundary lista</td></tr>
+<tr><td>Kanonikus standard + DoD</td><td>Repo-szintű instrukció, coding standard, branch policy, valódi build/test parancs</td><td>A szabályra mutató link és sikeres/failing gate</td></tr>
+<tr><td>Spec-kapu</td><td>Megfigyelt jelenlegi viselkedés külön az új üzleti igénytől</td><td>BA által jóváhagyott példatáblázat</td></tr>
+<tr><td>RUG</td><td>Készítő ≠ reviewer; a findingot reprodukálni kell</td><td>Finding → reprodukció → fix → újrafuttatás trace</td></tr>
+<tr><td>Kis vertical slice</td><td>Egy üzleti út a teljes solution átírása helyett</td><td>Korlátozott diff és hatásvizsgálat</td></tr>
+<tr><td>Mechanikus garancia</td><td><code>dotnet test</code>, adatbázis-teszt, pipeline policy, rollback-próba</td><td>Parancs, exit code, teszteredmény, pipeline run</td></tr>
+</tbody>
+</table>
+<div class="box"><strong>.NET-es mentális modell:</strong> az agent-ready repo nem új framework. Olyan, mint amikor a solution köré együtt tesszük oda a build scriptet, az architecture teszteket, a Definition of Done-t, a branch policyt és az üzemeltetési runbookot — azzal a különbséggel, hogy ezekből az agent is közvetlenül dolgozik.</div>
+</section>
+
+<section>
+<h2>2. Döntés: miért a safety net az első változtatás?</h2>
+<div class="decision">
+<p class="label">Miért-először döntési doboz</p>
+<p><strong>Az alapprobléma:</strong> a legacy kód szándéka, tényleges viselkedése és dokumentációja eltérhet. Az agent gyorsan készíthet koherensnek látszó refaktort egy téves feltételezésből.</p>
+<p><strong>A választásunk:</strong> a jelenlegi viselkedést előbb megfigyelhető példákkal és <a href="../fogalomtar.md">characterization testtel</a> rögzítjük; csak ezután nyitunk modernizációs feladatot.</p>
+<p><strong>Miért ez?</strong> A teszt nem állítja, hogy a jelenlegi működés helyes. Azt teszi bizonyíthatóvá, hogy a következő változtatás mit őrzött meg és mit változtatott meg szándékosan. Ezzel kisebb a <a href="../fogalomtar.md">blast radius</a>, és a BA is látható példákról dönt.</p>
+<p><strong>Alternatívák:</strong> a teljes újraírás egyszerre túl sok ismeretlen változót mozgat; a csak manuális regresszió nem ismételhető; az agent által utólag generált teszt könnyen a már átírt kódot igazolja. Ezek lehetnek későbbi eszközök, de nem helyettesítik a változtatás előtti baseline-t.</p>
+</div>
+<div class="warning box"><strong>Fontos:</strong> a zöld build csak azt bizonyítja, hogy a kód lefordult. A zöld characterization teszt azt bizonyítja, hogy egy megnevezett viselkedés változatlan. Az új üzleti szabály helyességét továbbra is acceptance criteria és BA-jóváhagyás dönti el.</div>
+</section>
+
+<section>
+<h2>3. Kitalált közös eset: jelentkezés-besorolás</h2>
+<p>Az alábbi adat és történet teljesen kitalált. Egy régi .NET Framework szolgáltatás az <code>EnrollmentPolicy.Classify</code> metódussal jelentkezéseket sorol feldolgozási kategóriába. Nincs tesztje; az SQL-tárolt eljárás is módosítja az eredményt. Az új kérés: „a nonprofit partnerek csoportos jelentkezése kapjon támogatott kategóriát”.</p>
+<table>
+<thead><tr><th>Megfigyelt bemenet</th><th>Jelenlegi kimenet</th><th>Státusz</th></tr></thead>
+<tbody>
+<tr><td>2 hely, standard partner</td><td><code>STANDARD</code></td><td>Megőrzendő baseline</td></tr>
+<tr><td>10 hely, standard partner</td><td><code>GROUP</code></td><td>Megőrzendő baseline</td></tr>
+<tr><td>10 hely, nonprofit partner</td><td>Nem tisztázott</td><td><strong>DECISION REQUIRED</strong></td></tr>
+</tbody>
+</table>
+<p>A harmadik sorhoz az agent nem találhat ki kategóriát, jogosultsági definíciót vagy kivételszabályt. Előbb a BA/product kapu zárja a döntést, utána készül acceptance teszt.</p>
+</section>
+
+<section>
+<h2>4. Trénerdemó és hands-on: szándékosan nem ugyanaz</h2>
+<div class="grid">
+<div class="box"><p class="label">Trénerdemó · nézd, ne kövesd</p><p>A tréner egy saját, kitalált lokális .NET mintán mutatja meg a failing → passing characterization tesztet, majd opcionálisan a saját Azure DevOps projektjében a branch policyt és pipeline evidence-et.</p><p><strong>Nincs résztvevői TFS/Azure DevOps belépés, írás vagy külön környezetépítés.</strong></p></div>
+<div class="box"><p class="label">Hands-on · ezt készítsd el</p><p>A saját workshop repódban egy platformfüggetlen <code>legacy-entry-plan.md</code> készül. Nem kell hozzá .NET SDK, SQL Server vagy Azure DevOps hozzáférés.</p><p>A tervet később a saját szervezetetek valódi parancsaival és ownerjeivel egészítitek ki.</p></div>
+</div>
+
+<h3>Demó forgatókönyv és látható eredmény</h3>
+<ol>
+<li>A tréner futtatja a már létező baseline tesztet: <code>dotnet test --filter Category=Characterization</code>.</li>
+<li>Egy kontrollált hibával megmutatja, hogy a teszt pirosra vált; majd visszaállítja a hibát.</li>
+<li>Külön commitban kialakít egy <a href="../fogalomtar.md">seamet</a> egy interface mögött, üzleti viselkedés módosítása nélkül.</li>
+<li>Újrafuttatja ugyanazt a tesztet, és megmutatja a diffet, az exit code-ot és a pipeline run-t.</li>
+</ol>
+<p><strong>Várt eredmény:</strong> a résztvevő lát egy piros tesztet, amely valóban blokkol, majd egy zöld tesztet ugyanarra a baseline-ra. Nem csak képernyőn megjelenő „siker” feliratot.</p>
+<div class="warning box"><strong>Demó Plan B:</strong> ha a lokális build vagy Azure DevOps nem elérhető, a tréner előre rögzített, időbélyegzett run logot és diffet mutat. A tanulási cél a bizonyítéklánc, nem a szolgáltatás UI-ja.</div>
+</section>
+
+<section>
+<h2>5. Hands-on — készíts legacy belépési tervet</h2>
+<div class="exercise">
+<p class="label">Résztvevői gyakorlat · 30 perc</p>
+<h3>Cél</h3>
+<p>Egyetlen, alacsony kockázatú legacy változtatáshoz olyan belépési tervet készíteni, amelyben a safety net megelőzi a modernizációt, és BA valamint fejlesztő ugyanazt az evidence-et értékeli.</p>
+<h3>Előfeltételek</h3>
+<ul><li>A workshop repód megnyitható és van benne dokumentálható munkaterület.</li><li>Választhatod a fenti kitalált esetet. Valódi ügyféladatot, connection stringet, árat vagy belső URL-t ne használj.</li><li>Ha saját esetet hozol, anonimizáld szerepkörre és viselkedésre.</li></ul>
+<h3>Pontos lépések</h3>
+<ol>
+<li>Hozd létre a repo gyökerében a <code>legacy-entry-plan.md</code> fájlt.</li>
+<li>Másold bele az alábbi angol struktúrát; a technikai artifact maradjon angol.</li>
+</ol>
+<div class="prompt"># Legacy entry plan
+
+## Mission and scope
+- Intended change:
+- In scope:
+- Out of scope:
+- Owner and approval gate:
+
+## Observed behavior before change
+| Given | When | Then observed | Source/evidence | BA status |
+|---|---|---|---|---|
+
+## Safety net before modernization
+- Characterization test to add:
+- Command that must pass:
+- Negative check proving the gate can fail:
+- Data backup/isolation requirement:
+
+## Smallest safe seam and slice
+- Seam:
+- One vertical slice:
+- Forbidden refactoring:
+
+## Delivery and rollback
+- Review roles:
+- Pipeline/branch gate:
+- Release evidence:
+- Rollback trigger and action:
+- Remaining risk:</div>
+<ol start="3">
+<li>Tölts ki legalább három megfigyelt példasort. Jelöld <code>DECISION REQUIRED</code>-ként azt, amit nem tudsz bizonyítani.</li>
+<li>Nevezd meg az első characterization tesztet és azt a negatív próbát, amely bizonyítja, hogy a gate hibánál tényleg megáll.</li>
+<li>Jelölj ki egyetlen cserepontot és egyetlen kis <a href="../fogalomtar.md">vertical slice-ot</a>. Írd le azt is, milyen refaktort tiltasz ebben a lépésben.</li>
+<li>Írd le a review-szerepeket, a release evidence-et, a rollback kiváltó feltételét és konkrét műveletét.</li>
+<li>Olvasd át BA-szemmel: minden üzleti állítás példával vagy döntéskapuval látható? Olvasd át fejlesztő-szemmel: minden gate-hez valódi parancs vagy pótlási feladat tartozik?</li>
+<li>Mentsd el a fájlt. Ha új, még nem követett fájl, futtasd a <code>git add -N legacy-entry-plan.md</code> parancsot, majd készíts diffet: <code>git diff -- legacy-entry-plan.md</code>.</li>
+</ol>
+<h3>Várt, megfigyelhető eredmény</h3>
+<p>Egy review-zható terv, amelyben a jelenlegi viselkedés, az új igény és a modernizáció külön szakasz; a safety net az első technikai változtatás.</p>
+<h3>Kész, ha</h3>
+<ul><li>legalább három Given–When–Then baseline sor van forrással és BA státusszal;</li><li>van failing-gate próba, pontos tesztparancs vagy név szerint kiosztott pótlási feladat;</li><li>a seam, a kis slice, a tiltott refaktor és a rollback konkrét;</li><li>az ismeretlen üzleti szabály nincs kitalálva;</li><li>a diff nem tartalmaz érzékeny vagy valódi ügyféladatot.</li></ul>
+<h3>Elmentendő evidence</h3>
+<p>A <code>legacy-entry-plan.md</code> diffje; a BA döntési státusza; később a failing és passing teszt kimenete exit code-dal; reviewer finding és újrafuttatási trace; pipeline run és rollback-próba eredménye.</p>
+<h3>Tipikus elakadások és helyreállítás</h3>
+<table><thead><tr><th>Elakadás</th><th>Helyreállítás</th></tr></thead><tbody>
+<tr><td>„Az egész solutiont előbb meg kell érteni.”</td><td>Szűkíts egy megfigyelhető üzleti útra, egy ownerre és egy változtatási határra.</td></tr>
+<tr><td>A teszt már az új kívánt viselkedést rögzíti.</td><td>Válaszd szét a characterization és acceptance suite-ot; az előbbi a változtatás előtti tényt rögzíti.</td></tr>
+<tr><td>Nincs tesztelhető seam.</td><td>Első feladatként csak megfigyelési pontot vagy interface-wrappert alakíts ki, viselkedésváltozás nélkül.</td></tr>
+<tr><td>Az adatbázis állapota nem izolálható.</td><td>Használj anonimizált snapshotot vagy tranzakciósan visszagörgetett tesztet; éles adatra ne futtass agent-kísérletet.</td></tr>
+</tbody></table>
+<p><strong>Hands-on Plan B:</strong> ha nincs saját legacy eset vagy repo, töltsd ki a sablont a fenti kitalált jelentkezés-besorolási példára papíron vagy egy lokális szövegfájlban. A blokk elfogadási feltétele a döntési és evidence-terv, nem a toolhozzáférés.</p>
+</div>
+</section>
+
+<section>
+<h2>6. BA–fejlesztő konvergencia: ugyanazt a kockázatot zárjuk</h2>
+<table><thead><tr><th>Kapu</th><th>BA felelőssége</th><th>Fejlesztő felelőssége</th><th>Közös evidence</th></tr></thead><tbody>
+<tr><td>Baseline</td><td>Megnevezi, mely megfigyelt viselkedés elfogadott, hibás vagy ismeretlen.</td><td>Reprodukálható tesztté és adat-fixture-ré alakítja a megfigyelést.</td><td>Ugyanaz a példatáblázat és passing characterization teszt.</td></tr>
+<tr><td>Új szabály</td><td>Lezárja a <code>DECISION REQUIRED</code> sorokat.</td><td>Nem implementál bizonytalan döntést.</td><td>Jóváhagyott acceptance criteria.</td></tr>
+<tr><td>Kiadás</td><td>Elfogadja az üzleti eredményt és a maradó kockázatot.</td><td>Bizonyítja a gate-eket, kompatibilitást és rollbacket.</td><td>Run log: spec → teszt → finding → fix → pipeline → döntés.</td></tr>
+</tbody></table>
+<p>Ez a közös trace akadályozza meg, hogy a BA „csak ticketet írjon”, a fejlesztő pedig „csak zöld buildet” adjon át. A két nézőpont ugyanazon ellenőrizhető példákon találkozik.</p>
+</section>
+
+<section>
+<h2>7. Tovább a csapatszintre</h2>
+<p>A legacy belépési terv még csak egy biztonságos változtatási út. A következő modulban ebből csapat-szokás lesz: owner, pilot-repo, metrikák, modellcsere-próba, 30/60/90 terv és teljes agent-ready evidence audit.</p>
+<div class="box checkpoint"><strong>Vidd haza:</strong> legacy környezetben az első agentikus deliverable nem a refaktor, hanem a reprodukálható biztonsági háló és a döntési trace, amelyen a változtatás biztonságosan átmehet.</div>
+</section>
+
+<footer><a href="05-qa-e2e-token.html">← Előző modul</a> · <a href="07-team-adoption.html">Következő: csapat operating model és audit →</a> · <a href="../fogalomtar.md">Fogalomtár</a></footer>
+</body>
+</html>
