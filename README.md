@@ -36,11 +36,10 @@ kitalált rendszerpróbája. Az alkalmazás nem váltja ki és nem előzi meg a 
 ```text
 TERMÉK — AGENT-READY FEJLESZTÉSI KERETRENDSZER
 
-C0          C1            C2          C3         C4          C5          C6          C7
-diagnózis → repo-alapok → szállítás → spec-kapu → RUG-loop → garanciák → bizonyíték → adaptáció
-     │          │             │           │           │           │           │           │
-     └──────────┴─────────────┴───────────┴───────────┴───────────┴───────────┴───────────┘
-                                      ↓ validálja
+C0 üres repo → C1 repoidentitás → C2 közös szakmai léc → C3 munkaszerződés
+→ C4 független review → C5 gépi kapuk → C6 rendszerpróba → C7 hordozhatóság
+
+A teljes C0–C7 keretrendszert validálja ↓
 KITALÁLT VALIDÁCIÓS WORKLOAD
 üzleti szabály + adat + UI + preview + tesztek + review-evidence
 ```
@@ -49,14 +48,14 @@ Ugyanez szemantikus táblázatként:
 
 | Checkpoint | Mit adunk hozzá a működéshez? | Milyen bizonyíték jelzi, hogy működik? |
 |---|---|---|
-| **C0 — Diagnózis** | Megnevezzük a jelenlegi hiányokat és a célállapotot. | Rögzített kiinduló állapot és következő döntés. |
-| **C1 — Repo-alapok** | Küldetés, határok, szabályok és kanonikus standard. | Az ember és az agent ugyanazt a munkaszerződést olvassa. |
-| **C2 — Szállítás** | Futtatható ellenőrzések és elkülönített szállítási út. | Reprodukálható helyi ellenőrzés, CI és preview. |
-| **C3 — Spec-kapu** | Jóváhagyott spec, terv, feladatok és elfogadási kritériumok. | Az implementáció előtt ellenőrizhető a feladat jelentése és határa. |
-| **C4 — [RUG-loop](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak)** | Külön builder, friss kontextusú reviewer és visszaellenőrzött javítás. | A review-megállapítások sorsa és a javítás bizonyítéka visszakövethető. |
-| **C5 — Garanciák** | [Szabály, skill, hook és gépi gate](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak), valamint projektmemória a megfelelő helyen. | A fontos elvárások nem csak promptként, hanem kikényszeríthető ellenőrzésként élnek. |
-| **C6 — Bizonyíték** | A teljes alkalmazási út rendszerpróbája. | A kitalált workload UI-, API-, adat- és preview-útja ellenőrzött. |
-| **C7 — Adaptáció** | Legacy-átvitel, csapatműködés és 30/60/90 napos bevezetés. | Saját környezetre szabott, mérhető következő lépések. |
+| **C0 — Üres repo** | Van technikai alap, de még nincs közös cél, szabály, minőségi léc vagy bizonyítható „kész”. | Rögzített kiinduló állapot és következő döntés. |
+| **C1 — A repo tudja, mi ő** | Küldetés, scope, szabályok, érinthető és tiltott területek, valamint valódi parancsok kerülnek a repóba. | Az ember és az agent ugyanabból a repoidentitásból indul. |
+| **C2 — Van közös szakmai léc** | Egyetlen kanonikus engineering standard, Definition of Done, architekturális határok és gépesíthető szabályok adják a mércét. | A léc közös, hivatkozható és linttel vagy teszttel kikényszeríthető. |
+| **C3 — A kérésből munkaszerződés lesz** | Jóváhagyott spec, terv, feladatok és elfogadási kritériumok. | Az implementáció előtt ellenőrizhető a feladat jelentése és határa. |
+| **C4 — Szétválik a szerző és a bíráló** | Külön builder, friss kontextusú reviewer és visszaellenőrzött javítás alkot [RUG-loopot](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak). | A review-megállapítások sorsa és a javítás bizonyítéka visszakövethető. |
+| **C5 — A kötelező rész mechanikusan fut** | [Szabály, skill, hook és gépi gate](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak), valamint projektmemória a megfelelő helyen. | A fontos elvárások nem csak promptként, hanem reprodukálható helyi ellenőrzésben és CI-ben élnek. |
+| **C6 — Kitalált, reprezentatív rendszerpróba** | A teljes alkalmazási út validálja a fejlesztési keretrendszert. | A kitalált workload UI-, API-, adat- és preview-útja ellenőrzött. |
+| **C7 — Hordozható operating model** | Legacy-átvitel, csapatműködés és 30/60/90 napos bevezetés. | Saját környezetre szabott, mérhető következő lépések. |
 
 Az egyes checkpointok részletes artifact- és evidence-szerződése az
 [agent-ready repo térképen](materials/agent-ready-repo.md) olvasható.
