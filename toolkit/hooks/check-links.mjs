@@ -19,10 +19,13 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, statSync, mkdtempSync, writeFileSync, mkdirSync, rmSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, resolve, join } from "node:path";
+import { dirname, resolve, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_PUBLICATION_BASE = "https://cspiya.github.io/wshp-ai-dev-2026";
+const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const SITE_MANIFEST = join(REPO_ROOT, "toolkit/material-site/site-manifest.json");
+const GENERATED_DOWNLOAD_ROOT = join(REPO_ROOT, "downloads");
 const PUBLICATION_ROUTES = [
   "/",
   "/materials/notebooks/00-bevezeto.html",
@@ -74,12 +77,18 @@ const strictMdRouting = rawArgs.includes("--strict-md-routing");
 const selfTest = rawArgs[0] === "--self-test";
 const fileArgs = rawArgs.filter((a) => !a.startsWith("--"));
 const plannedCanonicalTargets = new Set();
-if (fileArgs.length === 0 && existsSync("toolkit/material-site/site-manifest.json")) {
+const approvedDownloads = new Set();
+if (existsSync(SITE_MANIFEST)) {
   try {
-    const manifest = JSON.parse(readFileSync("toolkit/material-site/site-manifest.json", "utf8"));
-    for (const route of manifest.routes ?? []) {
-      if (typeof route.source === "string") plannedCanonicalTargets.add(resolve(route.source).toLowerCase());
+    const manifest = JSON.parse(readFileSync(SITE_MANIFEST, "utf8"));
+    if (fileArgs.length === 0) {
+      for (const route of manifest.routes ?? []) {
+        if (typeof route.source === "string")
+          plannedCanonicalTargets.add(resolve(REPO_ROOT, route.source).toLowerCase());
+      }
     }
+    for (const download of manifest.downloads ?? [])
+      if (typeof download === "string") approvedDownloads.add(download.replaceAll("\\", "/"));
   } catch {
     // The dedicated manifest validator reports malformed input. This legacy
     // migration checker simply falls back to existence-only behavior.
@@ -99,7 +108,24 @@ if (
   process.exit(2);
 }
 
-function checkFile(file, contents, { strictMd }) {
+function generatedDownloadPath(resolved, downloadRoot = GENERATED_DOWNLOAD_ROOT) {
+  const rel = relative(downloadRoot, resolved);
+  if (!rel || rel === ".." || rel.startsWith(`..${sep}`) || resolve(downloadRoot, rel) !== resolved)
+    return null;
+  return rel.replaceAll("\\", "/");
+}
+
+function checkFile(
+  file,
+  contents,
+  {
+    strictMd,
+    plannedTargets = plannedCanonicalTargets,
+    downloadAllowlist = approvedDownloads,
+    downloadRoot = GENERATED_DOWNLOAD_ROOT,
+    sourceRoot = REPO_ROOT,
+  }
+) {
   const failures = [];
   const warnings = [];
   for (const pattern of linkPatterns) {
@@ -110,13 +136,26 @@ function checkFile(file, contents, { strictMd }) {
       if (!target) continue;
       const line = contents.slice(0, match.index).split("\n").length;
       const resolved = resolve(dirname(file), decodeURIComponent(target));
+      const download = generatedDownloadPath(resolved, downloadRoot);
+      if (download) {
+        if (!downloadAllowlist.has(download)) {
+          failures.push(
+            `${file}:${line}: generated download "${raw}" is not approved by toolkit/material-site/site-manifest.json`
+          );
+        } else if (!existsSync(resolve(sourceRoot, download))) {
+          failures.push(
+            `${file}:${line}: approved generated download "${raw}" has no source file "${download}"`
+          );
+        }
+        continue;
+      }
       if (!existsSync(resolved)) {
         // During the HTML migration, glossary and foundation pages may link
         // to a canonical route whose authored source belongs to a later,
         // explicitly manifested content lane. The final site validator still
         // requires every source/output; this legacy checker must not call an
         // approved planned route a broken arbitrary link.
-        if (plannedCanonicalTargets.has(resolved.toLowerCase())) continue;
+        if (plannedTargets.has(resolved.toLowerCase())) continue;
         failures.push(`${file}:${line}: broken internal link "${raw}"`);
         continue;
       }
@@ -163,9 +202,58 @@ if (selfTest) {
       ok = false;
     }
   }
+  const generatedRoot = join(dir, "downloads");
+  const sourceRoot = join(dir, "sources");
+  mkdirSync(join(generatedRoot, "approved"), { recursive: true });
+  mkdirSync(join(sourceRoot, "approved"), { recursive: true });
+  writeFileSync(join(sourceRoot, "approved", "present.md"), "download source\n");
+  writeFileSync(join(generatedRoot, "unapproved-existing.md"), "unapproved generated file\n");
+  const generatedCases = [
+    [
+      "approved generated download",
+      '<a href="downloads/approved/present.md">download</a>',
+      new Set(["approved/present.md"]),
+      0,
+    ],
+    [
+      "unknown generated download",
+      '<a href="downloads/unknown.md">download</a>',
+      new Set(["approved/present.md"]),
+      1,
+    ],
+    [
+      "existing but unapproved generated download",
+      '<a href="downloads/unapproved-existing.md">download</a>',
+      new Set(["approved/present.md"]),
+      1,
+    ],
+    [
+      "missing generated download source",
+      '<a href="downloads/approved/missing.md">download</a>',
+      new Set(["approved/missing.md"]),
+      1,
+    ],
+  ];
+  for (const [name, content, allowlist, expectedFailures] of generatedCases) {
+    const result = checkFile(join(dir, "page.html"), content, {
+      strictMd: true,
+      downloadAllowlist: allowlist,
+      downloadRoot: generatedRoot,
+      sourceRoot,
+      plannedTargets: new Set(),
+    });
+    if (result.failures.length !== expectedFailures) {
+      console.error(
+        `[links] self-test FAILED: ${name} produced ${result.failures.length} failure(s), expected ${expectedFailures}`
+      );
+      ok = false;
+    }
+  }
   rmSync(dir, { recursive: true, force: true });
   if (!ok) process.exit(1);
-  console.log(`[links] self-test passed (${cases.length} fixtures behaved as intended)`);
+  console.log(
+    `[links] self-test passed (${cases.length + generatedCases.length} fixtures behaved as intended)`
+  );
   process.exit(0);
 }
 

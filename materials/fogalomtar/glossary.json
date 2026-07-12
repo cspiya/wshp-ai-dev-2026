@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "registryVersion": "2.0.0",
+  "registryVersion": "2.0.1",
   "visualCoverage": {
     "diagramId": "fig-terms-to-modules",
     "strategy": "A látható térkép modulonként jellemző fogalmakat emel ki; a teljes szöveges megfelelő és ez a nyilvántartás mind az 57 fogalom elsődleges tananyaghelyét rögzíti.",
@@ -126,7 +126,7 @@
       "avoid": ["validation gate", "önjóváhagyás"],
       "exampleHu": "A spec végén a Product Owner az előre kijelölt döntési pontnál APPROVED vagy BLOCKED állapotot rögzít.",
       "related": ["spec", "scope", "owner"],
-      "usedIn": ["/materials/modulok/03-specifikacio/", "/materials/modulok/08-csapatbevezetes/"]
+      "usedIn": ["/materials/modulok/03-specifikacio/"]
     },
     {
       "slug": "review",
@@ -203,7 +203,7 @@
       "avoid": ["orkesztrátor", "karmester-agent"],
       "exampleHu": "Az orchestrator agent külön munkaterületet ad a készítőnek és a független ellenőrzőnek.",
       "related": ["coding-agent", "rug", "owner"],
-      "usedIn": ["/materials/modulok/04-fuggetlen-review/", "/materials/modulok/08-csapatbevezetes/"]
+      "usedIn": ["/materials/modulok/04-fuggetlen-review/"]
     },
     {
       "slug": "trace",
@@ -214,7 +214,7 @@
       "avoid": ["tracker-trace", "futásnyom"],
       "exampleHu": "A visszakövetési napló összeköti a készítő commitját, a review-megállapításokat és a javítás utáni teszteredményt.",
       "related": ["commit", "provenance", "review-finding"],
-      "usedIn": ["/materials/modulok/04-fuggetlen-review/", "/materials/modulok/08-csapatbevezetes/"]
+      "usedIn": ["/materials/modulok/04-fuggetlen-review/"]
     },
     {
       "slug": "branch",
@@ -368,7 +368,7 @@
       "avoid": ["C0–C7", "bizonyítható képesség"],
       "exampleHu": "A modul végi állomáson a résztvevő megmutatja az elkészült fájlt és lefuttatja a hozzá tartozó ellenőrzést.",
       "related": ["decision-gate", "quality-gate", "trace"],
-      "usedIn": ["/materials/", "/materials/napirend/"]
+      "usedIn": ["/materials/"]
     },
     {
       "slug": "artifact",
@@ -434,7 +434,7 @@
       "avoid": ["repóalkotmány", "repository constitution résztvevői magyarázat nélkül"],
       "exampleHu": "A specifikációs csomag első fájlja a repo alapszabályait rögzíti, és minden későbbi tervnek ezekhez kell igazodnia.",
       "related": ["repository-rules", "spec", "definition-of-done"],
-      "usedIn": ["/materials/modulok/03-specifikacio/", "/toolkit/utmutatok/specifikacio/"]
+      "usedIn": ["/toolkit/utmutatok/specifikacio/"]
     },
     {
       "slug": "canonical",
@@ -445,7 +445,7 @@
       "avoid": ["kanonikus asset-térkép", "kanonikus minden közös fájlra"],
       "exampleHu": "A fogalmak kijelölt elsődleges forrása a registry; az oldalak nem találnak ki helyi definíciókat.",
       "related": ["baseline", "repository-rules", "project-memory"],
-      "usedIn": ["/materials/fogalomtar/", "/materials/modszertan/"]
+      "usedIn": ["/materials/fogalomtar/"]
     },
     {
       "slug": "reference-task",
@@ -577,7 +577,7 @@
       "avoid": ["operating model minden mondatban", "egyéni AI-trükk"],
       "exampleHu": "A működési modell rögzíti, ki írhat specifikációt, ki hagyja jóvá, és mikor kötelező a független review.",
       "related": ["owner", "pilot", "golden-path"],
-      "usedIn": ["/materials/modulok/08-csapatbevezetes/", "/materials/modszertan/"]
+      "usedIn": ["/materials/modulok/08-csapatbevezetes/"]
     },
     {
       "slug": "owner",
@@ -617,7 +617,7 @@
       "preferred": "bevált mintaút",
       "english": "golden path",
       "definitionHu": "Jól dokumentált, végig ellenőrzött alapfolyamat, amelyet a csapat a gyakori feladatok első választásaként követhet és szükség esetén tudatosan módosíthat.",
-      "aliases": ["golden path"],
+      "aliases": ["golden path", "bevált mintaútvonal"],
       "avoid": ["referencia-slice", "egyetlen kötelező út"],
       "exampleHu": "A bevált mintaút megmutatja, hogyan jut el egy kis változtatás a jóváhagyott spectől a merge utáni ellenőrzésig.",
       "related": ["reference-task", "operating-model", "pilot"],

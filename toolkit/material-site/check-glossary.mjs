@@ -21,18 +21,76 @@ function pageForRoute(site, route) {
   const relative = route === '/' ? 'index.html' : `${route.replace(/^\//, '')}index.html`;
   return path.join(site, ...relative.split('/'));
 }
+function teachingContent(html) {
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
+  // The generated shell is outside <main>. Keep authored headings, captions
+  // and text equivalents in scope; only omit raw SVG internals because their
+  // accessible teaching equivalent is the surrounding HTML figure content.
+  return (main?.[1] ?? html).replace(/<svg\b[\s\S]*?<\/svg>/gi, '');
+}
+const CASE_SUFFIXES = ['', 't', 'at', 'et', 'ot', 'öt', 'nak', 'nek', 'ban', 'ben', 'ba', 'be', 'ból', 'ből', 'ról', 'ről', 'tól', 'től', 'ra', 're', 'hoz', 'hez', 'höz', 'nál', 'nél', 'on', 'en', 'ön', 'ért', 'ig', 'ként', 'kor', 'ul', 'ül', 'vá', 'vé', 'val', 'vel'];
+const NUMBER_SUFFIXES = ['k', 'ak', 'ek', 'ok', 'ök'];
+const POSSESSIVE_SUFFIXES = ['a', 'e', 'á', 'é', 'ja', 'je', 'já', 'jé', 'am', 'em', 'om', 'öm', 'ad', 'ed', 'od', 'öd', 'unk', 'ünk', 'atok', 'etek', 'otok', 'ötök', 'uk', 'ük', 'aim', 'eim', 'jaim', 'jeim', 'aink', 'eink', 'jaink', 'jeink', 'aitok', 'eitek', 'jaitok', 'jeitek', 'aik', 'eik', 'jaik', 'jeik'];
+const HUNGARIAN_MULTIGRAPHS = ['dzs', 'cs', 'dz', 'gy', 'ly', 'ny', 'sz', 'ty', 'zs'];
+function isCaseSuffix(base, suffix) {
+  if (CASE_SUFFIXES.includes(suffix)) return true;
+  const last = [...base].at(-1);
+  return Boolean(last && suffix.startsWith(last) && ['al', 'el', 'á', 'é'].includes(suffix.slice(last.length)));
+}
+function isHungarianInflection(needle, suffix) {
+  if (isCaseSuffix(needle, suffix)) return true;
+  if (NUMBER_SUFFIXES.some((number) => suffix.startsWith(number) && isCaseSuffix(`${needle}${number}`, suffix.slice(number.length)))) return true;
+  return POSSESSIVE_SUFFIXES.some((possessive) => suffix.startsWith(possessive) && isCaseSuffix(`${needle}${possessive}`, suffix.slice(possessive.length)));
+}
+function assimilatedSurfaceForms(needle) {
+  const multigraph = HUNGARIAN_MULTIGRAPHS.find((candidate) => needle.endsWith(candidate));
+  if (!multigraph) return [];
+  const doubled = `${multigraph[0]}${multigraph}`;
+  const stem = needle.slice(0, -multigraph.length);
+  return ['al', 'el', 'á', 'é'].map((ending) => `${stem}${doubled}${ending}`);
+}
+function wholeSurfaceIndex(text, surface) {
+  let at = text.indexOf(surface);
+  while (at >= 0) {
+    const before = at === 0 ? '' : text[at - 1];
+    const after = at + surface.length === text.length ? '' : text[at + surface.length];
+    if (!/[\p{L}\p{N}]/u.test(before) && !/[\p{L}\p{N}]/u.test(after)) return at;
+    at = text.indexOf(surface, at + 1);
+  }
+  return -1;
+}
+function firstTermIndex(text, term) {
+  const lower = text.toLocaleLowerCase('hu-HU');
+  const needle = String(term).toLocaleLowerCase('hu-HU');
+  const assimilatedAt = assimilatedSurfaceForms(needle)
+    .map((surface) => wholeSurfaceIndex(lower, surface))
+    .filter((at) => at >= 0)
+    .sort((a, b) => a - b)[0];
+  let at = lower.indexOf(needle);
+  while (at >= 0) {
+    const before = at === 0 ? '' : lower[at - 1];
+    const tail = lower.slice(at + needle.length);
+    const suffix = tail.match(/^[\p{L}]+/u)?.[0] ?? '';
+    if (!/[\p{L}\p{N}]/u.test(before) && isHungarianInflection(needle, suffix)) return Math.min(at, assimilatedAt ?? at);
+    at = lower.indexOf(needle, at + 1);
+  }
+  return assimilatedAt ?? -1;
+}
 function firstOccurrence(html, candidates) {
   let activeHref = null;
-  for (const token of html.replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<style\b[\s\S]*?<\/style>/gi, '').match(/<[^>]+>|[^<]+/g) ?? []) {
+  for (const token of teachingContent(html).replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<style\b[\s\S]*?<\/style>/gi, '').match(/<[^>]+>|[^<]+/g) ?? []) {
     if (/^<a\b/i.test(token)) activeHref = token.match(/href=(?:"([^"]*)"|'([^']*)')/i)?.[1] ?? token.match(/href=(?:"([^"]*)"|'([^']*)')/i)?.[2] ?? null;
     else if (/^<\/a/i.test(token)) activeHref = null;
     else if (!token.startsWith('<')) {
-      const lower = token.toLocaleLowerCase('hu-HU');
-      const found = candidates.map((term) => ({ term, at: lower.indexOf(String(term).toLocaleLowerCase('hu-HU')) })).filter(({ at }) => at >= 0).sort((a, b) => a.at - b.at)[0];
+      const found = candidates.map((term) => ({ term, at: firstTermIndex(token, term) })).filter(({ at }) => at >= 0).sort((a, b) => a.at - b.at)[0];
       if (found) return { ...found, href: activeHref };
     }
   }
   return null;
+}
+function exactGlossaryHref(href, slug, route) {
+  if (route === '/materials/fogalomtar/' && href?.toLocaleLowerCase('hu-HU') === `#${slug.toLocaleLowerCase('hu-HU')}`) return true;
+  return Boolean(href && new RegExp(`fogalomtar/(?:index\\.html)?#${slug}$`, 'i').test(href));
 }
 
 export function validateGlossary({ source, site, phase }) {
@@ -74,7 +132,7 @@ export function validateGlossary({ source, site, phase }) {
       const candidates = [record.preferred, record.english, ...array(record.aliases)].filter(Boolean);
       const found = firstOccurrence(html, candidates);
       if (!found) { failures.push(`${record.slug}: usedIn page does not use the term: ${route}`); continue; }
-      if (!found.href || !new RegExp(`fogalomtar/(?:index\\.html)?#${record.slug}$`, 'i').test(found.href)) failures.push(`${record.slug}: first use is not linked to its exact glossary anchor on ${route}`);
+      if (!exactGlossaryHref(found.href, record.slug, route)) failures.push(`${record.slug}: first use is not linked to its exact glossary anchor on ${route}`);
     }
   }
   return failures;

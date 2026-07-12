@@ -4,14 +4,15 @@ The first fully-built vertical slice of the training webshop: the workshop
 catalog (course CRUD). **To add a feature module, copy this folder's layout
 and imitate its patterns** (ADR:
 [docs/adr/0001-workshops-is-the-golden-path.md](../../../docs/adr/0001-workshops-is-the-golden-path.md)).
-Coming next in the same shape: `registrations/` (status flow),
-`pricing/` (pure domain logic, WEN-141), `checkout/` (PaymentPort + fake adapter).
+The adjacent slices follow the same module-boundary and vertical-slice conventions,
+adapted to their responsibilities: `registrations/` owns the status flow, `pricing/`
+contains pure domain logic, and `checkout/` owns the PaymentPort plus its fake adapter.
 
 ## Layout
 
 | Piece | What lives here |
 |---|---|
-| `domain/workshop.ts` | Workshop entity as Zod schemas — the single source of validation for API, form, and tests. Read-side dates are strict UTC ISO. No business rules yet (those arrive with `pricing`, WEN-141) |
+| `domain/workshop.ts` | Workshop entity as Zod schemas — the single source of validation for API, form, and tests. Read-side dates are strict UTC ISO. Pricing rules belong to the separate `pricing` slice. |
 | `application/workshops.router.ts` | Use-cases as a tRPC router factory + the `WorkshopRepo` port |
 | `application/workshops.router.test.ts` | Router contract tests over the port's in-memory double (no DB) |
 | `infra/schema.ts` | Drizzle `workshops` table — migrations via `npm run db:generate` |

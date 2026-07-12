@@ -36,19 +36,6 @@
           "takeaway": "A fejlesztési rendszer a hazavihető termék; a referenciaalkalmazás annak próbapadja."
         },
         {
-          "id": "q-root-route-map",
-          "question": "Melyik élethelyzetből melyik területre vezet az utad?",
-          "type": "decision",
-          "glossarySlugs": [
-            "agent-ready-repo",
-            "reference-task",
-            "golden-path"
-          ],
-          "coverage": "page-local",
-          "diagramId": "fig-route-map",
-          "takeaway": "A workshop előtt, közben és után más terület adja a következő használható lépést."
-        },
-        {
           "id": "q-root-learning-roadmap",
           "question": "Hogyan épül egymásra a nyolc modul?",
           "type": "timeline",
@@ -1929,6 +1916,43 @@
       ]
     }
   ],
+  "compatibilityRoutes": {
+    "sunset": "2026-08-15",
+    "routes": [
+      {
+        "output": "materials/notebooks/00-bevezeto.html",
+        "canonical": "/materials/modulok/01-agentikus-fejlesztes/"
+      },
+      {
+        "output": "materials/notebooks/01-greenfield-setup.html",
+        "canonical": "/materials/modulok/02-repo-felkeszitese/"
+      },
+      {
+        "output": "materials/notebooks/02-spec-driven.html",
+        "canonical": "/materials/modulok/03-specifikacio/"
+      },
+      {
+        "output": "materials/notebooks/03-orchestrator-rug.html",
+        "canonical": "/materials/modulok/04-fuggetlen-review/"
+      },
+      {
+        "output": "materials/notebooks/04-rules-skills-hooks.html",
+        "canonical": "/materials/modulok/05-szabalyok-es-kapuk/"
+      },
+      {
+        "output": "materials/notebooks/05-qa-e2e-token.html",
+        "canonical": "/materials/modulok/06-rendszerellenorzes/"
+      },
+      {
+        "output": "materials/notebooks/06-legacy-dotnet.html",
+        "canonical": "/materials/modulok/07-legacy-rendszer/"
+      },
+      {
+        "output": "materials/notebooks/07-team-adoption.html",
+        "canonical": "/materials/modulok/08-csapatbevezetes/"
+      }
+    ]
+  },
   "assets": {
     "required": [
       "assets/site.css",

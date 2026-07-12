@@ -3,12 +3,24 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { FROZEN_PRESENTATION, FROZEN_ROUTES, validateManifest } from './check-manifest.mjs';
+import { FROZEN_COMPATIBILITY_OUTPUTS, FROZEN_PRESENTATION, FROZEN_ROUTES, validateManifest } from './check-manifest.mjs';
 
-function fixture(routes) {
+function compatibilityRoutes(overrides = {}) {
+  return {
+    sunset: '2026-08-15',
+    routes: [...FROZEN_COMPATIBILITY_OUTPUTS].map((output) => {
+      const alias = output.slice('materials/'.length);
+      const canonical = [...FROZEN_PRESENTATION].find(([, presentation]) => presentation[1] === alias)?.[0];
+      assert.ok(canonical, `missing canonical alias for ${output}`);
+      return { output, canonical };
+    }),
+    ...overrides,
+  };
+}
+function fixture(routes, compatibility = compatibilityRoutes()) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-manifest-'));
   fs.mkdirSync(path.join(root, 'toolkit/material-site'), { recursive: true });
-  fs.writeFileSync(path.join(root, 'toolkit/material-site/site-manifest.json'), JSON.stringify({ routes }));
+  fs.writeFileSync(path.join(root, 'toolkit/material-site/site-manifest.json'), JSON.stringify({ routes, compatibilityRoutes: compatibility }));
   return root;
 }
 function route(id = '/', overrides = {}) {
@@ -76,4 +88,22 @@ test('final rejects an empty generated site even when every canonical source exi
   const failures = validateManifest({ source: root, site, phase: 'final' });
   assert.ok(failures.some((x) => x.includes('final output missing: index.html')));
   assert.ok(failures.some((x) => x.includes('frozen title/alias mismatch')));
+});
+
+test('compatibility metadata rejects missing target, duplicate old path, wrong sunset/canonical and unsafe absolute output', () => {
+  const base = compatibilityRoutes();
+  const broken = structuredClone(base);
+  broken.sunset = '2026-09-01';
+  broken.routes[0].canonical = '/materials/modulok/02-repo-felkeszitese/';
+  broken.routes[1].canonical = '/missing-target/';
+  broken.routes[2].output = broken.routes[0].output;
+  broken.routes[3].output = '/materials/notebooks/03-orchestrator-rug.html';
+  const root = fixture(canonicalRoutes(), broken);
+  const failures = validateManifest({ source: root, site: path.join(root, '.site'), phase: 'foundation' });
+  assert.ok(failures.some((x) => x.includes('sunset must be 2026-08-15')));
+  assert.ok(failures.some((x) => x.includes('wrong canonical target')));
+  assert.ok(failures.some((x) => x.includes('canonical target is not a manifest route')));
+  assert.ok(failures.some((x) => x.includes('duplicate compatibility output')));
+  assert.ok(failures.some((x) => x.includes('unsafe compatibility output')));
+  assert.ok(failures.some((x) => x.includes('missing compatibility output')));
 });
