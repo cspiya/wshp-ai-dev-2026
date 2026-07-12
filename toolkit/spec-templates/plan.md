@@ -52,7 +52,12 @@ is missing, stale, or contradictory.
 - [ ] Actual check commands are identified.
 - [ ] Reviewer roles are selected.
 - [ ] Human approved the plan or recorded an owned exception.
+- [ ] Every instructional placeholder is replaced, removed, or recorded as `N/A` with reason.
 
 - Plan verdict: `APPROVED | CHANGES REQUESTED | BLOCKED`
 - Approved by/at:
+- Plan version:
 - Output plan version for [tasks.md](tasks.md):
+
+Tasks may be generated only when the verdict is `APPROVED`, the plan version is recorded,
+and approval evidence names the human approver and timestamp.

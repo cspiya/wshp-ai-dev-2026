@@ -12,9 +12,9 @@ small enough to review, and assigned exclusive file/module ownership where paral
 
 ## Ordered tasks
 
-| ID | Task/outcome | Exclusive scope/owner | Depends on | AC IDs | Done evidence | Status |
-|---|---|---|---|---|---|---|
-| T1 |  |  |  |  |  | not-started |
+| ID | Task/outcome | Exclusive scope | Accountable owner | Depends on/order | AC IDs | Exact verification command | Evidence location | Status |
+|---|---|---|---|---|---|---|---|---|
+| T1 |  |  |  |  |  |  |  | not-started |
 
 ## Per-task execution contract
 
@@ -29,11 +29,32 @@ Before editing, the builder:
 A task is done only when its ACs pass, accepted findings are fixed and re-verified, and
 remaining risk has a human owner.
 
-## Verification matrix
+## Acceptance coverage matrix
 
-| AC ID | Task(s) | Automated evidence | Manual evidence | Verdict |
-|---|---|---|---|---|
-| AC-1 |  |  |  | pending |
+Every acceptance criterion must have at least one owned task, explicit dependency/order,
+an exact command, and an evidence location before this package can enter implementation.
+
+| AC ID | Scenario(s) | Owned task(s) | Dependencies/order | Exact check | Evidence location | Verdict |
+|---|---|---|---|---|---|---|
+| AC-1 |  |  |  |  |  | pending |
+
+## RUG execution and closed-gate handoff
+
+- Builder restatement task:
+- Independent fresh-context reviewer task:
+- Accepted-finding bounce-back owner/task:
+- Re-verification command and evidence location:
+- Closed-spec-gate packet location:
+- Statement that feature implementation has not started:
+
+- [ ] Every AC appears in the coverage matrix.
+- [ ] Every task has exactly one accountable owner and exclusive scope.
+- [ ] Dependencies and execution order are explicit, including review and bounce-back.
+- [ ] Every check is an executable command, not a generic test label.
+- [ ] Every evidence location is named before work starts.
+- [ ] No unresolved decision or instructional placeholder remains; `N/A` includes a reason.
+- [ ] Approved constitution, spec, and plan versions are recorded.
+- [ ] A human has approved entry into the later implementation phase.
 
 ## Decision and deviation log
 
