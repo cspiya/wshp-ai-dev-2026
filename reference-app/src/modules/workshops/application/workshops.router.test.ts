@@ -32,7 +32,7 @@ function seeded(overrides: Partial<Workshop> = {}): Workshop {
 }
 
 function makeCaller(seed: Workshop[] = []) {
-  return createWorkshopsRouter(createInMemoryWorkshopRepo(seed)).createCaller({});
+  return createWorkshopsRouter(createInMemoryWorkshopRepo(seed)).createCaller({ userId: "test-user" });
 }
 
 const missingId = "3f8a2c1e-0000-4000-8000-00000000dead";

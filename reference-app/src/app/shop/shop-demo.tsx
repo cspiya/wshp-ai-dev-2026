@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { trpc } from "@/platform/api/client";
 
+import { AuthPanel } from "./auth-panel";
+
 export function ShopDemo() {
   const [listPrice, setListPrice] = useState("10000");
   const [coupon, setCoupon] = useState("1000");
@@ -52,6 +54,8 @@ export function ShopDemo() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          <AuthPanel />
+
           <section className="grid gap-4 sm:grid-cols-2" aria-labelledby="pricing-heading">
             <h2 id="pricing-heading" className="col-span-full text-lg font-semibold">1. Price</h2>
             <Field label="List price (minor units)" value={listPrice} onChange={setListPrice} />

@@ -15,7 +15,7 @@ const schedule = {
 };
 
 function caller() {
-  return createRegistrationsRouter(createInMemoryRegistrationRepo(), schedule, fixedNow).createCaller({});
+  return createRegistrationsRouter(createInMemoryRegistrationRepo(), schedule, fixedNow).createCaller({ userId: "test-user" });
 }
 
 describe("registrations router", () => {
@@ -58,7 +58,7 @@ describe("registrations router", () => {
       repo,
       schedule,
       () => new Date("2027-01-09T10:00:00.001Z"),
-    ).createCaller({});
+    ).createCaller({ userId: "test-user" });
     const created = await api.create(input);
     await expect(api.cancel({ id: created.id })).rejects.toMatchObject({
       code: "PRECONDITION_FAILED",
@@ -84,5 +84,22 @@ describe("registrations router", () => {
 
     expect(results.filter((result) => result.status === "fulfilled")).toHaveLength(1);
     expect(results.filter((result) => result.status === "rejected")).toHaveLength(1);
+  });
+
+  it("rejects every write without a session, but keeps the list public", async () => {
+    const anonymous = createRegistrationsRouter(
+      createInMemoryRegistrationRepo(),
+      schedule,
+      fixedNow,
+    ).createCaller({ userId: null });
+
+    await expect(anonymous.create(input)).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    await expect(anonymous.confirm({ id: crypto.randomUUID() })).rejects.toMatchObject({
+      code: "UNAUTHORIZED",
+    });
+    await expect(anonymous.cancel({ id: crypto.randomUUID() })).rejects.toMatchObject({
+      code: "UNAUTHORIZED",
+    });
+    await expect(anonymous.list()).resolves.toEqual([]);
   });
 });
