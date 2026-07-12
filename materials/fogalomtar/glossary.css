@@ -47,6 +47,9 @@ main { padding: 2rem 0 5rem; }
 figcaption { margin-top: .8rem; color: var(--muted); }
 .text-equivalent { border-top: 1px solid var(--line); margin-top: .8rem; padding-top: .6rem; }
 .text-equivalent summary { cursor: pointer; font-weight: 700; }
+.term-module-table { width: 100%; border-collapse: collapse; margin-top: .8rem; }
+.term-module-table caption { text-align: left; font-weight: 700; margin-bottom: .4rem; }
+.term-module-table th, .term-module-table td { border: 1px solid var(--line); padding: .45rem .55rem; text-align: left; vertical-align: top; }
 .mobile-diagram { display: none; }
 .visual-coverage { margin: 0 0 2rem; }
 .controls { position: sticky; top: 0; z-index: 5; margin: 1rem 0; padding: 1rem; background: rgba(245, 247, 251, .96); border: 1px solid var(--line); border-radius: .8rem; backdrop-filter: blur(8px); }
@@ -91,9 +94,9 @@ button { cursor: pointer; font-weight: 800; }
   .mobile-family-map ul { display: grid; gap: .55rem; margin: .8rem 0 0; padding: 0; list-style: none; }
   .mobile-family-map li { position: relative; padding: .65rem .75rem .65rem 2rem; border: 1px solid var(--brand); border-radius: .65rem; background: var(--accent); font-weight: 700; }
   .mobile-family-map li::before { content: "→"; position: absolute; left: .7rem; color: var(--brand-dark); }
-  .mobile-timeline { margin: .5rem 0; padding: 0; list-style: none; counter-reset: module; }
-  .mobile-timeline li { counter-increment: module; position: relative; margin-left: 1.25rem; padding: .55rem 0 .75rem 2.5rem; border-left: 3px solid var(--brand); font-weight: 700; }
-  .mobile-timeline li::before { content: counter(module); position: absolute; left: -1.15rem; top: .35rem; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--brand-dark); color: #fff; }
+  .mobile-module-map { margin: .5rem 0; padding: 0; list-style: none; }
+  .mobile-module-map li { display: grid; gap: .15rem; margin-bottom: .55rem; padding: .65rem .75rem; border-left: 4px solid var(--brand); border-radius: .45rem; background: var(--accent); }
+  .mobile-module-map span { color: var(--muted); font-size: .92rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
