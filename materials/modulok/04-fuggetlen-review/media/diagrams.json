@@ -13,7 +13,7 @@
       "figureSelector": "#fig-m04-overview",
       "svgSelector": "#fig-m04-overview svg",
       "textFallbackSelector": "#fig-m04-overview-text",
-      "inlineSvgHash": "a7a15e1103ae39c5b86420ed5dd004f4f6a0361fab6b90601adeeb16e4b4a27f"
+      "inlineSvgHash": "59c692784fe97fa96a0a915e271d330db7bb52c4d89cfc061e6cbc2638e072cc"
     },
     {
       "visualQuestionId": "q-m04-cycle-1",
@@ -53,7 +53,7 @@
       "figureSelector": "#fig-m04-milyen-eletuton-megy-vegig-egy",
       "svgSelector": "#fig-m04-milyen-eletuton-megy-vegig-egy svg",
       "textFallbackSelector": "#fig-m04-finding-text",
-      "inlineSvgHash": "806e7755510426f4a0987fff9ba7ca4c2a9c3283e8a3cb64a84cae8bfc9280a2"
+      "inlineSvgHash": "658dcf60740ea7c34f9411ea49ddbd8f8afd3f7ae9bbc5900c929158b9103c7c"
     },
     {
       "id": "fig-m04-miben-mas-az-emberi-review",
