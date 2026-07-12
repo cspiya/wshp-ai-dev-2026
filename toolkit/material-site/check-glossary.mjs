@@ -31,6 +31,7 @@ function teachingContent(html) {
 const CASE_SUFFIXES = ['', 't', 'at', 'et', 'ot', 'öt', 'nak', 'nek', 'ban', 'ben', 'ba', 'be', 'ból', 'ből', 'ról', 'ről', 'tól', 'től', 'ra', 're', 'hoz', 'hez', 'höz', 'nál', 'nél', 'on', 'en', 'ön', 'ért', 'ig', 'ként', 'kor', 'ul', 'ül', 'vá', 'vé', 'val', 'vel'];
 const NUMBER_SUFFIXES = ['k', 'ak', 'ek', 'ok', 'ök'];
 const POSSESSIVE_SUFFIXES = ['a', 'e', 'á', 'é', 'ja', 'je', 'já', 'jé', 'am', 'em', 'om', 'öm', 'ad', 'ed', 'od', 'öd', 'unk', 'ünk', 'atok', 'etek', 'otok', 'ötök', 'uk', 'ük', 'aim', 'eim', 'jaim', 'jeim', 'aink', 'eink', 'jaink', 'jeink', 'aitok', 'eitek', 'jaitok', 'jeitek', 'aik', 'eik', 'jaik', 'jeik'];
+const HUNGARIAN_MULTIGRAPHS = ['dzs', 'cs', 'dz', 'gy', 'ly', 'ny', 'sz', 'ty', 'zs'];
 function isCaseSuffix(base, suffix) {
   if (CASE_SUFFIXES.includes(suffix)) return true;
   const last = [...base].at(-1);
@@ -41,18 +42,39 @@ function isHungarianInflection(needle, suffix) {
   if (NUMBER_SUFFIXES.some((number) => suffix.startsWith(number) && isCaseSuffix(`${needle}${number}`, suffix.slice(number.length)))) return true;
   return POSSESSIVE_SUFFIXES.some((possessive) => suffix.startsWith(possessive) && isCaseSuffix(`${needle}${possessive}`, suffix.slice(possessive.length)));
 }
+function assimilatedSurfaceForms(needle) {
+  const multigraph = HUNGARIAN_MULTIGRAPHS.find((candidate) => needle.endsWith(candidate));
+  if (!multigraph) return [];
+  const doubled = `${multigraph[0]}${multigraph}`;
+  const stem = needle.slice(0, -multigraph.length);
+  return ['al', 'el', 'á', 'é'].map((ending) => `${stem}${doubled}${ending}`);
+}
+function wholeSurfaceIndex(text, surface) {
+  let at = text.indexOf(surface);
+  while (at >= 0) {
+    const before = at === 0 ? '' : text[at - 1];
+    const after = at + surface.length === text.length ? '' : text[at + surface.length];
+    if (!/[\p{L}\p{N}]/u.test(before) && !/[\p{L}\p{N}]/u.test(after)) return at;
+    at = text.indexOf(surface, at + 1);
+  }
+  return -1;
+}
 function firstTermIndex(text, term) {
   const lower = text.toLocaleLowerCase('hu-HU');
   const needle = String(term).toLocaleLowerCase('hu-HU');
+  const assimilatedAt = assimilatedSurfaceForms(needle)
+    .map((surface) => wholeSurfaceIndex(lower, surface))
+    .filter((at) => at >= 0)
+    .sort((a, b) => a - b)[0];
   let at = lower.indexOf(needle);
   while (at >= 0) {
     const before = at === 0 ? '' : lower[at - 1];
     const tail = lower.slice(at + needle.length);
     const suffix = tail.match(/^[\p{L}]+/u)?.[0] ?? '';
-    if (!/[\p{L}\p{N}]/u.test(before) && isHungarianInflection(needle, suffix)) return at;
+    if (!/[\p{L}\p{N}]/u.test(before) && isHungarianInflection(needle, suffix)) return Math.min(at, assimilatedAt ?? at);
     at = lower.indexOf(needle, at + 1);
   }
-  return -1;
+  return assimilatedAt ?? -1;
 }
 function firstOccurrence(html, candidates) {
   let activeHref = null;

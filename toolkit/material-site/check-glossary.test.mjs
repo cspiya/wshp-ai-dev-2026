@@ -89,6 +89,31 @@ test('assimilated and possessive Hungarian forms remain valid first uses', () =>
   assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
 });
 
+test('Hungarian multigraph stems accept their correctly assimilated surface forms', () => {
+  const examples = [
+    ['kulcs', 'kulccsal'],
+    ['edz', 'eddzel'],
+    ['bridzs', 'briddzsel'],
+    ['jegy', 'jeggyel'],
+    ['szabály', 'szabállyal'],
+    ['lány', 'lánnyal'],
+    ['rész', 'résszel'],
+    ['pinty', 'pinttyel'],
+    ['rizs', 'rizzsel']
+  ];
+  for (const [preferred, surface] of examples) {
+    const root = fixture({ ...valid, preferred, english: `english-${preferred}`, aliases: [] });
+    fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), `<main><p>A <a href="../fogalomtar/#scope">${surface}</a> ellenőrizzük a hasonulást.</p></main>`);
+    assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), [], `${preferred} -> ${surface}`);
+  }
+});
+
+test('multigraph assimilation does not accept unrelated derivations', () => {
+  const root = fixture({ ...valid, preferred: 'szabály', english: 'rule', aliases: [] });
+  fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), '<main><p>A szabályozás más jelentésű szó.</p><p>A <a href="../fogalomtar/#scope">szabály</a> később linkelt.</p></main>');
+  assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
+});
+
 test('glossary page accepts its exact local self anchor', () => {
   const root = fixture(valid);
   fs.mkdirSync(path.join(root, 'materials/fogalomtar'), { recursive: true });
