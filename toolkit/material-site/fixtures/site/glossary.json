@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 2,
+  "registryVersion": "0.0.0-fixture",
+  "comment": "Neutral foundation fixture registry - never published.",
+  "terms": [
+    {
+      "slug": "minta-fogalom-a",
+      "preferred": "minta fogalom A",
+      "english": "sample term A",
+      "aliases": [
+        "mintafogalom"
+      ]
+    },
+    {
+      "slug": "minta-fogalom-b",
+      "preferred": "minta fogalom B",
+      "english": "sample term B",
+      "aliases": []
+    }
+  ]
+}
