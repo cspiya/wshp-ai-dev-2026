@@ -81,6 +81,13 @@ button { cursor: pointer; font-weight: 800; }
 .footer__inner { padding: 1.5rem 0; color: var(--muted); }
 .no-js-note { border-left: 4px solid var(--brand); padding: .6rem .8rem; background: #eef3ff; }
 
+/* Keep long technical terms and aliases inside their responsive grid cell.
+   Font metrics differ slightly across Linux, Windows and macOS runners, so
+   grid children must be allowed to shrink and unbroken terms must wrap. */
+.intro-grid > *, .visuals > *, .control-grid > *, .term-list > * { min-width: 0; }
+.visual, .term-card, .mobile-diagram, .pill-list, .meta dd { overflow-wrap: anywhere; }
+input, select { width: 100%; max-width: 100%; min-width: 0; }
+
 @media (max-width: 760px) {
   .site-header__inner, .hero__inner, .intro-grid, .visuals, .term-list { grid-template-columns: 1fr; }
   .site-header__inner { align-items: flex-start; flex-direction: column; }
@@ -97,6 +104,7 @@ button { cursor: pointer; font-weight: 800; }
   .mobile-module-map { margin: .5rem 0; padding: 0; list-style: none; }
   .mobile-module-map li { display: grid; gap: .15rem; margin-bottom: .55rem; padding: .65rem .75rem; border-left: 4px solid var(--brand); border-radius: .45rem; background: var(--accent); }
   .mobile-module-map span { color: var(--muted); font-size: .92rem; }
+  .mobile-module-map li, .mobile-family-map li { min-width: 0; overflow-wrap: anywhere; }
 }
 
 @media (prefers-reduced-motion: reduce) {
