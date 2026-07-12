@@ -2,7 +2,7 @@
 
 Ez a workshop egyetlen, végigvezetett építési ív: **C0 üres repóból C7 hordozható
 [agent-ready működési modell](fogalomtar.md)** lesz. Az alkalmazás nem a nap fő terméke, hanem az a
-[validációs terhelés](fogalomtar.md), amely bizonyítja, hogy a felépített rendszer valószerű, de kitalált
+[validációs terhelés](fogalomtar.md), amely bizonyítja, hogy a felépített rendszer [életszerű, de KITALÁLT](fogalomtar.md#invented-data)
 helyzetben is működik.
 
 > **Első alkalommal vagy itt?** Résztvevőként kezdd a
@@ -93,7 +93,7 @@ ne a fájlnévből vagy emlékezetből következtess.
 | C2 · Közös szakmai léc | maker és reviewer ugyanazt a standardot és DoD-t használja | alakítsd a kérést jóváhagyható speccé |
 | C3 · Munkaszerződés | a spec, scope és Given–When–Then kritérium ember által jóváhagyott | futtasd külön szerzővel és bírálóval |
 | C4 · Független review | a finding reprodukált, a fix visszaellenőrzött és nyomkövetett | tedd mechanikussá a kötelező szabályt |
-| C5 · Mechanikus kapuk | pozitív és negatív futás bizonyítja, hogy a gate valóban blokkol | terheld valószerű, összetett workloaddal |
+| C5 · Mechanikus kapuk | pozitív és negatív futás bizonyítja, hogy a gate valóban blokkol | terheld életszerű, de KITALÁLT, összetett workloaddal |
 | C6 · Rendszerpróba | az üzleti szabálytól a preview/adat/E2E bizonyítékig zár a lánc | tedd hordozhatóvá modellre, legacyra és csapatra |
 | C7 · Operating model | van owner, eval, trace, toolkit és 30/60/90 bevezetési terv | válaszd ki a következő reprezentatív feature-t |
 
