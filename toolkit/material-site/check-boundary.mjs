@@ -25,12 +25,9 @@ const HIGH_RISK_RULES = [
   [/\b(?:private|personal)[-_ ]?(?:invite|email|phone|token)\s*[:=]/gi, 'private personal-data marker'],
 ];
 
-const TEXT_EXT = new Set([
-  '.html', '.md', '.txt', '.json', '.js', '.mjs', '.cjs', '.css', '.svg', '.mmd',
-  '.yml', '.yaml', '.xml', '.csv', '.tsv', '.ps1', '.sh', '.cs', '.ts', '.tsx',
-]);
 const TECHNICAL_EXT = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.cs', '.ps1', '.sh', '.yml', '.yaml', '.json']);
 const NEGATIVE_FIXTURE_ROOT = 'toolkit/material-site/fixtures/boundary/negative/';
+const SOURCE_FALLBACK_SKIPS = new Set(['.git', '.site', 'node_modules']);
 
 export function parseArgs(argv) {
   const out = { source: '.', site: '.site', phase: 'foundation' };
@@ -48,12 +45,12 @@ function normalize(value) {
   return value.replaceAll('\\', '/').replace(/^\.\//, '');
 }
 
-function walk(dir, result = [], root = dir) {
+function walk(dir, result = [], root = dir, skippedDirectories = new Set()) {
   if (!fs.existsSync(dir)) return result;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['.git', '.site', 'node_modules'].includes(entry.name)) continue;
+    if (entry.isDirectory() && skippedDirectories.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full, result, root);
+    if (entry.isDirectory()) walk(full, result, root, skippedDirectories);
     else result.push(normalize(path.relative(root, full)));
   }
   return result;
@@ -65,7 +62,30 @@ function trackedRelative(source) {
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
     }).split('\0').filter(Boolean).map(normalize);
   } catch {
-    return walk(source);
+    return walk(source, [], source, SOURCE_FALLBACK_SKIPS);
+  }
+}
+
+function decodeText(file, required, failures, label) {
+  const bytes = fs.readFileSync(file);
+  if (bytes.includes(0)) {
+    if (required) failures.push(`${label}: participant artifact is binary or contains NUL bytes; boundary cannot inspect it`);
+    return null;
+  }
+  const sample = bytes.subarray(0, 8192);
+  let controls = 0;
+  for (const byte of sample) {
+    if ((byte < 7 || (byte > 13 && byte < 32)) && byte !== 9 && byte !== 10 && byte !== 13) controls++;
+  }
+  if (sample.length > 0 && controls / sample.length > 0.01) {
+    if (required) failures.push(`${label}: participant artifact is not recognizable text; boundary cannot inspect it`);
+    return null;
+  }
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  } catch {
+    if (required) failures.push(`${label}: participant artifact is not valid UTF-8 text; boundary cannot inspect it`);
+    return null;
   }
 }
 
@@ -173,9 +193,10 @@ export function validateBoundary({ source, site, phase }) {
   for (const relative of trackedFiles) {
     if (relative.startsWith(NEGATIVE_FIXTURE_ROOT)) continue;
     const file = path.join(source, relative);
-    if (!fs.existsSync(file) || !TEXT_EXT.has(path.extname(file).toLowerCase())) continue;
+    if (!fs.existsSync(file)) continue;
     const surface = classifySource(relative, participantFiles);
-    const text = fs.readFileSync(file, 'utf8');
+    const text = decodeText(file, surface === 'participant', failures, `${relative} [${surface}]`);
+    if (text == null) continue;
     scanText(text, HIGH_RISK_RULES, `${relative} [${surface}]`, failures);
     if (surface === 'participant' || (phase === 'final' && surface === 'repository')) {
       scanText(text, INTERNAL_RULES, `${relative} [${surface}]`, failures);
@@ -183,9 +204,10 @@ export function validateBoundary({ source, site, phase }) {
       scanText(text, INTERNAL_LOCATION_RULES, `${relative} [${surface}]`, failures);
     }
   }
-  const siteFiles = walk(site).filter((relative) => TEXT_EXT.has(path.extname(relative).toLowerCase()));
+  const siteFiles = walk(site);
   for (const relative of siteFiles) {
-    const text = fs.readFileSync(path.join(site, relative), 'utf8');
+    const text = decodeText(path.join(site, relative), false, failures, `.site/${relative} [generated]`);
+    if (text == null) continue;
     scanText(text, [...INTERNAL_RULES, ...HIGH_RISK_RULES], `.site/${relative} [generated]`, failures);
   }
   return failures;

@@ -102,14 +102,52 @@ test('download allowlist overrides operator-looking path and rejects internal tr
   assert.ok(validate(setup).some((failure) => failure.includes(`${relative} [participant]`)));
 });
 
+test('manifest downloads are scanned regardless of compound or technical suffix', () => {
+  const envFile = 'participant-starter/.env.example';
+  const projectFile = 'toolkit/legacy-playbook/sample/App.csproj';
+  const setup = fixture({
+    files: {
+      [envFile]: sample('negative/download.env.example'),
+      [projectFile]: sample('negative/App.csproj'),
+    },
+    downloads: [envFile, projectFile],
+  });
+  const failures = validate(setup);
+  assert.ok(failures.some((failure) => failure.includes(`${envFile} [participant]`) && failure.includes('internal issue identifier')));
+  assert.ok(failures.some((failure) => failure.includes(`${envFile} [participant]`) && failure.includes('GitHub token')));
+  assert.ok(failures.some((failure) => failure.includes(`${projectFile} [participant]`) && failure.includes('invite URL')));
+});
+
 test('complete generated site is strict even when source is an operator file', () => {
   const setup = fixture({ site: { 'assets/operator-copy.json': sample('negative/download-internal.md') } });
   assert.ok(validate(setup).some((failure) => failure.includes('.site/assets/operator-copy.json [generated]')));
 });
 
+test('generated traversal has no directory-name exemptions', () => {
+  const content = sample('negative/download-internal.md');
+  const setup = fixture({ site: {
+    'node_modules/pkg/leak.txt': content,
+    '.git/config': content,
+    '.site/nested/leak.toml': content,
+  } });
+  const failures = validate(setup);
+  assert.ok(failures.some((failure) => failure.includes('.site/node_modules/pkg/leak.txt [generated]')));
+  assert.ok(failures.some((failure) => failure.includes('.site/.git/config [generated]')));
+  assert.ok(failures.some((failure) => failure.includes('.site/.site/nested/leak.toml [generated]')));
+});
+
 test('ordinary code is not an operator class and rejects issue traces in final phase', () => {
   const setup = fixture({ files: { 'src/example.js': sample('negative/ordinary-code.js') } });
   assert.ok(validate(setup).some((failure) => failure.includes('src/example.js [repository]')));
+});
+
+test('repo-wide high-risk scan covers extensionless, TOML and JSX text', () => {
+  const content = sample('negative/repository-high-risk.txt');
+  const setup = fixture({ files: { NOTICE: content, 'config.toml': content, 'src/view.jsx': content } });
+  const failures = validate(setup);
+  for (const file of ['NOTICE', 'config.toml', 'src/view.jsx']) {
+    assert.ok(failures.some((failure) => failure.includes(`${file} [repository]`) && failure.includes('invite URL')));
+  }
 });
 
 test('high-risk secret, personal and invite rules apply to operator files repo-wide', () => {
