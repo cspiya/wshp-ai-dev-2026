@@ -57,6 +57,8 @@ workloadja.
   → determinisztikus hookok és CI-kapuk
   → real-life alkalmazás mint end-to-end rendszerpróba
   → modell- és eszközcsere ugyanazon minőségi léc mellett
+  → legacy-transzfer ugyanazzal a biztonsági és evidence-léccel
+  → csapatbevezetés, 30/60/90 terv és C0–C7 audit
   → bizonyítékcsomag és hazavihető operating model
 ```
 

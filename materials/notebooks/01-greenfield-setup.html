@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>G1 — Saját repo, CI és preview · Wenova AI Workshop</title>
+<title>G1 — Agent-ready alap és szállítópálya · Wenova AI Workshop</title>
 <style>
   :root { --bg:#fafafa;--surface:#fff;--surface2:#f4f4f5;--border:#e4e4e7;--text:#18181b;--secondary:#52525b;--muted:#71717a;--accent:#4f46e5;--soft:#eef2ff;--ok:#ecfdf5;--ok-border:#059669;--warn:#fef3c7;--warn-border:#f59e0b;--danger:#fef2f2;--danger-border:#dc2626;--code:#1e1e2e;--code-text:#cdd6f4;--sidebar:270px; }
   *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.layout{display:grid;grid-template-columns:var(--sidebar) 1fr;max-width:1280px;margin:auto;align-items:start}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:2rem 1rem 2rem 1.5rem;border-right:1px solid var(--border);background:var(--surface)}.eyebrow{color:var(--accent);font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.sidebar h2{border:0;margin:.5rem 0 1.5rem;padding:0;font-size:1.05rem;line-height:1.3}nav{border-top:1px solid var(--border);padding-top:1rem}nav ol{list-style:none;padding:0;margin:0;counter-reset:toc}nav li{counter-increment:toc;margin:0}nav a{display:block;padding:.42rem .55rem;border-radius:6px;color:var(--secondary);text-decoration:none;font-size:.87rem;line-height:1.35}nav a:before{content:counter(toc) ". ";color:var(--muted)}nav a:hover,nav a.active{background:var(--soft);color:var(--accent)}.sidebar-footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem}.main{max-width:900px;padding:2rem 2rem 4rem}header{border-bottom:1px solid var(--border);padding-bottom:2rem;margin-bottom:2.5rem}h1{font-size:2.25rem;line-height:1.15;letter-spacing:-.02em;margin:.5rem 0 1rem}.hero-sub{font-size:1.12rem;color:var(--secondary)}.meta{display:flex;flex-wrap:wrap;gap:1rem;color:var(--muted);font-size:.9rem}h2{margin:3rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);scroll-margin-top:1rem}h3{margin:1.6rem 0 .5rem}p,ul,ol{margin:0 0 1rem}li{margin-bottom:.45rem}a{color:var(--accent)}code{background:var(--surface2);border-radius:4px;padding:.1rem .3rem;font-family:Consolas,monospace}pre{margin:1rem 0 1.5rem;padding:1rem 1.2rem;background:var(--code);color:var(--code-text);border-radius:8px;overflow:auto;line-height:1.5}pre code{background:transparent;padding:0}.card,.callout{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin:1.5rem 0}.callout{border-left:4px solid var(--accent);background:var(--soft)}.success{border-left-color:var(--ok-border);background:var(--ok)}.warning{border-left-color:var(--warn-border);background:var(--warn)}.danger{border-left-color:var(--danger-border);background:var(--danger)}.done{border:2px solid var(--ok-border);background:var(--ok)}.step{display:inline-block;min-width:2rem;margin-right:.45rem;padding:.15rem .5rem;border-radius:999px;background:var(--accent);color:#fff;font-size:.82rem;text-align:center}table{width:100%;border-collapse:collapse;margin:1rem 0 1.5rem;font-size:.94rem}th,td{text-align:left;vertical-align:top;padding:.65rem .8rem;border-bottom:1px solid var(--border)}th{background:var(--surface2);color:var(--secondary)}.checklist{list-style:none;padding-left:0}.checklist li{position:relative;padding-left:1.9rem}.checklist li:before{content:"□";position:absolute;left:0;font-size:1.25rem;line-height:1.2;color:var(--accent)}details{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin:.8rem 0;padding:.8rem 1rem}summary{cursor:pointer;font-weight:650}.prompt-label{color:var(--secondary);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}.sidebar-toggle{display:none;position:fixed;right:1rem;top:1rem;z-index:30;padding:.5rem .75rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}@media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;z-index:20;width:285px;transform:translateX(-100%);transition:transform .2s}.sidebar.open{transform:translateX(0)}.sidebar-toggle{display:block}.main{padding:1.5rem}h1{font-size:1.75rem}}
+.decision{background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--accent);border-radius:12px;padding:1.25rem 1.5rem;margin:1.5rem 0}.decision h3{margin-top:0}.module-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem}@media(max-width:600px){.module-nav{display:block}.module-nav a{display:block;margin:.6rem 0}}
 </style>
 </head>
 <body>
 <button class="sidebar-toggle" aria-label="Tartalomjegyzék" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ Tartalom</button>
 <div class="layout">
 <aside class="sidebar">
-  <div class="eyebrow">G1 · 09:45–10:45</div><h2>Saját repo, CI és preview</h2>
+  <div class="eyebrow">G1 · 09:45–10:45</div><h2>Agent-ready alap és szállítópálya</h2>
   <nav aria-label="Tartalomjegyzék"><ol>
     <li><a href="#cel">Cél és kész állapot</a></li><li><a href="#preflight">Preflight</a></li>
-    <li><a href="#starter">Starter másolása</a></li><li><a href="#local">Lokális ellenőrzés</a></li>
+    <li><a href="#starter">Workspace-ek létrehozása</a></li><li><a href="#contract">Repo-szerződés</a></li><li><a href="#local">Lokális ellenőrzés</a></li>
     <li><a href="#github">Saját GitHub-repo</a></li><li><a href="#vercel">Production deploy</a></li>
     <li><a href="#preview">PR és preview</a></li><li><a href="#neon">Neon és DB-branch</a></li>
     <li><a href="#bizonyitek">Bizonyíték és checkpoint</a></li><li><a href="#plan-b">Plan B és hibakeresés</a></li>
@@ -25,16 +26,18 @@
 </aside>
 <main class="main">
 <header>
-  <div class="eyebrow">G1 · Greenfield setup + AI-ready architektúra</div>
-  <h1>Saját repo → zöld CI → élő preview → izolált adatbázis</h1>
-  <p class="hero-sub">Felépíted azt a technikai szállítópályát, amelyen később az agent munkája biztonságosan végigmehet.</p>
+  <div class="eyebrow">G1 · Agent-ready bootstrap + technikai validáció</div>
+  <h1>Repo-identitás → közös minőségi léc → zöld szállítópálya</h1>
+  <p class="hero-sub">Előbb felépíted az agent munkakörnyezetét; utána CI-vel, preview-val és izolált adatbázissal bizonyítod, hogy az végrehajtható.</p>
   <div class="meta"><span>📅 2026.07.14</span><span>⏱️ 60 perc</span><span>👥 egyéni gyakorlat</span><span>🇭🇺 magyar instrukció</span></div>
 </header>
-<div class="callout"><strong>C0 checkpoint · A rendszer új képessége:</strong> egy commitból reprodukálható build készül, egy pull requesthez pedig saját ellenőrzött preview és — a Neon bekötése után — izolált adatbázis-branch tartozik.</div>
+<div class="callout"><strong>C1–C2 checkpoint · A rendszer új képessége:</strong> egy új agent megtalálja a repo küldetését, határait és valódi done-parancsait; egy commitból reprodukálható build, egy pull requesthez pedig ellenőrzött preview és — a Neon bekötése után — izolált adatbázis-branch készül.</div>
 
 <section id="cel"><h2>1. Cél és kész állapot</h2>
-  <p><strong>Miért ezzel kezdünk?</strong> A coding agent csak akkor tud megbízhatóan dolgozni, ha a repónak van ismert belépési pontja, futtatható ellenőrzése és elkülönített tesztkörnyezete. A helyi „nálam működik” még nem szállítási bizonyíték.</p>
-  <div class="card done"><strong>A gyakorlat akkor kész, ha mind az öt bizonyíték megvan:</strong><ul class="checklist">
+  <p><strong>Miért ezzel kezdünk?</strong> A coding agent csak akkor tud megbízhatóan dolgozni, ha a repónak ismert küldetése, határa, közös szakmai léce, valódi belépési pontja és futtatható ellenőrzése van. A helyi „nálam működik” még nem szállítási bizonyíték.</p>
+  <div class="decision"><h3>Döntési doboz · A szállítópálya bizonyíték, nem a termék</h3><p><strong>Az alapprobléma:</strong> az infrastruktúra önmagában nem mondja meg az agentnek, mit szabad építenie és mit jelent a jó munka.</p><p><strong>A választásunk:</strong> a starterben előbb lezárjuk a C1–C2 bootstrapot, majd ugyanannak a repónak a buildjével és preview-jával igazoljuk, hogy a szerződés végrehajtható.</p><p><strong>Miért ez?</strong> Így a CI nem díszlet: a kanonikus Definition of Done gépi része.</p><p><strong>Alternatívák:</strong> előbb deployolni gyorsabb, de csak a technikai hordozót bizonyítja; az összes szabályt egy promptba írni nem ad verziózott, csapatban review-zható szerződést.</p></div>
+  <div class="card done"><strong>A gyakorlat akkor kész, ha mind a nyolc bizonyíték megvan:</strong><ul class="checklist">
+    <li>az <code>AGENTS.md</code> megnevezi a küldetést, scope-ot, tiltásokat és valódi done-parancsokat;</li><li>maker és reviewer ugyanarra a kanonikus standardra és Definition of Done-ra hivatkozik;</li><li>egy read-only agent helyesen mondja vissza a repo-szerződést;</li>
     <li>a projekt lokálisan elindul;</li><li>a typecheck, lint, teszt és build zöld;</li>
     <li>a saját GitHub-repóban a CI zöld;</li><li>a <code>main</code> branchnek van működő production URL-je;</li>
     <li>egy külön pull requesthez saját Vercel preview URL tartozik; a Neon-blokk után ehhez külön DB-branch is létrejön.</li>
@@ -43,35 +46,62 @@
 </section>
 
 <section id="preflight"><h2>2. Preflight — csak zöld alapokról indulunk</h2>
-  <p>Nyiss egy új terminált, és futtasd:</p><pre><code>node --version
+  <p>Nyiss egy új terminált, és futtasd ezt a <strong>négy</strong> CLI-ellenőrzést:</p><pre><code>node --version
 npm --version
 git --version
 claude --version</code></pre>
   <ul class="checklist"><li>A Node főverziója <strong>22</strong>.</li><li>A Git és a Claude Code verziót ír ki.</li><li>A <code>claude</code> elindul, és be vagy jelentkezve.</li><li>Böngészőben be vagy jelentkezve a GitHub, Vercel és Neon fiókodba.</li></ul>
+  <p><strong>Várt eredmény:</strong> mind a négy parancs verziót ad vissza, a coding agent pedig új, üres sessiont tud indítani. A verziószámokat és titkokat nem kell a repóba mentened.</p>
   <div class="callout danger"><strong>Ne menj tovább hibás preflighttal.</strong> Ha a Node nem 22-es, vagy a Claude-login nem működik, jelezd a trénernek.</div>
+  <div class="callout warning"><strong>Időérzékeny felület (ellenőrizve: 2026-07-12):</strong> a Claude Code belépési módja és a webes szolgáltatások menüpontjai változhatnak. Ha a képernyő eltér, használd a szolgáltatás aktuális keresőjét/dokumentációját vagy a tréner képernyőjét; az elfogadási bizonyíték marad, nem a gomb felirata.</div>
 </section>
 
-<section id="starter"><h2>3. A starter másolása saját projektbe</h2>
-  <p>Válassz rövid, ékezet és szóköz nélküli projektnevet, például <code>kovacs-anna-ai-site</code>. A parancsok csak a <code>participant-starter</code> tartalmát másolják át; az eredeti repó Git-előzménye nem kerül a saját projektedbe.</p>
-  <details open><summary>Windows PowerShell</summary><pre><code>$ProjectName = "sajat-projekt-neve"
+<section id="starter"><h2>3. Két workspace + privát evidence létrehozása</h2>
+  <p><strong>Miért különítjük el?</strong> A <code>workshop-source/</code> a read-only tananyag-, toolkit- és referenciakód-forrás. A <code>participant-repo/</code> a saját, írható agent-ready repód. A <code>workshop-evidence/</code> lokális, privát napló; nem kerül publikus Git-repóba. Mindhárom a <code>workshop-lab/</code> közvetlen gyereke. Ha B0-ban már létrehoztad az evidence-mappát, a parancs megtartja.</p>
+  <details open><summary>Windows PowerShell — tetszőleges írható szülőmappából</summary><pre><code>New-Item -ItemType Directory -Force workshop-lab | Out-Null
+Set-Location workshop-lab
 git clone --depth 1 https://github.com/cspiya/wshp-ai-dev-2026.git workshop-source
-New-Item -ItemType Directory $ProjectName
-Copy-Item -Path "workshop-source\participant-starter\*" -Destination $ProjectName -Recurse -Force
-Set-Location $ProjectName
+New-Item -ItemType Directory -Force participant-repo, workshop-evidence | Out-Null
+Copy-Item -Path "workshop-source\participant-starter\*" -Destination participant-repo -Recurse -Force
+Set-Location participant-repo
 git init -b main</code></pre></details>
-  <details><summary>macOS / Linux</summary><pre><code>PROJECT_NAME="sajat-projekt-neve"
+  <details><summary>macOS / Linux — tetszőleges írható szülőmappából</summary><pre><code>mkdir -p workshop-lab
+cd workshop-lab
 git clone --depth 1 https://github.com/cspiya/wshp-ai-dev-2026.git workshop-source
-mkdir "$PROJECT_NAME"
-cp -R workshop-source/participant-starter/. "$PROJECT_NAME/"
-cd "$PROJECT_NAME"
+mkdir -p participant-repo workshop-evidence
+cp -R workshop-source/participant-starter/. participant-repo/
+cd participant-repo
 git init -b main</code></pre></details>
   <p>Ellenőrizd, hogy a saját projekted gyökerében vagy:</p><pre><code>git status
 git rev-parse --show-toplevel</code></pre>
-  <p>A kiírt gyökér végén a saját projektnevednek kell szerepelnie, nem a <code>wshp-ai-dev-2026</code> névnek.</p>
+  <p>A kiírt gyökérnek <code>workshop-lab/participant-repo</code> végződésűnek kell lennie, nem <code>workshop-source</code>-nak. Ettől a ponttól minden alkalmazás-, Git- és npm-parancsot a <code>participant-repo/</code> gyökerében futtass; toolkit olvasásakor külön visszalépünk a source repóhoz.</p>
+  <div class="card"><strong>Workspace kész, ha:</strong> a <code>participant-repo/</code> gyökerében látszik az <code>AGENTS.md</code>, a <code>package.json</code>, a <code>src/</code> és a <code>.github/workflows/ci.yml</code>; a <code>workshop-source/</code> változatlan és a <code>workshop-evidence/</code> nincs a participant Git-repóban.</div>
+  <details><summary>Önálló helyreállítás, ha később vagy más terminálból kapcsolódsz be</summary><p>Keresd meg a <code>workshop-lab/</code> abszolút útját, majd lépj a megfelelő testvérbe. Írás előtt mindig ellenőrizd:</p><pre><code>cd /path/to/workshop-lab/participant-repo
+git rev-parse --show-toplevel
+git status --short</code></pre><p>Windows PowerShellben a <code>cd</code> helyett a teljes úttal használd a <code>Set-Location</code> parancsot. Ha a gyökér nem <code>participant-repo</code>, ne módosíts fájlt. Ha a source clone hiányzik, klónozd újra <code>workshop-source/</code> néven; ha a participant repo hiányzik, másold újra a startert, majd futtasd a <code>git init -b main</code> parancsot.</p></details>
 </section>
 
-<section id="local"><h2>4. Determinisztikus telepítés és lokális kapuk</h2>
-  <p>A committed lockfile alapján telepíts, majd futtasd az összes kaput:</p><pre><code>npm ci
+<section id="contract"><h2>4. Agent-ready bootstrap — a repo működési szerződése</h2>
+  <p><strong>Cél:</strong> az agent találgatás nélkül meg tudja mondani, mi ez a repo, meddig terjed a feladata, és mivel kell bizonyítania a kész állapotot. .NET-es analógia: a solution README-je, coding standardja, architecture testje és pipeline Definition of Done-ja együtt — nem egy chatben elvesző instrukció.</p>
+  <h3><span class="step">4.1</span>Írd le a repo identitását</h3>
+  <ol><li>Nyisd meg az <code>AGENTS.md</code> fájlt a <code>participant-repo/</code> gyökerében.</li><li><strong>Angolul</strong> írj a technikai stack elé egy rövid <strong>Mission</strong> részt: a repo agent-ready működést épít, az alkalmazás annak validációs workloadja.</li><li><strong>Angolul</strong> adj <strong>In scope</strong> és <strong>Out of scope</strong> listát. A workshopon csak kitalált mintaadat engedélyezett; ügyféladat, valódi ár, személyes adat és titok tiltott.</li><li>Ellenőrizd, hogy a fájl pontosan a <code>package.json</code>-ban létező parancsokat nevezi meg.</li></ol>
+  <h3><span class="step">4.2</span>Nevezd meg az egyetlen minőségi lécet</h3>
+  <ol><li>Hozz létre egy <code>docs/engineering-standard.md</code> fájlt a <code>participant-repo/</code> alatt.</li><li><strong>Angolul</strong> rögzítsd benne röviden a típusság, modulhatár, tesztelés, biztonság és publikus adatkezelés elvárását.</li><li>Az <code>AGENTS.md</code> hivatkozzon erre a fájlra mint kanonikus standardra; ne másold ugyanazt a szabálylistát több helyre.</li><li>Angolul írd le a Definition of Done-t: scope betartva, acceptance criteria bizonyítva, diff review-zva, typecheck/lint/test/build zöld, titok nem került commitba.</li></ol>
+  <p class="prompt-label">Read-only szerződésellenőrző prompt</p><pre><code>Read AGENTS.md, package.json, docs/engineering-standard.md, and the CI workflow.
+Do not modify files. Report:
+1. the repository mission,
+2. in-scope and forbidden work,
+3. the single canonical engineering standard,
+4. the exact commands that define done,
+5. any contradiction or missing decision as DECISION REQUIRED.</code></pre>
+  <h3><span class="step">4.3</span>BA/dev konvergencia</h3>
+  <ol><li>A BA-szerep ellenőrizze: a mission és scope üzletileg érthető-e, van-e kitalálandó szabály.</li><li>A dev-szerep ellenőrizze: minden done-parancs tényleg létezik-e, a standard hivatkozása egyértelmű-e.</li><li>Hasonlítsátok össze a két listát az agent visszamondásával.</li><li>Az eltéréseket a fájlokban javítsátok; hiányzó üzleti döntésnél írjatok <code>DECISION REQUIRED</code> pontot.</li></ol>
+  <div class="card done"><strong>Bootstrap kész, ha:</strong><ul class="checklist"><li>a read-only agent nem talál ellentmondást;</li><li>a BA és a fejlesztő ugyanazt érti a repo célján és a done állapoton;</li><li>minden felsorolt parancs megtalálható a <code>package.json</code>-ban;</li><li>a standard egyetlen kanonikus fájl, nem másolt szabályhalmaz.</li></ul></div>
+  <details><summary>Tipikus elakadások és Plan B</summary><ul><li><strong>Túl általános mission:</strong> nevezd meg külön az operating modelt és a validációs workloadot.</li><li><strong>Ellentmondó parancsok:</strong> a <code>package.json</code> a futtatható forrás; az instrukciót igazítsd hozzá.</li><li><strong>Az agent írni akar:</strong> utasítsd újra read-only módra, vagy Plan B-ként a társad mondja vissza a contractot.</li><li><strong>Nincs idő teljes standardra:</strong> használd a tréner által adott minimális mintát, jelöld a bővítendő döntéseket, de ne hagyj üres placeholdert.</li></ul></details>
+</section>
+
+<section id="local"><h2>5. Determinisztikus telepítés és lokális kapuk</h2>
+  <p>A <code>workshop-lab/participant-repo/</code> gyökerében, a committed lockfile alapján telepíts, majd futtasd az összes kaput:</p><pre><code>npm ci
 npm run typecheck
 npm run lint
 npm run test
@@ -79,25 +109,29 @@ npm run build</code></pre>
   <p>Indítsd el az alkalmazást:</p><pre><code>npm run dev</code></pre>
   <p>Nyisd meg: <a href="http://localhost:3000">http://localhost:3000</a>. Ha betöltött, állítsd le <code>Ctrl+C</code>-vel.</p>
   <div class="callout warning"><strong>Lockfile-szabály:</strong> ha dependency-t adsz hozzá, npm 10-zel frissítsd: <code>npx npm@10 install &lt;csomag&gt;</code>. A CI Node 22 + npm 10 környezetet használ.</div>
-  <div class="card"><strong>Lokális done-kritérium</strong><ul class="checklist"><li>Mind a négy kapu 0 exit code-dal zárult.</li><li>A kezdőoldal betöltődött.</li><li>Nincs commitra váró <code>.env</code>.</li></ul></div>
+  <p>Minden kapuról írj egy sort a <code>workshop-lab/workshop-evidence/g1-bootstrap.md</code> privát fájlba: <strong>parancs, exit code, egymondatos eredmény-összefoglaló</strong>. Commit után egészítsd ki a <code>git rev-parse HEAD</code> teljes SHA-jával. A nyers logot vagy titkot ne másold bele.</p>
+  <div class="card"><strong>Lokális done-kritérium</strong><ul class="checklist"><li>Mind a négy kapu 0 exit code-dal zárult.</li><li>A kezdőoldal betöltődött.</li><li>A bizonyítékfájlban mind a négy parancs, exit code és összefoglaló szerepel.</li><li>Nincs commitra váró <code>.env</code>.</li></ul></div>
 </section>
 
-<section id="github"><h2>5. Saját GitHub-repo és az első zöld CI</h2>
+<section id="github"><h2>6. Saját GitHub-repo és az első zöld CI</h2>
   <div class="callout danger"><strong>Publikus repo-higiénia:</strong> csak kitalált mintaadatot használj. Ne másolj be ügyfélkódot, belső dokumentumot, valódi árat, személyes adatot, API-kulcsot vagy connection stringet. Ha az ötleted bizalmas, a workshopra készíts semleges, kitalált változatot.</div>
-  <h3><span class="step">5.1</span>Üres repó létrehozása</h3><ol>
+  <h3><span class="step">6.1</span>Üres repó létrehozása</h3><ol>
     <li>GitHub → <strong>New repository</strong>.</li><li>A név egyezzen a lokális projekt nevével.</li>
     <li>A workshopon válaszd a <strong>Public</strong> láthatóságot.</li><li>Ne kérj README-t, <code>.gitignore</code>-t vagy license-t.</li><li>Kattints a <strong>Create repository</strong> gombra.</li>
   </ol>
-  <h3><span class="step">5.2</span>Első commit és push</h3>
+  <h3><span class="step">6.2</span>Első commit és push</h3>
   <p>A nagybetűs helyőrzőket cseréld a saját értékeidre:</p><pre><code>git add .
 git commit -m "Bootstrap workshop project"
+git rev-parse HEAD
 git remote add origin https://github.com/SAJAT-GITHUB-NEVED/SAJAT-REPO-NEVED.git
 git push -u origin main</code></pre>
+  <p>A kiírt teljes commit SHA-t másold a <code>workshop-lab/workshop-evidence/g1-bootstrap.md</code> fájlba a négy kapu mellé.</p>
   <p>GitHub → <strong>Actions</strong> → <strong>CI</strong>. Várd meg, amíg zöld.</p>
   <div class="callout danger"><strong>Ha nincs CI-futás:</strong> ellenőrizd, hogy a saját repóban létezik-e a <code>.github/workflows/ci.yml</code>. Ha hiányzik, a starter másolása nem volt teljes.</div>
 </section>
 
-<section id="vercel"><h2>6. Első production deployment Vercelen</h2><ol>
+<section id="vercel"><h2>7. Első production deployment Vercelen</h2>
+  <div class="callout warning"><strong>Feltételes UI-leírás, ellenőrizve: 2026-07-12.</strong> A Vercel feliratok vagy menühelyek változhatnak. Ha az alábbi útvonal nem egyezik, keresd az új projekt létrehozását és a Git repository importját; Plan B-ként a tréner végigmutatja a saját projekten, te pedig a lokális és GitHub CI-evidence-et zárod le.</div><ol>
   <li>Nyisd meg a <a href="https://vercel.com/new">Vercel New Project</a> oldalt.</li><li>A GitHub-repód mellett kattints az <strong>Import</strong> gombra.</li>
   <li>Ha nem látod, a GitHub-integrációnál adj hozzáférést ehhez a repóhoz.</li><li><strong>Framework Preset:</strong> Next.js.</li>
   <li><strong>Root Directory:</strong> <code>./</code>. A saját repódban az app a gyökérben van.</li><li>A build és install beállításokat hagyd automatikus felismerésen.</li>
@@ -107,9 +141,9 @@ git push -u origin main</code></pre>
   <div class="callout success"><strong>Első szállítási bizonyíték:</strong> másold ki a production URL-t a jegyzeteidbe. Ez nem ugyanaz lesz, mint a PR-preview linkje.</div>
 </section>
 
-<section id="preview"><h2>7. Pull request és külön preview URL</h2>
+<section id="preview"><h2>8. Pull request és külön preview URL</h2>
   <p>Most bizonyítjuk, hogy a <code>main</code> módosítása nélkül meg tudsz mutatni egy változtatást.</p>
-  <h3><span class="step">7.1</span>Feature branch</h3><pre><code>git switch -c chore/verify-preview
+  <h3><span class="step">8.1</span>Feature branch</h3><pre><code>git switch -c chore/verify-preview
 claude</code></pre>
   <p class="prompt-label">Add ezt az angol promptot a coding agentnek</p><pre><code>In src/app/page.tsx, add a small, clearly visible badge with the text
 "Preview verified". Do not add dependencies and do not redesign the page.
@@ -120,43 +154,46 @@ npm run typecheck
 npm run lint
 npm run test
 npm run build</code></pre>
-  <h3><span class="step">7.2</span>Push és PR</h3><pre><code>git add .
+  <h3><span class="step">8.2</span>Push és PR</h3><pre><code>git add .
 git commit -m "Verify preview deployment"
 git push -u origin chore/verify-preview</code></pre>
-  <ol><li>GitHubon kattints a <strong>Compare &amp; pull request</strong> gombra.</li><li>Base: <code>main</code>; compare: <code>chore/verify-preview</code>.</li><li>Hozd létre a pull requestet.</li><li>Várd meg a GitHub CI és Vercel deployment zöld állapotát.</li><li>Nyisd meg a Vercel bot kommentjében vagy a PR checkjei között lévő preview URL-t.</li></ol>
+  <ol><li>GitHubon hozd létre a pull requestet; a gomb 2026-07-12-én <strong>Compare &amp; pull request</strong> feliratú lehetett.</li><li>Base: <code>main</code>; compare: <code>chore/verify-preview</code>.</li><li>Várd meg a GitHub CI és Vercel deployment zöld állapotát.</li><li>Nyisd meg a preview URL-t a PR checkjeiből, deployment listából vagy — ha megjelenik — a Vercel bot kommentjéből.</li><li>Ha nincs automatikus link, a tréner mutassa meg a deployment listát; a PR-t és CI-t ettől még saját repódban bizonyítsd.</li></ol>
   <table><thead><tr><th>URL</th><th>Mit kell látnod?</th></tr></thead><tbody><tr><td>Production</td><td>A régi oldal, badge nélkül.</td></tr><tr><td>PR preview</td><td>Az új <strong>Preview verified</strong> badge.</td></tr></tbody></table>
   <div class="callout"><strong>Mit bizonyítottál?</strong> A szerzői branch, a CI és az ember által megnyitható preview külön kapu. A merge csak ezek után következik.</div>
 </section>
 
-<section id="neon"><h2>8. Neon bekötése és DB-branch preview-nként</h2>
+<section id="neon"><h2>9. Neon bekötése és DB-branch preview-nként</h2>
   <p><strong>Miért?</strong> Külön web-preview közös adatbázissal nem valódi izoláció. Egy hibás migráció vagy tesztadat minden más preview-t is érintene.</p>
   <div class="callout warning"><strong>Ezt akkor végezd el, amikor a tréner jelzi.</strong> A starter kezdetben szándékosan nem használ adatbázist. A branchelés infrastruktúráját most beköthetjük, az alkalmazásos izolációs próbát az első DB-backed feature után zárjuk.</div>
-  <h3><span class="step">8.1</span>Integráció telepítése</h3><ol>
-    <li>Nyisd meg a Vercel projektedet.</li><li>A <strong>Storage</strong> vagy <strong>Marketplace</strong> részben válaszd a <strong>Neon</strong> integrációt.</li>
-    <li>Mivel már van Neon-fiókod, válaszd a <strong>Link Existing Neon Account</strong> módot.</li><li>Engedélyezd a kapcsolatot a Neon oldalán.</li>
-    <li>Válaszd ki a saját Neon projektedet és ezt az egy Vercel projektet.</li><li>Kapcsold be a preview deploymentenkénti DB-branch létrehozást.</li><li>Ha elérhető, kapcsold be az obsolete preview branchek automatikus törlését.</li>
+  <div class="callout warning"><strong>Feltételes UI-leírás, ellenőrizve: 2026-07-12.</strong> A Neon/Vercel Marketplace feliratai és az automatikus preview-branch opció elhelyezése változhat. Ne találgass: használd az aktuális dokumentációt vagy a tréner előre provisionált projektjét.</div>
+  <h3><span class="step">9.1</span>Disposable Neon projekt létrehozása és kiválasztása</h3><ol>
+    <li>A Neon Console-ban hozz létre egy új, eldobható workshop-projektet, például <code>participant-workshop-lab</code> néven, vagy kérd el a tréner által előre provisionált Plan B projekt pontos nevét.</li><li>Jegyezd fel a projekt <strong>nevét és azonosítóját</strong> a privát <code>g1-bootstrap.md</code> fájlba; connection stringet és jelszót ne rögzíts.</li>
+    <li>Nyisd meg a Vercel projektedet, és keresd a Marketplace/Storage integrációk között a Neont.</li><li>Kapcsold össze a saját Neon-fiókodat, vagy Plan B-ként válaszd a tréner által megnevezett, előre provisionált integrációt.</li>
+    <li>Az integrációban <strong>explicit módon ezt az eldobható projektet</strong> és ezt az egy Vercel projektet válaszd ki.</li><li>Ha a felület kínál preview deploymentenkénti DB-branch opciót, kapcsold be; ha nem, a Neon Console-ban hozz létre kézzel egy <code>preview-chore-verify-preview</code> branchet, és a tréner segítségével rendeld a Preview környezethez.</li><li>Ha elérhető, kapcsold be az obsolete preview branchek automatikus törlését; különben a gyakorlat végén kézzel töröld.</li>
   </ol>
-  <h3><span class="step">8.2</span>Environment variable ellenőrzése</h3><ol>
+  <h3><span class="step">9.2</span>Environment variable ellenőrzése</h3><ol>
     <li>Vercel → Project → <strong>Settings → Environment Variables</strong>.</li><li>Ellenőrizd, hogy létezik a <code>DATABASE_URL</code>.</li>
     <li>Legalább a <strong>Production</strong> és <strong>Preview</strong> környezetben legyen elérhető.</li><li>Az értéket ne másold chatbe, issue-ba, képernyőképbe vagy commitba.</li>
   </ol>
-  <h3><span class="step">8.3</span>Lokális kapcsolat</h3>
+  <h3><span class="step">9.3</span>Lokális kapcsolat</h3>
   <p>Neon Console → <strong>Connect</strong>: másold ki a development/production branch connection stringjét. A projekt gyökerében:</p>
   <details open><summary>Windows PowerShell</summary><pre><code>Copy-Item .env.example .env</code></pre></details><details><summary>macOS / Linux</summary><pre><code>cp .env.example .env</code></pre></details>
   <p>Az <code>.env</code> fájlba kerüljön:</p><pre><code>DATABASE_URL=postgresql://...</code></pre>
   <p>Ellenőrizd, hogy Git ignorálja:</p><pre><code>git status --short
 git check-ignore .env</code></pre><p>A második parancsnak ki kell írnia: <code>.env</code>.</p>
-  <h3><span class="step">8.4</span>A preview DB-branch bizonyítása</h3><ol>
+  <h3><span class="step">9.4</span>A preview DB-branch bizonyítása</h3><ol>
     <li>Ha a PR az integráció előtt készült, pusholj egy új commitot, vagy indíts redeployt.</li><li>Várd meg a Vercel preview <strong>Ready</strong> állapotát.</li>
     <li>Nyisd meg a Neon Console integrációs/Branches nézetét.</li><li>Keresd meg a PR-hez vagy a <code>chore/verify-preview</code> branchhez tartozó DB-branchet.</li><li>Jegyezd fel a branch nevét, de connection stringet vagy jelszót ne rögzíts.</li>
   </ol>
   <div class="card"><strong>Az első DB-backed feature után futtatandó izolációs próba</strong><ol><li>A preview URL-en hozz létre egy egyedi tesztadatot.</li><li>Ellenőrizd, hogy productionben nem jelenik meg.</li><li>Zárd le a PR-t vagy töröld a feature branchet.</li><li>Ellenőrizd, hogy a preview DB-branch obsolete lett vagy törlődött.</li></ol></div>
 </section>
 
-<section id="bizonyitek"><h2>9. Bizonyítékcsomag és checkpoint</h2>
+<section id="bizonyitek"><h2>10. Bizonyítékcsomag és checkpoint</h2>
   <p>A feladat nem attól kész, hogy „szerinted működik”, hanem attól, hogy az evidence megvan:</p>
   <table><thead><tr><th>Bizonyíték</th><th>Hol?</th><th>Mit rögzíts?</th></tr></thead><tbody>
-    <tr><td>Lokális kapuk</td><td>Terminál</td><td>A négy sikeres parancs neve.</td></tr><tr><td>CI</td><td>GitHub Actions</td><td>A zöld workflow linkje.</td></tr>
+    <tr><td>Repo-szerződés</td><td><code>AGENTS.md</code> + standard</td><td>A mission, scope, kanonikus léc és valódi done-parancsok commitját.</td></tr>
+    <tr><td>BA/dev konvergencia</td><td>Munkafüzet</td><td>Az egy javított kétértelműséget vagy lezárt döntést.</td></tr>
+    <tr><td>Lokális kapuk</td><td><code>workshop-evidence/g1-bootstrap.md</code></td><td>Mind a négy parancs, exit code, rövid eredmény-összefoglaló és a participant repó teljes commit SHA-ja.</td></tr><tr><td>CI</td><td>GitHub Actions</td><td>A zöld workflow linkje.</td></tr>
     <tr><td>Production</td><td>Vercel</td><td>A publikus production URL.</td></tr><tr><td>Preview</td><td>GitHub PR / Vercel</td><td>A PR és a külön preview URL.</td></tr>
     <tr><td>DB-branch</td><td>Neon Branches</td><td>A preview branch neve — titok nélkül.</td></tr>
   </tbody></table>
@@ -166,10 +203,12 @@ git check-ignore .env</code></pre><p>A második parancsnak ki kell írnia: <code
 3. the production and preview deployment model,
 4. which files may contain secrets and why they cannot be committed,
 5. any missing evidence that prevents calling the bootstrap complete.</code></pre>
-  <div class="card done"><strong>Checkpoint elfogadva, ha:</strong> az agent helyesen mondja vissza a valódi parancsokat és határokat, te pedig külön meg tudod mutatni a lokális, CI-, preview- és DB-branch bizonyítékot.</div>
+  <div class="card done"><strong>Checkpoint elfogadva, ha:</strong> az agent helyesen mondja vissza a missiont, scope-ot, kanonikus standardot, valódi parancsokat és határokat, te pedig külön meg tudod mutatni a lokális, CI-, preview- és DB-branch bizonyítékot.</div>
+  <div class="callout success"><strong>Vidd haza:</strong> az agent-ready repo nem egy telepített coding agent. Verziózott működési szerződés, közös minőségi léc és olyan szállítópálya, amely megfigyelhető eredménnyel bizonyítja a szabályok végrehajtását.</div>
+  <p><strong>Mi marad stabil másik modell vagy agent harness mellett?</strong> A mission, scope, standard, Definition of Done, CI-parancsok és evidence-léc változatlan. Csak a végrehajtó indítása és eszközkapcsolata cserélődik; ugyanazzal a read-only contract prompttal újra ellenőrizhető.</p>
 </section>
 
-<section id="plan-b"><h2>10. Plan B és célzott hibakeresés</h2>
+<section id="plan-b"><h2>11. Plan B és célzott hibakeresés</h2>
   <table><thead><tr><th>Tünet</th><th>Első ellenőrzés</th><th>10 perc után</th></tr></thead><tbody>
     <tr><td>A repo nem látszik Vercelben</td><td>Vercel GitHub-integráció repository access.</td><td>Dolgozz lokálisan; a tréner preview-ján követed a deploymentet.</td></tr>
     <tr><td>A Vercel build elbukik</td><td>Fut-e az <code>npm ci</code> és <code>npm run build</code>; jó-e a Root Directory?</td><td>Mentsd a build log linkjét, majd használd a lokális URL-t.</td></tr>
@@ -183,6 +222,7 @@ git check-ignore .env</code></pre><p>A második parancsnak ki kell írnia: <code
     <li><a href="https://vercel.com/marketplace/neon">Neon a Vercel Marketplace-en</a></li><li><a href="https://neon.com/docs/guides/branching-intro">Neon: database branching</a></li>
   </ul>
 </section>
+<div class="module-nav"><a href="00-bevezeto.html">← Előző: B0 — AI mint gyors junior kolléga</a><a href="02-spec-driven.html">Következő: G2 — Spec-vezérelt fejlesztés →</a></div>
 <footer><strong>G1 — Saját repo, CI és preview · Wenova AI-Assisted Development Workshop 2026.07</strong></footer>
 </main></div>
 <script>(function(){const s=document.querySelectorAll('main section[id]'),l=document.querySelectorAll('.sidebar nav a'),m={};l.forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('#'))m[h.slice(1)]=a});const o=new IntersectionObserver(e=>{const v=e.filter(x=>x.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(!v.length)return;l.forEach(a=>a.classList.remove('active'));const a=m[v[0].target.id];if(a)a.classList.add('active')},{rootMargin:'-15% 0px -70% 0px',threshold:[0,.25,.5]});s.forEach(x=>o.observe(x));l.forEach(a=>a.addEventListener('click',()=>document.querySelector('.sidebar').classList.remove('open')))})();</script>

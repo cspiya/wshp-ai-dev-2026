@@ -8,7 +8,7 @@ weboldalként, és a repóból offline is megnyithatók.
 
 Minden notebook ugyanannak a rendszernek egy következő képességét építi:
 
-`üres repo → agent-ready működés → spec-kapu → RUG → mechanikus garanciák → real-life rendszerpróba → modell-/eszközcserélhetőség`
+`üres repo → agent-ready működés → spec-kapu → RUG → mechanikus garanciák → real-life rendszerpróba → legacy-transzfer → csapatbevezetés + C0–C7 audit`
 
 Az elsődleges deliverable az agent-ready fejlesztési rendszer. Az alkalmazás nem öncélú termékdemó,
 hanem a rendszer reprezentatív integrációs és acceptance tesztje. Minden modulnak ki kell mondania:
@@ -18,18 +18,32 @@ hanem a rendszer reprezentatív integrációs és acceptance tesztje. Minden mod
 3. milyen alkalmazási bizonyíték validálja ezt a képességet.
 4. mely része marad változatlan, ha másik modell vagy agent harness végzi a munkát.
 
+## Közös munkatér-szerződés
+
+A gyakorlatok három testvérmappát használnak egy választott `workshop-lab/` könyvtárban:
+
+- `workshop-source/` — ez a workshop-repo; innen olvasunk tananyagot, toolkitet és
+  trainer-owned referencia-workloadot. Résztvevői feature-munka nem ide kerül.
+- `participant-repo/` — a résztvevő saját, G1-ben létrehozott agent-ready repója; a
+  spec, szabály, run log és saját alkalmazásbizonyíték itt verziózott.
+- `workshop-evidence/` — lokális, privát bizonyítékok helye, amelyek nem valók publikus
+  Git-repóba. Titok vagy valós ügyféladat ide sem kerülhet.
+
+Minden parancs előtt ellenőrizd, melyik mappa az aktuális munkakönyvtár. A notebookok
+explicit `cd` lépéssel jelzik, ha a végrehajtás másik repóba vált.
+
 ## Tervezett notebookok (modulonként)
 
 | Fájl | Blokk |
 |---|---|
-| `00-bevezeto.html` | B0 — Agentikus fejlesztés alapjai, eszközök, gazdaságosság |
-| [`01-greenfield-setup.html`](01-greenfield-setup.html) | G1 — Saját repo + CI + Vercel preview + Neon DB-branch |
-| `02-spec-driven.html` | G2 — Spec-vezérelt SDLC + BA-kapu |
-| `03-orchestrator-rug.html` | G3 — Orchestrátor + Repeat-Until-Good |
-| `04-rules-skills-hooks.html` | G4 — Szabályok, skillek, hookok, projekt-memória |
-| `05-qa-e2e-token.html` | G5 — QA, e2e és a keretrendszer real-life acceptance tesztje |
-| `06-legacy-dotnet.html` | Legacy blokk — .NET / MS-SQL / TFS-Azure DevOps |
-| `07-team-adoption.html` | Csapat operating model + 30/60/90 |
+| [`00-bevezeto.html`](00-bevezeto.html) | B0 — Agentikus fejlesztés alapjai és C0-diagnózis |
+| [`01-greenfield-setup.html`](01-greenfield-setup.html) | G1 — Agent-ready alap és szállítópálya |
+| [`02-spec-driven.html`](02-spec-driven.html) | G2 — Spec-vezérelt SDLC + BA-kapu |
+| [`03-orchestrator-rug.html`](03-orchestrator-rug.html) | G3 — Orchestrátor + Repeat-Until-Good |
+| [`04-rules-skills-hooks.html`](04-rules-skills-hooks.html) | G4 — Szabályok, skillek, hookok, projekt-memória |
+| [`05-qa-e2e-token.html`](05-qa-e2e-token.html) | G5 — QA, e2e és a keretrendszer real-life acceptance tesztje |
+| [`06-legacy-dotnet.html`](06-legacy-dotnet.html) | Legacy blokk — .NET / MS-SQL / TFS-Azure DevOps |
+| [`07-team-adoption.html`](07-team-adoption.html) | Csapat operating model + 30/60/90 |
 
 ## Írási szabályok (minden notebookra kötelező)
 
