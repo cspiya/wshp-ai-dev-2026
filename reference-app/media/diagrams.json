@@ -1,0 +1,44 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-app-topology",
+      "visualQuestionId": "q-reference-overview",
+      "question": "Miért létezik a referenciaalkalmazás, és hogyan igazolja a módszert?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["reference-task", "e2e", "provenance"],
+      "figureSelector": "#fig-app-topology",
+      "svgSelector": "#fig-app-topology svg",
+      "textFallbackSelector": "#fig-app-topology-text",
+      "inlineSvgHash": "55d5035a5186179ad8beedc3a67824ff3cebf2540f55900d22a27eef2e21a4df"
+    },
+    {
+      "id": "fig-reference-hogyan-epul-fel-az-alkalmazas",
+      "visualQuestionId": "q-reference-structure-1",
+      "question": "Hogyan épül fel az alkalmazás és a környezete?",
+      "type": "structure",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "architecture-diagram",
+      "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+      "glossarySlugs": ["reference-task"],
+      "figureSelector": "#fig-reference-hogyan-epul-fel-az-alkalmazas",
+      "svgSelector": "#fig-reference-hogyan-epul-fel-az-alkalmazas svg",
+      "textFallbackSelector": "#fig-reference-structure-text",
+      "inlineSvgHash": "d84fd6ad17d024fbde23486d15bde3fb35ea00360a9a973821e52e65bf8bfcda"
+    },
+    {
+      "visualQuestionId": "q-reference-process-2",
+      "question": "Merre fut az ellenőrzés útja a felülettől az adatig?",
+      "type": "process",
+      "disposition": "shared",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": ["e2e", "provenance"],
+      "sharedDiagramId": "fig-evidence-chain",
+      "sharedHref": "../materials/modszertan/index.html#fig-evidence-chain"
+    }
+  ]
+}
