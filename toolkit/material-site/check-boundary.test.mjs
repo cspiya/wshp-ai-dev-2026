@@ -156,6 +156,28 @@ test('generated output fails closed on NUL and invalid UTF-8 artifacts', () => {
   assert.ok(failures.some((failure) => failure.includes('.site/nested/invalid.html [generated]') && failure.includes('not valid UTF-8 text')));
 });
 
+test('generated output rejects every token-splitting C0/C1 control class', () => {
+  const controls = new Map([
+    ['bel', Buffer.from([0x07])],
+    ['backspace', Buffer.from([0x08])],
+    ['vertical-tab', Buffer.from([0x0b])],
+    ['form-feed', Buffer.from([0x0c])],
+    ['unit-separator', Buffer.from([0x1f])],
+    ['delete', Buffer.from([0x7f])],
+    ['c1-next-line', Buffer.from([0xc2, 0x85])],
+  ]);
+  const site = {};
+  for (const [name, control] of controls) {
+    site[`controls/${name}.html`] = Buffer.concat([
+      Buffer.from('<html>WE'), control, Buffer.from('N-992 https://example.invalid/inv'), control, Buffer.from('ite/hidden</html>'),
+    ]);
+  }
+  const failures = validate(fixture({ site }));
+  for (const name of controls.keys()) {
+    assert.ok(failures.some((failure) => failure.includes(`.site/controls/${name}.html [generated]`) && failure.includes('forbidden C0/C1')));
+  }
+});
+
 test('ordinary code is not an operator class and rejects issue traces in final phase', () => {
   const setup = fixture({ files: { 'src/example.js': sample('negative/ordinary-code.js') } });
   assert.ok(validate(setup).some((failure) => failure.includes('src/example.js [repository]')));

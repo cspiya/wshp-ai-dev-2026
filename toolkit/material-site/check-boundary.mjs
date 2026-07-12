@@ -68,25 +68,18 @@ function trackedRelative(source) {
 
 function decodeText(file, failClosed, failures, label) {
   const bytes = fs.readFileSync(file);
-  if (bytes.includes(0)) {
-    if (failClosed) failures.push(`${label}: artifact is binary or contains NUL bytes; boundary cannot inspect it`);
-    return null;
-  }
-  const sample = bytes.subarray(0, 8192);
-  let controls = 0;
-  for (const byte of sample) {
-    if ((byte < 7 || (byte > 13 && byte < 32)) && byte !== 9 && byte !== 10 && byte !== 13) controls++;
-  }
-  if (sample.length > 0 && controls / sample.length > 0.01) {
-    if (failClosed) failures.push(`${label}: artifact is not recognizable text; boundary cannot inspect it`);
-    return null;
-  }
+  let text;
   try {
-    return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    text = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
   } catch {
     if (failClosed) failures.push(`${label}: artifact is not valid UTF-8 text; boundary cannot inspect it`);
     return null;
   }
+  if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/u.test(text)) {
+    failures.push(`${label}: artifact contains forbidden C0/C1 control characters; boundary cannot inspect it safely`);
+    return null;
+  }
+  return text;
 }
 
 function readManifest(source) {

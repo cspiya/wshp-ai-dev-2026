@@ -69,7 +69,8 @@ template, it does not replace it.
       including operator files: secrets, personal/client data, invite URLs and explicit
       private markers always fail, regardless of filename extension. Exact participant
       routes/downloads and every generated `.site/` file fail closed when they cannot be
-      inspected as UTF-8 text. Only the named boundary negative-fixture directory is
+      inspected as UTF-8 text. Text may contain TAB, LF and CR whitespace, but no other
+      C0/C1 control character. Only the named boundary negative-fixture directory is
       excluded from source scanning; generated `.site/` traverses every nested directory
       name with no exemptions.
 
