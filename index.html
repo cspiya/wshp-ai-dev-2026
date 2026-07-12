@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI-assisted fejlesztési workshop</title>
 <style>
-  .hero { padding: 2rem 0 1rem; }
+  .hero { background: linear-gradient(135deg, #ffffff 0%, var(--soft-accent) 100%); border: 1px solid #d9e5fb; border-radius: 1rem; box-shadow: var(--shadow); margin: 0 0 2rem; padding: clamp(1.25rem, 4vw, 2.5rem); }
   .hero h1 { margin: 0 0 0.5rem; font-size: 1.9rem; }
   .hero .lead { color: var(--muted); font-size: 1.1rem; max-width: 46rem; }
   .route-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; padding: 0; margin: 1.5rem 0; list-style: none; }
@@ -14,11 +14,16 @@
   .route-cards p { margin: 0 0 0.6rem; color: var(--muted); font-size: 0.95rem; }
   .route-cards a.action { font-weight: 600; text-decoration: none; color: var(--accent); }
   .route-cards a.action:hover, .route-cards a.action:focus-visible { text-decoration: underline; }
-  .area-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.75rem; padding: 0; margin: 1rem 0; list-style: none; }
-  .area-list li { border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.75rem 1rem; }
-  .area-list strong { display: block; margin-bottom: 0.2rem; }
-  .area-list span { color: var(--muted); font-size: 0.92rem; }
+  .area-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; padding: 0; margin: 1.25rem 0; list-style: none; }
+  .area-card { height: 100%; background: var(--paper); border: 1px solid var(--line); border-top: 0.3rem solid var(--accent); border-radius: 0.8rem; box-shadow: var(--shadow); padding: 1.25rem; }
+  .area-card h3 { margin: 0 0 0.75rem; font-size: 1.3rem; }
+  .area-card p { margin: 0.45rem 0; color: var(--muted); }
+  .area-card strong { color: var(--ink); }
+  .area-card .action { display: inline-block; margin-top: 0.65rem; font-weight: 750; text-decoration: none; }
+  .area-card .action:hover, .area-card .action:focus-visible { text-decoration: underline; }
+  .area-card code { color: var(--ink); }
   section { margin-bottom: 2.5rem; }
+  @media (max-width: 640px) { .area-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -106,52 +111,41 @@
   </section>
 
   <section aria-labelledby="teruletek">
-    <h2 id="teruletek">Mi hol található?</h2>
-    <figure id="fig-route-map">
-      <svg viewBox="0 0 860 260" role="img" aria-labelledby="fig-rm-title fig-rm-desc">
-        <title id="fig-rm-title">Szerepek és területek: honnan hová vezet az utad</title>
-        <desc id="fig-rm-desc">Bal oldalon három élethelyzet: a workshop előtt, a workshop napján és a
-        workshop után. Jobb oldalon négy terület: tananyag, toolkit, résztvevői starter és
-        referenciaalkalmazás. A workshop előtt a felkészüléshez és a starterhez vezet nyíl; a workshop
-        napján a tananyaghoz és a referenciaalkalmazáshoz; a workshop után a toolkithez.</desc>
-        <g font-size="14" fill="#1f2733">
-          <rect x="20" y="30" width="200" height="48" rx="8" fill="#f4f6f9" stroke="#7c3aed"/>
-          <text x="120" y="59" text-anchor="middle">A workshop előtt</text>
-          <rect x="20" y="106" width="200" height="48" rx="8" fill="#f4f6f9" stroke="#7c3aed"/>
-          <text x="120" y="135" text-anchor="middle">A workshop napján</text>
-          <rect x="20" y="182" width="200" height="48" rx="8" fill="#f4f6f9" stroke="#7c3aed"/>
-          <text x="120" y="211" text-anchor="middle">A workshop után</text>
-          <rect x="620" y="12" width="220" height="48" rx="8" fill="#ffffff" stroke="#0b5fff"/>
-          <text x="730" y="41" text-anchor="middle">Tananyag</text>
-          <rect x="620" y="76" width="220" height="48" rx="8" fill="#ffffff" stroke="#b45309"/>
-          <text x="730" y="105" text-anchor="middle">Toolkit</text>
-          <rect x="620" y="140" width="220" height="48" rx="8" fill="#ffffff" stroke="#047857"/>
-          <text x="730" y="169" text-anchor="middle">Résztvevői starter</text>
-          <rect x="620" y="204" width="220" height="48" rx="8" fill="#ffffff" stroke="#0e7490"/>
-          <text x="730" y="233" text-anchor="middle">Referenciaalkalmazás</text>
-        </g>
-        <g stroke="#5a6675" stroke-width="2" fill="none">
-          <path d="M 220 54 C 420 54, 420 36, 616 36"/>
-          <path d="M 220 54 C 420 54, 420 164, 616 164"/>
-          <path d="M 220 130 C 420 130, 420 36, 616 36"/>
-          <path d="M 220 130 C 420 130, 420 228, 616 228"/>
-          <path d="M 220 206 C 420 206, 420 100, 616 100"/>
-        </g>
-      </svg>
-      <figcaption>Minden élethelyzetből egy-két terület a fontos — a többit elég tudni, hogy létezik.</figcaption>
-      <table class="static-fallback" id="fig-route-map-text">
-        <caption>A diagram szöveges megfelelője</caption>
-        <tr><th>Mikor?</th><th>Hová vezet az utad?</th></tr>
-        <tr><td>A workshop előtt</td><td>Tananyag → Felkészülés, valamint a résztvevői starter (a saját gyakorlórepód alapja).</td></tr>
-        <tr><td>A workshop napján</td><td>Tananyag (napirend és modulok), valamint a referenciaalkalmazás.</td></tr>
-        <tr><td>A workshop után</td><td>Toolkit: hazavihető sablonok, ellenőrzőlisták, útmutatók.</td></tr>
-      </table>
-    </figure>
-    <ul class="area-list">
-      <li><strong><a data-route="/materials/">Tananyag</a></strong><span>Felkészülés, napirend, a nyolc modul, fogalomtár és az építési napló.</span></li>
-      <li><strong><a data-route="/toolkit/">Toolkit</a></strong><span>Hazavihető sablonok, ellenőrzőlisták és útmutatók a bevezetéshez.</span></li>
-      <li><strong><a data-route="/participant-starter/">Résztvevői starter</a></strong><span>A gyakorlórepó, amelyben a nap folyamán dolgozol.</span></li>
-      <li><strong><a data-route="/reference-app/">Referenciaalkalmazás</a></strong><span>A kitalált adatokkal működő próbapad, amelyen a módszert teszteljük.</span></li>
+    <h2 id="teruletek">A workshop négy területe</h2>
+    <p>Ezek nem ugyanazt a célt szolgálják. Válaszd azt a területet, amelyik az aktuális munkádhoz kell.</p>
+    <ul class="area-grid">
+      <li><article class="area-card">
+        <h3><a data-route="/materials/">Tananyag</a></h3>
+        <p><strong>Mi ez?</strong> A workshop vezetett, magyar nyelvű tanulási útvonala.</p>
+        <p><strong>Mikor használd?</strong> Felkészüléskor és a workshop teljes ideje alatt, modulról modulra.</p>
+        <p><strong>Mit tartalmaz?</strong> Napirendet, nyolc kidolgozott modult, fogalomtárat, módszertani oldalakat és építési naplót.</p>
+        <p><strong>Helye:</strong> <code>materials/</code></p>
+        <a class="action" data-route="/materials/">Tananyag megnyitása →</a>
+      </article></li>
+      <li><article class="area-card">
+        <h3><a data-route="/toolkit/">Toolkit</a></h3>
+        <p><strong>Mi ez?</strong> A workshop után is használható fejlesztési eszköztár.</p>
+        <p><strong>Mikor használd?</strong> Amikor a módszert a saját repódba vagy csapatodba ülteted át.</p>
+        <p><strong>Mit tartalmaz?</strong> Specifikációs sablonokat, ellenőrzőlistákat, agent-promptokat, minőségi kapukat és útmutatókat.</p>
+        <p><strong>Helye:</strong> <code>toolkit/</code></p>
+        <a class="action" data-route="/toolkit/">Toolkit megnyitása →</a>
+      </article></li>
+      <li><article class="area-card">
+        <h3><a data-route="/participant-starter/">Résztvevői starter</a></h3>
+        <p><strong>Mi ez?</strong> A saját gyakorlórepód kiinduló állapota.</p>
+        <p><strong>Mikor használd?</strong> A workshop gyakorlatai során: ide írod a specifikációt és itt készíted el a változtatást.</p>
+        <p><strong>Mit tartalmaz?</strong> Előkészített projektvázat, konfigurációs mintákat és szándékosan befejezetlen gyakorlófeladatot.</p>
+        <p><strong>Helye:</strong> <code>participant-starter/</code></p>
+        <a class="action" data-route="/participant-starter/">Starter megnyitása →</a>
+      </article></li>
+      <li><article class="area-card">
+        <h3><a data-route="/reference-app/">Referencia-alkalmazás</a></h3>
+        <p><strong>Mi ez?</strong> A módszer kész, kitalált adatokkal működő próbapadja.</p>
+        <p><strong>Mikor használd?</strong> Amikor összehasonlítási alap vagy teljes ellenőrzési példa kell.</p>
+        <p><strong>Mit tartalmaz?</strong> A workshop-feladat megoldását, teszteket és a böngészőtől az adatig követhető bizonyítékláncot.</p>
+        <p><strong>Helye:</strong> <code>reference-app/</code></p>
+        <a class="action" data-route="/reference-app/">Referencia megnyitása →</a>
+      </article></li>
     </ul>
   </section>
 

@@ -16,21 +16,6 @@
       "inlineSvgHash": "103e4685bdc71335ce2339d7bebc9bfca78eff74117cb3b5a2d7a0019a826f9a"
     },
     {
-      "id": "fig-route-map",
-      "visualQuestionId": "q-root-route-map",
-      "question": "Melyik élethelyzetből melyik területre vezet az utad?",
-      "type": "decision",
-      "disposition": "page-local",
-      "rendering": "inline-svg",
-      "diagramType": "decision-tree",
-      "takeaway": "A workshop előtt, közben és után más terület adja a következő használható lépést.",
-      "glossarySlugs": ["agent-ready-repo", "reference-task", "golden-path"],
-      "figureSelector": "#fig-route-map",
-      "svgSelector": "#fig-route-map svg",
-      "textFallbackSelector": "#fig-route-map-text",
-      "inlineSvgHash": "1f98ae1808bec86c4b0b8aa516a08fd69ec4c76cd725535a6562934d21070366"
-    },
-    {
       "id": "fig-learning-roadmap",
       "visualQuestionId": "q-root-learning-roadmap",
       "question": "Hogyan épül egymásra a nyolc modul?",
