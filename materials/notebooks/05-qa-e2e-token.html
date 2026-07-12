@@ -1,1 +1,143 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>G5 — A keretrendszer valós rendszerpróbája</title><style>body{font:18px/1.6 system-ui;max-width:960px;margin:auto;padding:32px;color:#172033}h1,h2{line-height:1.2}nav,.box{padding:16px 20px;border-radius:12px;background:#eef4ff;margin:20px 0}.check{background:#edfff4;border-left:5px solid #16864b}code{background:#172033;color:#f6f8ff;padding:2px 6px;border-radius:5px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd5e0;padding:10px;text-align:left}a{color:#0759b8}</style></head><body><nav><a href="00-bevezeto.html">Kezdés</a> · <a href="04-rules-skills-hooks.html">← G4</a> · <a href="06-legacy-dotnet.html">Legacy →</a> · <a href="../agent-ready-repo.md">Checkpointok</a></nav><p>G5 · C6 checkpoint</p><h1>A keretrendszer valós rendszerpróbája</h1><div class="box check"><strong>A rendszer új képessége:</strong> nem csak kódot állít elő, hanem egy üzleti változtatásról végigkövethető, egymásra épülő bizonyítékot szolgáltat.</div><h2>Az alkalmazás szerepe</h2><p>A referenciaalkalmazás nem díszlet és nem pusztán sikerélmény. Reprezentatív <strong>validation workload</strong>: üzleti szabályt, adatbázist, API-t, felületet és külső környezetet érint, ezért integrációs és acceptance tesztként terheli meg az egész fejlesztési operációs rendszert.</p><h2>A bizonyítéklánc</h2><table><thead><tr><th>Réteg</th><th>Mit bizonyít?</th><th>Mit nem?</th></tr></thead><tbody><tr><td>Typecheck, lint, boundary guard</td><td>A kód és az architektúra mechanikus invariánsai állnak.</td><td>Az üzleti viselkedést.</td></tr><tr><td>Unit- és domain-teszt</td><td>A szabályok gyorsan, izoláltan működnek.</td><td>A drótozás és az infrastruktúra helyességét.</td></tr><tr><td>Közös contract test</td><td>A fake és a valódi adapter azonos szerződést teljesít.</td><td>Az éles környezet teljes konfigurációját.</td></tr><tr><td>Valódi DB / preview</td><td>A migráció, konfiguráció és adapter együtt működik.</td><td>A felhasználói folyamat teljességét.</td></tr><tr><td>E2E</td><td>A kritikus út a böngészőtől az adatig végigmegy.</td><td>Minden ritka esetet.</td></tr><tr><td>Friss kontextusú review</td><td>A specifikáció, implementáció és bizonyíték összhangban van.</td><td>Önmagában a futás sikerét.</td></tr></tbody></table><h2>Gyakorlat — evidence chain</h2><ol><li>Válassz egy üzletileg értelmes változtatást a referenciaalkalmazásban.</li><li>Rögzítsd a Given–When–Then elfogadási feltételeket.</li><li>Rendelj minden kockázathoz megfelelő bizonyítékréteget.</li><li>Futtasd végig a lokális gate-eket, a valódi adapteres ellenőrzést és a kritikus E2E utat.</li><li>Kérj független review-t a specre, a diffre és az evidence-re együtt.</li></ol><p><strong>Kész, ha:</strong> egy másik ember a bizonyítékcsomagból meg tudja mondani, mit kértünk, mi változott, hol futott, és mi igazolja.</p><p><strong>Tipikus elakadás:</strong> a mock zöld, ezért késznek tekintjük; az E2E tesztadapterrel fut; a preview csak kézzel lett „megkattintgatva”; a tokenköltséget a bizonyítékok elhagyásával csökkentjük.</p><h2>Token és költség</h2><p>A cél nem a legkevesebb agenthívás, hanem a legolcsóbb megbízható visszacsatolás. Előbb fusson a gyors, determinisztikus gate; csak a releváns fájlok kerüljenek kontextusba; a drágább független review és E2E a szűkített, már zöld változtatást vizsgálja.</p><h2>Modell-/eszközcsere mint regressziós teszt</h2><p>A váltást ugyanúgy kezeljük, mint egy fontos infrastruktúra-cserét: nem benchmark-hír vagy benyomás alapján döntünk. Ugyanazokat a reprezentatív feladatokat futtatjuk a régi és az új végrehajtóval, változatlan spec, tool contract, approval boundary és gate-ek mellett.</p><table><thead><tr><th>Mérce</th><th>Kérdés</th></tr></thead><tbody><tr><td>Task success és minőség</td><td>Átmegy-e ugyanazon acceptance és független review-n?</td></tr><tr><td>Evidence-hűség</td><td>Valóban lefuttatja-e a kapukat, vagy csak állítja?</td></tr><tr><td>Költség és latencia</td><td>Mennyibe kerül a teljes elfogadott eredmény, nem csak egy token?</td></tr><tr><td>Review-terhelés</td><td>Mennyi emberi javítás és visszanyitás szükséges?</td></tr><tr><td>Hordozhatóság</td><td>Kellett-e a módszert újraírni, vagy elég volt az adapter és konfiguráció?</td></tr></tbody></table><p>A Fable/Mythos <a href="https://www.anthropic.com/news/redeploying-fable-5">2026-os átmeneti hozzáférési korlátozása</a> az üzletmenet-folytonossági oldalt, a <a href="https://openai.com/index/gpt-5-6/">GPT‑5.6 megjelenése</a> a gyors képességváltás oldalát példázza. A keretrendszer feladata, hogy mindkettőt kontrollált váltássá tegye.</p><div class="box"><strong>Acceptance teszt a keretrendszerre:</strong> egy új, reális üzleti változtatás reprodukálhatóan eljut a jóváhagyott spectől a valós környezetű bizonyítékig. Ha ez nem megy, nem csak az alkalmazás hibás: a fejlesztési rendszer valamelyik eleme hiányzik.</div></body></html>
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>G5 — QA, E2E és context budget</title>
+<style>
+:root{--ink:#172033;--muted:#52606d;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--violet:#f7f4ff;--code:#172033}*{box-sizing:border-box}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1040px;margin:auto;padding:28px;color:var(--ink)}h1,h2,h3{line-height:1.25}h1{font-size:2.25rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.5rem}nav,.box,.decision,.exercise{padding:16px 20px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint,.done{background:var(--green);border-left:5px solid #16864b}.decision{background:var(--amber);border-left:5px solid #d98a00}.exercise{border:2px solid #8aa9cf}.warning{background:var(--red);border-left:5px solid #c33}.evidence{background:var(--violet);border-left:5px solid #7453c6}code,pre{background:var(--code);color:#f6f8ff;border-radius:5px}code{padding:2px 6px}pre{padding:16px;overflow:auto;white-space:pre-wrap}table{border-collapse:collapse;width:100%;margin:18px 0}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.eyebrow{color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.steps>li{margin:.65rem 0}.small{color:var(--muted);font-size:.92rem}.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line)}@media(max-width:700px){body{padding:18px}h1{font-size:1.8rem}table{font-size:.9rem}.pager{display:block}.pager a{display:block;margin:.5rem 0}}
+</style>
+</head>
+<body>
+<nav aria-label="Modulnavigáció"><a href="00-bevezeto.html">Kezdés</a> · <a href="04-rules-skills-hooks.html">← G4: mechanikus garanciák</a> · <a href="06-legacy-dotnet.html">Legacy →</a> · <a href="../agent-ready-repo.md">Agent-ready checkpointok</a></nav>
+
+<p class="eyebrow">G5 · C6 checkpoint · 55 perc</p>
+<h1>QA, E2E és context budget</h1>
+<p><strong>Tanítási eredmény:</strong> egy jóváhagyott üzleti változtatáshoz kockázatalapú bizonyítékláncot tervezel, külön ellenőrzöd a fake és a valódi adapter szerződését, majd egy hitelesített preview ellen futó böngészős teszttel validálod a teljes agent-ready működést.</p>
+
+<div class="box checkpoint"><strong>C6 · A rendszer új képessége:</strong> a repo nemcsak kódot állít elő, hanem a spectől a valódi futási környezetig visszakövethető, egymásra épülő bizonyítékot szolgáltat.</div>
+<div class="box"><strong>Erre építünk:</strong> a C3 acceptance criteria megmondja, mit jelent a kész; a C4 RUG függetlenül támadja az eredményt; a C5 gate-jei mechanikusan blokkolnak. Most reprezentatív alkalmazási terheléssel ellenőrizzük, hogy a teljes rendszer együtt működik-e.</div>
+
+<section id="workload">
+<h2>1. Az alkalmazás szerepe: validation workload</h2>
+<p>A referenciaalkalmazás nem a workshop végterméke. <a href="../fogalomtar.md">Validation workload</a>: üzleti szabályt, modulhatárt, adatot, változó külső függőséget, preview deploymentet és böngészős utat ad az operating model acceptance tesztjéhez.</p>
+<p>.NET-analógia: nem azért építünk egy teljes webes slice-ot, hogy bemutassuk az ASP.NET controllert, hanem hogy együtt terheljük a domain-szabályt, az EF-adaptert, a DI-drótozást, a pipeline-t és a Playwright/Selenium kritikus utat.</p>
+<div class="decision">
+<h3>Döntési doboz · Kockázathoz bizonyítékréteg</h3>
+<p><strong>Az alapprobléma:</strong> egy zöld unit teszt nem bizonyítja a drótozást; egy kézzel kattintott preview nem bizonyítja a határesetet; egy nagy E2E suite lassú és nehezen diagnosztizálható.</p>
+<p><strong>A választásunk:</strong> minden kockázathoz a legolcsóbb hiteles tesztréteget rendeljük, majd egy keskeny E2E úttal igazoljuk az integrációt.</p>
+<p><strong>Miért ez?</strong> gyors visszajelzést és pontos hibaforrást kapunk, miközben a valódi wiring sem marad ellenőrizetlen.</p>
+<p><strong>Alternatívák:</strong> „mindent E2E-ben” lassú és törékeny; „mindent mockkal” hamis rendszert igazolhat; kizárólag manuális QA nem reprodukálható és nem regressziós védelem.</p>
+</div>
+</section>
+
+<section id="chain">
+<h2>2. A bizonyítéklánc: minden réteg mást állít</h2>
+<table><thead><tr><th>Réteg</th><th>Mit bizonyít?</th><th>Mit nem bizonyít?</th></tr></thead><tbody>
+<tr><td>Typecheck, lint, boundary guard</td><td>A kód és az architektúra mechanikus invariánsai állnak.</td><td>Az üzleti viselkedést vagy a deploymentet.</td></tr>
+<tr><td>Unit- és domain-teszt</td><td>A szabály gyorsan, izoláltan működik, a határeset reprodukálható.</td><td>A drótozás és infrastruktúra helyességét.</td></tr>
+<tr><td>Közös <a href="../fogalomtar.md">contract test</a></td><td>Az in-memory és valódi adapter ugyanazt a szerződést teljesíti.</td><td>A teljes preview-konfigurációt.</td></tr>
+<tr><td>Izolált valódi DB / preview</td><td>A migráció, konfiguráció és valódi adapter együtt működik.</td><td>A felhasználói folyamat teljességét.</td></tr>
+<tr><td><a href="../fogalomtar.md">E2E teszt</a></td><td>A kritikus út a böngészőtől az adatig végigmegy.</td><td>Minden üzleti határesetet és ritka hibát.</td></tr>
+<tr><td>Friss kontextusú review</td><td>A spec, diff, tesztkiosztás és evidence összhangban van.</td><td>Önmagában azt, hogy a parancs tényleg lefutott.</td></tr>
+</tbody></table>
+<div class="box warning"><strong>Evidence-hűség:</strong> mindig nevezd meg a környezetet. A lokális in-memory E2E wiring evidence; nem valódi DB- vagy preview-bizonyíték. A kihagyott suite nem zöld suite.</div>
+</section>
+
+<section id="ba-dev">
+<h2>3. BA–fejlesztő konvergencia: viselkedés és teszt ugyanazt jelentse</h2>
+<p>A BA megfigyelhető Given–When–Then feltételeket ad; a fejlesztő kockázati térképet és tesztréteget rendel hozzá. Az implementáció előtt együtt zárják a döntési réseket.</p>
+<table><thead><tr><th>BA-kérdés</th><th>Fejlesztői fordítás</th><th>Közös kapu</th></tr></thead><tbody>
+<tr><td>Mikor számít sikeresnek egy regisztráció?</td><td>Domain- és routerteszt a státuszra, összegre és hibakódra.</td><td>A várt eredmény kívülről megfigyelhető, nem belső függvénynév.</td></tr>
+<tr><td>Mi történik fizetési elutasításkor?</td><td>Fake PaymentPort determinisztikus failure ága + UI/API hibaút.</td><td>A sikertelen fizetés nem hoz létre téves sikerállapotot.</td></tr>
+<tr><td>Mit jelent a 48 órás lemondási határ?</td><td>Injektált óra és két határeset unit tesztben.</td><td>Az inkluzív/exkluzív határ BA-döntés, nem agent-találgatás.</td></tr>
+<tr><td>Mit kell a preview-n látni?</td><td>Egy keskeny Playwright happy path a hitelesített branch deploy ellen.</td><td>Az E2E a jóváhagyott kritikus utat, nem minden szabályt ismétel.</td></tr>
+</tbody></table>
+</section>
+
+<section id="exercise-plan">
+<h2>4. Gyakorlat A: kockázatból evidence-terv</h2>
+<div class="exercise">
+<p><strong>Cél:</strong> bizonyítékláncot készíteni a fiktív workshop-regisztráció kritikus útjához anélkül, hogy egyetlen óriás E2E tesztbe zsúfolnánk mindent.</p>
+<ol class="steps">
+<li>Olvasd el a jóváhagyott acceptance criteriát és a <code>reference-app/src/modules/registrations/</code>, <code>pricing/</code>, <code>checkout/</code> contractjait. A slice-on kívüli belső fájlokat csak indokoltan add a kontextushoz.</li>
+<li>Írj fel négy kockázatot: árkerekítés, fizetési elutasítás, státusz-perzisztencia, böngészős drótozás.</li>
+<li>Mindegyikhez rendeld a legolcsóbb hiteles réteget: domain unit; port/alkalmazási teszt; repository contract; preview E2E.</li>
+<li>Minden sorhoz írd oda: <em>mit bizonyít</em> és <em>mit nem bizonyít</em>.</li>
+<li>A BA ellenőrizze, hogy minden acceptance criterion legalább egy bizonyítékhoz kötődik. A fejlesztő ellenőrizze, hogy nincs két drága réteg ugyanarra az állításra indok nélkül.</li>
+<li>A reviewer kapja meg a specet, a kockázat–teszt mátrixot és a kanonikus standardot, de ne kapja meg a maker „minden rendben” ítéletét.</li>
+</ol>
+<div class="box done"><strong>Kész, ha:</strong> minden jóváhagyott viselkedéshez van megfelelő bizonyítékréteg, minden réteg korlátja le van írva, és az E2E csak az integrációs kritikus utat viszi.</div>
+<p><strong>Tipikus elakadások:</strong> technológiai lista készül kockázati térkép helyett; a mockot valódi adapter-evidence-ként kezeljük; a BA csak az elkészült UI-t látja, a hibaágat nem.</p>
+<p><strong>Plan B:</strong> ha a referencia-app nem indul, készítsd el a mátrixot a modul contractokból és a meglévő tesztnevekből. A futási cellákat jelöld <em>nem futott</em> állapotúra; a tervezés elkészülhet, a validációs gate nem.</p>
+</div>
+</section>
+
+<section id="exercise-run">
+<h2>5. Gyakorlat B: contracttól a preview E2E-ig</h2>
+<div class="exercise">
+<p><strong>Cél:</strong> ugyanahhoz a commithoz kötött lokális, adapter- és böngészős bizonyítékot rögzíteni. A referencia-app itt a keretrendszer próbaterhelése, nem fejlesztési feladat.</p>
+<ol class="steps">
+<li>Rögzítsd a vizsgált commit SHA-ját: <pre>git rev-parse HEAD</pre><strong>Várt eredmény:</strong> egyetlen teljes commit-azonosító.</li>
+<li>A <code>reference-app</code> mappában futtasd külön, hogy az exit code rétegenként látható legyen:
+<pre>npm run typecheck
+npm run lint
+npm run test</pre><strong>Várt eredmény:</strong> mindhárom exit code 0. Jegyezd fel a tesztösszegzést és minden skipet.</li>
+<li>Ellenőrizd a repository contract suite-ot. Ha van eldobható Neon branchhez tartozó <code>TEST_DATABASE_URL</code>, futtasd a suite-ot azzal is. <strong>Várt eredmény:</strong> ugyanaz a viselkedési suite zöld az in-memory és Drizzle adapteren, releváns skip nélkül.</li>
+<li>Szerezd meg a commit/PR hitelesített <a href="../fogalomtar.md">preview deployment</a> URL-jét GitHub/Vercel állapotból. Ellenőrizd a projektet, branchet, commitot és a sikeres deployment státuszt; URL-t ne találj ki és ne másolj titkot.</li>
+<li>PowerShellben futtasd a kritikus böngészős utat:
+<pre>$env:PLAYWRIGHT_BASE_URL="https://&lt;verified-preview-url&gt;"
+npx playwright test --grep @happy-path</pre><strong>Várt eredmény:</strong> a happy path zöld a hitelesített preview ellen.</li>
+<li>Kérj friss kontextusú review-t a specre, diffre, pontos parancsokra és eredményekre együtt. Minden findingot reprodukálj, mielőtt javítanád.</li>
+<li>Rögzítsd az evidence-csomagot: commit; parancs; local/preview/isolated DB környezet; exit code; rövid eredmény; skip; mit bizonyít; mit nem; maradék kockázat.</li>
+</ol>
+<div class="box done"><strong>Kész, ha:</strong> másik ember reprodukálni tudja, mely adaptereken futott a contract, mely commit mely preview-ját tesztelted, és mi maradt bizonyítatlan.</div>
+<p><strong>Tipikus elakadások:</strong> a lokális in-memory E2E-t preview evidence-ként jelentjük; a DB-suite skipje elvész; régi deployment URL fut; a „green” állítás mellől hiányzik a parancs vagy SHA.</p>
+<p><strong>Plan B:</strong> ha nincs preview/auth/hálózat, futtasd a lokális <code>npm run test:e2e</code> in-memory seamet. Jelöld: <em>lokális wiring evidence, nem preview- vagy valódi DB-bizonyíték</em>. A tréner felvétele vagy előre rögzített zöld run logja bemutathatja a lépést, de a résztvevő saját preview gate-je nyitva marad.</p>
+</div>
+</section>
+
+<section id="context-budget">
+<h2>6. Context budget és token: a legolcsóbb megbízható visszacsatolás</h2>
+<p>A cél nem a legkevesebb agenthívás, hanem a teljes, elfogadott eredmény legalacsonyabb költsége. A túl sok kontextus elrejti a releváns szabályt; a túl kevés találgatásra kényszerít.</p>
+<div class="decision">
+<h3>Döntési doboz · Keskeny packet, fokozatos bizonyítás</h3>
+<p><strong>Az alapprobléma:</strong> teljes repo + teljes chat drága és zajos; a korai E2E lassú; a bizonyítékok elhagyása viszont visszanyitást okoz.</p>
+<p><strong>A választásunk:</strong> először spec, helyi szabály, érintett contract és gyors gate; csak a zöld diff kerül független review-ra és preview E2E-re.</p>
+<p><strong>Miért ez?</strong> a gyors determinisztikus kapu olcsón szűkít, a drágább agent- és böngészőidő pedig már kisebb, releváns felületet vizsgál.</p>
+<p><strong>Alternatívák:</strong> egyetlen hatalmas sessionben nő a stale assumption; minden fájl összefoglalása duplikálja a forrást; review és E2E kihagyása olcsónak látszik, de a hibát későbbre tolja.</p>
+</div>
+<table><thead><tr><th>Sorrend</th><th>Kontextus / futás</th><th>Miért itt?</th></tr></thead><tbody>
+<tr><td>1</td><td>Spec + acceptance + legközelebbi AGENTS.md + kanonikus standard.</td><td>Megállítja a rossz irányt kód előtt.</td></tr>
+<tr><td>2</td><td>Érintett slice, contract, teszt; typecheck/lint/unit.</td><td>Kis blast radius, gyors hibalokalizáció.</td></tr>
+<tr><td>3</td><td>Contract valódi adapterrel.</td><td>A double driftet az integráció előtt fogja meg.</td></tr>
+<tr><td>4</td><td>Fresh reviewer: spec + diff + evidence, maker-ítélet nélkül.</td><td>Függetlenül keresi a hiányt.</td></tr>
+<tr><td>5</td><td>Hitelesített preview + keskeny E2E.</td><td>A már szűkített változás teljes wiringját bizonyítja.</td></tr>
+</tbody></table>
+</section>
+
+<section id="handoff">
+<h2>7. Evidence-átadási szerződés</h2>
+<p>A build log és képernyőkép önmagában nem handoff. A kanonikus állapot az issue/spec és a Git commit; a rövid trace ezekhez köti a futást.</p>
+<pre>Evidence item
+- Source: issue / commit / verified preview
+- Command: exact command, secrets redacted
+- Environment: local | preview | isolated DB branch
+- Result: exit code + concise test summary
+- Proves: one bounded claim
+- Does not prove: explicit limitation
+- Remaining risk / skipped gate: none | description</pre>
+<p><strong>BA ellenőrzése:</strong> a „Proves” sor megfelel az acceptance criteriumnak. <strong>Fejlesztő ellenőrzése:</strong> a parancs és környezet alkalmas erre az állításra. Csak együtt adnak konvergenciát.</p>
+</section>
+
+<section id="portability">
+<h2>8. Modell- és eszközcserélhetőség</h2>
+<p>Változatlan marad a spec, a kockázat–teszt mátrix, a contract suite, a gate-parancs, az evidence-formátum és a preview acceptance. Csak az agent indítása, toolneve és auth-adaptere változik. Az új végrehajtó akkor elfogadható, ha ugyanazon reprezentatív workloadon ugyanazt a minőségi lécet teljesíti — nem attól, hogy újabb vagy magabiztosabb választ ír.</p>
+</section>
+
+<section id="takeaway">
+<h2>9. Vidd haza</h2>
+<div class="box"><strong>Az állítás nem evidence: a kockázathoz illő teszt, a megnevezett környezet, az exit code és a reprodukálható kritikus út együtt bizonyít.</strong></div>
+</section>
+
+<div class="pager"><a href="04-rules-skills-hooks.html">← Előző: Szándékból mechanikus garancia</a><a href="06-legacy-dotnet.html">Következő: Legacy adaptáció →</a></div>
+</body></html>
