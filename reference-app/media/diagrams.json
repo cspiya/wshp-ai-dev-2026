@@ -13,7 +13,7 @@
       "figureSelector": "#fig-app-topology",
       "svgSelector": "#fig-app-topology svg",
       "textFallbackSelector": "#fig-app-topology-text",
-      "inlineSvgHash": "d0431115a947ce6659d24b0628adee783e8c491e17c0bd01ac9f7ddb42be3552"
+      "inlineSvgHash": "55d5035a5186179ad8beedc3a67824ff3cebf2540f55900d22a27eef2e21a4df"
     },
     {
       "id": "fig-reference-hogyan-epul-fel-az-alkalmazas",
