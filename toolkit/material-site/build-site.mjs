@@ -147,10 +147,27 @@ function loadGlossary(phase, substitutions, errors) {
     }
     substitutions.push("glossary registry <- fixtures/site/glossary.json");
   }
-  const registry = JSON.parse(fs.readFileSync(source, "utf8"));
-  if (!Array.isArray(registry.terms)) {
-    errors.push(`${path.relative(REPO_ROOT, source)}: glossary registry has no terms[] array`);
+  let registry;
+  try {
+    registry = JSON.parse(fs.readFileSync(source, "utf8"));
+  } catch (err) {
+    errors.push(`${path.relative(REPO_ROOT, source)}: glossary registry is not valid JSON (${err.message})`);
     return null;
+  }
+  const label = path.relative(REPO_ROOT, source);
+  if (registry.schemaVersion !== 2) {
+    errors.push(`${label}: glossary schemaVersion must be 2 (got ${registry.schemaVersion})`);
+    return null;
+  }
+  if (!Array.isArray(registry.terms)) {
+    errors.push(`${label}: glossary registry has no terms[] array`);
+    return null;
+  }
+  for (const t of registry.terms) {
+    if (typeof t.slug !== "string" || t.slug.length === 0 || typeof t.preferred !== "string" || t.preferred.length === 0) {
+      errors.push(`${label}: glossary term missing slug/preferred (${JSON.stringify(t).slice(0, 60)})`);
+      return null;
+    }
   }
   return registry;
 }
@@ -359,7 +376,8 @@ function selfTest() {
   const cases = [
     ["missing-overview.json", "missing didactic.overviewQuestion"],
     ["undisposed-question.json", "undisposed"],
-    ["invalid-ownership.json", "glossary ownership"],
+    ["invalid-ownership.json", "duplicate glossary ownership"],
+    ["missing-ownership.json", "glossary ownership missing"],
   ];
   let ok = true;
   for (const [file, expected] of cases) {
@@ -515,4 +533,8 @@ function main() {
   for (const s of substitutions) console.log(`[build-site]   substituted ${s}`);
 }
 
-main();
+// CLI entry point only when executed directly — importing validateManifest
+// must not trigger a build.
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
+}
