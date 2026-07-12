@@ -71,6 +71,19 @@ if (rawArgs[0] === "--publication-smoke") {
 const strictMdRouting = rawArgs.includes("--strict-md-routing");
 const selfTest = rawArgs[0] === "--self-test";
 const fileArgs = rawArgs.filter((a) => !a.startsWith("--"));
+const unknownFlags = rawArgs.filter(
+  (a) => a.startsWith("--") && !["--strict-md-routing", "--self-test", "--publication-smoke"].includes(a)
+);
+if (
+  unknownFlags.length > 0 ||
+  (rawArgs.includes("--self-test") && !selfTest) ||
+  rawArgs.includes("--publication-smoke") // reachable only when not argv[0]
+) {
+  console.error(
+    `[links] unrecognized or misplaced flag(s): ${unknownFlags.join(" ") || "--self-test/--publication-smoke must be the first argument"}`
+  );
+  process.exit(2);
+}
 
 function checkFile(file, contents, { strictMd }) {
   const failures = [];

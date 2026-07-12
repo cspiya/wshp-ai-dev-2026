@@ -28,8 +28,9 @@ node toolkit/hooks/check-public-content.mjs # guard-public-content over all trac
 ### WEN-216 gate extensions
 
 - Every validator has a `--self-test` mode: it generates violating fixtures
-  in a temp directory and exits `0` only if its own detection fails them
-  for the intended reason. CI runs all four self-tests.
+  in a temp directory and exits `0` only if each fixture produces the
+  expected exit code (violations rejected, clean input accepted). CI runs
+  all four self-tests. Unrecognized or misplaced flags exit `2`.
 - Default scans exclude `fixtures/` directories (negative fixtures violate
   on purpose); explicit file arguments still check them.
 - `check-notebooks.mjs`: pages that opt into the shared shell (contain

@@ -30,6 +30,12 @@ function trackedFiles() {
 
 const args = process.argv.slice(2);
 
+const badFlags = args.filter((a, i) => a.startsWith("--") && !(a === "--self-test" && i === 0));
+if (badFlags.length > 0) {
+  console.error(`[placeholders] unrecognized or misplaced flag(s): ${badFlags.join(" ")}`);
+  process.exit(2);
+}
+
 if (args[0] === "--self-test") {
   const self = fileURLToPath(import.meta.url);
   const dir = mkdtempSync(join(tmpdir(), "check-placeholders-"));

@@ -66,6 +66,8 @@ port the checklist to another project):
   `node toolkit/hooks/check-links.mjs --publication-smoke`
 - Render matrix (desktop/mobile/print evidence + manifest):
   `node toolkit/material-qa/material-qa.mjs materials/notebooks`
+  (CI passes an extra `--out "$RUNNER_TEMP/material-qa"` so evidence lands
+  in the runner's temp dir; behavior is otherwise identical)
 
 Each validator scans the tracked repo files by default (negative-fixture
 directories named `fixtures/` are excluded) and accepts explicit file paths

@@ -35,6 +35,13 @@ const rawArgs = process.argv.slice(2);
 const strictShell = rawArgs.includes("--strict-shell");
 const selfTest = rawArgs[0] === "--self-test";
 const fileArgs = rawArgs.filter((a) => !a.startsWith("--"));
+const unknownFlags = rawArgs.filter(
+  (a) => a.startsWith("--") && !["--strict-shell", "--self-test"].includes(a)
+);
+if (unknownFlags.length > 0 || (rawArgs.includes("--self-test") && !selfTest)) {
+  console.error(`[notebooks] unrecognized or misplaced flag(s): ${unknownFlags.join(" ") || "--self-test must be the first argument"}`);
+  process.exit(2);
+}
 
 function checkFile(file, contents, { strict }) {
   const problems = [];
@@ -54,13 +61,18 @@ function checkFile(file, contents, { strict }) {
 
   // Shared-shell assertions for pages that opted in.
   if (hasMain) {
-    const afterMain = contents.slice(contents.toLowerCase().lastIndexOf("</main>") + 7);
-    const visibleAfterMain = afterMain
-      .replace(/<script[\s\S]*?<\/script>/gi, "")
-      .replace(/<[^>]*>/g, "")
-      .trim();
-    if (visibleAfterMain.length > 0)
-      fail(`visible content after </main> (invisible to shell/TOC): "${visibleAfterMain.slice(0, 60)}"`);
+    const mainClose = contents.toLowerCase().lastIndexOf("</main>");
+    if (mainClose === -1) {
+      fail("<main> is never closed");
+    } else {
+      const visibleAfterMain = contents
+        .slice(mainClose + 7)
+        .replace(/<script[\s\S]*?<\/script>/gi, "")
+        .replace(/<[^>]*>/g, "")
+        .trim();
+      if (visibleAfterMain.length > 0)
+        fail(`visible content after </main> (invisible to shell/TOC): "${visibleAfterMain.slice(0, 60)}"`);
+    }
     if (!isSkeleton && !/module-nav/.test(contents))
       fail("shared-shell page without module navigation (module-nav)");
   }
@@ -83,7 +95,8 @@ function checkFile(file, contents, { strict }) {
       fail(`${label}: missing aria-labelledby`);
     } else {
       for (const id of labelledBy[1].trim().split(/\s+/)) {
-        if (!new RegExp(`<(?:title|desc)[^>]*id\\s*=\\s*["']${id}["']`, "i").test(svg))
+        const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if (!new RegExp(`<(?:title|desc)[^>]*id\\s*=\\s*["']${escaped}["']`, "i").test(svg))
           fail(`${label}: aria-labelledby id "${id}" has no matching <title>/<desc> in the svg`);
       }
       if (!/<title[^>]*id\s*=/i.test(svg)) fail(`${label}: missing <title id>`);
@@ -91,7 +104,9 @@ function checkFile(file, contents, { strict }) {
     }
   }
   if (svgBlocks.length > 0) {
-    const fallbacks = (contents.match(/static-fallback/g) ?? []).length;
+    // Count class attributes, not raw substrings — a CSS rule defining
+    // .static-fallback must not satisfy the contract.
+    const fallbacks = (contents.match(/class\s*=\s*["'][^"']*\bstatic-fallback\b/g) ?? []).length;
     if (fallbacks < svgBlocks.length)
       fail(
         `${svgBlocks.length} svg(s) but only ${fallbacks} static-fallback element(s) — every diagram needs its full static equivalent`
