@@ -16,7 +16,7 @@
 //   errors — published content tracks `main`, not the working branch.
 // - `--self-test`: proves each failing mode fails on a violating fixture.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, statSync, mkdtempSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { existsSync, statSync, mkdtempSync, writeFileSync, mkdirSync, rmSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, resolve, join } from "node:path";
@@ -73,6 +73,18 @@ if (rawArgs[0] === "--publication-smoke") {
 const strictMdRouting = rawArgs.includes("--strict-md-routing");
 const selfTest = rawArgs[0] === "--self-test";
 const fileArgs = rawArgs.filter((a) => !a.startsWith("--"));
+const plannedCanonicalTargets = new Set();
+if (fileArgs.length === 0 && existsSync("toolkit/material-site/site-manifest.json")) {
+  try {
+    const manifest = JSON.parse(readFileSync("toolkit/material-site/site-manifest.json", "utf8"));
+    for (const route of manifest.routes ?? []) {
+      if (typeof route.source === "string") plannedCanonicalTargets.add(resolve(route.source).toLowerCase());
+    }
+  } catch {
+    // The dedicated manifest validator reports malformed input. This legacy
+    // migration checker simply falls back to existence-only behavior.
+  }
+}
 const unknownFlags = rawArgs.filter(
   (a) => a.startsWith("--") && !["--strict-md-routing", "--self-test", "--publication-smoke"].includes(a)
 );
@@ -99,6 +111,12 @@ function checkFile(file, contents, { strictMd }) {
       const line = contents.slice(0, match.index).split("\n").length;
       const resolved = resolve(dirname(file), decodeURIComponent(target));
       if (!existsSync(resolved)) {
+        // During the HTML migration, glossary and foundation pages may link
+        // to a canonical route whose authored source belongs to a later,
+        // explicitly manifested content lane. The final site validator still
+        // requires every source/output; this legacy checker must not call an
+        // approved planned route a broken arbitrary link.
+        if (plannedCanonicalTargets.has(resolved.toLowerCase())) continue;
         failures.push(`${file}:${line}: broken internal link "${raw}"`);
         continue;
       }
