@@ -1,8 +1,8 @@
 # Napirend — Wenova AI-Assisted Development Workshop (2026.07.14, 09:00–17:00)
 
 > **A nap egyetlen építési ív:** üres repo → agent-ready fejlesztési rendszer → real-life alkalmazás
-> mint a rendszer end-to-end validációja. Az elsődleges deliverable nem a weboldal, hanem az ismételhető,
-> szabályozott és bizonyítható fejlesztési működés.
+> mint end-to-end validáció → legacy-transzfer → csapatbevezetés és C0–C7 audit. Az elsődleges deliverable
+> nem a weboldal, hanem az ismételhető, szabályozott és bizonyítható fejlesztési működés.
 > A modell és a coding tool cserélhető végrehajtó: a minőségi lécet a repo, a gate-ek és az evidence tartja
 > stabilan szolgáltatáskiesés, költségváltozás vagy egy jobb modellre váltás közben is.
 
