@@ -17,7 +17,7 @@
   <div class="eyebrow">G1 · 09:45–10:45</div><h2>Agent-ready alap és szállítópálya</h2>
   <nav aria-label="Tartalomjegyzék"><ol>
     <li><a href="#cel">Cél és kész állapot</a></li><li><a href="#preflight">Preflight</a></li>
-    <li><a href="#starter">Starter másolása</a></li><li><a href="#contract">Repo-szerződés</a></li><li><a href="#local">Lokális ellenőrzés</a></li>
+    <li><a href="#starter">Workspace-ek létrehozása</a></li><li><a href="#contract">Repo-szerződés</a></li><li><a href="#local">Lokális ellenőrzés</a></li>
     <li><a href="#github">Saját GitHub-repo</a></li><li><a href="#vercel">Production deploy</a></li>
     <li><a href="#preview">PR és preview</a></li><li><a href="#neon">Neon és DB-branch</a></li>
     <li><a href="#bizonyitek">Bizonyíték és checkpoint</a></li><li><a href="#plan-b">Plan B és hibakeresés</a></li>
@@ -46,41 +46,47 @@
 </section>
 
 <section id="preflight"><h2>2. Preflight — csak zöld alapokról indulunk</h2>
-  <p>Nyiss egy új terminált, és futtasd:</p><pre><code>node --version
+  <p>Nyiss egy új terminált, és futtasd ezt a <strong>négy</strong> CLI-ellenőrzést:</p><pre><code>node --version
 npm --version
 git --version
 claude --version</code></pre>
   <ul class="checklist"><li>A Node főverziója <strong>22</strong>.</li><li>A Git és a Claude Code verziót ír ki.</li><li>A <code>claude</code> elindul, és be vagy jelentkezve.</li><li>Böngészőben be vagy jelentkezve a GitHub, Vercel és Neon fiókodba.</li></ul>
-  <p><strong>Várt eredmény:</strong> mindhárom CLI verziót ad vissza, a coding agent pedig új, üres sessiont tud indítani. A verziószámokat és titkokat nem kell a repóba mentened.</p>
+  <p><strong>Várt eredmény:</strong> mind a négy parancs verziót ad vissza, a coding agent pedig új, üres sessiont tud indítani. A verziószámokat és titkokat nem kell a repóba mentened.</p>
   <div class="callout danger"><strong>Ne menj tovább hibás preflighttal.</strong> Ha a Node nem 22-es, vagy a Claude-login nem működik, jelezd a trénernek.</div>
+  <div class="callout warning"><strong>Időérzékeny felület (ellenőrizve: 2026-07-12):</strong> a Claude Code belépési módja és a webes szolgáltatások menüpontjai változhatnak. Ha a képernyő eltér, használd a szolgáltatás aktuális keresőjét/dokumentációját vagy a tréner képernyőjét; az elfogadási bizonyíték marad, nem a gomb felirata.</div>
 </section>
 
-<section id="starter"><h2>3. A starter másolása saját projektbe</h2>
-  <p>Válassz rövid, ékezet és szóköz nélküli projektnevet, például <code>kovacs-anna-ai-site</code>. A parancsok csak a <code>participant-starter</code> tartalmát másolják át; az eredeti repó Git-előzménye nem kerül a saját projektedbe.</p>
-  <details open><summary>Windows PowerShell</summary><pre><code>$ProjectName = "sajat-projekt-neve"
+<section id="starter"><h2>3. Két workspace + privát evidence létrehozása</h2>
+  <p><strong>Miért különítjük el?</strong> A <code>workshop-source/</code> a read-only tananyag-, toolkit- és referenciakód-forrás. A <code>participant-repo/</code> a saját, írható agent-ready repód. A <code>workshop-evidence/</code> lokális, privát napló; nem kerül publikus Git-repóba. Mindhárom a <code>workshop-lab/</code> közvetlen gyereke. Ha B0-ban már létrehoztad az evidence-mappát, a parancs megtartja.</p>
+  <details open><summary>Windows PowerShell — tetszőleges írható szülőmappából</summary><pre><code>New-Item -ItemType Directory -Force workshop-lab | Out-Null
+Set-Location workshop-lab
 git clone --depth 1 https://github.com/cspiya/wshp-ai-dev-2026.git workshop-source
-New-Item -ItemType Directory $ProjectName
-Copy-Item -Path "workshop-source\participant-starter\*" -Destination $ProjectName -Recurse -Force
-Set-Location $ProjectName
+New-Item -ItemType Directory -Force participant-repo, workshop-evidence | Out-Null
+Copy-Item -Path "workshop-source\participant-starter\*" -Destination participant-repo -Recurse -Force
+Set-Location participant-repo
 git init -b main</code></pre></details>
-  <details><summary>macOS / Linux</summary><pre><code>PROJECT_NAME="sajat-projekt-neve"
+  <details><summary>macOS / Linux — tetszőleges írható szülőmappából</summary><pre><code>mkdir -p workshop-lab
+cd workshop-lab
 git clone --depth 1 https://github.com/cspiya/wshp-ai-dev-2026.git workshop-source
-mkdir "$PROJECT_NAME"
-cp -R workshop-source/participant-starter/. "$PROJECT_NAME/"
-cd "$PROJECT_NAME"
+mkdir -p participant-repo workshop-evidence
+cp -R workshop-source/participant-starter/. participant-repo/
+cd participant-repo
 git init -b main</code></pre></details>
   <p>Ellenőrizd, hogy a saját projekted gyökerében vagy:</p><pre><code>git status
 git rev-parse --show-toplevel</code></pre>
-  <p>A kiírt gyökér végén a saját projektnevednek kell szerepelnie, nem a <code>wshp-ai-dev-2026</code> névnek.</p>
-  <div class="card"><strong>Starter-copy kész, ha:</strong> a saját gyökérben látszik az <code>AGENTS.md</code>, a <code>package.json</code>, a <code>src/</code> és a <code>.github/workflows/ci.yml</code>; a <code>git status</code> még csak a saját, új repód fájljait mutatja.</div>
+  <p>A kiírt gyökérnek <code>workshop-lab/participant-repo</code> végződésűnek kell lennie, nem <code>workshop-source</code>-nak. Ettől a ponttól minden alkalmazás-, Git- és npm-parancsot a <code>participant-repo/</code> gyökerében futtass; toolkit olvasásakor külön visszalépünk a source repóhoz.</p>
+  <div class="card"><strong>Workspace kész, ha:</strong> a <code>participant-repo/</code> gyökerében látszik az <code>AGENTS.md</code>, a <code>package.json</code>, a <code>src/</code> és a <code>.github/workflows/ci.yml</code>; a <code>workshop-source/</code> változatlan és a <code>workshop-evidence/</code> nincs a participant Git-repóban.</div>
+  <details><summary>Önálló helyreállítás, ha később vagy más terminálból kapcsolódsz be</summary><p>Keresd meg a <code>workshop-lab/</code> abszolút útját, majd lépj a megfelelő testvérbe. Írás előtt mindig ellenőrizd:</p><pre><code>cd /path/to/workshop-lab/participant-repo
+git rev-parse --show-toplevel
+git status --short</code></pre><p>Windows PowerShellben a <code>cd</code> helyett a teljes úttal használd a <code>Set-Location</code> parancsot. Ha a gyökér nem <code>participant-repo</code>, ne módosíts fájlt. Ha a source clone hiányzik, klónozd újra <code>workshop-source/</code> néven; ha a participant repo hiányzik, másold újra a startert, majd futtasd a <code>git init -b main</code> parancsot.</p></details>
 </section>
 
 <section id="contract"><h2>4. Agent-ready bootstrap — a repo működési szerződése</h2>
   <p><strong>Cél:</strong> az agent találgatás nélkül meg tudja mondani, mi ez a repo, meddig terjed a feladata, és mivel kell bizonyítania a kész állapotot. .NET-es analógia: a solution README-je, coding standardja, architecture testje és pipeline Definition of Done-ja együtt — nem egy chatben elvesző instrukció.</p>
   <h3><span class="step">4.1</span>Írd le a repo identitását</h3>
-  <ol><li>Nyisd meg az <code>AGENTS.md</code> fájlt.</li><li>A technikai stack elé írj egy rövid <strong>Mission</strong> részt: a repo agent-ready működést épít, az alkalmazás annak validációs workloadja.</li><li>Adj <strong>In scope</strong> és <strong>Out of scope</strong> listát. A workshopon csak kitalált mintaadat engedélyezett; ügyféladat, valódi ár, személyes adat és titok tiltott.</li><li>Ellenőrizd, hogy a fájl pontosan a <code>package.json</code>-ban létező parancsokat nevezi meg.</li></ol>
+  <ol><li>Nyisd meg az <code>AGENTS.md</code> fájlt a <code>participant-repo/</code> gyökerében.</li><li><strong>Angolul</strong> írj a technikai stack elé egy rövid <strong>Mission</strong> részt: a repo agent-ready működést épít, az alkalmazás annak validációs workloadja.</li><li><strong>Angolul</strong> adj <strong>In scope</strong> és <strong>Out of scope</strong> listát. A workshopon csak kitalált mintaadat engedélyezett; ügyféladat, valódi ár, személyes adat és titok tiltott.</li><li>Ellenőrizd, hogy a fájl pontosan a <code>package.json</code>-ban létező parancsokat nevezi meg.</li></ol>
   <h3><span class="step">4.2</span>Nevezd meg az egyetlen minőségi lécet</h3>
-  <ol><li>Hozz létre egy <code>docs/engineering-standard.md</code> fájlt.</li><li>Rögzítsd benne röviden a típusság, modulhatár, tesztelés, biztonság és publikus adatkezelés elvárását.</li><li>Az <code>AGENTS.md</code> hivatkozzon erre a fájlra mint kanonikus standardra; ne másold ugyanazt a szabálylistát több helyre.</li><li>Írd le a Definition of Done-t: scope betartva, acceptance criteria bizonyítva, diff review-zva, typecheck/lint/test/build zöld, titok nem került commitba.</li></ol>
+  <ol><li>Hozz létre egy <code>docs/engineering-standard.md</code> fájlt a <code>participant-repo/</code> alatt.</li><li><strong>Angolul</strong> rögzítsd benne röviden a típusság, modulhatár, tesztelés, biztonság és publikus adatkezelés elvárását.</li><li>Az <code>AGENTS.md</code> hivatkozzon erre a fájlra mint kanonikus standardra; ne másold ugyanazt a szabálylistát több helyre.</li><li>Angolul írd le a Definition of Done-t: scope betartva, acceptance criteria bizonyítva, diff review-zva, typecheck/lint/test/build zöld, titok nem került commitba.</li></ol>
   <p class="prompt-label">Read-only szerződésellenőrző prompt</p><pre><code>Read AGENTS.md, package.json, docs/engineering-standard.md, and the CI workflow.
 Do not modify files. Report:
 1. the repository mission,
@@ -95,7 +101,7 @@ Do not modify files. Report:
 </section>
 
 <section id="local"><h2>5. Determinisztikus telepítés és lokális kapuk</h2>
-  <p>A committed lockfile alapján telepíts, majd futtasd az összes kaput:</p><pre><code>npm ci
+  <p>A <code>workshop-lab/participant-repo/</code> gyökerében, a committed lockfile alapján telepíts, majd futtasd az összes kaput:</p><pre><code>npm ci
 npm run typecheck
 npm run lint
 npm run test
@@ -103,7 +109,8 @@ npm run build</code></pre>
   <p>Indítsd el az alkalmazást:</p><pre><code>npm run dev</code></pre>
   <p>Nyisd meg: <a href="http://localhost:3000">http://localhost:3000</a>. Ha betöltött, állítsd le <code>Ctrl+C</code>-vel.</p>
   <div class="callout warning"><strong>Lockfile-szabály:</strong> ha dependency-t adsz hozzá, npm 10-zel frissítsd: <code>npx npm@10 install &lt;csomag&gt;</code>. A CI Node 22 + npm 10 környezetet használ.</div>
-  <div class="card"><strong>Lokális done-kritérium</strong><ul class="checklist"><li>Mind a négy kapu 0 exit code-dal zárult.</li><li>A kezdőoldal betöltődött.</li><li>Nincs commitra váró <code>.env</code>.</li></ul></div>
+  <p>Minden kapuról írj egy sort a <code>workshop-lab/workshop-evidence/g1-bootstrap.md</code> privát fájlba: <strong>parancs, exit code, egymondatos eredmény-összefoglaló</strong>. Commit után egészítsd ki a <code>git rev-parse HEAD</code> teljes SHA-jával. A nyers logot vagy titkot ne másold bele.</p>
+  <div class="card"><strong>Lokális done-kritérium</strong><ul class="checklist"><li>Mind a négy kapu 0 exit code-dal zárult.</li><li>A kezdőoldal betöltődött.</li><li>A bizonyítékfájlban mind a négy parancs, exit code és összefoglaló szerepel.</li><li>Nincs commitra váró <code>.env</code>.</li></ul></div>
 </section>
 
 <section id="github"><h2>6. Saját GitHub-repo és az első zöld CI</h2>
@@ -115,13 +122,16 @@ npm run build</code></pre>
   <h3><span class="step">6.2</span>Első commit és push</h3>
   <p>A nagybetűs helyőrzőket cseréld a saját értékeidre:</p><pre><code>git add .
 git commit -m "Bootstrap workshop project"
+git rev-parse HEAD
 git remote add origin https://github.com/SAJAT-GITHUB-NEVED/SAJAT-REPO-NEVED.git
 git push -u origin main</code></pre>
+  <p>A kiírt teljes commit SHA-t másold a <code>workshop-lab/workshop-evidence/g1-bootstrap.md</code> fájlba a négy kapu mellé.</p>
   <p>GitHub → <strong>Actions</strong> → <strong>CI</strong>. Várd meg, amíg zöld.</p>
   <div class="callout danger"><strong>Ha nincs CI-futás:</strong> ellenőrizd, hogy a saját repóban létezik-e a <code>.github/workflows/ci.yml</code>. Ha hiányzik, a starter másolása nem volt teljes.</div>
 </section>
 
-<section id="vercel"><h2>7. Első production deployment Vercelen</h2><ol>
+<section id="vercel"><h2>7. Első production deployment Vercelen</h2>
+  <div class="callout warning"><strong>Feltételes UI-leírás, ellenőrizve: 2026-07-12.</strong> A Vercel feliratok vagy menühelyek változhatnak. Ha az alábbi útvonal nem egyezik, keresd az új projekt létrehozását és a Git repository importját; Plan B-ként a tréner végigmutatja a saját projekten, te pedig a lokális és GitHub CI-evidence-et zárod le.</div><ol>
   <li>Nyisd meg a <a href="https://vercel.com/new">Vercel New Project</a> oldalt.</li><li>A GitHub-repód mellett kattints az <strong>Import</strong> gombra.</li>
   <li>Ha nem látod, a GitHub-integrációnál adj hozzáférést ehhez a repóhoz.</li><li><strong>Framework Preset:</strong> Next.js.</li>
   <li><strong>Root Directory:</strong> <code>./</code>. A saját repódban az app a gyökérben van.</li><li>A build és install beállításokat hagyd automatikus felismerésen.</li>
@@ -147,7 +157,7 @@ npm run build</code></pre>
   <h3><span class="step">8.2</span>Push és PR</h3><pre><code>git add .
 git commit -m "Verify preview deployment"
 git push -u origin chore/verify-preview</code></pre>
-  <ol><li>GitHubon kattints a <strong>Compare &amp; pull request</strong> gombra.</li><li>Base: <code>main</code>; compare: <code>chore/verify-preview</code>.</li><li>Hozd létre a pull requestet.</li><li>Várd meg a GitHub CI és Vercel deployment zöld állapotát.</li><li>Nyisd meg a Vercel bot kommentjében vagy a PR checkjei között lévő preview URL-t.</li></ol>
+  <ol><li>GitHubon hozd létre a pull requestet; a gomb 2026-07-12-én <strong>Compare &amp; pull request</strong> feliratú lehetett.</li><li>Base: <code>main</code>; compare: <code>chore/verify-preview</code>.</li><li>Várd meg a GitHub CI és Vercel deployment zöld állapotát.</li><li>Nyisd meg a preview URL-t a PR checkjeiből, deployment listából vagy — ha megjelenik — a Vercel bot kommentjéből.</li><li>Ha nincs automatikus link, a tréner mutassa meg a deployment listát; a PR-t és CI-t ettől még saját repódban bizonyítsd.</li></ol>
   <table><thead><tr><th>URL</th><th>Mit kell látnod?</th></tr></thead><tbody><tr><td>Production</td><td>A régi oldal, badge nélkül.</td></tr><tr><td>PR preview</td><td>Az új <strong>Preview verified</strong> badge.</td></tr></tbody></table>
   <div class="callout"><strong>Mit bizonyítottál?</strong> A szerzői branch, a CI és az ember által megnyitható preview külön kapu. A merge csak ezek után következik.</div>
 </section>
@@ -155,10 +165,11 @@ git push -u origin chore/verify-preview</code></pre>
 <section id="neon"><h2>9. Neon bekötése és DB-branch preview-nként</h2>
   <p><strong>Miért?</strong> Külön web-preview közös adatbázissal nem valódi izoláció. Egy hibás migráció vagy tesztadat minden más preview-t is érintene.</p>
   <div class="callout warning"><strong>Ezt akkor végezd el, amikor a tréner jelzi.</strong> A starter kezdetben szándékosan nem használ adatbázist. A branchelés infrastruktúráját most beköthetjük, az alkalmazásos izolációs próbát az első DB-backed feature után zárjuk.</div>
-  <h3><span class="step">9.1</span>Integráció telepítése</h3><ol>
-    <li>Nyisd meg a Vercel projektedet.</li><li>A <strong>Storage</strong> vagy <strong>Marketplace</strong> részben válaszd a <strong>Neon</strong> integrációt.</li>
-    <li>Mivel már van Neon-fiókod, válaszd a <strong>Link Existing Neon Account</strong> módot.</li><li>Engedélyezd a kapcsolatot a Neon oldalán.</li>
-    <li>Válaszd ki a saját Neon projektedet és ezt az egy Vercel projektet.</li><li>Kapcsold be a preview deploymentenkénti DB-branch létrehozást.</li><li>Ha elérhető, kapcsold be az obsolete preview branchek automatikus törlését.</li>
+  <div class="callout warning"><strong>Feltételes UI-leírás, ellenőrizve: 2026-07-12.</strong> A Neon/Vercel Marketplace feliratai és az automatikus preview-branch opció elhelyezése változhat. Ne találgass: használd az aktuális dokumentációt vagy a tréner előre provisionált projektjét.</div>
+  <h3><span class="step">9.1</span>Disposable Neon projekt létrehozása és kiválasztása</h3><ol>
+    <li>A Neon Console-ban hozz létre egy új, eldobható workshop-projektet, például <code>participant-workshop-lab</code> néven, vagy kérd el a tréner által előre provisionált Plan B projekt pontos nevét.</li><li>Jegyezd fel a projekt <strong>nevét és azonosítóját</strong> a privát <code>g1-bootstrap.md</code> fájlba; connection stringet és jelszót ne rögzíts.</li>
+    <li>Nyisd meg a Vercel projektedet, és keresd a Marketplace/Storage integrációk között a Neont.</li><li>Kapcsold össze a saját Neon-fiókodat, vagy Plan B-ként válaszd a tréner által megnevezett, előre provisionált integrációt.</li>
+    <li>Az integrációban <strong>explicit módon ezt az eldobható projektet</strong> és ezt az egy Vercel projektet válaszd ki.</li><li>Ha a felület kínál preview deploymentenkénti DB-branch opciót, kapcsold be; ha nem, a Neon Console-ban hozz létre kézzel egy <code>preview-chore-verify-preview</code> branchet, és a tréner segítségével rendeld a Preview környezethez.</li><li>Ha elérhető, kapcsold be az obsolete preview branchek automatikus törlését; különben a gyakorlat végén kézzel töröld.</li>
   </ol>
   <h3><span class="step">9.2</span>Environment variable ellenőrzése</h3><ol>
     <li>Vercel → Project → <strong>Settings → Environment Variables</strong>.</li><li>Ellenőrizd, hogy létezik a <code>DATABASE_URL</code>.</li>
@@ -182,7 +193,7 @@ git check-ignore .env</code></pre><p>A második parancsnak ki kell írnia: <code
   <table><thead><tr><th>Bizonyíték</th><th>Hol?</th><th>Mit rögzíts?</th></tr></thead><tbody>
     <tr><td>Repo-szerződés</td><td><code>AGENTS.md</code> + standard</td><td>A mission, scope, kanonikus léc és valódi done-parancsok commitját.</td></tr>
     <tr><td>BA/dev konvergencia</td><td>Munkafüzet</td><td>Az egy javított kétértelműséget vagy lezárt döntést.</td></tr>
-    <tr><td>Lokális kapuk</td><td>Terminál</td><td>A négy sikeres parancs neve.</td></tr><tr><td>CI</td><td>GitHub Actions</td><td>A zöld workflow linkje.</td></tr>
+    <tr><td>Lokális kapuk</td><td><code>workshop-evidence/g1-bootstrap.md</code></td><td>Mind a négy parancs, exit code, rövid eredmény-összefoglaló és a participant repó teljes commit SHA-ja.</td></tr><tr><td>CI</td><td>GitHub Actions</td><td>A zöld workflow linkje.</td></tr>
     <tr><td>Production</td><td>Vercel</td><td>A publikus production URL.</td></tr><tr><td>Preview</td><td>GitHub PR / Vercel</td><td>A PR és a külön preview URL.</td></tr>
     <tr><td>DB-branch</td><td>Neon Branches</td><td>A preview branch neve — titok nélkül.</td></tr>
   </tbody></table>
