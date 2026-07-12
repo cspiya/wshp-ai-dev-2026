@@ -136,20 +136,20 @@ function checkFile(
       if (!target) continue;
       const line = contents.slice(0, match.index).split("\n").length;
       const resolved = resolve(dirname(file), decodeURIComponent(target));
-      if (!existsSync(resolved)) {
-        const download = generatedDownloadPath(resolved, downloadRoot);
-        if (download) {
-          if (!downloadAllowlist.has(download)) {
-            failures.push(
-              `${file}:${line}: generated download "${raw}" is not approved by toolkit/material-site/site-manifest.json`
-            );
-          } else if (!existsSync(resolve(sourceRoot, download))) {
-            failures.push(
-              `${file}:${line}: approved generated download "${raw}" has no source file "${download}"`
-            );
-          }
-          continue;
+      const download = generatedDownloadPath(resolved, downloadRoot);
+      if (download) {
+        if (!downloadAllowlist.has(download)) {
+          failures.push(
+            `${file}:${line}: generated download "${raw}" is not approved by toolkit/material-site/site-manifest.json`
+          );
+        } else if (!existsSync(resolve(sourceRoot, download))) {
+          failures.push(
+            `${file}:${line}: approved generated download "${raw}" has no source file "${download}"`
+          );
         }
+        continue;
+      }
+      if (!existsSync(resolved)) {
         // During the HTML migration, glossary and foundation pages may link
         // to a canonical route whose authored source belongs to a later,
         // explicitly manifested content lane. The final site validator still
@@ -207,6 +207,7 @@ if (selfTest) {
   mkdirSync(join(generatedRoot, "approved"), { recursive: true });
   mkdirSync(join(sourceRoot, "approved"), { recursive: true });
   writeFileSync(join(sourceRoot, "approved", "present.md"), "download source\n");
+  writeFileSync(join(generatedRoot, "unapproved-existing.md"), "unapproved generated file\n");
   const generatedCases = [
     [
       "approved generated download",
@@ -217,6 +218,12 @@ if (selfTest) {
     [
       "unknown generated download",
       '<a href="downloads/unknown.md">download</a>',
+      new Set(["approved/present.md"]),
+      1,
+    ],
+    [
+      "existing but unapproved generated download",
+      '<a href="downloads/unapproved-existing.md">download</a>',
       new Set(["approved/present.md"]),
       1,
     ],
