@@ -1,0 +1,79 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-m03-overview",
+      "visualQuestionId": "q-m03-overview",
+      "question": "Hogyan lesz a kérésből jóváhagyható specifikáció és végrehajtható terv?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["spec", "decision-gate", "acceptance-criteria", "given-when-then", "scope"],
+      "figureSelector": "#fig-m03-overview",
+      "svgSelector": "#fig-m03-overview svg",
+      "textFallbackSelector": "#fig-m03-overview-text",
+      "inlineSvgHash": "fc781cad7862f59ac1474fae17ed352fde0dbadc0509969101ac8b7451578d4e"
+    },
+    {
+      "id": "fig-m03-hogyan-fugg-ossze-az-ot",
+      "visualQuestionId": "q-m03-structure-1",
+      "question": "Hogyan függ össze az öt spec-fájl?",
+      "type": "structure",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "component-diagram",
+      "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+      "glossarySlugs": ["spec"],
+      "figureSelector": "#fig-m03-hogyan-fugg-ossze-az-ot",
+      "svgSelector": "#fig-m03-hogyan-fugg-ossze-az-ot svg",
+      "textFallbackSelector": "#fig-m03-five-text",
+      "inlineSvgHash": "7443eaaf137a38b83c8ffe1374a677796bf43417941273ca59492b107eaf969b"
+    },
+    {
+      "id": "fig-m03-milyen-allapotokon-megy-at-a",
+      "visualQuestionId": "q-m03-cycle-2",
+      "question": "Milyen állapotokon megy át a jóváhagyás?",
+      "type": "cycle",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "state-diagram",
+      "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el.",
+      "glossarySlugs": ["decision-gate"],
+      "figureSelector": "#fig-m03-milyen-allapotokon-megy-at-a",
+      "svgSelector": "#fig-m03-milyen-allapotokon-megy-at-a svg",
+      "textFallbackSelector": "#fig-m03-state-text",
+      "inlineSvgHash": "8189812eb49b4de6bc8a92ef67036adc58a767f093ad87aaa5a965399d860ca4"
+    },
+    {
+      "id": "fig-m03-hogyan-kovetheto-az-elfogadasi-feltetel",
+      "visualQuestionId": "q-m03-relationship-3",
+      "question": "Hogyan követhető az elfogadási feltétel a taskig és az ellenőrzésig?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
+      "glossarySlugs": ["acceptance-criteria", "given-when-then"],
+      "figureSelector": "#fig-m03-hogyan-kovetheto-az-elfogadasi-feltetel",
+      "svgSelector": "#fig-m03-hogyan-kovetheto-az-elfogadasi-feltetel svg",
+      "textFallbackSelector": "#fig-m03-trace-text",
+      "inlineSvgHash": "0de8dbe717670062fa41bd1f7be3ab435c604eaf48da6d46a85961971846e9ce"
+    },
+    {
+      "id": "fig-m03-hogyan-adja-at-egymasnak-a",
+      "visualQuestionId": "q-m03-process-4",
+      "question": "Hogyan adja át egymásnak a munkát a BA és a fejlesztő?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "sequence-diagram",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": ["scope"],
+      "figureSelector": "#fig-m03-hogyan-adja-at-egymasnak-a",
+      "svgSelector": "#fig-m03-hogyan-adja-at-egymasnak-a svg",
+      "textFallbackSelector": "#fig-m03-handoff-text",
+      "inlineSvgHash": "8ca3380e5aaa22d9c3127d34c37092af2f8dcf82a34b6cc2afc3f3dd7ab9beb2"
+    }
+  ]
+}

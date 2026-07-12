@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+  <title>3. Specifikációból végrehajtható terv</title>
+  <style>
+    :root{color-scheme:light;font-family:Inter,ui-sans-serif,system-ui,sans-serif;--ink:#172033;--muted:#526078;--line:#cfd7e6;--brand:#2949c7;--soft:#eef2ff;--ok:#e9f8f1;--warn:#fff4e8}*{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);line-height:1.6}main{width:min(1100px,calc(100% - 2rem));margin:auto;padding:2rem 0 5rem}h1{margin:.2rem 0;font-size:clamp(2.1rem,6vw,4rem);line-height:1.05}h2{margin-top:0}a{color:#183083;text-underline-offset:.18em}.eyebrow{color:var(--brand);font-weight:800;letter-spacing:.08em;text-transform:uppercase}.lead{max-width:74ch;font-size:1.14rem}.takeaway{border-left:4px solid var(--brand);padding:.7rem 1rem;background:var(--soft);font-weight:700}.meta,.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0}.card,figure,.exercise{min-width:0;padding:1.2rem;border:1px solid var(--line);border-radius:1rem;background:#fff;box-shadow:0 8px 24px rgba(30,43,77,.05)}figure{margin:1.4rem 0;overflow-wrap:anywhere}figure svg{display:block;width:100%;height:auto}figcaption{margin-top:.8rem;color:var(--muted)}.text-equivalent{margin-top:.8rem;border-top:1px solid var(--line);padding-top:.6rem}table{width:100%;border-collapse:collapse}th,td{padding:.55rem;border:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:anywhere}pre{padding:1rem;overflow:auto;border-radius:.7rem;background:#111a31;color:#fff}.time{display:inline-block;padding:.1rem .5rem;border-radius:999px;background:var(--soft);font-weight:800}.ok{background:var(--ok)}.warn{background:var(--warn)}.sequence{counter-reset:step;display:grid;gap:1rem;padding:0;list-style:none}.sequence>li{counter-increment:step;padding:1rem;border-left:4px solid var(--brand);background:#fff}.sequence>li::before{content:counter(step);display:inline-grid;place-items:center;width:1.8rem;height:1.8rem;margin-right:.5rem;border-radius:50%;background:var(--brand);color:#fff;font-weight:800}@media(max-width:700px){main{width:min(100% - 1rem,1100px)}.meta,.grid{grid-template-columns:1fr}figure{padding:.75rem;overflow-x:auto}figure svg{min-width:700px}.text-equivalent{border-top:0;padding-top:0}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}@media print{body{background:#fff}main{width:100%;padding:0}.card,figure,.exercise{box-shadow:none;break-inside:avoid-page}figure svg{display:block;min-width:0}details,details>*{display:block}a{color:#000;text-decoration:none}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">3. modul · 45 perc</p>
+    <h1>Specifikációból végrehajtható terv</h1>
+    <p class="lead">Ebben a modulban egy homályos kérést öt dokumentumból álló csomaggá alakítasz. Ebből egy készítő chatelőzmény nélkül is dolgozhat, egy ember pedig valódi döntést tud hozni.</p>
+    <p class="takeaway"><strong>Lényeg:</strong> implementáció csak jóváhagyott, végigkövethető csomagból indulhat; a bizonytalanságot nem kódba, hanem döntési pontra visszük.</p>
+  </header>
+
+  <section class="meta" aria-label="A modul keretei">
+    <article class="card"><h2>Előfeltétel</h2><p>A 2. modulban elfogadott repo-szabályok, közös készültségi feltételek és tényleges ellenőrzési parancsok. Ha ezek hiányoznak, előbb térj vissza a <a data-route="/materials/modulok/02-repo-felkeszitese/">repo felkészítéséhez</a>.</p></article>
+    <article class="card"><h2>Kimenet</h2><p>Öt fájl, valamint egy <strong>APPROVED</strong>, <strong>BLOCKED</strong> vagy <strong>DECISION REQUIRED</strong> emberi döntés. Önjóváhagyás nincs.</p></article>
+  </section>
+
+  <figure id="fig-m03-overview">
+    <h2>A kérésből hogyan lesz végrehajtható munka?</h2>
+    <svg viewBox="0 0 1000 300" role="img" aria-labelledby="m03-overview-title m03-overview-desc">
+      <title id="m03-overview-title">A kérés, az ötfájlos specifikáció, az emberi döntés és a végrehajtás kapcsolata</title><desc id="m03-overview-desc">Balról jobbra négy állomás: homályos kérés, ötfájlos specifikációs csomag, emberi döntési pont, majd függetlenül ellenőrizhető végrehajtás. A döntési pontból visszanyíl vezet a specifikációhoz, ha információ hiányzik.</desc>
+      <defs><marker id="m03-a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs>
+      <g font-size="16" text-anchor="middle"><rect x="20" y="80" width="200" height="120" rx="16" fill="#fff4e8" stroke="#a75a16" stroke-width="2"/><text x="120" y="125" font-weight="700">Homályos kérés</text><text x="120" y="155">nyitott döntések</text><text x="120" y="180">ismeretlen határ</text><rect x="275" y="55" width="220" height="170" rx="16" fill="#eef2ff" stroke="#2949c7" stroke-width="2"/><text x="385" y="95" font-weight="700">Ötfájlos csomag</text><text x="385" y="125">scope + feltételek</text><text x="385" y="152">forgatókönyvek</text><text x="385" y="179">terv + taskok</text><rect x="550" y="80" width="180" height="120" rx="16" fill="#fff" stroke="#2949c7" stroke-width="3"/><text x="640" y="125" font-weight="700">Emberi döntés</text><text x="640" y="155">APPROVED</text><text x="640" y="180">vagy BLOCKED</text><rect x="785" y="80" width="195" height="120" rx="16" fill="#e9f8f1" stroke="#176346" stroke-width="2"/><text x="882" y="125" font-weight="700">Végrehajtás</text><text x="882" y="155">task → check</text><text x="882" y="180">független review</text></g>
+      <g stroke="#526078" stroke-width="3" fill="none" marker-end="url(#m03-a)"><line x1="220" y1="140" x2="265" y2="140"/><line x1="495" y1="140" x2="540" y2="140"/><line x1="730" y1="140" x2="775" y2="140"/><path d="M640 205C640 270 385 270 385 235"/></g>
+    </svg>
+    <figcaption><strong>Röviden:</strong> a csomag teszi láthatóvá a döntéseket; az emberi kapu választja el a tervezést a végrehajtástól.</figcaption>
+    <details class="text-equivalent" id="fig-m03-overview-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>A homályos kérés nyitott döntéseket tartalmaz.</li><li>Az öt fájl rögzíti a határt, feltételeket, forgatókönyveket és munkasorrendet.</li><li>A megnevezett ember jóváhagy, blokkol vagy döntést kér.</li><li>Csak APPROVED állapotból indul végrehajtás és független review.</li><li>Hiány esetén a folyamat visszatér a csomag pontosításához.</li></ol></details>
+  </figure>
+
+  <section>
+    <h2>Tanulási sorrend</h2>
+    <ol class="sequence">
+      <li><span class="time">0–5 perc</span> Helyezd el a modult: a repo szabályai már adottak, a fejlesztési feladat még nem indulhat.</li>
+      <li><span class="time">5–12 perc</span> Rögzítsd a <a data-route="/materials/fogalomtar/#scope">scope</a> határait: mi tartozik bele, mi nem, és mi marad nyitott döntés.</li>
+      <li><span class="time">12–20 perc</span> Írj megfigyelhető <a data-route="/materials/fogalomtar/#acceptance-criteria">elfogadási feltételeket</a>, ne megoldási ötleteket.</li>
+      <li><span class="time">20–27 perc</span> Fordítsd a feltételeket <a data-route="/materials/fogalomtar/#given-when-then">Given–When–Then</a> forgatókönyvekké, a hibautat is beleértve.</li>
+      <li><span class="time">27–35 perc</span> Készíts függőségi sorrendet és kis taskokat; minden tasknak legyen ellenőrzése.</li>
+      <li><span class="time">35–42 perc</span> Építs AC → scenario → task → check visszakövetést, majd kérj emberi döntést.</li>
+      <li><span class="time">42–45 perc</span> Rögzítsd az állapotot és add át kizárólag az elfogadott csomagot a 4. modulnak.</li>
+    </ol>
+  </section>
+
+  <figure id="fig-m03-hogyan-fugg-ossze-az-ot">
+    <h2>Hogyan függ össze az öt spec-fájl?</h2>
+    <svg viewBox="0 0 1000 360" role="img" aria-labelledby="m03-five-title m03-five-desc">
+      <title id="m03-five-title">Az ötfájlos specifikációs csomag függőségei</title><desc id="m03-five-desc">Felül a constitution ad közös szabályokat. Alatta a specification határozza meg a kérést. Ebből ágaznak a scenarios és a plan, majd ezek együtt adják a tasks fájlt. Nyilak jelzik a függőségeket.</desc>
+      <defs><marker id="m03-b" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs>
+      <g stroke="#2949c7" stroke-width="2" text-anchor="middle"><rect x="350" y="20" width="300" height="60" rx="12" fill="#e9f8f1"/><rect x="350" y="110" width="300" height="60" rx="12" fill="#eef2ff"/><rect x="80" y="220" width="260" height="60" rx="12" fill="#fff"/><rect x="660" y="220" width="260" height="60" rx="12" fill="#fff"/><rect x="350" y="300" width="300" height="50" rx="12" fill="#fff4e8"/></g><g font-size="16" text-anchor="middle" font-weight="700"><text x="500" y="57">constitution.md · közös korlátok</text><text x="500" y="147">specification.md · scope + feltételek</text><text x="210" y="257">scenarios.md · példák és hibautak</text><text x="790" y="257">plan.md · függőségi sorrend</text><text x="500" y="332">tasks.md · kis lépések és checkek</text></g><g stroke="#526078" stroke-width="3" marker-end="url(#m03-b)"><line x1="500" y1="80" x2="500" y2="100"/><line x1="410" y1="170" x2="250" y2="212"/><line x1="590" y1="170" x2="750" y2="212"/><line x1="300" y1="280" x2="420" y2="298"/><line x1="700" y1="280" x2="580" y2="298"/></g>
+    </svg>
+    <figcaption><strong>Röviden:</strong> egyik fájl sem elég önmagában; együtt rögzítik a szabályokat, az elvárt viselkedést és a végrehajtás rendjét.</figcaption>
+    <details class="text-equivalent" id="fig-m03-five-text"><summary>Az ábra teljes szöveges megfelelője</summary><table><thead><tr><th>Fájl</th><th>Kérdés</th><th>Függőség</th></tr></thead><tbody><tr><td>constitution.md</td><td>Milyen szabályt nem sérthetünk meg?</td><td>Minden további fájlt korlátoz.</td></tr><tr><td>specification.md</td><td>Mit és milyen feltételekkel változtatunk?</td><td>A közös szabályokra épül.</td></tr><tr><td>scenarios.md</td><td>Milyen megfigyelhető példák igazolják?</td><td>Az elfogadási feltételeket konkretizálja.</td></tr><tr><td>plan.md</td><td>Milyen függőségi sorrendben dolgozunk?</td><td>A specifikációt és forgatókönyveket bontja fel.</td></tr><tr><td>tasks.md</td><td>Mi a következő kis lépés és ellenőrzése?</td><td>A scenarios és plan együtt határozza meg.</td></tr></tbody></table></details>
+  </figure>
+
+  <figure id="fig-m03-milyen-allapotokon-megy-at-a">
+    <h2>Milyen állapotokon megy át a jóváhagyás?</h2>
+    <svg viewBox="0 0 1000 280" role="img" aria-labelledby="m03-state-title m03-state-desc"><title id="m03-state-title">A specifikáció jóváhagyási állapotgépe</title><desc id="m03-state-desc">Draft állapotból review következik. Ebből approved, blocked vagy decision required lehet. Decision required visszavezet a draft pontosításához. Approved vezethet kizárólag végrehajtáshoz.</desc><defs><marker id="m03-c" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs><g font-size="15" font-weight="700" text-anchor="middle"><rect x="30" y="90" width="150" height="65" rx="14" fill="#eef2ff" stroke="#2949c7"/><text x="105" y="130">DRAFT</text><rect x="235" y="90" width="150" height="65" rx="14" fill="#fff" stroke="#2949c7"/><text x="310" y="130">HUMAN REVIEW</text><rect x="450" y="20" width="190" height="65" rx="14" fill="#e9f8f1" stroke="#176346"/><text x="545" y="60">APPROVED</text><rect x="450" y="105" width="190" height="65" rx="14" fill="#fff4e8" stroke="#a75a16"/><text x="545" y="145">DECISION REQUIRED</text><rect x="450" y="190" width="190" height="65" rx="14" fill="#fff4e8" stroke="#a75a16"/><text x="545" y="230">BLOCKED</text><rect x="735" y="20" width="220" height="65" rx="14" fill="#e9f8f1" stroke="#176346"/><text x="845" y="60">VÉGREHAJTÁS</text></g><g stroke="#526078" stroke-width="3" fill="none" marker-end="url(#m03-c)"><line x1="180" y1="122" x2="225" y2="122"/><line x1="385" y1="112" x2="440" y2="65"/><line x1="385" y1="130" x2="440" y2="137"/><line x1="385" y1="145" x2="440" y2="217"/><line x1="640" y1="52" x2="725" y2="52"/><path d="M450 138C340 220 105 210 105 165"/></g></svg>
+    <figcaption><strong>Röviden:</strong> a bizonytalanság külön állapot, nem hallgatólagos engedély; csak APPROVED után indulhat munka.</figcaption>
+    <details class="text-equivalent" id="fig-m03-state-text"><summary>Az ábra teljes szöveges megfelelője</summary><ul><li>DRAFT: a csomag még szerkeszthető.</li><li>HUMAN REVIEW: a megnevezett döntéshozó ellenőrzi.</li><li>DECISION REQUIRED: kérdés, felelős és következő döntési időpont szükséges; visszatérés DRAFT-ba.</li><li>BLOCKED: a feltétel nélkülözhetetlen és jelenleg nem teljesíthető.</li><li>APPROVED: csak ebből indulhat végrehajtás.</li></ul></details>
+  </figure>
+
+  <figure id="fig-m03-hogyan-kovetheto-az-elfogadasi-feltetel">
+    <h2>Hogyan követhető az elfogadási feltétel a taskig és az ellenőrzésig?</h2>
+    <svg viewBox="0 0 1000 240" role="img" aria-labelledby="m03-trace-title m03-trace-desc"><title id="m03-trace-title">AC, scenario, task és check visszakövetési lánc</title><desc id="m03-trace-desc">Négy azonosítóval ellátott kártya balról jobbra: AC-02, SC-02A, TASK-04 és CHECK-04. Nyilak jelzik a kapcsolatot, alul pedig egy eredménysor mutatja, hogy minden elemnek pontosan megnevezett párja van.</desc><defs><marker id="m03-d" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs><g text-anchor="middle"><g font-size="17" font-weight="700"><rect x="25" y="55" width="190" height="90" rx="14" fill="#eef2ff" stroke="#2949c7"/><text x="120" y="92">AC-02</text><text x="120" y="120" font-size="14">megfigyelhető feltétel</text><rect x="275" y="55" width="190" height="90" rx="14" fill="#fff" stroke="#2949c7"/><text x="370" y="92">SC-02A</text><text x="370" y="120" font-size="14">Given–When–Then</text><rect x="525" y="55" width="190" height="90" rx="14" fill="#fff" stroke="#2949c7"/><text x="620" y="92">TASK-04</text><text x="620" y="120" font-size="14">kis változtatás</text><rect x="775" y="55" width="190" height="90" rx="14" fill="#e9f8f1" stroke="#176346"/><text x="870" y="92">CHECK-04</text><text x="870" y="120" font-size="14">futtatható ellenőrzés</text></g><text x="500" y="200" font-size="16">AC-02 → SC-02A → TASK-04 → CHECK-04 → rögzített eredmény</text></g><g stroke="#526078" stroke-width="3" marker-end="url(#m03-d)"><line x1="215" y1="100" x2="265" y2="100"/><line x1="465" y1="100" x2="515" y2="100"/><line x1="715" y1="100" x2="765" y2="100"/></g></svg>
+    <figcaption><strong>Röviden:</strong> ha egy task vagy check nem vezethető vissza elfogadási feltételhez, valószínűleg felesleges vagy hiányosan indokolt.</figcaption>
+    <details class="text-equivalent" id="fig-m03-trace-text"><summary>Az ábra teljes szöveges megfelelője</summary><p>Az AC-02 elfogadási feltételt az SC-02A forgatókönyv teszi konkréttá. A TASK-04 ezt a viselkedést valósítja meg. A CHECK-04 futtatható eredménnyel ellenőrzi. A lánc minden elemén ugyanaz a hivatkozás szerepel.</p></details>
+  </figure>
+
+  <figure id="fig-m03-hogyan-adja-at-egymasnak-a">
+    <h2>Hogyan adja át egymásnak a munkát a BA és a fejlesztő?</h2>
+    <svg viewBox="0 0 1000 330" role="img" aria-labelledby="m03-handoff-title m03-handoff-desc"><title id="m03-handoff-title">BA, döntéshozó és fejlesztő átadási folyamata</title><desc id="m03-handoff-desc">Három vízszintes sáv: BA, döntéshozó, fejlesztő. A BA tisztáz és csomagot készít, a döntéshozó jóváhagy vagy visszaküld, a fejlesztő csak jóváhagyás után tervez végrehajtást és jelzi a rejtett döntést.</desc><defs><marker id="m03-e" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs><g font-size="15"><text x="25" y="65" font-weight="700">BA</text><text x="25" y="165" font-weight="700">Döntéshozó</text><text x="25" y="265" font-weight="700">Fejlesztő</text><g text-anchor="middle"><rect x="150" y="30" width="200" height="55" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="250" y="64">scope és feltételek</text><rect x="405" y="30" width="200" height="55" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="505" y="64">ötfájlos csomag</text><rect x="405" y="130" width="200" height="55" rx="12" fill="#fff4e8" stroke="#a75a16"/><text x="505" y="164">emberi döntés</text><rect x="660" y="230" width="260" height="55" rx="12" fill="#e9f8f1" stroke="#176346"/><text x="790" y="264">task + check végrehajtás</text><rect x="150" y="230" width="200" height="55" rx="12" fill="#fff" stroke="#2949c7"/><text x="250" y="255">rejtett döntés?</text><text x="250" y="274" font-size="13">visszakérdezés</text></g></g><g stroke="#526078" stroke-width="3" fill="none" marker-end="url(#m03-e)"><line x1="350" y1="57" x2="395" y2="57"/><line x1="505" y1="85" x2="505" y2="120"/><path d="M605 157C730 157 790 190 790 220"/><path d="M660 257C520 257 380 257 360 257"/><path d="M250 230C250 180 330 120 395 80"/></g></svg>
+    <figcaption><strong>Röviden:</strong> az átadás nem egyirányú dokumentumküldés; a fejlesztő kötelessége visszaküldeni a rejtett döntést, nem pedig kitalálni.</figcaption>
+    <details class="text-equivalent" id="fig-m03-handoff-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>A BA tisztázza a határt és a feltételeket.</li><li>A BA összeállítja az ötfájlos csomagot.</li><li>A megnevezett döntéshozó APPROVED, BLOCKED vagy DECISION REQUIRED állapotot rögzít.</li><li>A fejlesztő csak APPROVED után bont végrehajtható taskokra.</li><li>Rejtett döntés esetén visszaküldi a csomagot, nem feltételez.</li></ol></details>
+  </figure>
+
+  <section class="exercise">
+    <h2>Gyakorlat: készíts jóváhagyható csomagot</h2>
+    <p><strong>Cél:</strong> a kapott kitalált üzleti kérésből olyan munkadarabot készíteni, amelyben nincs elrejtett implementációs vagy üzleti döntés.</p>
+    <ol>
+      <li>Hozd létre az öt fájlt a résztvevői repóban: <code>constitution.md</code>, <code>specification.md</code>, <code>scenarios.md</code>, <code>plan.md</code>, <code>tasks.md</code>.</li>
+      <li>A specification fájlban rögzítsd a scope határait három listában: <em>benne van / nincs benne / nyitott döntés</em>.</li>
+      <li>Adj minden elfogadási feltételnek azonosítót: <code>AC-01</code>, <code>AC-02</code>…</li>
+      <li>Minden AC-hez írj legalább egy normál és egy hibautas Given–When–Then forgatókönyvet.</li>
+      <li>A plan csak függőségi sorrendet és ellenőrzési stratégiát tartalmazzon, ne kész kódot.</li>
+      <li>A tasks fájlban minden task sorolja fel az AC-t, a scenario-t és a futtatandó checket.</li>
+      <li>Nevezd meg a döntéshozót, majd kérj APPROVED vagy BLOCKED döntést. Hiánynál írj: <code>DECISION REQUIRED — owner — next decision point</code>.</li>
+    </ol>
+    <h3>Visszakövetési minta</h3>
+    <table><thead><tr><th>AC</th><th>Scenario</th><th>Task</th><th>Check</th></tr></thead><tbody><tr><td>AC-02</td><td>SC-02A, SC-02B</td><td>TASK-04</td><td><code>npm run test -- order</code></td></tr></tbody></table>
+    <p class="takeaway"><strong>Kész, ha:</strong> egy másik ember meg tudja nevezni a scope-ot, minden AC útját a checkig, valamint azt, ki és milyen állapotban döntött. Ha ez nem teljesül, a csomag még nem APPROVED.</p>
+  </section>
+
+  <section class="grid">
+    <article class="card warn"><h2>Tipikus hibák és Plan B</h2><ul><li><strong>Megoldásnak álcázott feltétel:</strong> írd át megfigyelhető viselkedésre.</li><li><strong>Árva task:</strong> kösd AC-hez vagy töröld.</li><li><strong>Hiányzó döntéshozó:</strong> DECISION REQUIRED; az agent nem hagyhatja jóvá.</li><li><strong>Nincs élő BA:</strong> használd a tréner kitalált kéréscsomagját, de a döntési pontot akkor is rögzítsd.</li></ul></article>
+    <article class="card ok"><h2>Átadás a következő modulnak</h2><p>Csak az APPROVED csomag kerülhet a <a data-route="/materials/modulok/04-fuggetlen-review/">4. modul készítő–reviewer–javító ciklusába</a>. A döntés és az öt fájl együtt az átadás.</p><p>Segédlet: <a data-route="/toolkit/utmutatok/specifikacio/">jóváhagyható specifikáció</a>; nagy kép: <a data-route="/materials/modszertan/#fig-evidence-chain">az ellenőrzési eredmény lánca</a>.</p></article>
+  </section>
+</main>
+</body>
+</html>
