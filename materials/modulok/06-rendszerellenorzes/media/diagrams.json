@@ -13,7 +13,7 @@
       "figureSelector": "#fig-m06-overview",
       "svgSelector": "#fig-m06-overview svg",
       "textFallbackSelector": "#fig-m06-overview-text",
-      "inlineSvgHash": "69b2e7937b966a0be3fcdf53f0453384d7e803c9acd1063aac7be1ce7250843f"
+      "inlineSvgHash": "dd62e4b23694d07c457c371207080864fcd0b71c9e560d79e005967a0323e28a"
     },
     {
       "id": "fig-m06-melyik-kockazatra-melyik-tesztreteg-felel",
@@ -43,7 +43,7 @@
       "figureSelector": "#fig-m06-hogyan-fut-vegig-az-ellenorzes",
       "svgSelector": "#fig-m06-hogyan-fut-vegig-az-ellenorzes svg",
       "textFallbackSelector": "#fig-m06-sequence-text",
-      "inlineSvgHash": "ec8af50a2e238a3bf0480b220b30584a58a641608c05a148e588cb9686c64cde"
+      "inlineSvgHash": "332a9b7b1aeec3405692a4cffd4213de0b2416df1a560793abd0d04696541d40"
     },
     {
       "id": "fig-m06-hol-lokalizalod-a-hibat-ha",
@@ -58,7 +58,7 @@
       "figureSelector": "#fig-m06-hol-lokalizalod-a-hibat-ha",
       "svgSelector": "#fig-m06-hol-lokalizalod-a-hibat-ha svg",
       "textFallbackSelector": "#fig-m06-failure-text",
-      "inlineSvgHash": "339a7c4cbdd78d592510f8163a8bc42c8303a49952e30b3ce96956d6645c342d"
+      "inlineSvgHash": "45c7dcd0f606b1179d4ec35b69669f8564907557733115fdbddc574bc52c656e"
     },
     {
       "visualQuestionId": "q-m06-structure-4",
