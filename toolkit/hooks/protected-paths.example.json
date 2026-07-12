@@ -1,0 +1,9 @@
+{
+  "protected": [
+    ".env",
+    "drizzle/",
+    ".github/workflows/",
+    "AGENTS.md",
+    "toolkit/standards/"
+  ]
+}

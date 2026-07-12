@@ -12,6 +12,21 @@ node toolkit/hooks/guard-public-content.mjs README.md materials/example.md
 
 Exit `0` permits the operation; exit `1` blocks known secret/private markers or unreadable inputs; exit `2` means incorrect usage. Extend the `forbidden` list with reviewed project-specific patterns. This is a backstop, not a complete secret scanner.
 
+## Protected-path guard (PreToolUse)
+
+Blocks writes to paths no agent may touch without a human decision (env
+files, migrations, CI, agent rules). Copy `protected-paths.example.json`,
+adjust the list, then wire the command to the product's pre-write hook with
+the candidate path(s):
+
+```powershell
+node toolkit/hooks/guard-protected-paths.mjs toolkit/hooks/protected-paths.example.json reference-app/.env
+```
+
+Exit `0` allows, `1` blocks with the matched rule, `2` means incorrect usage.
+Entry forms: `dir/` prefix, exact `path/file`, or bare filename (matches in
+any directory, including `name.*` variants).
+
 ## Stop-runs-checks
 
 Copy `checks.project.example.json`, replace commands and working directories with real project gates, then run:
