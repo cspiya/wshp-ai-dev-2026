@@ -13,7 +13,7 @@ export function parseArgs(argv) {
     else if (argv[i] === '--phase') out.phase = argv[++i];
     else throw new Error(`unknown argument: ${argv[i]}`);
   }
-  if (!['foundation', 'final'].includes(out.phase)) throw new Error('--phase must be foundation or final');
+  if (!['foundation', 'incremental', 'final'].includes(out.phase)) throw new Error('--phase must be foundation, incremental, or final');
   return out;
 }
 function walk(dir) { return fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? (['.git', '.site', 'node_modules'].includes(e.name) ? [] : walk(path.join(dir, e.name))) : [path.join(dir, e.name)]) : []; }
@@ -99,9 +99,23 @@ export function validateDiagrams({ source, site, phase }) {
   let routes = [];
   let glossarySlugs = null;
   let glossaryVisualCoverage = null;
+  let incrementalRealRoutes = null;
   try { routes = readRoutes(source); glossarySlugs = readGlossarySlugs(source); glossaryVisualCoverage = readGlossaryVisualCoverage(source); }
   catch (error) { failures.push(`visual contract input is invalid: ${error.message}`); }
   if (!routes.length) failures.push('site manifest with visual-question declarations is missing');
+  if (phase === 'incremental') {
+    const dispositionFile = path.join(site, 'assets', 'route-disposition.json');
+    try {
+      const disposition = JSON.parse(fs.readFileSync(dispositionFile, 'utf8'));
+      if (disposition.phase !== 'incremental' || !Array.isArray(disposition.real) || !Array.isArray(disposition.substituted)) throw new Error('invalid shape');
+      incrementalRealRoutes = new Set(disposition.real);
+      const all = [...disposition.real, ...disposition.substituted];
+      if (all.length !== routes.length || new Set(all).size !== routes.length || routes.some((route) => !all.includes(route.id))) throw new Error('route coverage differs from site manifest');
+    } catch (error) {
+      failures.push(`incremental route disposition is missing or invalid: ${error.message}`);
+      incrementalRealRoutes = new Set();
+    }
+  }
   const configFile = path.join(source, 'toolkit/material-site/mermaid.config.json');
   let mermaidConfig = null;
   if (fs.existsSync(configFile)) {
@@ -255,6 +269,7 @@ export function validateDiagrams({ source, site, phase }) {
     if (phase === 'foundation' && !['/', '/materials/fogalomtar/'].includes(route.id)) continue;
     const sourcePage = path.join(source, route.source);
     const generatedPage = generatedForRoute(site, route);
+    if (phase === 'incremental' && !incrementalRealRoutes?.has(route.id)) continue;
     if (phase === 'foundation' ? !fs.existsSync(sourcePage) : (!fs.existsSync(sourcePage) && !fs.existsSync(generatedPage))) continue;
     const diagramManifest = diagramManifestForRoute(source, route);
     if (!fs.existsSync(diagramManifest)) failures.push(`${route.id}: page has no media/diagrams.json visual dispositions`);

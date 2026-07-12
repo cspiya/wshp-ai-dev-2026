@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Participant-site builder (WEN-256, SHELL-BUILD lane).
 //
-//   node toolkit/material-site/build-site.mjs --clean --out .site [--phase foundation|final]
+//   node toolkit/material-site/build-site.mjs --clean --out .site [--phase foundation|incremental|final]
 //
 // Contract (v3 spec sections 5, B, 12, 13, v3.3):
 // - `site-manifest.json` is the sole authoritative route table; the build
@@ -16,10 +16,11 @@
 // - Page sources own <html lang>, <title>, <head> styles and <main>
 //   content. The build injects the exact CSP meta, the shared stylesheet
 //   link, and body shell around the source's <body> content.
-// - `--phase foundation`: routes whose source does not exist yet are
-//   substituted from checked-in neutral fixtures (never published as
-//   content; substitutions are reported). `--phase final` (WEN-274)
-//   requires every canonical source.
+// - `--phase foundation`: only the frozen foundation routes are canonical.
+//   `--phase incremental`: every canonical source present in this checked-out
+//   branch is rendered, while absent routes use checked-in neutral fixtures.
+//   `--phase final` (WEN-274) requires every canonical source. Every phase
+//   reports its real and substituted route disposition deterministically.
 // - Search: the build writes classic `assets/search-index.js` assigning
 //   `window.WorkshopSearchIndex`; no fetch/module/worker anywhere.
 // - Deterministic: same tree in, byte-identical out; no timestamps.
@@ -40,7 +41,7 @@ const CSP =
 
 function usage(msg) {
   console.error(`build-site: ${msg}`);
-  console.error("usage: node toolkit/material-site/build-site.mjs [--clean] [--out <dir>] [--phase foundation|final]");
+  console.error("usage: node toolkit/material-site/build-site.mjs [--clean] [--out <dir>] [--phase foundation|incremental|final]");
   process.exit(2);
 }
 
@@ -53,7 +54,7 @@ function parseArgs(argv) {
     else if (a === "--phase") opts.phase = argv[++i] ?? usage("--phase needs a value");
     else usage(`unknown option: ${a}`);
   }
-  if (!["foundation", "final"].includes(opts.phase)) usage(`invalid phase: ${opts.phase}`);
+  if (!["foundation", "incremental", "final"].includes(opts.phase)) usage(`invalid phase: ${opts.phase}`);
   return opts;
 }
 
@@ -184,6 +185,25 @@ function fixtureFor(route) {
   if (route.id === "/reference-app/") return "reference.html";
   if (route.parent === "/materials/modulok/") return "deep.html";
   return "hub.html";
+}
+
+const FOUNDATION_CANONICAL_ROUTES = new Set(["/", "/materials/fogalomtar/"]);
+
+// Pure route policy used by the builder and its regression tests. "present"
+// means present in the checked-out branch being built; no worktree or Linear
+// state is consulted, so unmerged content can never become publishable.
+export function routeDisposition(phase, routeId, acceptedSourceExists) {
+  if (phase === "foundation") {
+    return FOUNDATION_CANONICAL_ROUTES.has(routeId) ? (acceptedSourceExists ? "real" : "missing") : "fixture";
+  }
+  if (phase === "incremental") return acceptedSourceExists ? "real" : "fixture";
+  return acceptedSourceExists ? "real" : "missing";
+}
+
+function diagramRegistryFor(route) {
+  return route.source === "index.html"
+    ? path.join(REPO_ROOT, "index-media", "diagrams.json")
+    : path.join(REPO_ROOT, path.dirname(route.source), "media", "diagrams.json");
 }
 
 const hunMap = { á: "a", é: "e", í: "i", ó: "o", ö: "o", ő: "o", ú: "u", ü: "u", ű: "u" };
@@ -412,6 +432,7 @@ function main() {
   const outRoot = path.resolve(REPO_ROOT, opts.out);
   const errors = [];
   const substitutions = [];
+  const realRoutes = [];
 
   if (outRoot === REPO_ROOT || REPO_ROOT.startsWith(outRoot + path.sep)) {
     usage("--out must not be the repository root or an ancestor of it");
@@ -438,22 +459,27 @@ function main() {
 
   // 2. Routes.
   const searchEntries = [];
-  const foundationCanonicalRoutes = new Set(["/", "/materials/fogalomtar/"]);
   for (const route of manifest.routes) {
     const srcPath = path.join(REPO_ROOT, route.source);
     let html;
     let usedFixture = false;
-    if (opts.phase === "foundation" && !foundationCanonicalRoutes.has(route.id)) {
+    // Accepted pages are atomic: canonical HTML plus the matching visual
+    // registry must both be merged into this branch. A legacy/partial
+    // index.html alone is not publishable content.
+    const acceptedSourceExists = fs.existsSync(srcPath) && fs.existsSync(diagramRegistryFor(route));
+    const disposition = routeDisposition(opts.phase, route.id, acceptedSourceExists);
+    if (disposition === "fixture") {
       const fixture = path.join(FIXTURES, fixtureFor(route));
       if (!fs.existsSync(fixture)) {
-        errors.push(`${route.id}: foundation fixture ${path.basename(fixture)} not found`);
+        errors.push(`${route.id}: preview fixture ${path.basename(fixture)} not found`);
         continue;
       }
       html = fs.readFileSync(fixture, "utf8").replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(route.title)}</title>`);
       substitutions.push(`${route.id} <- fixtures/site/${fixtureFor(route)}`);
       usedFixture = true;
-    } else if (fs.existsSync(srcPath)) {
+    } else if (disposition === "real") {
       html = fs.readFileSync(srcPath, "utf8");
+      realRoutes.push(`${route.id} <- ${route.source}`);
     } else {
       errors.push(`${route.id}: canonical source missing (${route.source}) — ${opts.phase} phase requires this route`);
       continue;
@@ -540,6 +566,14 @@ function main() {
       : null;
   const indexBody = JSON.stringify({ pages: searchEntries, glossary: glossaryBlock }, null, 1);
   fs.writeFileSync(
+    path.join(outRoot, "assets", "route-disposition.json"),
+    `${JSON.stringify({
+      phase: opts.phase,
+      real: realRoutes.map((entry) => entry.split(" <- ")[0]),
+      substituted: substitutions.map((entry) => entry.split(" <- ")[0]),
+    }, null, 2)}\n`
+  );
+  fs.writeFileSync(
     path.join(outRoot, "assets", "search-index.js"),
     `// Generated by build-site.mjs — do not edit.\nwindow.WorkshopSearchIndex = Object.freeze(${indexBody});\n`
   );
@@ -549,9 +583,10 @@ function main() {
     process.exit(1);
   }
   console.log(
-    `[build-site] ${opts.phase} build OK: ${manifest.routes.length} routes (${substitutions.length} fixture substitutions), ` +
+    `[build-site] ${opts.phase} build OK: ${manifest.routes.length} routes (${realRoutes.length} real, ${substitutions.length} fixture substitutions), ` +
       `${manifest.downloads.length} downloads -> ${path.relative(REPO_ROOT, outRoot) || outRoot}`
   );
+  for (const r of realRoutes) console.log(`[build-site]   real ${r}`);
   for (const s of substitutions) console.log(`[build-site]   substituted ${s}`);
 }
 
