@@ -14,8 +14,15 @@ function fixture(content, name = 'index.html') {
 }
 
 test('ordinary public content and neutral DEMO issue IDs pass', () => {
-  const root = fixture('<h1>DEMO-123 — gyakorló feladat</h1>');
+  const root = fixture('<h1>DEMO-123 — gyakorló feladat</h1><code>Run(customerId: 101)</code>');
   assert.deepEqual(validateBoundary({ source: root, site: path.join(root, '.site'), phase: 'foundation' }), []);
+});
+
+test('negative fixture rejects explicit client identity metadata', () => {
+  const root = fixture('<script type="application/json">{"customerId":"real-company-account"}</script><p>clientName: Real Company</p>');
+  const failures = validateBoundary({ source: root, site: path.join(root, '.site'), phase: 'foundation' });
+  assert.ok(failures.some((x) => x.includes('client identity identifier')));
+  assert.ok(failures.some((x) => x.includes('client identity name')));
 });
 
 test('negative fixture rejects internal issue and workspace references', () => {

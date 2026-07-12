@@ -3,7 +3,7 @@
 // must point at an existing file. External URLs, anchors, mailto: and data:
 // are out of scope. Pass explicit paths to override (fixture testing).
 //
-// WEN-216 extensions:
+// Extended publication checks:
 // - Directory-target links must have a landing page (README.md or
 //   index.html) inside the target directory — the published site 404s on
 //   bare directories (journal-landing class of defects).
@@ -37,7 +37,7 @@ function trackedFiles() {
     .split("\n")
     .filter((f) => /\.(html|md)$/.test(f))
     // Negative fixtures violate on purpose — any fixtures/ directory,
-    // including toolkit/material-qa/fixtures (WEN-239's narrower rule).
+    // including all material-QA fixture directories.
     .filter((f) => !/(^|\/)fixtures\//.test(f));
 }
 

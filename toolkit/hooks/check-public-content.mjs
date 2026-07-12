@@ -2,7 +2,7 @@
 // Repo-wide public-content guard: runs guard-public-content.mjs over every
 // tracked .md/.html file so the standards can quote ONE copy-pasteable
 // command. Pass explicit paths to override (fixture testing).
-// `--self-test` proves the gate fails on a violating fixture (WEN-216).
+// `--self-test` proves the gate fails on a violating fixture.
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
