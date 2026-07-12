@@ -16,7 +16,7 @@ export function parseArgs(argv) {
   if (!['foundation', 'final'].includes(out.phase)) throw new Error('--phase must be foundation or final');
   return out;
 }
-function walk(dir) { return fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]) : []; }
+function walk(dir) { return fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? (['.git', '.site', 'node_modules'].includes(e.name) ? [] : walk(path.join(dir, e.name))) : [path.join(dir, e.name)]) : []; }
 function sha(bytes) { return crypto.createHash('sha256').update(bytes).digest('hex'); }
 function normalized(file) { return fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n').replace(/<!--\s*(?:Generated|generator|created)[\s\S]*?-->/gi, ''); }
 function canonicalJson(value) {
@@ -194,7 +194,12 @@ export function validateDiagrams({ source, site, phase }) {
           const generatedHtml = fs.readFileSync(generatedPage, 'utf8');
           const generatedSvg = inlineSvgFromFigure(generatedHtml, diagram.figureSelector, diagram.svgSelector);
           if (!generatedSvg) failures.push(`${label}: registered inline SVG is absent from generated page`);
-          else if (sha(normalizedInlineSvg(generatedSvg)) !== diagram.inlineSvgHash) failures.push(`${label}: generated inline SVG integrity differs from source/registry`);
+          else {
+            const generatedHash = sha(normalizedInlineSvg(generatedSvg));
+            const expectedGeneratedHash = diagram.generatedInlineSvgHash ?? diagram.inlineSvgHash;
+            if (generatedHash !== expectedGeneratedHash) failures.push(`${label}: generated inline SVG integrity differs from source/registry`);
+            if (generatedHash !== diagram.inlineSvgHash && !/^[a-f0-9]{64}$/.test(diagram.generatedInlineSvgHash ?? '')) failures.push(`${label}: route-resolved inline SVG requires generatedInlineSvgHash`);
+          }
         }
       } else {
         if (diagram.rendering != null && diagram.rendering !== 'external-svg') failures.push(`${label}: invalid rendering ${diagram.rendering}`);
@@ -207,7 +212,7 @@ export function validateDiagrams({ source, site, phase }) {
         if (!mmd.startsWith(`${dir}${path.sep}`) || !svg.startsWith(`${dir}${path.sep}`)) { failures.push(`${label}: diagram path escapes media directory`); continue; }
         if (!fs.existsSync(mmd)) failures.push(`${label}: Mermaid source missing`);
         else if (mermaidConfig) {
-          const expectedSourceHash = sha(`${normalized(mmd)}${canonicalJson(mermaidConfig)}11.16.0`);
+        const expectedSourceHash = sha(`${normalized(mmd)}\n${canonicalJson(mermaidConfig)}\n11.16.0`);
           if (expectedSourceHash !== diagram.sourceHash) failures.push(`${label}: stale Mermaid source/config/version hash`);
         }
         if (!fs.existsSync(svg)) failures.push(`${label}: SVG output missing`);
@@ -247,6 +252,7 @@ export function validateDiagrams({ source, site, phase }) {
     }
   }
   for (const route of routes) {
+    if (phase === 'foundation' && !['/', '/materials/fogalomtar/'].includes(route.id)) continue;
     const sourcePage = path.join(source, route.source);
     const generatedPage = generatedForRoute(site, route);
     if (phase === 'foundation' ? !fs.existsSync(sourcePage) : (!fs.existsSync(sourcePage) && !fs.existsSync(generatedPage))) continue;

@@ -67,7 +67,10 @@ function staticServer(root) {
 async function browserChecks(page, label, mode, failures) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
   if (overflow) failures.push(`${label} (${mode}): horizontal overflow`);
-  const unnamed = await page.locator('a,button,input,select,textarea,[tabindex]').evaluateAll((els) => els.filter((el) => !el.hasAttribute('disabled') && el.getAttribute('tabindex') !== '-1' && !(el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.textContent?.trim() || el.getAttribute('title') || el.getAttribute('alt'))).length);
+  const unnamed = await page.locator('a,button,input,select,textarea,[tabindex]').evaluateAll((els) => els.filter((el) => {
+    const nativeLabel = 'labels' in el && [...(el.labels ?? [])].some((label) => label.textContent?.trim());
+    return !el.hasAttribute('disabled') && el.getAttribute('tabindex') !== '-1' && !(nativeLabel || el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.textContent?.trim() || el.getAttribute('title') || el.getAttribute('alt'));
+  }).length);
   if (unnamed) failures.push(`${label} (${mode}): ${unnamed} focusable control(s) lack an accessible name`);
   await page.keyboard.press('Tab');
   const focus = await page.evaluate(() => document.activeElement?.tagName ?? '');

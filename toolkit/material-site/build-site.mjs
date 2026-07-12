@@ -324,12 +324,14 @@ ${pager}
 function injectHead(html, route) {
   let out = html;
   out = out.replace(/<meta[^>]+http-equiv\s*=\s*["']Content-Security-Policy["'][^>]*>\s*/gi, "");
+  out = out.replace(/<link\b[^>]*\brel=["'][^"']*canonical[^"']*["'][^>]*>\s*/gi, "");
   const cspTag = `<meta http-equiv="Content-Security-Policy" content="${CSP}">`;
   const cssTag = `<link rel="stylesheet" href="${rootPrefix(route.output)}assets/site.css">`;
+  const canonicalTag = `<link rel="canonical" href="index.html">`;
   if (/<meta charset=/i.test(out)) {
-    out = out.replace(/(<meta charset=[^>]*>)/i, `$1\n${cspTag}\n${cssTag}`);
+    out = out.replace(/(<meta charset=[^>]*>)/i, `$1\n${cspTag}\n${canonicalTag}\n${cssTag}`);
   } else {
-    out = out.replace(/(<head[^>]*>)/i, `$1\n${cspTag}\n${cssTag}`);
+    out = out.replace(/(<head[^>]*>)/i, `$1\n${cspTag}\n${canonicalTag}\n${cssTag}`);
   }
   return out;
 }
@@ -485,7 +487,20 @@ function main() {
     fs.writeFileSync(destPath, html.replace(/\r\n/g, "\n"));
 
     // Page-local media directory travels with its page.
-    if (!usedFixture) copyDirIfExists(path.join(path.dirname(srcPath), "media"), path.join(path.dirname(destPath), "media"));
+    if (!usedFixture) {
+      copyDirIfExists(path.join(path.dirname(srcPath), "media"), path.join(path.dirname(destPath), "media"));
+      // Canonical support pages may own small, CSP-safe local CSS/JS files.
+      // Copy only explicitly referenced sibling files; teaching routes and
+      // downloads remain controlled by the manifest.
+      for (const match of html.matchAll(/(?:href|src)=["']([^"']+\.(?:css|js))["']/gi)) {
+        const reference = match[1];
+        if (/^(?:[a-z]+:|\/|\.\.\/)/i.test(reference)) continue;
+        const localSource = path.resolve(path.dirname(srcPath), reference);
+        const sourceDir = path.resolve(path.dirname(srcPath));
+        if (!localSource.startsWith(`${sourceDir}${path.sep}`) || !fs.existsSync(localSource)) continue;
+        copyFile(localSource, path.resolve(path.dirname(destPath), reference));
+      }
+    }
 
     const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
     searchEntries.push({

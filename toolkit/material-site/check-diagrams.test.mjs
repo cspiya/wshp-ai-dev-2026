@@ -12,7 +12,7 @@ function localDiagram({ id = 'flow', visualQuestionId = 'q-overview', question =
   const mmd = 'flowchart LR\n A-->B\n';
   const svg = bad ? '<svg><script>alert(1)</script></svg>' : '<svg xmlns="http://www.w3.org/2000/svg"><title>Folyamat</title><text>lépés</text></svg>';
   return {
-    record: { id, visualQuestionId, question, type, disposition: 'page-local', diagramType, takeaway, glossarySlugs, source: `${id}.mmd`, output: `${id}.svg`, textFallbackSelector: `#${id}-text`, sourceHash: bad ? 'b'.repeat(64) : crypto.createHash('sha256').update(`${mmd}${CANONICAL_CONFIG}11.16.0`).digest('hex'), outputHash: bad ? 'b'.repeat(64) : crypto.createHash('sha256').update(svg).digest('hex') },
+    record: { id, visualQuestionId, question, type, disposition: 'page-local', diagramType, takeaway, glossarySlugs, source: `${id}.mmd`, output: `${id}.svg`, textFallbackSelector: `#${id}-text`, sourceHash: bad ? 'b'.repeat(64) : crypto.createHash('sha256').update(`${mmd}\n${CANONICAL_CONFIG}\n11.16.0`).digest('hex'), outputHash: bad ? 'b'.repeat(64) : crypto.createHash('sha256').update(svg).digest('hex') },
     mmd, svg,
   };
 }

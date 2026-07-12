@@ -14,7 +14,8 @@
       "output": "rug-kor.svg",
       "textFallbackSelector": "#rug-kor-fallback",
       "sourceHash": "9b9210df4cfee70ff030d9417d843d3ab9d3de5645d853bb6d0b4c7b3ced03f7",
-      "outputHash": "0a07e5aff5fc5111faead122692f914a413090f99af9597b7c89340f07b5252f"
+      "outputHash": "0a07e5aff5fc5111faead122692f914a413090f99af9597b7c89340f07b5252f",
+      "cliVersion": "11.16.0"
     }
   ]
 }

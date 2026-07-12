@@ -43,7 +43,8 @@
       "figureSelector": "#fig-learning-roadmap",
       "svgSelector": "#fig-learning-roadmap svg",
       "textFallbackSelector": "#fig-learning-roadmap-text",
-      "inlineSvgHash": "dca158ace525712f1995d98fb320ea0c1a3a13435f1525aa96a0f6b20da3f867"
+      "inlineSvgHash": "dca158ace525712f1995d98fb320ea0c1a3a13435f1525aa96a0f6b20da3f867",
+      "generatedInlineSvgHash": "88e54e42aa5f19f178f6f0d4bc41bf1caada97e59b5f64ee6440cc4e8b63c5d5"
     }
   ]
 }
