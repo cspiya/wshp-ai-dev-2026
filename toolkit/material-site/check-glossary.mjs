@@ -62,10 +62,14 @@ export function validateGlossary({ source, site, phase }) {
   }
   for (const record of records) {
     for (const target of [...array(record.related)]) if (!slugs.has(String(target).toLowerCase())) failures.push(`${record.slug}: unknown related slug ${target}`);
+    // Foundation proves the accepted registry itself. The not-yet-authored
+    // routes are neutral fixtures, so usedIn/first-use belongs exclusively to
+    // the final phase.
+    if (phase === 'foundation') continue;
     for (const route of array(record.usedIn)) {
       if (typeof route !== 'string' || !route.startsWith('/')) { failures.push(`${record.slug}: invalid usedIn route ${route}`); continue; }
       const page = pageForRoute(site, route);
-      if (!fs.existsSync(page)) { if (phase === 'final') failures.push(`${record.slug}: usedIn page missing ${route}`); continue; }
+      if (!fs.existsSync(page)) { failures.push(`${record.slug}: usedIn page missing ${route}`); continue; }
       const html = fs.readFileSync(page, 'utf8');
       const candidates = [record.preferred, record.english, ...array(record.aliases)].filter(Boolean);
       const found = firstOccurrence(html, candidates);

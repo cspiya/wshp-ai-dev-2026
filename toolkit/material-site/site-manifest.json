@@ -11,7 +11,7 @@
       "order": 0,
       "owner": "SHELL-BUILD",
       "alias": null,
-      "overviewQuestion": "Mi a workshop terméke, és melyik úton indulj el?",
+      "overviewQuestion": "Mi a workshop terméke, és min próbáljuk ki?",
       "overviewDiagramId": "fig-product-reference",
       "overviewCovers": [
         "page-purpose",
@@ -22,15 +22,18 @@
       "visualQuestions": [
         {
           "id": "q-root-product-reference",
-          "question": "Mi a workshop terméke, és melyik úton indulj el?",
+          "question": "Mi a workshop terméke, és min próbáljuk ki?",
           "type": "relationship",
           "glossarySlugs": [
-            "agent-ready-repo",
+            "repository-rules",
+            "spec",
+            "review",
+            "quality-gate",
             "reference-task"
           ],
           "coverage": "page-local",
           "diagramId": "fig-product-reference",
-          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+          "takeaway": "A fejlesztési rendszer a hazavihető termék; a referenciaalkalmazás annak próbapadja."
         },
         {
           "id": "q-root-route-map",
@@ -38,23 +41,30 @@
           "type": "decision",
           "glossarySlugs": [
             "agent-ready-repo",
-            "reference-task"
+            "reference-task",
+            "golden-path"
           ],
           "coverage": "page-local",
           "diagramId": "fig-route-map",
-          "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli."
+          "takeaway": "A workshop előtt, közben és után más terület adja a következő használható lépést."
         },
         {
           "id": "q-root-learning-roadmap",
           "question": "Hogyan épül egymásra a nyolc modul?",
           "type": "timeline",
           "glossarySlugs": [
-            "agent-ready-repo",
-            "reference-task"
+            "coding-agent",
+            "repository-rules",
+            "spec",
+            "review",
+            "quality-gate",
+            "e2e",
+            "legacy-system",
+            "operating-model"
           ],
           "coverage": "page-local",
           "diagramId": "fig-learning-roadmap",
-          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény."
+          "takeaway": "Minden modul a következő bemenetét készíti el, a közös nyelvtől a csapatszintű bevezetésig."
         }
       ]
     },
@@ -429,7 +439,7 @@
       "order": 7,
       "owner": "GLOSSARY",
       "alias": "fogalomtar.md stub",
-      "overviewQuestion": "Hogyan kapcsolódnak egymáshoz a workshop fogalmai?",
+      "overviewQuestion": "Milyen témák rendezik rendszerbe a fogalmakat?",
       "overviewDiagramId": "fig-concept-families",
       "overviewCovers": [
         "page-purpose",
@@ -440,25 +450,87 @@
       "visualQuestions": [
         {
           "id": "q-glossary-concept-families",
-          "question": "Hogyan kapcsolódnak egymáshoz a workshop fogalmai?",
+          "question": "Milyen témák rendezik rendszerbe a fogalmakat?",
           "type": "relationship",
           "glossarySlugs": [
-            "canonical"
+            "spec",
+            "review",
+            "commit",
+            "skill",
+            "e2e",
+            "legacy-system",
+            "operating-model"
           ],
           "coverage": "page-local",
           "diagramId": "fig-concept-families",
-          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+          "takeaway": "Egy fogalom jelentését a szakmai kérdésköre és a többi fogalomhoz fűződő kapcsolata teszi használhatóvá."
         },
         {
           "id": "q-glossary-terms-to-modules",
-          "question": "Melyik fogalom melyik modulban kerül elő?",
+          "question": "Hol találkozol a fogalmakkal a workshopon?",
           "type": "relationship",
           "glossarySlugs": [
-            "canonical"
+            "agent-ready-repo",
+            "coding-agent",
+            "context",
+            "repository-rules",
+            "scope",
+            "spec",
+            "acceptance-criteria",
+            "given-when-then",
+            "definition-of-done",
+            "quality-gate",
+            "decision-gate",
+            "review",
+            "review-finding",
+            "maker",
+            "reviewer",
+            "fixer",
+            "rug",
+            "orchestrator",
+            "trace",
+            "branch",
+            "worktree",
+            "commit",
+            "pull-request",
+            "ci",
+            "preview",
+            "provenance",
+            "rule",
+            "skill",
+            "hook",
+            "mcp",
+            "fixture",
+            "project-memory",
+            "checkpoint",
+            "artifact",
+            "evidence",
+            "guard",
+            "baseline",
+            "public-safe",
+            "repository-constitution",
+            "canonical",
+            "reference-task",
+            "unit-test",
+            "contract-test",
+            "e2e",
+            "context-budget",
+            "legacy-system",
+            "characterization-test",
+            "safety-net",
+            "seam",
+            "strangler-pattern",
+            "rollback",
+            "operating-model",
+            "owner",
+            "eval",
+            "pilot",
+            "golden-path",
+            "plan-b"
           ],
           "coverage": "page-local",
           "diagramId": "fig-terms-to-modules",
-          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást."
+          "takeaway": "A szakmai kérdéskör megmutatja, melyik modulban és mely fogalmakkal kezdd a munkát."
         }
       ]
     },

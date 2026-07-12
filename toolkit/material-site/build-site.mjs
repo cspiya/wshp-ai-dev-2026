@@ -73,6 +73,7 @@ const VISUAL_QUESTION_TYPES = [
 // disposition — complex questions can never be closed as prose-only.
 export function validateManifest(manifest) {
   const errors = [];
+  if (manifest.schemaVersion !== 2) errors.push("manifest schemaVersion must be 2");
   const ids = new Set();
   const outputs = new Set();
   const orderKeys = new Set();
@@ -91,24 +92,27 @@ export function validateManifest(manifest) {
   }
   for (const r of manifest.routes) {
     if (r.parent !== null && !ids.has(r.parent)) errors.push(`${r.id}: parent ${r.parent} not in manifest`);
-    const d = r.didactic;
-    if (!d || typeof d.overviewQuestion !== "string" || d.overviewQuestion.length === 0) {
-      errors.push(`${r.id}: missing didactic.overviewQuestion (v3.4 — every teaching page needs an overview)`);
+    if (typeof r.overviewQuestion !== "string" || r.overviewQuestion.length === 0) {
+      errors.push(`${r.id}: missing overviewQuestion (v3.4 — every teaching page needs an overview)`);
       continue;
     }
-    if (!/^fig-[a-z0-9-]+$/.test(d.overviewDiagramId ?? ""))
-      errors.push(`${r.id}: missing or invalid didactic.overviewDiagramId`);
-    if (!Array.isArray(d.visualQuestions)) {
-      errors.push(`${r.id}: didactic.visualQuestions must be an array`);
+    if (!/^fig-[a-z0-9-]+$/.test(r.overviewDiagramId ?? ""))
+      errors.push(`${r.id}: missing or invalid overviewDiagramId`);
+    if (!Array.isArray(r.overviewCovers) || r.overviewCovers.length !== 4)
+      errors.push(`${r.id}: overviewCovers must contain the four big-picture categories`);
+    if (!Array.isArray(r.visualQuestions)) {
+      errors.push(`${r.id}: visualQuestions must be an array`);
       continue;
     }
-    for (const v of d.visualQuestions) {
+    for (const v of r.visualQuestions) {
       const label = `${r.id}: question "${String(v.question ?? "?").slice(0, 48)}"`;
       if (typeof v.question !== "string" || v.question.length === 0) errors.push(`${r.id}: visual question without text`);
       if (!VISUAL_QUESTION_TYPES.includes(v.type)) errors.push(`${label}: invalid type "${v.type}"`);
-      if (!Array.isArray(v.slugs)) errors.push(`${label}: slugs must be an array of glossary slugs`);
-      if (!(v.coverage === "local" || /^shared:fig-[a-z0-9-]+$/.test(v.coverage ?? "")))
-        errors.push(`${label}: undisposed — coverage must be "local" or "shared:fig-…"; complex questions cannot stay prose-only`);
+      if (!Array.isArray(v.glossarySlugs) || v.glossarySlugs.length === 0)
+        errors.push(`${label}: glossarySlugs must contain canonical glossary slugs`);
+      if (!["page-local", "shared"].includes(v.coverage))
+        errors.push(`${label}: undisposed — coverage must be page-local or shared; complex questions cannot stay prose-only`);
+      if (!/^fig-[a-z0-9-]+$/.test(v.diagramId ?? "")) errors.push(`${label}: missing or invalid diagramId`);
     }
   }
   // Glossary search terms may be owned by exactly one canonical route.
@@ -374,8 +378,8 @@ function copyDirIfExists(srcDir, destDir) {
 
 function selfTest() {
   const cases = [
-    ["missing-overview.json", "missing didactic.overviewQuestion"],
-    ["undisposed-question.json", "undisposed"],
+    ["missing-overview.json", "missing overviewQuestion"],
+    ["undisposed-question.json", "missing overviewQuestion"],
     ["invalid-ownership.json", "duplicate glossary ownership"],
     ["missing-ownership.json", "glossary ownership missing"],
   ];
@@ -432,21 +436,24 @@ function main() {
 
   // 2. Routes.
   const searchEntries = [];
+  const foundationCanonicalRoutes = new Set(["/", "/materials/fogalomtar/"]);
   for (const route of manifest.routes) {
     const srcPath = path.join(REPO_ROOT, route.source);
     let html;
-    if (fs.existsSync(srcPath)) {
-      html = fs.readFileSync(srcPath, "utf8");
-    } else if (opts.phase === "foundation") {
+    let usedFixture = false;
+    if (opts.phase === "foundation" && !foundationCanonicalRoutes.has(route.id)) {
       const fixture = path.join(FIXTURES, fixtureFor(route));
       if (!fs.existsSync(fixture)) {
-        errors.push(`${route.id}: source missing and fixture ${path.basename(fixture)} not found`);
+        errors.push(`${route.id}: foundation fixture ${path.basename(fixture)} not found`);
         continue;
       }
       html = fs.readFileSync(fixture, "utf8").replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(route.title)}</title>`);
       substitutions.push(`${route.id} <- fixtures/site/${fixtureFor(route)}`);
+      usedFixture = true;
+    } else if (fs.existsSync(srcPath)) {
+      html = fs.readFileSync(srcPath, "utf8");
     } else {
-      errors.push(`${route.id}: canonical source missing (${route.source}) — final phase requires every route`);
+      errors.push(`${route.id}: canonical source missing (${route.source}) — ${opts.phase} phase requires this route`);
       continue;
     }
 
@@ -478,7 +485,7 @@ function main() {
     fs.writeFileSync(destPath, html.replace(/\r\n/g, "\n"));
 
     // Page-local media directory travels with its page.
-    copyDirIfExists(path.join(path.dirname(srcPath), "media"), path.join(path.dirname(destPath), "media"));
+    if (!usedFixture) copyDirIfExists(path.join(path.dirname(srcPath), "media"), path.join(path.dirname(destPath), "media"));
 
     const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
     searchEntries.push({

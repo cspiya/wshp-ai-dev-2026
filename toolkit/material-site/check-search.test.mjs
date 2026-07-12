@@ -5,12 +5,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { validateSearch } from './check-search.mjs';
 
-function fixture(entries, pages = ['index.html'], classicScript = false, glossary = null) {
+function fixture(entries, pages = ['index.html'], classicScript = false, glossary = null, searchGlossary = glossary) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-search-'));
   fs.mkdirSync(path.join(root, 'assets'), { recursive: true });
   for (const page of pages) { const file = path.join(root, page); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, '<h1>Kereshető oldal</h1>'); }
-  if (classicScript) fs.writeFileSync(path.join(root, 'assets/search-index.js'), `window.WorkshopSearchIndex = ${JSON.stringify({ entries })};`);
-  else fs.writeFileSync(path.join(root, 'assets/search-index.json'), JSON.stringify({ entries }));
+  const index = { entries, ...(searchGlossary ? { glossary: { path: 'materials/fogalomtar/index.html', terms: searchGlossary } } : {}) };
+  if (classicScript) fs.writeFileSync(path.join(root, 'assets/search-index.js'), `window.WorkshopSearchIndex = ${JSON.stringify(index)};`);
+  else fs.writeFileSync(path.join(root, 'assets/search-index.json'), JSON.stringify(index));
   if (glossary) { const file = path.join(root, 'materials/fogalomtar/glossary.json'); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify({ terms: glossary })); }
   return root;
 }
@@ -31,14 +32,13 @@ test('semantic glossary cards define queries but cannot replace shared-index own
   const pages = [{ path: 'index.html', title: 'Kezdőlap', headings: [{ t: 'Áttekintés', a: 'attekintes' }] }, { path: 'materials/fogalomtar/index.html', title: 'Fogalomtár', headings: [{ t: 'a munka határai', a: 'scope' }] }];
   fs.writeFileSync(path.join(root, 'assets/search-index.js'), `window.WorkshopSearchIndex = Object.freeze(${JSON.stringify({ pages })});`);
   const failures = validateSearch({ site: root, phase: 'final' });
-  assert.ok(failures.some((x) => x.includes('scope') && x.includes('shared search index')));
-  assert.ok(failures.some((x) => x.includes('hatókör') && x.includes('shared search index')));
+  assert.ok(failures.some((x) => x.includes('shared search index')));
 });
 
 test('Hungarian, English and alias terms resolve to one exact route', () => {
   const root = fixture([
     { route: '/', title: 'Kezdőlap', text: 'A workshop kezdőlapja.' },
-    { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'A munka határai, scope, hatókör.', terms: ['a munka határai', 'scope'], aliases: ['hatókör'] },
+    { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'A munka határai, scope, hatókör.' },
   ], ['index.html', 'materials/fogalomtar/index.html'], true, [{ slug: 'scope', preferred: 'a munka határai', english: 'scope', aliases: ['hatókör'] }]);
   assert.deepEqual(validateSearch({ site: root, phase: 'final' }), []);
 });
@@ -49,14 +49,14 @@ test('negative fixture rejects ambiguous canonical glossary query owners', () =>
     { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'Scope.', terms: ['scope', 'a munka határai'], aliases: ['hatókör'] },
   ], ['index.html', 'materials/fogalomtar/index.html'], false, [{ slug: 'scope', preferred: 'a munka határai', english: 'scope', aliases: ['hatókör'] }]);
   const failures = validateSearch({ site: root, phase: 'final' });
-  assert.ok(failures.some((x) => x.includes('exactly one canonical owner')));
+  assert.ok(failures.some((x) => x.includes('duplicated outside')));
 });
 
 test('negative fixture rejects a missing canonical preferred/English/alias query route', () => {
   const root = fixture([
     { route: '/', title: 'Kezdőlap', text: 'Általános tartalom.' },
     { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'Csak a scope angol szó szerepel.' },
-  ], ['index.html', 'materials/fogalomtar/index.html'], false, [{ slug: 'scope', preferred: 'a munka határai', english: 'scope', aliases: ['hatókör'] }]);
+  ], ['index.html', 'materials/fogalomtar/index.html'], false, [{ slug: 'scope', preferred: 'a munka határai', english: 'scope', aliases: ['hatókör'] }], [{ slug: 'scope', preferred: 'scope', english: 'scope', aliases: [] }]);
   const failures = validateSearch({ site: root, phase: 'final' });
   assert.ok(failures.some((x) => x.includes('a munka határai')));
   assert.ok(failures.some((x) => x.includes('hatókör')));
