@@ -17,7 +17,8 @@ a fejlesztési rendszer nemcsak papíron szép, hanem tényleges szoftverfejlesz
 ## A modell végrehajtó, nem alapzat
 
 Az agent-ready rendszer minőségét nem egy konkrét modell vagy coding tool „okosságára” bízzuk. A tartós
-alap a repóban él: mission, standard, spec, szerepek, mechanikus gate-ek, RUG és evidence. A modell,
+alap a repóban él: mission, standard, spec, szerepek, mechanikus gate-ek,
+[RUG](fogalomtar.md#rug) és evidence. A modell,
 provider és agent harness ennek cserélhető végrehajtója.
 
 Ez üzletmenet-folytonossági és fejlődési követelmény is. Váltani kellhet, mert:

@@ -22,8 +22,8 @@ kiderül, hogy a működési modell valóban alkalmas-e szoftverfejlesztésre. A
 |---|---|
 | Mi a termék? | Az agent-ready fejlesztési keretrendszer. |
 | Mi az alkalmazás? | A keretrendszert próbára tevő validációs workload. |
-| Hol él a munka állapota? | A Linear-issue spec-, lease- és trace-adataiban; nincs külön handoff-fájl. |
-| Milyen adat kerülhet a nyilvános példákba? | Csak életszerű, de kifejezetten KITALÁLT minta; ügyfél- és személyes adat nem. |
+| Hol él a munka állapota? | A [Linear-issue spec-, lease- és trace-adataiban](fogalomtar.md#linear-work-state); nincs külön handoff-fájl. |
+| Milyen adat kerülhet a nyilvános példákba? | Csak [életszerű, de kifejezetten KITALÁLT](fogalomtar.md#invented-data) minta; ügyfél- és személyes adat nem. |
 
 **A modell nem a módszer.** A tartós minőséget a repóban élő szerződések és visszacsatolási körök adják;
 a modell, provider és coding agent cserélhető végrehajtó. Kiesés, korlátozás, technikai hiba, magas költség
