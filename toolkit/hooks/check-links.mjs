@@ -36,7 +36,9 @@ function trackedFiles() {
   return out
     .split("\n")
     .filter((f) => /\.(html|md)$/.test(f))
-    .filter((f) => !/(^|\/)fixtures\//.test(f)); // negative fixtures violate on purpose
+    // Negative fixtures violate on purpose — any fixtures/ directory,
+    // including toolkit/material-qa/fixtures (WEN-239's narrower rule).
+    .filter((f) => !/(^|\/)fixtures\//.test(f));
 }
 
 const linkPatterns = [

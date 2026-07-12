@@ -1,587 +1,299 @@
-﻿<!DOCTYPE html>
-<html lang="hu">
+<!DOCTYPE html>
+<html lang="hu" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MX — Modulcím · Wenova AI-Assisted Development Workshop 2026.07</title>
+<script>document.documentElement.classList.replace('no-js', 'js');</script>
 <style>
   :root {
-    --bg: #fafafa;
+    color-scheme: light dark;
+    --bg: #f8fafc;
     --surface: #ffffff;
-    --surface-2: #f4f4f5;
-    --border: #e4e4e7;
-    --text: #18181b;
-    --text-secondary: #52525b;
-    --text-muted: #71717a;
-    --accent: #4f46e5;
-    --accent-soft: #eef2ff;
-    --highlight: #fef3c7;
-    --code-bg: #1e1e2e;
-    --code-text: #cdd6f4;
-    --space-1: 0.5rem;
+    --surface-2: #eef2f6;
+    --border: #526174;
+    --text: #172033;
+    --muted: #445268;
+    --accent: #174ea6;
+    --accent-soft: #e8f0fe;
+    --human: #8b3a13;
+    --human-soft: #fff0e8;
+    --agent: #55319a;
+    --agent-soft: #f0e9ff;
+    --machine: #075c59;
+    --machine-soft: #e0f4f1;
+    --artifact: #713f12;
+    --artifact-soft: #fff7d6;
+    --evidence: #14532d;
+    --evidence-soft: #e5f6ed;
+    --risk: #9f1239;
+    --risk-soft: #fff0f3;
+    --focus: #b54708;
+    --code-bg: #171a2b;
+    --code-text: #edf2ff;
+    --space-1: .5rem;
     --space-2: 1rem;
     --space-3: 1.5rem;
     --space-4: 2rem;
     --space-6: 3rem;
-    --radius: 8px;
-    --radius-lg: 12px;
-    --sidebar-width: 260px;
+    --radius: .75rem;
+    --sidebar: 17rem;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.6;
-    color: var(--text);
-    background: var(--bg);
-    margin: 0;
-    padding: 0;
+  body { margin: 0; background: var(--bg); color: var(--text); font: 1rem/1.65 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); text-underline-offset: .18em; }
+  a:hover { text-decoration-thickness: .15em; }
+  :focus-visible { outline: .2rem solid var(--focus); outline-offset: .2rem; border-radius: .2rem; }
+  .skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 100; padding: .7rem 1rem; background: var(--text); color: var(--surface); transform: translateY(-180%); }
+  .skip-link:focus { transform: translateY(0); }
+  .layout { display: grid; grid-template-columns: var(--sidebar) minmax(0, 56rem); max-width: 78rem; margin: auto; }
+  .sidebar { position: sticky; top: 0; height: 100vh; overflow: auto; padding: 2rem 1.25rem; border-right: 1px solid var(--border); background: var(--surface); }
+  .eyebrow { color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .sidebar h2 { margin: .4rem 0 1.25rem; font-size: 1.05rem; }
+  .sidebar ol { list-style: none; padding: 1rem 0 0; border-top: 1px solid var(--border); }
+  .sidebar li { margin: .2rem 0; }
+  .sidebar a { display: block; padding: .45rem .55rem; border-radius: .45rem; color: var(--muted); text-decoration: none; }
+  .sidebar a:hover, .sidebar a[aria-current="location"] { background: var(--accent-soft); color: var(--accent); }
+  .sidebar-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; }
+  .menu-button { display: none; position: fixed; right: 1rem; top: 1rem; z-index: 30; padding: .65rem .8rem; border: 2px solid var(--accent); border-radius: .5rem; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; }
+  main { min-width: 0; padding: 2.25rem 3rem 4rem; }
+  .hero { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  h1 { margin: .35rem 0 .8rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.12; }
+  h2 { margin: 3rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid var(--border); font-size: 1.55rem; scroll-margin-top: 1rem; }
+  h3 { margin: 1.5rem 0 .5rem; font-size: 1.15rem; }
+  p, ul, ol { margin: 0 0 1rem; }
+  .lead { max-width: 48rem; color: var(--muted); font-size: 1.12rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; color: var(--muted); font-size: .9rem; }
+  .card, .decision, .exercise-block, .visual, .callout { margin: 1.25rem 0; padding: 1.2rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  .callout { border-left: .35rem solid var(--accent); background: var(--accent-soft); }
+  .decision { border-left: .35rem solid var(--human); }
+  .decision h3, .exercise-block h3 { margin-top: 0; }
+  .decision-grid, .exercise-grid, .transformation { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decision-grid > div, .exercise-grid > div, .transform-step { padding: 1rem; border-radius: .6rem; background: var(--surface-2); }
+  .transform-step { border-top: .35rem solid var(--artifact); }
+  .transform-step.gap { border-color: var(--risk); background: var(--risk-soft); }
+  .transform-step.corrected { border-color: var(--agent); background: var(--agent-soft); }
+  .transform-step.proof { border-color: var(--evidence); background: var(--evidence-soft); }
+  .semantic-label { display: inline-block; margin-bottom: .45rem; padding: .15rem .5rem; border: 2px solid currentColor; border-radius: 999px; font-size: .75rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .human { color: var(--human); } .agent { color: var(--agent); } .machine { color: var(--machine); }
+  .artifact { color: var(--artifact); } .evidence { color: var(--evidence); } .risk { color: var(--risk); }
+  .checkpoint-strip { display: grid; grid-template-columns: repeat(8, minmax(5rem, 1fr)); gap: .45rem; padding: 0; list-style: none; overflow-x: auto; }
+  .checkpoint-strip li { min-width: 5rem; padding: .65rem .45rem; border: 2px solid var(--border); border-radius: .55rem; background: var(--surface); text-align: center; font-size: .82rem; }
+  .checkpoint-strip li[aria-current="step"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 800; }
+  .exercise-block { border-left: .35rem solid var(--agent); }
+  .exercise-block .done { border-left: .3rem solid var(--machine); }
+  .exercise-block .proof { border-left: .3rem solid var(--evidence); }
+  .exercise-block .fallback { border-left: .3rem solid var(--risk); }
+  pre { overflow: auto; padding: 1rem; border-radius: .55rem; background: var(--code-bg); color: var(--code-text); white-space: pre-wrap; }
+  code { font-family: "SFMono-Regular", Consolas, monospace; }
+  table { width: 100%; margin: 1rem 0; border-collapse: collapse; }
+  th, td { padding: .65rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: var(--surface-2); }
+  figure { margin: 1.5rem 0; }
+  svg { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  figcaption { margin-top: .55rem; color: var(--muted); font-size: .9rem; }
+  .static-fallback { min-width: 0; max-width: 100%; margin-top: 1rem; overflow-x: auto; overscroll-behavior-inline: contain; }
+  .static-fallback:focus-visible { outline-offset: .1rem; }
+  .module-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .module-nav a { max-width: 45%; font-weight: 700; }
+  .module-end { margin-top: 3rem; }
+  .module-end .module-nav { margin-top: 0; }
+  footer { margin-top: 3rem; color: var(--muted); font-size: .88rem; }
+  .noscript-note { padding: .75rem 1rem; background: var(--artifact-soft); border-left: .35rem solid var(--artifact); }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0c1424; --surface:#14213a; --surface-2:#1c2b47; --border:#71819a; --text:#f1f5fb; --muted:#c7d2e3; --accent:#9bc1ff; --accent-soft:#21365b; --human:#ffb68f; --human-soft:#49291f; --agent:#d8c1ff; --agent-soft:#352657; --machine:#7dd3c7; --machine-soft:#163f3e; --artifact:#f4cf72; --artifact-soft:#443710; --evidence:#8bd6a3; --evidence-soft:#163c29; --risk:#ff9eb8; --risk-soft:#4a1d2b; --focus:#ffd166; }
   }
-
-  /* === LAYOUT: sidebar + main === */
-  .layout {
-    display: grid;
-    grid-template-columns: var(--sidebar-width) 1fr;
-    max-width: 1280px;
-    margin: 0 auto;
-    align-items: start;
+  @media (max-width: 60rem) {
+    .layout { display: block; }
+    .sidebar { position: static; width: auto; height: auto; border: 0; border-bottom: 1px solid var(--border); }
+    .js .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 20; width: min(19rem, 88vw); height: 100vh; transform: translateX(-105%); transition: transform .2s ease; box-shadow: 0 0 1.5rem #0005; }
+    .js .sidebar[data-open="true"] { transform: translateX(0); }
+    .js .menu-button { display: block; }
+    main { padding: 4.5rem 1.2rem 3rem; }
   }
-
-  .sidebar {
-    position: sticky;
-    top: 0;
-    align-self: start;
-    height: 100vh;
-    overflow-y: auto;
-    padding: var(--space-4) var(--space-2) var(--space-4) var(--space-3);
-    border-right: 1px solid var(--border);
-    background: var(--surface);
+  @media (max-width: 42rem) {
+    .decision-grid, .exercise-grid, .transformation { grid-template-columns: 1fr; }
+    .module-nav { display: grid; }
+    .module-nav a { max-width: none; }
   }
-  .sidebar-eyebrow {
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: var(--space-1);
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
   }
-  .sidebar-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text);
-    margin: 0 0 var(--space-3) 0;
-    line-height: 1.3;
-  }
-  .sidebar nav {
-    border-top: 1px solid var(--border);
-    padding-top: var(--space-2);
-  }
-  .sidebar nav .toc-label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: var(--space-1);
-    display: block;
-  }
-  .sidebar nav ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    counter-reset: toc;
-  }
-  .sidebar nav li {
-    margin: 0;
-    counter-increment: toc;
-  }
-  .sidebar nav a {
-    display: block;
-    padding: 0.45rem 0.6rem;
-    font-size: 0.88rem;
-    color: var(--text-secondary);
-    border-radius: 6px;
-    border-bottom: none;
-    text-decoration: none;
-    transition: background 0.12s, color 0.12s;
-    line-height: 1.35;
-  }
-  .sidebar nav a::before {
-    content: counter(toc) ". ";
-    color: var(--text-muted);
-    margin-right: 0.25rem;
-  }
-  .sidebar nav a:hover {
-    background: var(--surface-2);
-    color: var(--text);
-  }
-  .sidebar nav a.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .sidebar nav a.active::before {
-    color: var(--accent);
-  }
-  .sidebar-footer {
-    margin-top: var(--space-4);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--border);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  /* Mobile sidebar toggle (button is hidden on desktop) */
-  .sidebar-toggle {
-    display: none;
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 30;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-
-  /* === MAIN CONTENT === */
-  .main {
-    padding: var(--space-4) var(--space-4) var(--space-6) var(--space-4);
-    max-width: 880px;
-  }
-  header.hero {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: var(--space-4);
-    margin-bottom: var(--space-6);
-  }
-  .hero-eyebrow {
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: var(--space-1);
-  }
-  h1 {
-    font-size: 2.25rem;
-    margin: 0 0 var(--space-2) 0;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-  }
-  .hero-sub {
-    color: var(--text-secondary);
-    font-size: 1.125rem;
-    margin: 0;
-  }
-  .meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-3);
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-  .meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
-
-  h2 {
-    font-size: 1.5rem;
-    margin: var(--space-6) 0 var(--space-2) 0;
-    letter-spacing: -0.01em;
-    padding-bottom: var(--space-1);
-    border-bottom: 1px solid var(--border);
-    scroll-margin-top: var(--space-2);
-  }
-  h3 {
-    font-size: 1.15rem;
-    margin: var(--space-3) 0 var(--space-1) 0;
-    color: var(--text);
-  }
-  h4 {
-    font-size: 1rem;
-    margin: var(--space-2) 0 0.3rem 0;
-    color: var(--text-secondary);
-  }
-  p { margin: 0 0 var(--space-2) 0; }
-  ul, ol { margin: 0 0 var(--space-2) 0; padding-left: 1.4rem; }
-  li { margin-bottom: 0.4rem; }
-  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
-  a:hover { border-bottom-color: var(--accent); }
-
-  /* Cards */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-3);
-    margin: var(--space-3) 0;
-  }
-  .gamma-card {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: white;
-    border: none;
-  }
-  .gamma-card a {
-    color: white;
-    border-bottom: 2px solid rgba(255,255,255,0.5);
-    font-weight: 600;
-  }
-  .gamma-card a:hover { border-bottom-color: white; }
-  .gamma-card .label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.8;
-    margin-bottom: var(--space-1);
-  }
-  .gamma-card h3 { color: white; margin-top: 0; font-size: 1.25rem; }
-  .gamma-card p { margin-bottom: 0; opacity: 0.95; }
-
-  /* Callouts */
-  .callout {
-    background: var(--accent-soft);
-    border-left: 4px solid var(--accent);
-    border-radius: var(--radius);
-    padding: var(--space-2) var(--space-3);
-    margin: var(--space-3) 0;
-  }
-  .callout strong { color: var(--accent); }
-  .callout-warning {
-    background: var(--highlight);
-    border-left-color: #f59e0b;
-  }
-  .callout-warning strong { color: #92400e; }
-
-  /* Grids */
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
-    margin: var(--space-2) 0;
-  }
-  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
-  .grid-2 .card { margin: 0; }
-  .grid-2 .card h3 { margin-top: 0; font-size: 1rem; }
-  .grid-2 .card p { font-size: 0.9rem; margin-bottom: 0; color: var(--text-secondary); }
-
-  /* Prompt box */
-  .prompt-box {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: var(--space-3);
-    border-radius: var(--radius);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    overflow-x: auto;
-    position: relative;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    margin: var(--space-2) 0;
-  }
-  .prompt-box .copy-hint {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background: rgba(255,255,255,0.1);
-    color: #cdd6f4;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 4px;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.75rem;
-    font-family: -apple-system, sans-serif;
-  }
-  .prompt-label {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-    margin-bottom: var(--space-1);
-  }
-
-  /* Tables */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: var(--space-2) 0;
-    font-size: 0.95rem;
-  }
-  th, td {
-    text-align: left;
-    padding: var(--space-1) var(--space-2);
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  th {
-    font-weight: 600;
-    color: var(--text-secondary);
-    background: var(--surface-2);
-  }
-
-  /* Timeline (M1-szerű) */
-  .timeline {
-    list-style: none;
-    padding-left: 0;
-    margin: var(--space-2) 0;
-    border-left: 2px solid var(--border);
-  }
-  .timeline li {
-    position: relative;
-    padding-left: var(--space-3);
-    margin-bottom: var(--space-3);
-  }
-  .timeline li::before {
-    content: '';
-    position: absolute;
-    left: -7px;
-    top: 6px;
-    width: 12px;
-    height: 12px;
-    background: var(--accent);
-    border-radius: 50%;
-    border: 2px solid var(--bg);
-  }
-  .timeline .year {
-    font-weight: 700;
-    color: var(--accent);
-    font-size: 0.95rem;
-    display: block;
-    margin-bottom: 0.2rem;
-  }
-
-  /* Lifecycle (M7-szerű) */
-  .lifecycle {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: var(--space-2);
-    margin: var(--space-3) 0;
-  }
-  @media (max-width: 900px) { .lifecycle { grid-template-columns: 1fr 1fr; } }
-  .lifecycle-step {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: var(--space-2);
-    text-align: center;
-  }
-  .lifecycle-step .num {
-    display: inline-block;
-    background: var(--accent);
-    color: white;
-    font-weight: 700;
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
-    border-radius: 50%;
-    margin-bottom: 0.4rem;
-  }
-  .lifecycle-step strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; }
-  .lifecycle-step span { font-size: 0.8rem; color: var(--text-muted); }
-
-  /* Use-case kártya (M5-szerű) */
-  .usecase {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-3);
-    margin: var(--space-3) 0;
-  }
-  .usecase-tag {
-    display: inline-block;
-    background: var(--accent);
-    color: white;
-    font-size: 0.75rem;
-    padding: 0.2rem 0.7rem;
-    border-radius: 4px;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: var(--space-1);
-  }
-
-  /* Linkek lista */
-  .links-list {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-  }
-  .links-list li {
-    padding: var(--space-1) 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .links-list li:last-child { border-bottom: none; }
-  .links-list .topic {
-    display: inline-block;
-    background: var(--surface-2);
-    color: var(--text-secondary);
-    font-size: 0.75rem;
-    padding: 0.15rem 0.55rem;
-    border-radius: 4px;
-    margin-right: var(--space-1);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .links-list .desc {
-    display: block;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-top: 0.2rem;
-  }
-
-  footer.main-footer {
-    margin-top: var(--space-6);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--border);
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-
-  /* === RESPONSIVE === */
-  @media (max-width: 960px) {
-    .layout {
-      grid-template-columns: 1fr;
-    }
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 280px;
-      height: 100vh;
-      z-index: 20;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-    }
-    .sidebar.open {
-      transform: translateX(0);
-    }
-    .sidebar-toggle { display: block; }
-    .main { padding: var(--space-3); }
-    h1 { font-size: 1.75rem; }
+  @media print {
+    :root { color-scheme: light; --bg:#fff; --surface:#fff; --surface-2:#f3f4f6; --text:#000; --muted:#222; --border:#555; --accent:#123d7a; --accent-soft:#e8eef7; --human:#6f2d0f; --human-soft:#fff0e8; --agent:#452574; --agent-soft:#f0e9ff; --machine:#064e4b; --machine-soft:#e0f4f1; --artifact:#5f350d; --artifact-soft:#fff7d6; --evidence:#0f4926; --evidence-soft:#e5f6ed; --risk:#83112f; --risk-soft:#fff0f3; }
+    .sidebar, .menu-button, .skip-link, script { display: none !important; }
+    .layout { display: block; max-width: none; }
+    main { max-width: none; padding: 0; }
+    a { color: #000; text-decoration: underline; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: .75em; overflow-wrap: anywhere; }
+    a[href^="#"]::after { content: ""; }
+    .card, .decision, .exercise-block, .visual, figure, table, .checkpoint-strip li, .transform-step { break-inside: avoid; page-break-inside: avoid; }
+    h2, h3 { break-after: avoid-page; page-break-after: avoid; }
+    h2 + *, h3 + * { break-before: avoid-page; page-break-before: avoid; }
+    .semantic-label { display: block; width: max-content; max-width: 100%; margin-bottom: .35rem; }
+    .static-fallback { overflow: visible; }
+    .checkpoint-strip { overflow: visible; grid-template-columns: repeat(4, 1fr); }
+    .module-end { margin-top: .5rem; }
+    .module-end .module-nav { padding-top: .45rem; }
+    .module-end footer { display: inline-block; width: 100%; margin-top: .2rem; break-before: avoid-page; page-break-before: avoid; }
   }
 </style>
 </head>
 <body>
-
-<button class="sidebar-toggle" aria-label="Tartalomjegyzék" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ Tartalom</button>
+<a class="skip-link" href="#tartalom">Ugrás a tartalomra</a>
+<button class="menu-button" type="button" aria-controls="oldalsav" aria-expanded="false">☰ Tartalom</button>
 
 <div class="layout">
-
-  <aside class="sidebar">
-    <div class="sidebar-eyebrow">MX · HH:MM – HH:MM</div>
-    <h2 class="sidebar-title" style="border:none; padding:0; margin: 0 0 var(--space-3) 0;">MODULCÍM</h2>
+  <aside class="sidebar" id="oldalsav" data-open="false">
+    <div class="eyebrow">MX · HH:MM–HH:MM</div>
+    <h2>Modulcím</h2>
     <nav aria-label="Tartalomjegyzék">
-      <span class="toc-label">Tartalom</span>
-      <ol id="toc">
-        <!-- Töltsd ki: <li><a href="#section-id">Szekció címe</a></li> per szekció -->
-        <li><a href="#section-1">Szekció 1</a></li>
-        <li><a href="#section-2">Szekció 2</a></li>
+      <ol>
+        <li><a href="#checkpoint">Helye az ívben</a></li>
+        <li><a href="#dontes">Miért ezt választjuk?</a></li>
+        <li><a href="#atalakitas">Végigdolgozott átalakítás</a></li>
+        <li><a href="#vizualis-minta">Vizuális minta</a></li>
+        <li><a href="#gyakorlat">Gyakorlat és bizonyíték</a></li>
       </ol>
     </nav>
-    <div class="sidebar-footer">
-      <strong>AI Workshop 2026.07.14</strong><br>
-      Wenova.io
-    </div>
+    <div class="sidebar-footer">Wenova AI-Assisted Development Workshop · 2026.07.14.</div>
   </aside>
 
-  <main class="main">
-
+  <main id="tartalom" tabindex="-1">
     <header class="hero">
-      <div class="hero-eyebrow">MX · HH:MM – HH:MM</div>
+      <div class="eyebrow">MX · Modul · CX checkpoint</div>
       <h1>Modulcím</h1>
-      <p class="hero-sub">Rövid összegzés egy mondatban — mi a modul lényege.</p>
-      <div class="meta">
-        <span>📅 2026.07.14</span>
-        <span>⏱️ XX perc</span>
-        <span>🎤 Csaba Piya</span>
-        <span>🇭🇺 Magyar</span>
-      </div>
+      <p class="lead">Egy mondatban: milyen megbízható rendszerképességet épít fel ez a modul?</p>
+      <div class="meta"><span>⏱ XX perc</span><span>📍 Cx → Cy</span><span>🇭🇺 Magyar magyarázat</span></div>
     </header>
 
-    <!--
-      KÖTELEZŐ DIDAKTIKAI KERET MINDEN MODULBAN:
-      1. Nevezd meg a C0–C7 agent-ready checkpointot.
-      2. Mondd ki, milyen új, megbízható rendszerképességet épít a modul.
-      3. Adj real-life alkalmazási bizonyítékot, amely ezt a képességet validálja.
-      Forrás: ../agent-ready-repo.md
-    -->
-    <div class="callout checkpoint">
-      <strong>CX checkpoint · A rendszer új képessége:</strong>
-      Egy mondatban írd le, mit tud ettől kezdve megbízhatóan a repo.
+    <noscript><p class="noscript-note"><strong>JavaScript nélkül is használható:</strong> a teljes tartalom, navigáció, ábra és statikus jelentés elérhető; csak a mobil menügomb és a scroll-spy marad ki.</p></noscript>
+
+    <section id="checkpoint">
+      <h2>1. Helye az agent-ready rendszerben</h2>
+      <ol class="checkpoint-strip" aria-label="C0–C7 checkpointok; az aktuális állapot Cx">
+        <li>C0<br>Üres repo</li><li>C1<br>Repoidentitás</li><li aria-current="step">C2<br>Szakmai léc</li><li>C3<br>Munkaszerződés</li>
+        <li>C4<br>Független review</li><li>C5<br>Gépi kapuk</li><li>C6<br>Rendszerpróba</li><li>C7<br>Hordozhatóság</li>
+      </ol>
+      <div class="callout"><strong>Cx checkpoint · Új képesség:</strong> nevezd meg a belépő állapotot, az előfeltételt, az elkészülő artifactot, a bizonyítékot és a következő checkpointot.</div>
+    </section>
+
+    <section id="dontes">
+      <h2>2. Miért ezt választjuk?</h2>
+      <article class="decision">
+        <span class="semantic-label human">Emberi döntési kapu</span>
+        <h3>Döntési doboz · A módszer vagy eszköz neve</h3>
+        <div class="decision-grid">
+          <div><strong>Az alapprobléma</strong><p>Mi fáj nélküle, és milyen találgatást kell megállítani?</p></div>
+          <div><strong>A választásunk</strong><p>Mit alkalmazunk, pontosan milyen határral?</p></div>
+          <div><strong>Miért ez?</strong><p>Miért illeszkedik a spechez, kockázathoz és evidence-hez?</p></div>
+          <div><strong>Alternatívák és miért nem</strong><p>Ne szalmabáb legyen: nevezd meg az életszerű opciót és trade-offot.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="atalakitas">
+      <h2>3. Végigdolgozott átalakítás</h2>
+      <div class="transformation" aria-label="Hiányos kérésből bizonyított artifact">
+        <div class="transform-step"><span class="semantic-label artifact">Artifact · hiányos</span><strong>Bad / incomplete</strong><p>Mutasd meg a konkrét, hiányos bemenetet.</p></div>
+        <div class="transform-step gap"><span class="semantic-label risk">Döntési rés</span><strong>Gap</strong><p>Nevezd meg, mit találna ki önkényesen az agent.</p></div>
+        <div class="transform-step corrected"><span class="semantic-label agent">Agent action</span><strong>Corrected artifact</strong><p>Mutasd meg a jóváhagyott, javított változatot.</p></div>
+        <div class="transform-step proof"><span class="semantic-label evidence">Evidence</span><strong>Bizonyíték</strong><p>Kösd parancshoz, exit code-hoz, linkhez vagy humán kapudöntéshez.</p></div>
+      </div>
+    </section>
+
+    <section id="vizualis-minta">
+      <h2>4. Hozzáférhető inline SVG és statikus megfelelője</h2>
+      <figure class="visual">
+        <svg viewBox="0 0 820 220" role="img" aria-labelledby="minta-title minta-desc">
+          <title id="minta-title">Emberi döntésből agent-munka, majd gépi kapu és evidence lesz</title>
+          <desc id="minta-desc">Balról jobbra négy címkézett állapot: humán kapu, agent action, machine gate és evidence. Nyilak jelzik a sorrendet.</desc>
+          <defs><marker id="nyil" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"/></marker></defs>
+          <g font-family="system-ui, sans-serif" text-anchor="middle" font-size="16">
+            <rect x="20" y="70" width="165" height="80" rx="12" fill="var(--human-soft)" stroke="var(--human)" stroke-width="3"/><text x="102" y="105" fill="var(--text)" font-weight="700">Humán kapu</text><text x="102" y="130" fill="var(--text)">APPROVED</text>
+            <path d="M185 110 H225" stroke="var(--accent)" stroke-width="4" marker-end="url(#nyil)"/>
+            <rect x="235" y="70" width="165" height="80" rx="12" fill="var(--agent-soft)" stroke="var(--agent)" stroke-width="3"/><text x="317" y="105" fill="var(--text)" font-weight="700">Agent action</text><text x="317" y="130" fill="var(--text)">bounded diff</text>
+            <path d="M400 110 H440" stroke="var(--accent)" stroke-width="4" marker-end="url(#nyil)"/>
+            <rect x="450" y="70" width="165" height="80" rx="12" fill="var(--machine-soft)" stroke="var(--machine)" stroke-width="3"/><text x="532" y="105" fill="var(--text)" font-weight="700">Machine gate</text><text x="532" y="130" fill="var(--text)">exit 0</text>
+            <path d="M615 110 H655" stroke="var(--accent)" stroke-width="4" marker-end="url(#nyil)"/>
+            <rect x="665" y="70" width="135" height="80" rx="12" fill="var(--evidence-soft)" stroke="var(--evidence)" stroke-width="3"/><text x="732" y="105" fill="var(--text)" font-weight="700">Evidence</text><text x="732" y="130" fill="var(--text)">trace</text>
+          </g>
+        </svg>
+        <figcaption>A szín csak másodlagos jel: minden állapot szöveges címkét és sorrendi kapcsolatot kap.</figcaption>
+        <div class="static-fallback" role="region" aria-label="Az SVG táblázatos megfelelője; keskeny képernyőn vízszintesen görgethető" tabindex="0">
+          <table>
+            <caption>Az SVG teljes szemantikai megfelelője</caption>
+            <thead><tr><th>Sorrend</th><th>Szerep</th><th>Megfigyelhető állapot</th></tr></thead>
+            <tbody><tr><td>1</td><td>Humán döntési kapu</td><td>APPROVED</td></tr><tr><td>2</td><td>Agent action</td><td>Bounded diff</td></tr><tr><td>3</td><td>Machine gate</td><td>Exit code 0</td></tr><tr><td>4</td><td>Evidence</td><td>Visszakereshető trace</td></tr></tbody>
+          </table>
+        </div>
+      </figure>
+    </section>
+
+    <section id="gyakorlat">
+      <h2>5. Gyakorlat, evidence és Plan B</h2>
+      <article class="exercise-block">
+        <span class="semantic-label agent">Gyakorlat</span>
+        <h3>Ezt készítsd el</h3>
+        <p><strong>Cél:</strong> egyetlen mondatban a résztvevő megfigyelhető eredménye.</p>
+        <p><strong>Előfeltétel és working directory:</strong> nevezd meg az inputot, a pontos gyökeret és az írható/olvasható határt.</p>
+        <p><strong>Várt output / artifact:</strong> nevezd meg a létrejövő fájlt, döntést vagy futási eredményt és annak pontos célhelyét.</p>
+        <ol><li>Pontos, sorszámozott művelet.</li><li>Pontos parancs vagy döntés.</li><li>Az eredmény ellenőrzése.</li></ol>
+        <div class="exercise-grid">
+          <div class="done"><span class="semantic-label machine">Machine gate</span><strong>Kész, ha…</strong><p>Megfigyelhető done-kritérium és várt exit code.</p></div>
+          <div class="proof"><span class="semantic-label evidence">Evidence</span><strong>Bizonyíték helye</strong><p>Pontos fájl, issue-komment, commit vagy URL; mit bizonyít és mit nem.</p></div>
+          <div class="fallback"><span class="semantic-label risk">Kockázat / Plan B</span><strong>Tipikus elakadás</strong><p>Hiba → diagnózis → helyreállítás. A fallback nem állíthatja zöldnek az eredeti gate-et.</p></div>
+          <div><span class="semantic-label artifact">Handoff</span><strong>Következő modul</strong><p>Mely artifactot, verziót és nyitott kockázatot kapja meg?</p></div>
+        </div>
+      </article>
+      <div class="callout"><strong>Vidd haza:</strong> egy mondatban a modul tartós, eszközfüggetlen tanulsága.</div>
+    </section>
+
+    <div class="module-end">
+      <!-- Modul készítésekor cseréld a két érvényes mintaútvonalat a tényleges szomszédokra. -->
+      <nav class="module-nav" aria-label="Modulok közötti navigáció"><a href="README.md">← Notebook-index</a><a href="00-bevezeto.html">Következő: B0 mintamodul →</a></nav>
+      <footer><strong>MX — Modulcím</strong> · Wenova AI-Assisted Development Workshop 2026.07</footer>
     </div>
-
-    <!-- Minden szekció <section id="..."> wrapper-ben. Az ID egyezzen a sidebar linkkel. -->
-    <section id="section-1">
-      <h2>1. Szekció címe</h2>
-      <p>Tartalom...</p>
-    </section>
-
-    <section id="section-2">
-      <h2>2. Szekció címe</h2>
-      <p>Tartalom...</p>
-      <p><strong>Alkalmazási bizonyíték:</strong> milyen valós workload és evidence igazolja, hogy a rendszerképesség működik?</p>
-    </section>
-
-    <footer class="main-footer">
-      <p><strong>MX — Modulcím · Wenova AI-Assisted Development Workshop 2026.07</strong> · Wenova.io</p>
-    </footer>
-
   </main>
 </div>
 
 <script>
-  // Scroll-spy: a sidebar TOC linkje aktív, ha a kapcsolódó szekció a viewport felső harmadában van.
-  (function() {
-    const sections = document.querySelectorAll('main.main section[id]');
-    const links = document.querySelectorAll('.sidebar nav a');
-    if (!sections.length || !links.length) return;
-
-    const linkById = {};
-    links.forEach(l => {
-      const href = l.getAttribute('href');
-      if (href && href.startsWith('#')) linkById[href.slice(1)] = l;
-    });
-
-    function setActive(id) {
-      links.forEach(l => l.classList.remove('active'));
-      const a = linkById[id];
-      if (a) {
-        a.classList.add('active');
-        // ha a sidebar görgethető, görgessük be az aktív linket
-        const sb = document.querySelector('.sidebar');
-        if (sb) {
-          const r = a.getBoundingClientRect();
-          const sr = sb.getBoundingClientRect();
-          if (r.top < sr.top || r.bottom > sr.bottom) {
-            a.scrollIntoView({ block: 'nearest' });
-          }
-        }
+  (function () {
+    const button = document.querySelector('.menu-button');
+    const sidebar = document.querySelector('.sidebar');
+    const links = Array.from(document.querySelectorAll('.sidebar a[href^="#"]'));
+    if (button && sidebar) {
+      const mobile = window.matchMedia('(max-width: 60rem)');
+      function setMenu(open) {
+        const mobileOpen = mobile.matches && open;
+        sidebar.dataset.open = String(mobileOpen);
+        button.setAttribute('aria-expanded', String(mobileOpen));
+        sidebar.inert = mobile.matches && !mobileOpen;
       }
+      setMenu(false);
+      button.addEventListener('click', function () {
+        setMenu(sidebar.dataset.open !== 'true');
+      });
+      links.forEach(function (link) { link.addEventListener('click', function () { setMenu(false); }); });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && sidebar.dataset.open === 'true') { setMenu(false); button.focus(); }
+      });
+      mobile.addEventListener('change', function () { setMenu(false); });
     }
-
-    const observer = new IntersectionObserver((entries) => {
-      // Vegyük azt a szekciót, ami legjobban látszik a felső sávban
-      const visible = entries
-        .filter(e => e.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-      if (visible.length) {
-        setActive(visible[0].target.id);
-      }
-    }, {
-      rootMargin: '-15% 0px -65% 0px',
-      threshold: [0, 0.25, 0.5, 1]
-    });
-    sections.forEach(s => observer.observe(s));
-
-    // Click-on-link: bezárjuk a mobil sidebar-t
-    links.forEach(l => l.addEventListener('click', () => {
-      const sb = document.querySelector('.sidebar');
-      if (sb && sb.classList.contains('open')) sb.classList.remove('open');
-    }));
-  })();
+    if ('IntersectionObserver' in window) {
+      const byId = new Map(links.map(function (link) { return [link.hash.slice(1), link]; }));
+      const observer = new IntersectionObserver(function (entries) {
+        const visible = entries.filter(function (entry) { return entry.isIntersecting; }).sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+        if (!visible.length) return;
+        links.forEach(function (link) { link.removeAttribute('aria-current'); });
+        const active = byId.get(visible[0].target.id);
+        if (active) active.setAttribute('aria-current', 'location');
+      }, { rootMargin: '-10% 0px -70% 0px' });
+      document.querySelectorAll('main section[id]').forEach(function (section) { observer.observe(section); });
+    }
+  }());
 </script>
-
 </body>
 </html>

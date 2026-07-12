@@ -1,7 +1,7 @@
 # Mérnöki standardok — egy forrásból, a készítőbe ÉS a bírálóba injektálva
 
 *Wenova AI-Assisted Development Workshop — 2026.07 · tananyag a G4 modulhoz ·
-a minta a saját belső multi-agent rendszerünk (Wenova Squad) éles tapasztalatából jön*
+a minta ennek a repónak a nyilvánosan ellenőrizhető építési folyamatából jön*
 
 > Szakszavak: [fogalomtár](fogalomtar.md) · kapcsolódó: [pluginek és skillek](plugins-es-skillek.md)
 
@@ -9,13 +9,13 @@ a minta a saját belső multi-agent rendszerünk (Wenova Squad) éles tapasztala
 
 ## 🧠 Döntés-doboz: hová kerüljön a szakmai alapléc?
 
-**Az alapprobléma (valós történet).** A belső multi-agent rendszerünkben a szakmai code-craft alapléc —
-DRY, KISS, YAGNI, SOLID, clean code, elnevezések, clean-architecture függőségi irány, SRP — **sehol nem
-volt a rendszer állandó működési szerződése**: a folyamat-doksik a governance-t fedték, a készítő-agent
+**Az alapprobléma (ellenőrizhető repópélda).** Ha a szakmai code-craft alapléc —
+DRY, KISS, YAGNI, SOLID, clean code, elnevezések, clean-architecture függőségi irány, SRP — **nincs a
+rendszer állandó működési szerződésében**, akkor a folyamat-doksik csak a governance-t fedik, a készítő-agent
 promptja csak annyit mondott, „kövesd a cél-repo AGENTS.md-jét", a bíráló pedig projekt-specifikus volt.
 Az eredmény: **az embernek feladatonként újra el kellett magyaráznia az alapokat** — és ami ennél rosszabb:
-a készítő és a bíráló **más-más léc szerint** dolgozott, így a review nem azt kérte számon, amire a maker
-épített.
+a készítő és a bíráló pedig **más-más léc szerint** dolgozhat, így a review nem azt kéri számon, amire a maker
+épített. Ennek a repónak a megoldása a lent hivatkozott, közös standard.
 
 **A választásunk.** Egy **kanonikus standard-blokk**, egyetlen forrásfájlban — és ez a blokk
 **hivatkozással injektálódik minden készítő- ÉS minden bíráló-promptba** (a bírálóéba explicit
@@ -67,15 +67,24 @@ flowchart TD
 | **Definition of Done** | Mikor „kész": zöld kapuk + teszt + doksi + a bíráló jóváhagyása |
 | **Eszkalációs formátum** | Ha az agent dönteni nem tud: strukturált „DECISION REQUIRED" visszaadás az embernek |
 
-## Hogyan képződik le nálunk (Claude Code-ban)?
+## Hogyan képződik le ebben a repóban?
 
-- **Készítő oldal:** a repo `AGENTS.md`-je az injektálási mechanizmus — minden agent-futás beolvassa.
-  A standard-blokk oda kerül (tömören), a mélységi indoklás külön doksiba.
-- **Bíráló oldal:** a review-agentek/subagentek prompt-sablonja **ugyanabból a forrásból** kapja a
-  blokkot, explicit checklistként — a workshop toolkit-orchestrátora így épül (a bíráló nem „általában
-  véleményez", hanem a lécet pipálja végig).
+- **Készítő oldal:** a repo `AGENTS.md`-je előírja a kanonikus
+  [`material-standards.md`](../toolkit/standards/material-standards.md) vagy
+  [`engineering-standards.md`](../toolkit/standards/engineering-standards.md) hivatkozását; az agent a
+  feladathoz illő teljes standardot olvassa, nem másolatot kap.
+- **Bíráló oldal:** a review-agentek/subagentek prompt-sablonja **ugyanarra a forrásra hivatkozik**, és a
+  bíráló a teljes standardot explicit checklistként használja — a workshop toolkit-orchestrátora így épül
+  (a bíráló nem „általában véleményez", hanem a lécet pipálja végig).
 - **Gépi részhalmaz:** boundary-lint (feloldott útvonalak + regressziós tesztek), typecheck, tesztek —
   ami ellenőrizhető, az nem a modell jóindulatán múlik.
+
+## Hol él a munka állapota?
+
+A [Linear-issue](fogalomtar.md#linear-work-state) leírása a spec; az aktív lease-komment nevezi meg a branch-et,
+worktree-t és scope-ot; a trace-komment rögzíti a commit SHA-t, parancsokat, review-t és maradó kockázatot.
+**Külön handoff-fájlt nem készítünk.** Így a következő agent ugyanabból az élő koordinációs állapotból indul,
+miközben a Git-commit változatlan, auditálható eredmény marad.
 
 > **Vidd haza:** a szakmai léc nem "tudás, amit az agent majd magától alkalmaz", hanem **működési
 > szerződés, amit minden szerepbe injektálsz** — egy forrásból, hogy a készítő, a bíráló és a gép
