@@ -1,0 +1,72 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-toolkit-routes",
+      "visualQuestionId": "q-toolkit-overview",
+      "question": "Melyik feladathoz melyik hazavihető útmutató és eszköz tartozik?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "repository-rules"
+      ],
+      "figureSelector": "#fig-toolkit-routes",
+      "svgSelector": "#fig-toolkit-routes svg",
+      "textFallbackSelector": "#fig-toolkit-routes-text",
+      "inlineSvgHash": "d8d2bd0b51a8319f01967350792e6fa81713a7bda25eaf24bb756b336fc8ef6e"
+    },
+    {
+      "id": "fig-toolkit-melyik-uton-indulj-a-hat",
+      "visualQuestionId": "q-toolkit-decision-1",
+      "question": "Melyik úton indulj a hat feladat közül?",
+      "type": "decision",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "decision-tree",
+      "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli.",
+      "glossarySlugs": [
+        "repository-rules"
+      ],
+      "figureSelector": "#fig-toolkit-melyik-uton-indulj-a-hat",
+      "svgSelector": "#fig-toolkit-melyik-uton-indulj-a-hat svg",
+      "textFallbackSelector": "#fig-toolkit-melyik-uton-indulj-a-hat-text",
+      "inlineSvgHash": "31e53a41302ea9b1eabf8b2112d02fded5b4d4caf7a579f1bf502a95c4648d2b"
+    },
+    {
+      "id": "fig-toolkit-mi-talalhato-a-toolkitben-es",
+      "visualQuestionId": "q-toolkit-structure-2",
+      "question": "Mi található a toolkitben, és hol?",
+      "type": "structure",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "component-diagram",
+      "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+      "glossarySlugs": [
+        "repository-rules"
+      ],
+      "figureSelector": "#fig-toolkit-mi-talalhato-a-toolkitben-es",
+      "svgSelector": "#fig-toolkit-mi-talalhato-a-toolkitben-es svg",
+      "textFallbackSelector": "#fig-toolkit-mi-talalhato-a-toolkitben-es-text",
+      "inlineSvgHash": "c2168faeffd3602351bb096a37c5e043e6f09fe765e0872793408778aaa55d5b"
+    },
+    {
+      "id": "fig-toolkit-hogyan-masolod-igazitod-es-ellenorzod",
+      "visualQuestionId": "q-toolkit-process-3",
+      "question": "Hogyan másolod, igazítod és ellenőrzöd az átvett elemet?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "repository-rules"
+      ],
+      "figureSelector": "#fig-toolkit-hogyan-masolod-igazitod-es-ellenorzod",
+      "svgSelector": "#fig-toolkit-hogyan-masolod-igazitod-es-ellenorzod svg",
+      "textFallbackSelector": "#fig-toolkit-hogyan-masolod-igazitod-es-ellenorzod-text",
+      "inlineSvgHash": "1b3b47e097c7a1a138b5e080404103d939bc61d42cf2619d8c195c692b7b8585"
+    }
+  ]
+}

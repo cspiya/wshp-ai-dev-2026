@@ -1,0 +1,40 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-guide-legacy",
+      "visualQuestionId": "q-guide-legacy-overview",
+      "question": "Hogyan viszed be a módszert legacy környezetbe és a csapatba?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "legacy-system",
+        "pilot"
+      ],
+      "figureSelector": "#fig-guide-legacy",
+      "svgSelector": "#fig-guide-legacy svg",
+      "textFallbackSelector": "#fig-guide-legacy-text",
+      "inlineSvgHash": "f9a65e38a519e65e167e18941db4ff1dc61264be073fdba071bf3deb2ebc67c0"
+    },
+    {
+      "id": "fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes",
+      "visualQuestionId": "q-guide-legacy-timeline-1",
+      "question": "Milyen lépcsőkön halad a bevezetés?",
+      "type": "timeline",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "timeline",
+      "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
+      "glossarySlugs": [
+        "legacy-system",
+        "pilot"
+      ],
+      "figureSelector": "#fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes",
+      "svgSelector": "#fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes svg",
+      "textFallbackSelector": "#fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes-text",
+      "inlineSvgHash": "5c0d7e3ce140e0eaa8ddc0c5ce9589d11db72fd893eaca22a860d6f8e6435fe6"
+    }
+  ]
+}

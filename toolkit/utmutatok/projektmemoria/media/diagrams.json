@@ -1,0 +1,38 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-guide-memory",
+      "visualQuestionId": "q-guide-memory-overview",
+      "question": "Hogyan őrzöd meg és keresed vissza a projekt tudását?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "project-memory"
+      ],
+      "figureSelector": "#fig-guide-memory",
+      "svgSelector": "#fig-guide-memory svg",
+      "textFallbackSelector": "#fig-guide-memory-text",
+      "inlineSvgHash": "f823a1c4f2790274c98e817407bdd8a390a150e9e6c43a42cac40b4168482019"
+    },
+    {
+      "id": "fig-guide-memory-hogyan-jut-vissza-a-tarolt",
+      "visualQuestionId": "q-guide-memory-process-1",
+      "question": "Hogyan jut vissza a tárolt tudás a munkába?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "project-memory"
+      ],
+      "figureSelector": "#fig-guide-memory-hogyan-jut-vissza-a-tarolt",
+      "svgSelector": "#fig-guide-memory-hogyan-jut-vissza-a-tarolt svg",
+      "textFallbackSelector": "#fig-guide-memory-hogyan-jut-vissza-a-tarolt-text",
+      "inlineSvgHash": "9b8bfc908c09b03837aaf99849b0be218c45d75f58c445c0959b36315e6e431b"
+    }
+  ]
+}
