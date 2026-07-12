@@ -48,6 +48,28 @@ template, it does not replace it.
 - [ ] Visual review in a real browser is part of the definition of done — a structural
       check alone does not prove readability.
 
+## Participant/public boundary
+
+- [ ] Participant-facing sources are the canonical HTML routes in
+      `toolkit/material-site/site-manifest.json`, every compatibility HTML/manifest
+      alias, and every exact manifest-download entry. Generated `.site/` content is
+      participant-facing in full.
+- [ ] Those participant surfaces contain no internal issue identifiers, private Linear
+      URLs, internal Drive locations, invite links, secrets, client identities or
+      personal data. A downloadable technical file does not become operator-only merely
+      because its extension or directory looks technical.
+- [ ] Durable agent/operator files may retain implementation trace identifiers only when
+      they match the boundary checker's mechanical file classes: agent-rule basenames,
+      workflow configuration, named operator-documentation roots, or code under named
+      application/tooling roots. An arbitrary README, HTML page or source directory is
+      not implicitly operator-only. Private Linear/Drive locations remain forbidden in
+      operator code and workflow files; only agent-rule files may name an internal
+      location when that path is itself a required operating boundary.
+- [ ] The repository-wide high-risk scan still applies to every tracked text file,
+      including operator files: secrets, personal/client data, invite URLs and explicit
+      private markers always fail. Only the named boundary negative-fixture directory is
+      excluded; generated `.site/` has no exemptions.
+
 ## Fallback rule
 
 - [ ] Every live demo has a stated Plan B (recording, local path, or trainer-owned
