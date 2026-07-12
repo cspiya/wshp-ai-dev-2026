@@ -97,6 +97,8 @@
   .static-fallback:focus-visible { outline-offset: .1rem; }
   .module-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .module-nav a { max-width: 45%; font-weight: 700; }
+  .module-end { margin-top: 3rem; }
+  .module-end .module-nav { margin-top: 0; }
   footer { margin-top: 3rem; color: var(--muted); font-size: .88rem; }
   .noscript-note { padding: .75rem 1rem; background: var(--artifact-soft); border-left: .35rem solid var(--artifact); }
   @media (prefers-color-scheme: dark) {
@@ -133,6 +135,9 @@
     .semantic-label { display: block; width: max-content; max-width: 100%; margin-bottom: .35rem; }
     .static-fallback { overflow: visible; }
     .checkpoint-strip { overflow: visible; grid-template-columns: repeat(4, 1fr); }
+    .module-end { margin-top: .5rem; }
+    .module-end .module-nav { padding-top: .45rem; }
+    .module-end footer { display: inline-block; width: 100%; margin-top: .2rem; break-before: avoid-page; page-break-before: avoid; }
   }
 </style>
 </head>
@@ -246,9 +251,11 @@
       <div class="callout"><strong>Vidd haza:</strong> egy mondatban a modul tartós, eszközfüggetlen tanulsága.</div>
     </section>
 
-    <!-- Modul készítésekor cseréld a két érvényes mintaútvonalat a tényleges szomszédokra. -->
-    <nav class="module-nav" aria-label="Modulok közötti navigáció"><a href="README.md">← Notebook-index</a><a href="00-bevezeto.html">Következő: B0 mintamodul →</a></nav>
-    <footer><strong>MX — Modulcím</strong> · Wenova AI-Assisted Development Workshop 2026.07</footer>
+    <div class="module-end">
+      <!-- Modul készítésekor cseréld a két érvényes mintaútvonalat a tényleges szomszédokra. -->
+      <nav class="module-nav" aria-label="Modulok közötti navigáció"><a href="README.md">← Notebook-index</a><a href="00-bevezeto.html">Következő: B0 mintamodul →</a></nav>
+      <footer><strong>MX — Modulcím</strong> · Wenova AI-Assisted Development Workshop 2026.07</footer>
+    </div>
   </main>
 </div>
 
