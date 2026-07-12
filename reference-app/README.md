@@ -1,9 +1,15 @@
 # Reference App — the golden path
 
-> This application is a **realistic validation workload** for the workshop's agent-ready development
-> system. It is deliberately representative rather than product-complete: business rules, multiple
+> This application is the workshop's **[validation workload](../materials/fogalomtar.md#validation-workload)**
+> for its [agent-ready development framework](../materials/fogalomtar.md#agent-ready-repo), which is the
+> product. The app is deliberately representative rather than product-complete: business rules, multiple
 > slices, persistence, a varying external port, failure paths, review findings, and e2e deployment
 > evidence test whether the operating model can actually deliver software.
+
+All examples and sample data are [lifelike but explicitly INVENTED](../materials/fogalomtar.md#invented-data).
+They contain no client facts or personal data. Work coordination lives in the
+[Linear issue spec, lease, and trace](../materials/fogalomtar.md#linear-work-state); this repository does not
+use handoff files.
 
 Greenfield reference project of the **Wenova AI-Assisted Development Workshop**:
 **Next.js (App Router) + shadcn/ui + Tailwind + Drizzle + Neon + tRPC + Zod +

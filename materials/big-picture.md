@@ -8,14 +8,22 @@
 
 ## A workshop központi tézise
 
-> **Nem egy webalkalmazást építünk AI-val. Felépítünk egy megbízható AI-assisted fejlesztési
-> rendszert, majd egy real-life jellegű alkalmazás fejlesztésével bizonyítjuk, hogy működik.**
+> **Nem egy webalkalmazást építünk AI-val. Egy megbízható
+> [agent-ready fejlesztési keretrendszert](fogalomtar.md#agent-ready-repo) építünk, majd egy
+> [validációs munkaterheléssel](fogalomtar.md#validation-workload) bizonyítjuk, hogy működik.**
 
 A nap **elsődleges terméke** az agent-ready repo: szabályokkal, kanonikus standarddal, spec-kapuval,
-RUG-folyamattal, mechanikus gate-ekkel és visszakereshető bizonyítékokkal. Az alkalmazás a rendszer
-**validációs workloadja**: reprezentatív üzleti, architekturális és infrastruktúra-terhelés, amelyen
+[RUG-folyamattal](fogalomtar.md#rug), mechanikus gate-ekkel és visszakereshető bizonyítékokkal. Az alkalmazás
+a rendszer **validációs workloadja**: reprezentatív üzleti, architekturális és infrastruktúra-terhelés, amelyen
 kiderül, hogy a működési modell valóban alkalmas-e szoftverfejlesztésre. A teljes checkpoint-sor:
 [Az agent-ready repo](agent-ready-repo.md).
+
+| Kanonikus kérdés | Válasz ebben a repóban |
+|---|---|
+| Mi a termék? | Az agent-ready fejlesztési keretrendszer. |
+| Mi az alkalmazás? | A keretrendszert próbára tevő validációs workload. |
+| Hol él a munka állapota? | A Linear-issue spec-, lease- és trace-adataiban; nincs külön handoff-fájl. |
+| Milyen adat kerülhet a nyilvános példákba? | Csak életszerű, de kifejezetten KITALÁLT minta; ügyfél- és személyes adat nem. |
 
 **A modell nem a módszer.** A tartós minőséget a repóban élő szerződések és visszacsatolási körök adják;
 a modell, provider és coding agent cserélhető végrehajtó. Kiesés, korlátozás, technikai hiba, magas költség
@@ -38,7 +46,7 @@ dolgot borít fel egyszerre:
    **jó specifikáció, a review és a tesztelés** lesz a drága erőforrás (ezt hívjuk „demand shortage"
    jelenségnek). Ez felértékeli az üzleti elemzőt és a minőségbiztosítási fegyelmet.
 
-**A konkrét kiindulópontunk (a résztvevők valósága):** tapasztalt fejlesztő- és BA-csapat, .NET / MS-SQL /
+**A célközönség kiindulópontja:** tapasztalt fejlesztő- és BA-csapatok .NET / MS-SQL /
 TFS–Azure DevOps környezetben, működő termékekkel és legacy kódbázissal. A kérdésük nem az, hogy „mi az az
 AI", hanem: **hogyan kell ezt profin, iparági legjobb gyakorlat szerint csinálni — és hogyan vezethető be
 a saját (részben legacy) világunkba?**
@@ -48,7 +56,7 @@ a saját (részben legacy) világunkba?**
 **A nap végén (személyes szint):**
 - Mindenkinek van egy **saját agent-ready fejlesztési rendszere** a saját GitHub-repójában: repo-szabály,
   kanonikus standard, spec/plan/tasks, humán kapu, RUG, mechanikus ellenőrzések és run log.
-- Van egy **real-life jellegű, élő alkalmazási út**, amely nem puszta sikerélmény, hanem a fejlesztési
+- Van egy **reprezentatív, élő alkalmazási út**, amely nem puszta sikerélmény, hanem a fejlesztési
   rendszer end-to-end acceptance tesztje: bizonyítja, hogy üzleti szabállyal, adattal, hibával és
   deploymenttel is lehet vele dolgozni.
 - Mindenki **végigcsinálta** (nem csak látta) a teljes kört: spec → terv → implementáció → verifikáció,
@@ -59,7 +67,7 @@ a saját (részben legacy) világunkba?**
 
 **A workshop után (szervezeti szint):**
 - 30/60/90 napos bevezetési út: egy squad, egy repo, spec-kapuk és metrikák → az egyéni tudásból
-  **csapat-szokás**. (A Wenova-ív: educate → transform → build; learn → change → create.)
+  **csapat-szokás**.
 - A legacy környezetre (.NET / MS-SQL / Azure DevOps) is van adaptált playbook: biztonsági háló
   (characterization tesztek), strangler-fig modernizáció, agent-integráció a meglévő eszközláncba.
 
@@ -89,7 +97,8 @@ wshp-ai-dev-2026/
   (**Neon Auth** — a userek a saját Postgresünkben!) + `registrations/` jelentkezés és **visszamondás**
   státusz-szabályokkal + `pricing/` tiszta üzleti logika: listaár − kupon − csoportkedvezmény + ÁFA +
   `checkout/` fizetési folyamat). *Miért ez a téma?* (1) Az árazási és lemondási szabályok a saját
-  működését **életszerű, de kitalált** szabályokon gyakoroljuk — a BA-gyakorlaton magyar üzleti szabályból
+  működését [**életszerű, de KITALÁLT**](fogalomtar.md#invented-data) szabályokon gyakoroljuk — a
+  BA-gyakorlaton magyar üzleti szabályból
   lesz angol elfogadási kritérium és tesztelt domain-függvény. (2) A fizetés `PaymentPort` mögött fake
   adapterrel épül (végigkattintható, tesztelhető), és később valódi adapterre cserélhető **a checkout-kód
   érintése nélkül** — ez maga a ports-and-adapters lecke. Az architektúra (vertical slice + kikényszerített
@@ -103,17 +112,19 @@ wshp-ai-dev-2026/
 
 ## 5. Hogyan készül maga az anyag? (dogfooding — a folyamat a termék)
 
-**A workshop-anyagot ugyanazzal a módszerrel építjük, amit tanítunk.** Minden feladat egy Linear-issue
-(= a spec, elfogadási kritériumokkal); builder-agent implementál; **független, friss kontextusú review**
+**A workshop-anyagot ugyanazzal a módszerrel építjük, amit tanítunk.** Minden feladat egy
+[Linear-issue](fogalomtar.md#linear-work-state) (= a spec, elfogadási kritériumokkal); builder-agent
+implementál; **független, friss kontextusú review**
 (8 szempontú bírálat) ellenőrzi; a hibák bounce-back körben javulnak, amíg minden zöld — ez a
 **Repeat-Until-Good** élesben. Az építés közben történteket az [építési napló](epitesi-naplo/) rögzíti —
 a hibáinkkal együtt, mert **a megfogott hibák a legjobb tananyag** (lásd: Day 1, amikor a zöld CI után a
 review 10 valódi hibát talált).
 
-Ez egyben a modellfüggetlenség élő próbája is. A részfeladatok átadhatók különböző agenteknek, a sessionök
-handoff-fájlokkal folytathatók, és a végrehajtó lecserélhető, miközben a közös spec, standard, review-protokoll
-és mechanikus ellenőrzés változatlan marad. A tananyag minőségét a keretrendszer fogja össze, nem egyetlen
-modell emlékezete vagy stílusa.
+Ez egyben a modellfüggetlenség élő próbája is. A részfeladatokat különböző agentek folytathatják, mert az élő
+munkaállapot a Linear-issue leírásában, lease- és trace-kommentjeiben van; **külön handoff-fájlt nem tartunk**.
+A Git-commit a verziózott eredmény. A végrehajtó lecserélhető, miközben a közös spec, standard,
+review-protokoll és mechanikus ellenőrzés változatlan marad. A tananyag minőségét a keretrendszer fogja össze,
+nem egyetlen modell emlékezete vagy stílusa.
 
 ## 6. Térkép a többi dokumentumhoz
 

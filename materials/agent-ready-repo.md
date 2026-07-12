@@ -1,14 +1,15 @@
 # Az agent-ready repo — a workshop elsődleges terméke
 
-> **Nem egy webalkalmazást építünk AI-val. Felépítünk egy megbízható AI-assisted fejlesztési
-> rendszert, majd egy valószerű alkalmazás fejlesztésével bizonyítjuk, hogy működik.**
+> **Nem egy webalkalmazást építünk AI-val. Egy megbízható
+> [agent-ready fejlesztési keretrendszert](fogalomtar.md#agent-ready-repo) építünk, majd egy
+> [validációs munkaterheléssel](fogalomtar.md#validation-workload) bizonyítjuk, hogy működik.**
 
 ## A két kézzelfogható eredmény
 
 | Eredmény | Szerepe | Mikor tekintjük késznek? |
 |---|---|---|
 | **Agent-ready fejlesztési rendszer** | Ez a workshop elsődleges, hazavihető terméke. | Egy új agent ellenőrizhetően végig tud vinni vele egy változtatást specből validált eredményig. |
-| **Real-life validációs workload** | Az alkalmazás a rendszer integrációs és acceptance tesztje. | Valódi üzleti szabályon, modulhatáron, adaton, hibán és deployment-úton is bizonyítja a működési modellt. |
+| **Validációs workload** | Az alkalmazás a rendszer integrációs és acceptance tesztje. | Reprezentatív üzleti szabályon, modulhatáron, adaton, hibán és deployment-úton is bizonyítja a működési modellt; a minták [életszerűek, de kifejezetten KITALÁLTAK](fogalomtar.md#invented-data). |
 
 Az alkalmazás tehát nem díszlet, de nem is a végcél. Olyan reprezentatív terhelés, amelyen kiderül, hogy
 a fejlesztési rendszer nemcsak papíron szép, hanem tényleges szoftverfejlesztésre alkalmas.
@@ -27,12 +28,6 @@ Ez üzletmenet-folytonossági és fejlődési követelmény is. Váltani kellhet
 - megjelenik egy jobb modell, amelyre akár egy napon belül érdemes kontrolláltan átállni;
 - egy részfeladathoz másik modell ad jobb minőség/költség/latencia arányt.
 
-2026-ban mindkét irányra volt kézzelfogható példa: az Anthropic dokumentálta a Fable 5 és Mythos 5
-[átmeneti hozzáférési felfüggesztését és visszaállítását](https://www.anthropic.com/news/redeploying-fable-5),
-az OpenAI pedig július 9-én általánosan elérhetővé tette a
-[GPT‑5.6 modellcsaládot](https://openai.com/index/gpt-5-6/). Ezek nem vendorválasztási ajánlások, hanem
-annak bizonyítékai, hogy az elérhetőségi és képességkörnyezet napok alatt megváltozhat.
-
 A váltás ezért nem hitkérdés és nem egyszerű modellnév-csere. Ugyanazon reprezentatív workloadon futtatott
 eval: változatlan acceptance criteria, gate-ek és bizonyítékléc mellett összehasonlítjuk a sikerességet,
 minőséget, költséget, latenciát és emberi review-terhelést. Csak a bizonyítottan jobb konfiguráció lesz új
@@ -40,11 +35,14 @@ alapértelmezés.
 
 ### Élő példa: ennek a workshopnak az elkészítése
 
-Nemcsak a referenciaalkalmazást, hanem ezt a tananyagot is a tanított operating modellel készítjük:
-feladatokra bontás, párhuzamos agentek, közös repó-instrukciók, handoff, friss kontextusú review, javítás,
-mechanikus guardok és visszakereshető Git-történet. A tartalmi Definition of Done nem változik attól, hogy
-melyik modell vagy eszköz írja az első változatot. Ez a workshop második, önmagára visszamutató validation
-workloadja.
+Nemcsak a referenciaalkalmazást, hanem ezt a tananyagot is a tanított
+[operating modellel](fogalomtar.md#operating-model) készítjük: feladatokra bontás, párhuzamos agentek,
+közös repó-instrukciók, [Linearban élő spec/lease/trace](fogalomtar.md#linear-work-state), friss kontextusú
+review, javítás, mechanikus guardok és visszakereshető Git-történet. Nincs külön handoff-fájl: a Linear
+őrzi a folytatható munkaállapotot, a Git-commit a verziózott eredményt. A tartalmi Definition of Done nem
+változik attól, hogy
+melyik modell vagy eszköz írja az első változatot. Ez a dogfooding-folyamat közvetlen bizonyítéka annak,
+hogy a tanított működési modell saját maga építését is következetesen vezérli.
 
 ## Az egész nap egyetlen építési ív
 
@@ -55,7 +53,7 @@ workloadja.
   → spec / plan / tasks + humán kapu
   → maker / reviewer / fixer szerepek + RUG
   → determinisztikus hookok és CI-kapuk
-  → real-life alkalmazás mint end-to-end rendszerpróba
+  → reprezentatív alkalmazás mint end-to-end rendszerpróba
   → modell- és eszközcsere ugyanazon minőségi léc mellett
   → legacy-transzfer ugyanazzal a biztonsági és evidence-léccel
   → csapatbevezetés, 30/60/90 terv és C0–C7 audit
@@ -118,7 +116,7 @@ Egy agent itt gyors lehet, de nem megbízható.
 
 **Új képesség:** az agent nem tud puszta narrációval „kész” állapotot jelenteni.
 
-### C6 — Real-life rendszerpróba
+### C6 — Reprezentatív rendszerpróba
 
 Az alkalmazás már reprezentatív összetettséget visz a rendszerbe:
 
@@ -152,7 +150,7 @@ A repo akkor agent-ready a workshop szintjén, ha:
 - a kötelező kapuk automatikusan futnak, és a blokkoló út tesztelt;
 - a reviewer friss kontextusból dolgozik, findingjait bizonyítani kell;
 - minden elfogadott findinghoz fix, újrafuttatott kapu és lehetőség szerint regressziós teszt tartozik;
-- a real-life workload legalább egy teljes útja valódi futtatási környezetben is bizonyított;
+- a validációs workload legalább egy teljes útja valódi futtatási környezetben is bizonyított;
 - legalább egy kiválasztott feladaton bizonyított, hogy a minőségi léc nem egy modell-specifikus trükktől függ;
 - a run logból visszakereshető a spec, döntés, parancs, finding, javítás és maradó kockázat.
 
