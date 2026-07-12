@@ -1,9 +1,115 @@
-<!DOCTYPE html><html lang="hu"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>G3 — Orchestrátor és RUG</title><style>
-:root{--b:#e4e4e7;--a:#4f46e5;--as:#eef2ff;--t:#18181b;--m:#52525b}*{box-sizing:border-box}body{margin:0;background:#fafafa;color:var(--t);font:16px/1.65 system-ui}.layout{display:grid;grid-template-columns:260px minmax(0,880px);max-width:1200px;margin:auto}.side{position:sticky;top:0;height:100vh;padding:2rem 1.25rem;background:#fff;border-right:1px solid var(--b)}.side small,.ey{color:var(--a);font-weight:700;text-transform:uppercase}.side a{display:block;padding:.4rem;color:var(--m);text-decoration:none}.main{padding:2rem 3rem 4rem}header{border-bottom:1px solid var(--b);padding-bottom:2rem}h1{font-size:2.3rem;line-height:1.15;margin:.4rem 0}h2{margin-top:3rem;border-bottom:1px solid var(--b)}.sub{font-size:1.1rem;color:var(--m)}.card,.call{background:#fff;border:1px solid var(--b);border-radius:12px;padding:1.2rem;margin:1.2rem 0}.call{background:var(--as);border-left:4px solid var(--a)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.grid .card{margin:0}.flow{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:1rem 0}.step{background:#fff;border:1px solid var(--b);border-radius:8px;padding:.7rem}.arrow{color:var(--a);font-weight:bold}.prompt{white-space:pre-wrap;background:#1e1e2e;color:#cdd6f4;padding:1rem;border-radius:8px;font:14px/1.5 Consolas,monospace}table{width:100%;border-collapse:collapse}th,td{padding:.6rem;border-bottom:1px solid var(--b);text-align:left;vertical-align:top}th{background:#f4f4f5}a{color:var(--a)}footer{margin-top:3rem;border-top:1px solid var(--b);padding-top:1rem;color:var(--m)}@media(max-width:800px){.layout{display:block}.side{position:static;height:auto;border:0}.main{padding:1.3rem}.grid{grid-template-columns:1fr}}
-</style></head><body><div class="layout"><aside class="side"><small>G3 · 11:45–12:30</small><h3>Orchestrátor + RUG</h3><a href="#miert">1. Miért több szerep?</a><a href="#rug">2. A RUG-hurok</a><a href="#esetek">3. Day 1 és Day 2</a><a href="#hurkok">4. Két tanulási hurok</a><a href="#gyakorlat">5. Gyakorlat</a></aside><main class="main">
-<header><div class="ey">G3 · C4 checkpoint</div><h1>Orchestrátor + Repeat-Until-Good</h1><p class="sub">A repo most kap független minőségbiztosítási hurkot: a párhuzamos agent nem önmagában cél, szerepszétválasztással és bizonyíték-alapú review-val ad minőséget.</p><p>⏱️ 45 perc · Előfeltétel: jóváhagyott spec és valódi gépi kapuk</p><div class="call"><strong>A rendszer új képessége:</strong> a real-life workload első változtatását már nem a szerző saját kontextusa fogadja el; minden finding bizonyítandó, minden fix újraellenőrzendő.</div></header>
-<section id="miert"><h2>1. Miért több szerep?</h2><p>.NET-es analógia: a fejlesztő, a PR-reviewer, a tesztelő és a release gate nem ugyanaz a felelősség. Ugyanaz a személy is viselhet több sapkát, de nem ugyanabban a pillanatban és ugyanazzal a mentális kontextussal. Agenteknél a szerepszétválasztás olcsóbban és szigorúbban megvalósítható.</p><table><tr><th>Szerep</th><th>Felelősség</th><th>Nem feladata</th></tr><tr><td>Orchestrator</td><td>Felbontás, scope, függőségek, handoff</td><td>Minden kód saját megírása</td></tr><tr><td>Builder</td><td>Implementáció és saját verifikáció</td><td>Saját munkája független elfogadása</td></tr><tr><td>Reviewer</td><td>Findingok keresése friss kontextusból</td><td>Ízlés szerinti átírás</td></tr><tr><td>Verifier/fixer</td><td>Finding bizonyítása, javítás, regresszió</td><td>Review vak végrehajtása</td></tr></table><div class="call"><strong>Döntési szabály:</strong> multi-agent akkor éri meg, ha a munkaterületek vagy szerepek tisztán elválaszthatók. Ugyanazt a fájlt szerkesztő párhuzamos builder-agent inkább konfliktust termel.</div></section>
-<section id="rug"><h2>2. A RUG-hurok</h2><div class="flow"><span class="step">Spec</span><span class="arrow">→</span><span class="step">Builder</span><span class="arrow">→</span><span class="step">Gépi kapuk</span><span class="arrow">→</span><span class="step">Fresh reviewer</span><span class="arrow">→</span><span class="step">Verify + fix</span><span class="arrow">↺</span></div><ol><li>A builder visszamondja az acceptance criteriát és a scope-ot.</li><li>Implementál, majd konkrét parancsokkal verifikál.</li><li>A reviewer ugyanazt a kanonikus mérnöki standardot kapja checklistként.</li><li>A finding állítás, hely és hatás nélkül még nem javítási feladat.</li><li>A fixer előbb reprodukál; téves findingot bizonyítékkal visszautasíthat.</li><li>A javításhoz regressziós kapu társul, majd a ciklus újraindul.</li></ol><div class="prompt">Review the change as an independent reviewer.&#10;Use the canonical engineering standards as an explicit checklist.&#10;For every finding report severity, exact evidence, impact, and verification.&#10;Do not propose speculative refactors.</div></section>
-<section id="esetek"><h2>3. Két valódi építési eset</h2><div class="grid"><div class="card"><h3>Day 1: zöld kapuk után is hibák</h3><p>A skeleton és starter átment a typecheck, lint, test, build és CI kapukon. A friss review mégis talált valódi problémákat, köztük publikus repo hygiene-kockázatot és megkerülhető boundary-szabályt.</p><p><strong>Lecke:</strong> a pipeline csak azt bizonyítja, amire felprogramoztuk.</p></div><div class="card"><h3>Day 2: tünetek helyett gyökér-ok</h3><p>Az import-idejű composition gyenge e2e seamhez, production flag-kockázathoz, browser-bundle veszélyhez és double drifthez vezetett.</p><p><strong>Lecke:</strong> a jó reviewer összefüggő hibaláncot keres, nem tíz izolált foltot.</p></div></div><p>.NET-es olvasatban a Day 2 kiindulása az volt, mintha egy feature maga <code>new</code>-zná a SQL repositoryt ahelyett, hogy a <code>Program.cs</code> DI-bekötéséből kapná. A gyökér-javítás ezért composition root + contract test + hard guard lett.</p></section>
-<section id="hurkok"><h2>4. Két külön tanulási hurok</h2><table><tr><th></th><th>Humán hurok</th><th>Agent-hurok</th></tr><tr><td>Mit javít?</td><td>Instrukciót, döntési keretet, standardot</td><td>Konkrét munkadarabot és gépi védelmet</td></tr><tr><td>Tipikus trigger</td><td>Kétértelmű vagy veszélyes kérés</td><td>Implementációs hiba, rossz feltételezés</td></tr><tr><td>Tartós eredmény</td><td>AGENTS.md, sablon, ADR, canonical standard</td><td>Fix + regressziós teszt/hook/lint</td></tr></table><p>Ha összekeverjük őket, ugyanazt a hibát újra szóban javítjuk. A humán tanulságot szabállyá, az implementációs tanulságot mechanikus regresszióvédelemmé kell alakítani.</p></section>
-<section id="gyakorlat"><h2>5. Gyakorlat — mini RUG</h2><h3>Cél</h3><p>Egy kis változtatás builder- és reviewer-szerepének szétválasztása.</p><h3>Lépések</h3><ol><li>Válassz egy szűk, egy modulra korlátozott feladatot.</li><li>Adj a buildernek specet, határt és verification parancsot.</li><li>Új kontextusú agenttel review-zd ugyanazon standard szerint.</li><li>Minden findingot reprodukálj; csak a bizonyítottat javítsd.</li><li>Futtasd újra a releváns és a teljes kapukat.</li></ol><h3>Kész, ha…</h3><p>A builder és reviewer trace elkülönül, minden elfogadott findinghoz bizonyíték és regressziós védelem tartozik, a kapuk zöldek.</p><h3>Tipikus elakadások</h3><ul><li><strong>A reviewer át akar tervezni mindent:</strong> kérj standard- vagy AC-hivatkozást.</li><li><strong>A builder és reviewer ugyanazt feltételezi:</strong> csökkentsd a reviewer bemeneti kontextusát a specre, diffre és standardra.</li><li><strong>Párhuzamos edit-konfliktus:</strong> ossz kizárólagos fájlterületeket.</li></ul><div class="call"><strong>Vidd haza:</strong> a szerző és a bíráló ne ugyanaz a kontextus legyen; a review-visszajelzés sem szentírás, a futtatott bizonyíték a bíró.</div></section><footer><strong>G3 — Orchestrátor + RUG</strong> · Wenova AI-Assisted Development Workshop 2026.07</footer></main></div><section><h2>Mi marad stabil modellváltáskor?</h2><p>A maker–reviewer–fixer szerepek, a közös standard, a finding-séma, a verify/bounce-back szabály és az exit criteria. A subagent indító API termékspecifikus adapter; a RUG-protokoll nem az.</p></section></body></html>
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>G3 — Orchestrátor és RUG · Wenova AI Workshop</title>
+<style>
+:root{--b:#e4e4e7;--a:#4f46e5;--as:#eef2ff;--t:#18181b;--m:#52525b;--w:#fffbeb;--g:#ecfdf5}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fafafa;color:var(--t);font:16px/1.65 system-ui}.layout{display:grid;grid-template-columns:260px minmax(0,880px);max-width:1200px;margin:auto}.side{position:sticky;top:0;height:100vh;overflow:auto;padding:2rem 1.25rem;background:#fff;border-right:1px solid var(--b)}.side small,.ey{color:var(--a);font-weight:700;text-transform:uppercase}.side a{display:block;padding:.42rem;color:var(--m);text-decoration:none}.main{padding:2rem 3rem 4rem}header{border-bottom:1px solid var(--b);padding-bottom:2rem}h1{font-size:2.3rem;line-height:1.15;margin:.4rem 0}h2{margin-top:3rem;padding-bottom:.35rem;border-bottom:1px solid var(--b);scroll-margin-top:1rem}h3{margin-top:1.6rem}.sub{font-size:1.1rem;color:var(--m)}.card,.call,.decision{background:#fff;border:1px solid var(--b);border-radius:12px;padding:1.2rem;margin:1.2rem 0}.call{background:var(--as);border-left:4px solid var(--a)}.decision{background:var(--w);border-left:4px solid #f59e0b}.done{background:var(--g);border-left-color:#059669}.flow{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}.step{background:#fff;border:1px solid var(--b);border-radius:8px;padding:.65rem}.arrow{color:var(--a);font-weight:700}.prompt,pre{white-space:pre-wrap;background:#1e1e2e;color:#cdd6f4;padding:1rem;border-radius:8px;font:14px/1.55 Consolas,monospace;overflow:auto;max-width:100%}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;border-bottom:1px solid var(--b);text-align:left;vertical-align:top}th{background:#f4f4f5}code{background:#f4f4f5;padding:.12rem .3rem;border-radius:4px;overflow-wrap:anywhere}a{color:var(--a)}.module-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--b)}footer{margin-top:2rem;color:var(--m)}@media(max-width:800px){.layout{display:block}.side{position:static;height:auto}.main{padding:1.3rem}}
+</style></head><body><div class="layout">
+<aside class="side"><small>G3 · C4 checkpoint</small><h3>Orchestrátor + RUG</h3>
+<a href="#bemenet">1. Elfogadott szerződés</a><a href="#miert">2. Miért külön szerepek?</a><a href="#protokoll">3. Teljes RUG-protokoll</a><a href="#finding">4. Evidence és finding</a><a href="#gyakorlat">5. Gyakorlat</a><a href="#exit">6. Exit és run log</a><a href="#stabil">7. Stabil részek</a></aside>
+<main class="main"><header><div class="ey">G3 · Orchestrátor + Repeat-Until-Good</div><h1>A repo független minőségi hurkot kap</h1>
+<p class="sub">A G2-ben elfogadott munkaszerződést maker, friss kontextusú reviewer és fixer viszi végig, amíg a bizonyítékok alapján valóban jó nem lesz.</p>
+<p>⏱️ 55 perc · Előfeltétel: <code>C3-APPROVED-CONTRACT</code></p>
+<div class="call"><strong>Tanítási eredmény:</strong> végig tudod vezetni a maker → check → fresh review → verify → fix → re-check hurkot, majd auditálható run loggal lezárni.</div></header>
+
+<section id="bemenet"><h2>1. Innen indulunk: az elfogadott C3 szerződés</h2>
+<p>A modul nem értelmezi újra az igényt. A <a href="02-spec-driven.html">G2</a> <code>C3-APPROVED-CONTRACT</code> csomagját veszi át: spec-verzió, acceptance criteria, bounded scope, check parancsok, humán döntés és residual risk.</p>
+<ol><li>Ellenőrizd, hogy a kapudöntés <code>APPROVED</code>.</li><li>Ellenőrizd, hogy nincs gazdátlan <code>DECISION REQUIRED</code>.</li><li>Ellenőrizd, hogy minden AC megfigyelhető evidence-hez kötött.</li><li>Ha bármi hiányzik, állj meg és küldd vissza G2-höz; az orchestrátor nem írhat üzleti szabályt.</li></ol>
+<div class="call"><strong>A rendszer új képessége:</strong> a <a href="../agent-ready-repo.md">C4 checkpoint</a> után a szerző nem fogadhatja el saját munkáját; a review-állítást bizonyítani kell, mielőtt javítás lesz belőle.</div>
+<p><strong>Alkalmazási bizonyíték:</strong> ugyanazt a jóváhagyott, kitalált lemondási slice-ot visszük végig, amelyet G2-ben lezártunk: a résztvevő a saját, megerősített regisztrációját akkor mondhatja le, ha a workshop kezdése több mint 24 óra múlva van; 24 órán belüli kérésnél <code>CANCELLATION_WINDOW_CLOSED</code> hiba látszik és a perzisztált regisztráció változatlan marad. In scope: parancs és állapot; out of scope: visszatérítés, e-mail és admin UI.</p></section>
+
+<section id="miert"><h2>2. Miért külön szerepek és friss kontextus?</h2>
+<div class="decision"><h3>Miért nem elég a maker önellenőrzése?</h3>
+<p><strong>Az alapprobléma:</strong> a maker ismeri és védi a feltételezéseit. A zöld teszt csak azt bizonyítja, amit már eszünkbe jutott ellenőrizni.</p>
+<p><strong>A választásunk:</strong> az <a href="../fogalomtar.md">orchestrátor</a> külön maker-, fresh reviewer- és fixer-futást vezet, közös standarddal és strukturált evidence-sémával.</p>
+<p><strong>Miért ez?</strong> csökkenti a megerősítési torzítást; a szűk packet védi a kontextust; a reprodukció kiszűri a téves findingot.</p>
+<p><strong>Alternatívák:</strong> egy hosszú chat nem független; sok általános reviewer zajt termel; a csak humán PR-review értékes, de nem skálázza az ismételhető mechanikus ellenőrzést.</p></div>
+<table><tr><th>Szerep</th><th>Felelősség</th><th>Nem teheti</th></tr>
+<tr><td>Orchestrátor</td><td>Sorrend, scope, review-packet, run log, exit</td><td>Nem talál ki üzleti döntést</td></tr>
+<tr><td>Maker</td><td>AC-visszafoglalás, implementáció, check evidence</td><td>Nem fogadja el függetlenül saját munkáját</td></tr>
+<tr><td>Fresh reviewer</td><td>AC- és standard-alapú finding</td><td>Nem lát maker-érvelést és nem szerkeszt</td></tr>
+<tr><td>Verifier/fixer</td><td>Bizonyítás/elutasítás, gyökér-fix, regresszió</td><td>Nem hajt végre vakon review-véleményt</td></tr></table>
+<p>.NET-es analógia: maker = fejlesztő, reviewer = külön PR-review/test szerep, gate = pipeline. A fresh context ugyanazért kell, amiért saját PR-t sem hagyunk jóvá.</p></section>
+
+<section id="protokoll"><h2>3. A teljes RUG-protokoll</h2>
+<div class="flow"><span class="step">Accepted spec</span><span class="arrow">→</span><span class="step">Maker</span><span class="arrow">→</span><span class="step">Checks</span><span class="arrow">→</span><span class="step">Fresh review</span><span class="arrow">→</span><span class="step">Verify</span><span class="arrow">→</span><span class="step">Fix</span><span class="arrow">↺</span></div>
+<ol>
+<li><strong>Restate:</strong> a maker szerkesztés előtt visszamondja az AC-kat, scope-ot és tiltott döntéseket.</li>
+<li><strong>Implement:</strong> csak a bounded fájlterületen dolgozik; scope-eltérést jelez.</li>
+<li><strong>Run checks:</strong> futtatja a megnevezett parancsokat; rögzíti a parancsot, exit code-ot és releváns kimenetet.</li>
+<li><strong>Review packet:</strong> approved spec, diff/artifact, repo-instrukció, kanonikus standard és check evidence — maker-önértékelés nélkül.</li>
+<li><strong>Fresh review:</strong> új session releváns kockázati szerepből vizsgál és nem szerkeszt.</li>
+<li><strong>Deduplicate:</strong> az azonos gyökérokú findingokból egy canonical finding lesz.</li>
+<li><strong>Verify:</strong> reprodukció után <code>accepted</code>, <code>rejected</code> vagy <code>decision-required</code>.</li>
+<li><strong>Fix:</strong> csak accepted finding; gyökér-javítás és lehetőleg regressziós guard.</li>
+<li><strong>Re-check:</strong> érintett és teljes regressziós gate újrafut.</li>
+<li><strong>Re-review:</strong> fresh reviewer nézi az új állapotot; ismétlés az exitig.</li></ol>
+<div class="prompt">Implement the approved contract in the bounded scope.
+Before editing, restate every acceptance criterion and scope boundary.
+Use toolkit/standards/engineering-standards.md as the canonical contract.
+Run the exact configured checks and report command, exit code, and relevant output.
+Do not claim independent approval.</div></section>
+
+<section id="finding"><h2>4. A review pénzneme: bizonyítható finding</h2>
+<p>A „nem tetszik” vagy „lehet hibás” nem javítási feladat. A reviewer kötött sémában ad át.</p>
+<pre>ID: CONTRACT-01
+Severity: high
+Standard: Acceptance criteria / state integrity
+Location: participant-repo/src/registration/cancel.ts:42 (fictitious path and line)
+Claim: A late cancellation returns an error but persists "cancelled" first.
+Evidence: The negative-path test observes the changed repository state.
+Impact: A rejected request corrupts the registration state.
+Suggested verification: Run the named test and inspect the persisted entity.</pre>
+<table><tr><th>Verdikt</th><th>Mikor?</th><th>Következő lépés</th></tr>
+<tr><td><code>accepted</code></td><td>Reprodukálható és sérti az AC-t vagy standardot.</td><td>Gyökér-fix + regressziós védelem.</td></tr>
+<tr><td><code>rejected</code></td><td>Nem reprodukálható vagy téves feltételezés.</td><td>Evidence a run logba; nincs edit.</td></tr>
+<tr><td><code>decision-required</code></td><td>Hiányzik a helyes viselkedés üzleti döntése.</td><td>Vissza a humán kapuhoz.</td></tr></table>
+<div class="call"><strong>Fontos:</strong> a review nem szentírás. A bizonyíték a bíró; a findingok száma nem minőségi mérőszám.</div></section>
+
+<section id="gyakorlat"><h2>5. Gyakorlat — futtass mini RUG-hurkot</h2>
+<h3>Cél</h3><p>A jóváhagyott lemondási contractból függetlenül review-zott, újraellenőrzött változtatást és teljes trace-t készíteni.</p>
+<h3>Előfeltételek</h3><p>A <code>workshop-lab/participant-repo</code> legyen a saját, írható Git repód lezárt <code>C3-APPROVED-CONTRACT</code> csomaggal, kizárólagos branch/worktree scope-pal és futtatható ellenőrző paranccsal. A <code>workshop-lab/workshop-source</code> csak olvasható workshop-forrás; innen olvasd a <code>toolkit/orchestrator/README.md</code> és a <code>toolkit/orchestrator/prompts/maker.md</code> fájlt. Legyen elérhető fresh reviewer session.</p>
+<h3>Pontos lépések</h3><ol>
+<li>A <code>workshop-lab/participant-repo</code> gyökerében hozz létre <code>evidence/g3-rug-run.md</code> run logot a <code>workshop-lab/workshop-source/toolkit/orchestrator/README.md</code> sémájával. A nyers, hosszú logot ne másold bele: csak parancs, exit code, rövid összegzés és szükség esetén link kerüljön ide.</li>
+<li>Másold bele a <code>C3-APPROVED-CONTRACT</code> linkjét/verzióját, scope-ját és kapudöntését.</li>
+<li>Indíts maker-sessiont a <code>workshop-lab/workshop-source/toolkit/orchestrator/prompts/maker.md</code> prompttal; edit előtt mentsd az AC-visszafoglalást az <code>evidence/g3-rug-run.md</code> fájlba.</li>
+<li>Hasonlítsd a visszafoglalást a szerződéshez. Üzleti résnél vissza G2-höz.</li>
+<li>Engedd az implementációt; ments minden checket paranccsal, exit code-dal és rövid kimenettel.</li>
+<li>Készíts fresh packetet: spec, diff, repo-szabály, standard, evidence; maker-magyarázat nélkül.</li>
+<li>Indíts releváns fresh reviewert. Ehhez a slice-hoz contract/test reviewer az alap; security csak jogosultságváltozásnál.</li>
+<li>Gyűjts kötött sémájú findingokat, majd deduplikáld a közös gyökérokot.</li>
+<li>Reprodukálj minden canonical findingot; rögzíts verdiktet evidence-szel.</li>
+<li>Csak accepted findingot adj fixernek; kérj gyökér-fixet és regressziós ellenőrzést.</li>
+<li>Futtasd újra az érintett tesztet és teljes gate-et; mentsd az evidence-et.</li>
+<li>Indíts fresh re-reviewt. Ismételd a 8–11. lépést az exitig.</li>
+<li>Ugyanazon <code>evidence/g3-rug-run.md</code> alapján a BA/product owner soronként ellenőrizze az <strong>AC → megfigyelhető evidence</strong> megfelelést, a fejlesztő pedig azt, hogy a rögzített parancs és környezet valóban alkalmas-e az állítás bizonyítására. Ezután zárd a trace-t: finding → verdikt → fix → re-check, döntések és residual risk.</li></ol>
+<h3>Megfigyelhető eredmény</h3><ul><li>Maker és reviewer külön session trace-ben áll.</li><li>A több mint 24 órás saját, megerősített regisztráció lemondása sikeres; a késői kérés megfigyelhető hibát ad és az állapot változatlan.</li><li>Minden accepted findinghoz fix és újrafuttatott evidence tartozik.</li><li>A rejected finding indoka is visszakereshető.</li><li>Ugyanazon run logon szerepel a BA/product AC-lefedettségi és a fejlesztő parancs-/környezet-alkalmassági ellenőrzése.</li></ul>
+<h3>Kész, ha…</h3><p>A lenti exit criteria minden pontja teljesül, és nincs bizonyítatlan vagy gazdátlan blokkoló finding.</p>
+<h3>Mentendő bizonyíték</h3><p>Minden összefoglaló a <code>workshop-lab/participant-repo/evidence/g3-rug-run.md</code> fájlba kerül.</p><ul><li>Maker AC-visszafoglalása és változtatási összefoglalója.</li><li>Minden check pontos parancsa, working directoryja, exit code-ja és rövid releváns kimenete.</li><li>A fresh review packet, canonical findingok és evidence-alapú verdiktek.</li><li>A fixekhez tartozó regressziós ellenőrzés, re-review és residual risk.</li><li>A BA/product és fejlesztő záróellenőrzése ugyanarra a run logra hivatkozva.</li></ul>
+<h3>Plan B és tipikus elakadások</h3><ul>
+<li><strong>Nincs subagent:</strong> külön üres session, csak review packettel; szerepátnevezés ugyanabban a chatben nem fresh context.</li>
+<li><strong>Nem fut a participant-repo:</strong> a tréner aktuális, commit SHA-val azonosított referenciafutásának rövid evidence-e használható a RUG-protokoll elemzéséhez; ez nem teszi zölddé a résztvevő saját implementációs gate-jét.</li>
+<li><strong>A reviewer túltervez:</strong> kérj pontos AC-/standard-hivatkozást és reprodukálható hatást.</li>
+<li><strong>Két maker ugyanazt a fájlt módosítaná:</strong> állítsd le; egy issue/branch/worktree és kizárólagos fájltulajdon kell.</li>
+<li><strong>Üzleti rés:</strong> <code>decision-required</code>, vissza G2-höz; nincs „józan ész” default.</li></ul></section>
+
+<section id="exit"><h2>6. Exit criteria és evidence-csomag</h2>
+<div class="call done"><strong>Kész, ha mind igaz:</strong><ul>
+<li>az elfogadott AC-k bizonyíthatóan teljesülnek;</li><li>minden kötelező check sikeres, vagy humán owner rögzítette a kivételt;</li>
+<li>nincs verified critical/high finding;</li><li>minden accepted finding javítva és re-verified;</li>
+<li>a fresh re-review nem talál új blokkolót;</li><li>a run log összeköti specet, evidence-et, findingot, döntést, fixet és residual risket.</li></ul></div>
+<pre>Task/spec:
+Scope:
+Maker change summary:
+Checks and outcomes:
+Reviewer roles:
+Verified findings (accepted/rejected + evidence):
+Fixes and re-checks:
+Human decisions:
+Residual risks:</pre>
+<div class="call"><strong>Vidd haza:</strong> a RUG nem „sok agent”, hanem zárt bizonyítási protokoll: külön szerző, külön bíráló, ellenőrzött finding, regressziós javítás és egyértelmű exit.</div></section>
+
+<section id="stabil"><h2>7. Mi marad stabil modell- vagy eszközváltáskor?</h2>
+<p>Az elfogadott szerződés, maker–reviewer–fixer felelősség, közös standard, finding-séma, verify/bounce-back szabály, evidence és exit criteria. A subagent API adapter; más harnessben másképp indul, de ugyanazt a protokollt hajtja végre.</p></section>
+<nav class="module-nav" aria-label="Modulok közötti navigáció"><a href="02-spec-driven.html">← G2 · Spec-kapu</a><a href="04-rules-skills-hooks.html">G4 · Mechanikus garanciák →</a></nav>
+<footer><strong>G3 — Orchestrátor + Repeat-Until-Good</strong> · Wenova AI-Assisted Development Workshop 2026.07</footer>
+</main></div></body></html>
