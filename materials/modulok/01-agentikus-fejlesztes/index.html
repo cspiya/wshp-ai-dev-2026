@@ -33,8 +33,14 @@
   table { border-collapse:collapse; width:100%; }
   th,td { border:1px solid var(--line); padding:.5rem; text-align:left; vertical-align:top; }
   section { margin-bottom:2.2rem; }
-  @media(max-width:420px){.visual{padding:.5rem}.label{font-size:12px}.note{font-size:10px}table{display:block;overflow-x:auto}}
-  @media print{.visual,.card,.check,.plan-b,.handoff{break-inside:avoid-page}details.static-fallback>*{display:block}}
+  .mobile-hint { display:none; }
+  @media(max-width:600px){
+    .visual{padding:.5rem;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-gutter:stable}
+    .visual svg{min-width:42rem}
+    .mobile-hint{display:block;color:var(--muted);font-size:.92rem}
+    table{display:block;overflow-x:auto}
+  }
+  @media print{.visual,.card,.check,.plan-b,.handoff{break-inside:avoid-page}.visual svg{min-width:0}details.static-fallback>*{display:block}}
 </style>
 </head>
 <body>
@@ -45,10 +51,11 @@
   <h1 id="page-title">Agentikus fejlesztés: szerepek és korlátok</h1>
   <p class="lead">Szétválasztod a nyelvi modellt, a fájlokon és eszközökön dolgozó agentet, valamint a köréjük épített fejlesztési rendszert. A végére ellenőrizhető helyzetképed lesz arról, mit tudhat az agent a repódról, mit nem feltételezhet, és melyik emberi döntés szükséges a folytatáshoz.</p>
   <div class="grid" aria-label="A modul tájékozódási összefoglalója">
-    <article class="card"><h2>Előfeltétel</h2><p>A <a data-route="/materials/felkeszules/">felkészülési ellenőrzés</a> kész, és meg tudod nyitni a gyakorlórepódat. Ha nem, használd a Plan B-t.</p></article>
+    <article class="card"><h2>Előfeltétel</h2><p>Elvégezted a <a data-route="/materials/felkeszules/">felkészülési ellenőrzést</a>, és meg tudod nyitni a gyakorlórepódat. Ha nem, használd a Plan B-t.</p></article>
     <article class="card"><h2>Eredmény</h2><p><code>workshop-evidence/01-helyzetkep.md</code>: legalább három ismeretlen, a szerepek határai és egy következő emberi döntés.</p></article>
     <article class="card"><h2>Sikerfeltétel</h2><p>Egy másik résztvevő a fájl alapján pontosan vissza tudja mondani, mit feltételezhet az agent, és mit nem.</p></article>
   </div>
+  <p class="mobile-hint"><strong>Keskeny képernyőn:</strong> az ábrák oldalirányban görgethetők, így a feliratok olvasható méretűek maradnak. Minden ábra alatt teljes szöveges megfelelő is található.</p>
 </section>
 
 <section aria-labelledby="attekintes">
@@ -113,10 +120,10 @@
 </section>
 
 <section aria-labelledby="keres">
-<h2 id="keres">3. A homályos kéréstől a munkára fogható kérésig</h2>
+<h2 id="keres">3. A homályos kéréstől a végrehajtható, egyértelmű kérésig</h2>
 <p>A „nézd át és javítsd meg” nem ad eredményhatárt, fájlhatárt, korlátot vagy ellenőrzést. Négy rövid kérdés elég ahhoz, hogy az agentnek ne kelljen találgatnia.</p>
 <figure class="visual" id="fig-m01-hogyan-lesz-a-homalyos-keresbol">
-  <svg viewBox="0 0 900 370" role="img" aria-labelledby="request-title request-desc"><title id="request-title">A homályos kérés átalakítása végrehajtható feladattá</title><desc id="request-desc">A homályos kérés négy kérdésen halad át: eredmény, scope, korlát és ellenőrzés. A végrehajtható kérés ezeket mind rögzíti.</desc>
+  <svg viewBox="0 0 900 370" role="img" aria-labelledby="request-title request-desc"><title id="request-title">A homályos kérés átalakítása végrehajtható, egyértelmű kéréssé</title><desc id="request-desc">A homályos kérés négy kérdésen halad át: eredmény, scope, korlát és ellenőrzés. A végrehajtható, egyértelmű kérés ezeket mind rögzíti.</desc>
     <defs><marker id="arr2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#5a6675"/></marker></defs>
     <rect class="artifact" x="20" y="135" width="170" height="80" rx="12"/><text class="label" x="105" y="168">„Nézd át, és</text><text class="label" x="105" y="191">javítsd meg.”</text><path class="line" marker-end="url(#arr2)" d="M190 175H230"/>
     <rect class="human" x="245" y="20" width="250" height="58" rx="10"/><text class="label" x="370" y="48">1. Mi legyen az eredmény?</text><text class="note" x="370" y="68">megfigyelhető kimenet</text>
@@ -124,12 +131,12 @@
     <rect class="human" x="245" y="190" width="250" height="58" rx="10"/><text class="label" x="370" y="218">3. Milyen korlát érvényes?</text><text class="note" x="370" y="238">adat, jogosultság, kompatibilitás</text>
     <rect class="human" x="245" y="275" width="250" height="58" rx="10"/><text class="label" x="370" y="303">4. Hogyan ellenőrizzük?</text><text class="note" x="370" y="323">parancs és elfogadható eredmény</text>
     <path class="line" d="M495 49H535V304H495"/><path class="line" marker-end="url(#arr2)" d="M535 175H580"/>
-    <rect class="machine" x="595" y="65" width="285" height="220" rx="14"/><text class="label" x="738" y="96">Munkára fogható kérés</text><text x="620" y="133" fill="#1f2733">✓ kívánt eredmény</text><text x="620" y="165" fill="#1f2733">✓ érintett terület</text><text x="620" y="197" fill="#1f2733">✓ érintetlen területek</text><text x="620" y="229" fill="#1f2733">✓ kötelező korlátok</text><text x="620" y="261" fill="#1f2733">✓ pontos ellenőrzés</text>
+    <rect class="machine" x="595" y="65" width="285" height="220" rx="14"/><text class="label" x="738" y="96">Végrehajtható kérés</text><text x="620" y="133" fill="#1f2733">✓ kívánt eredmény</text><text x="620" y="165" fill="#1f2733">✓ érintett terület</text><text x="620" y="197" fill="#1f2733">✓ érintetlen területek</text><text x="620" y="229" fill="#1f2733">✓ kötelező korlátok</text><text x="620" y="261" fill="#1f2733">✓ pontos ellenőrzés</text>
   </svg>
   <figcaption><strong>Lényeg:</strong> egy kérés akkor végrehajtható, ha az agentnek nem kell kitalálnia sem a kívánt eredményt, sem a feladat határait, sem az elfogadás módját.</figcaption>
   <details class="static-fallback" id="fig-m01-hogyan-lesz-a-homalyos-keresbol-text"><summary>Az ábra teljes szöveges megfelelője</summary><p>Válaszold meg: mi legyen az eredmény; mi tartozik bele és mi marad érintetlen; milyen korlát érvényes; melyik ellenőrzés igazolja a sikert. A válaszokból áll össze a végrehajtható kérés.</p></details>
 </figure>
-<div class="grid"><article><h3>Homályos</h3><pre><code>Nézd át a repót, és tedd agent-readyvé.</code></pre></article><article><h3>Munkára fogható</h3><pre><code>Diagnosztizáld a repót. Ne módosíts kódot. Írj le legalább három hiányzó információt, a modell, az agent és az ember döntési határát, majd nevezz meg egy következő emberi döntést. Az eredmény: workshop-evidence/01-helyzetkep.md.</code></pre></article></div>
+<div class="grid"><article><h3>Homályos</h3><pre><code>Nézd át a repót, és készítsd fel az agentes munkára.</code></pre></article><article><h3>Végrehajtható és egyértelmű</h3><pre><code>Diagnosztizáld a repót. Ne módosíts kódot. Írj le legalább három hiányzó információt, a modell, az agent és az ember döntési határát, majd nevezz meg egy következő emberi döntést. Az eredmény: workshop-evidence/01-helyzetkep.md.</code></pre></article></div>
 </section>
 
 <section aria-labelledby="ellenorzes">
@@ -169,6 +176,13 @@
 ## Amit az agent nem feltételezhet
 - ...
 
+## Ellenőrzési mód
+- Pontos parancs: `...`
+- Várt, megfigyelhető eredmény: ...
+- Tényleges eredmény: ...
+- Állapot: ELLENŐRZÖTT | ISMERETLEN
+- Ha ismeretlen: döntési felelős és a tisztázandó kérdés: ...
+
 ## Ismeretlenek
 1. Kérdés: ...
    Miért számít: ...
@@ -186,7 +200,7 @@
 ## Következő emberi döntés
 ...</code></pre>
 <div class="grid">
-  <aside class="check"><h3>Ellenőrzés: társ-visszamondás</h3><ol><li>Cseréljetek fájlt.</li><li>A társad csak a fájlt olvassa; ne magyarázd szóban.</li><li>Visszamond két megengedett és két tiltott feltételezést, valamint a következő döntést.</li><li>Eltérésnél pontosítsd a fájlt, majd ismételjétek meg.</li></ol><p><strong>Kész:</strong> a visszamondás egyezik a leírt határokkal, és mindhárom ismeretlenhez van válaszadó szerep.</p></aside>
+  <aside class="check"><h3>Ellenőrzés: társ-visszamondás</h3><ol><li>Cseréljetek fájlt.</li><li>A társad csak a fájlt olvassa; ne magyarázd szóban.</li><li>Visszamond két megengedett és két tiltott feltételezést, a pontos ellenőrzési parancsot és annak várt eredményét, valamint a következő döntést.</li><li>Eltérésnél pontosítsd a fájlt, majd ismételjétek meg.</li></ol><p><strong>Kész:</strong> a visszamondás egyezik a leírt határokkal; az ellenőrzés várt és tényleges eredménye elkülönül; mindhárom ismeretlenhez van válaszadó szerep.</p></aside>
   <aside class="plan-b"><h3>Plan B: nincs használható repo</h3><p>Használd a tréner által adott, kitalált starter-pillanatképet. A helyzetkép első sora legyen: <strong>„PLAN B — kitalált starter-pillanatkép alapján.”</strong> Ugyanazt a hét lépést és társellenőrzést végezd el. Ne állítsd, hogy a saját rendszeredet vizsgáltad.</p><p><strong>Tipikus hiba:</strong> a hiányzó információt valószínű részlettel pótolni. Helyette írd le ismeretlenként és nevezd meg a döntési felelőst.</p></aside>
 </div>
 </section>
