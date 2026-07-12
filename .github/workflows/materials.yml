@@ -72,9 +72,25 @@ jobs:
           node --test toolkit/material-site/*.test.mjs
           node toolkit/material-site/check-render.mjs --site .site --modes desktop,mobile,print,no-js,reduced-motion,file --phase foundation
       - name: Upload generated participant site only
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .site
+
+  deploy-pages:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: site-foundation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy validated participant site to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   existing-render-matrix:
     runs-on: ubuntu-latest
