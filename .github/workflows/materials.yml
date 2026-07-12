@@ -47,7 +47,7 @@ jobs:
       - name: Existing publication smoke
         run: node toolkit/hooks/check-links.mjs --publication-smoke
 
-  site-foundation:
+  site-incremental:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -59,16 +59,16 @@ jobs:
           npm ci --prefix toolkit/material-site
           npm ci --prefix reference-app
           npm --prefix reference-app exec playwright install --with-deps chromium
-      - name: Clean foundation build
-        run: node toolkit/material-site/build-site.mjs --clean --out .site --phase foundation
-      - name: Foundation SITE-CI commands
+      - name: Clean incremental accepted-content build
+        run: node toolkit/material-site/build-site.mjs --clean --out .site --phase incremental
+      - name: Incremental SITE-CI commands
         run: |
           node toolkit/material-site/check-manifest.mjs --source . --site .site --phase foundation
           node toolkit/material-site/check-links.mjs --source . --site .site --file-protocol --phase foundation
           node toolkit/material-site/check-boundary.mjs --source . --site .site --phase foundation
           node toolkit/material-site/check-glossary.mjs --source materials/fogalomtar/glossary.json --site .site --phase foundation
           node toolkit/material-site/check-search.mjs --site .site --phase foundation
-          node toolkit/material-site/check-diagrams.mjs --source . --site .site --phase foundation
+          node toolkit/material-site/check-diagrams.mjs --source . --site .site --phase incremental
           node --test toolkit/material-site/*.test.mjs
           node toolkit/material-site/check-render.mjs --site .site --modes desktop,mobile,print,no-js,reduced-motion,file --phase foundation
       - name: Upload generated participant site only
@@ -78,7 +78,7 @@ jobs:
 
   deploy-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: site-foundation
+    needs: site-incremental
     runs-on: ubuntu-latest
     permissions:
       contents: read
