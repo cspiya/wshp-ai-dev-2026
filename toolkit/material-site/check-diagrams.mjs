@@ -91,6 +91,11 @@ function resolveShared(page, href, site) {
 }
 function isNegativeFixture(file) { return file.replaceAll('\\', '/').includes('/fixtures/'); }
 
+export function shouldValidateRouteRegistry({ phase, routeId, incrementalRealRoutes, isToolReference = false }) {
+  if (isToolReference || phase !== 'incremental' || !routeId) return true;
+  return incrementalRealRoutes?.has(routeId) === true;
+}
+
 export function validateDiagrams({ source, site, phase }) {
   const failures = [];
   const htmlFiles = walk(site).filter((f) => f.toLowerCase().endsWith('.html'));
@@ -126,13 +131,14 @@ export function validateDiagrams({ source, site, phase }) {
     if (config.htmlLabels !== false) failures.push('mermaid htmlLabels must be false');
   } else if (phase === 'final') failures.push('mermaid.config.json missing');
   for (const manifestFile of walk(source).filter((f) => !isNegativeFixture(f) && /\/(?:index-)?media\/diagrams\.json$/.test(f.replaceAll('\\', '/')))) {
-    let diagrams;
-    try { diagrams = diagramsOf(JSON.parse(fs.readFileSync(manifestFile, 'utf8'))); } catch (error) { failures.push(`${path.relative(source, manifestFile)}: invalid JSON: ${error.message}`); continue; }
-    if (!Array.isArray(diagrams)) { failures.push(`${path.relative(source, manifestFile)}: diagrams array missing`); continue; }
     const pageRelative = path.relative(source, path.dirname(path.dirname(manifestFile))).replaceAll('\\', '/');
     const route = routes.find((candidate) => pageDirForRoute(candidate) === pageRelative);
     const isToolReference = path.relative(source, manifestFile).replaceAll('\\', '/').startsWith('toolkit/material-site/diagram/');
     if (!route && !isToolReference) failures.push(`${path.relative(source, manifestFile)}: no canonical route owns this page-local diagram manifest`);
+    if (!shouldValidateRouteRegistry({ phase, routeId: route?.id, incrementalRealRoutes, isToolReference })) continue;
+    let diagrams;
+    try { diagrams = diagramsOf(JSON.parse(fs.readFileSync(manifestFile, 'utf8'))); } catch (error) { failures.push(`${path.relative(source, manifestFile)}: invalid JSON: ${error.message}`); continue; }
+    if (!Array.isArray(diagrams)) { failures.push(`${path.relative(source, manifestFile)}: diagrams array missing`); continue; }
     const declaredQuestions = new Map((route?.visualQuestions ?? []).map((question) => [question.id, question]));
     const dispositions = new Map();
     const ids = new Set();

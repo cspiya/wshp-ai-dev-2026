@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { routeDisposition } from './build-site.mjs';
+import { shouldValidateRouteRegistry } from './check-diagrams.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -20,6 +21,13 @@ function run(args) {
   return result.stdout;
 }
 
+function copyInto(sourceRoot, destinationRoot, relative) {
+  const source = path.join(sourceRoot, relative);
+  const destination = path.join(destinationRoot, relative);
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+  fs.cpSync(source, destination, { recursive: true });
+}
+
 test('incremental policy renders exactly the complete accepted page units present in the checked-out branch', () => {
   const routes = ['/one/', '/two/', '/three/'];
   const completePageUnits = new Set(['/two/']);
@@ -29,6 +37,10 @@ test('incremental policy renders exactly the complete accepted page units presen
   );
   assert.equal(routeDisposition('foundation', '/two/', true), 'fixture');
   assert.equal(routeDisposition('final', '/two/', false), 'missing');
+  const real = new Set(['/two/']);
+  assert.equal(shouldValidateRouteRegistry({ phase: 'incremental', routeId: '/one/', incrementalRealRoutes: real }), false, 'registry-only substituted route must be skipped');
+  assert.equal(shouldValidateRouteRegistry({ phase: 'incremental', routeId: '/two/', incrementalRealRoutes: real }), true, 'complete real route must be validated');
+  assert.equal(shouldValidateRouteRegistry({ phase: 'incremental', incrementalRealRoutes: real, isToolReference: true }), true, 'tool-reference registries remain validated');
 });
 
 test('incremental preview rejects partial legacy pages and passes every site gate', { timeout: 180_000 }, () => {
@@ -50,6 +62,24 @@ test('incremental preview rejects partial legacy pages and passes every site gat
     run(['toolkit/material-site/check-glossary.mjs', '--source', 'materials/fogalomtar/glossary.json', '--site', site, '--phase', 'foundation']);
     run(['toolkit/material-site/check-search.mjs', '--site', site, '--phase', 'foundation']);
     run(['toolkit/material-site/check-diagrams.mjs', '--source', '.', '--site', site, '--phase', 'incremental']);
+
+    // Regression for the former 35/36 failure: a registry-only partial merge
+    // belongs to a substituted route and must not be checked against its
+    // neutral fixture. Real foundation registries and generated-site safety
+    // checks still run against this deliberately minimal source tree.
+    const registryOnlySource = path.join(temp, 'registry-only-source');
+    for (const relative of [
+      'toolkit/material-site/site-manifest.json',
+      'toolkit/material-site/mermaid.config.json',
+      'index.html',
+      'index-media',
+      'materials/fogalomtar',
+    ]) copyInto(ROOT, registryOnlySource, relative);
+    const partialRegistry = path.join(registryOnlySource, 'materials/felkeszules/media/diagrams.json');
+    fs.mkdirSync(path.dirname(partialRegistry), { recursive: true });
+    fs.writeFileSync(partialRegistry, '{ deliberately: "invalid registry-only partial merge" }\n');
+    run(['toolkit/material-site/check-diagrams.mjs', '--source', registryOnlySource, '--site', site, '--phase', 'incremental']);
+
     run(['toolkit/material-site/check-render.mjs', '--site', site, '--modes', 'desktop,mobile,print,no-js,reduced-motion,file', '--phase', 'foundation']);
 
     const final = spawn(['toolkit/material-site/build-site.mjs', '--clean', '--out', path.join(temp, 'final'), '--phase', 'final']);
