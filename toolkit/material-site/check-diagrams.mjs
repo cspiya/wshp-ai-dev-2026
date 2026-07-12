@@ -39,8 +39,16 @@ function inlineSvgFromFigure(html, figureSelector, svgSelector) {
   const figure = elementById(html, 'figure', figureId);
   return figure?.match(/<svg\b[\s\S]*?<\/svg>/i)?.[0] ?? null;
 }
-function normalizedInlineSvg(svg) {
-  return svg.replaceAll('\r\n', '\n').replace(/<!--\s*(?:Generated|generator|created)[\s\S]*?-->/gi, '').replace(/>\s+</g, '><').trim();
+export function normalizedInlineSvg(svg) {
+  return svg
+    .replaceAll('\r\n', '\n')
+    .replace(/<!--\s*(?:Generated|generator|created)[\s\S]*?-->/gi, '')
+    // build-site.mjs exposes the viewBox design width as an inline custom
+    // property so the stylesheet can cap rendered size; this marker is the
+    // only sanctioned build-time SVG mutation and is ignored when hashing.
+    .replace(/ style="--svg-w:\d+(?:\.\d+)?px"/g, '')
+    .replace(/>\s+</g, '><')
+    .trim();
 }
 function inlineFigureIds(html) {
   const ids = [];

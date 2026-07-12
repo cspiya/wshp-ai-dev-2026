@@ -350,16 +350,60 @@ function ancestors(route, byId) {
   return chain;
 }
 
-function renderShellTop(route, nav) {
+// Sidebar navigation tree: every top-level area with its children; the
+// section containing the current page is expanded (pure HTML <details>,
+// no JS needed). Modules keep their numbers for orientation.
+function renderSidebarTree(route, nav) {
+  const p = (r) => relHref(route.output, r);
+  const trailIds = new Set([...ancestors(route, nav.byId), route].map((r) => r.id));
+
+  const link = (r, label) => {
+    const current = r.id === route.id ? ' aria-current="page"' : "";
+    return `<a href="${p(r)}"${current}>${label ?? escapeHtml(shortTitle(r))}</a>`;
+  };
+
+  const subtree = (r) => {
+    const kids = nav.children.get(r.id) ?? [];
+    if (kids.length === 0) return `<li>${link(r)}</li>`;
+    const open = trailIds.has(r.id) ? " open" : "";
+    const numbered = r.id === "/materials/modulok/" || r.id === "/materials/epitesi-naplo/";
+    const items = kids
+      .map((k) => {
+        const label = numbered
+          ? `<span class="nav-num">${k.order}</span> ${escapeHtml(shortTitle(k))}`
+          : escapeHtml(shortTitle(k));
+        const kidTree = (nav.children.get(k.id) ?? []).length > 0 ? subtree(k) : null;
+        return kidTree ? kidTree : `<li>${link(k, label)}</li>`;
+      })
+      .join("");
+    return `<li><details${open}><summary>${link(r)}</summary><ul>${items}</ul></details></li>`;
+  };
+
+  const top = nav.topLevel.map((r) => subtree(r)).join("");
+  return `<nav class="side-nav" aria-label="Teljes tartalom">
+<ul><li>${link(nav.byId.get("/"), "Kezdőlap")}</li>${top}</ul>
+</nav>`;
+}
+
+function renderToc(headings) {
+  const h2s = (headings ?? []).filter((h) => h.l === 2);
+  if (h2s.length < 2) return "";
+  const items = h2s.map((h) => `<li><a href="#${h.a}">${escapeHtml(h.t)}</a></li>`).join("");
+  return `<nav class="page-toc" aria-label="Ezen az oldalon">
+<p class="side-title">Ezen az oldalon</p>
+<ul>${items}</ul>
+</nav>`;
+}
+
+function renderShellTop(route, nav, headings) {
   const p = (r) => relHref(route.output, r);
   const root = nav.byId.get("/");
   const trailIds = new Set([...ancestors(route, nav.byId), route].map((r) => r.id));
 
-  const topLinks = [root, ...nav.topLevel]
+  const topLinks = nav.topLevel
     .map((r) => {
       const current = r.id === route.id ? ' aria-current="page"' : trailIds.has(r.id) ? ' class="trail"' : "";
-      const label = r.id === "/" ? "Kezdőlap" : escapeHtml(shortTitle(r));
-      return `<li><a href="${p(r)}"${current}>${label}</a></li>`;
+      return `<li><a href="${p(r)}"${current}>${escapeHtml(shortTitle(r))}</a></li>`;
     })
     .join("");
 
@@ -374,12 +418,25 @@ function renderShellTop(route, nav) {
   const moduleIndex = nav.modules.findIndex((m) => m.id === route.id);
   const progress =
     moduleIndex >= 0
-      ? `<p class="module-progress" aria-label="Haladás a modulokban">Modul ${moduleIndex + 1} / ${nav.modules.length}</p>`
+      ? `<p class="module-progress" aria-label="Haladás a modulokban"><span class="progress-track" aria-hidden="true">${nav.modules
+          .map((m, i) => `<span class="progress-dot${i <= moduleIndex ? " done" : ""}"></span>`)
+          .join("")}</span>Modul ${moduleIndex + 1} / ${nav.modules.length}</p>`
       : "";
+
+  const isRoot = route.id === "/";
+  const sidebar = isRoot
+    ? ""
+    : `<aside class="site-sidebar">
+<details class="sidebar-toggle" open><summary>Tartalomjegyzék</summary>
+${renderSidebarTree(route, nav)}
+${renderToc(headings)}
+</details>
+</aside>`;
 
   return `
 <a class="skip-link" href="#tartalom">Ugrás a tartalomhoz</a>
 <header class="site-header">
+  <a class="site-brand" href="${p(root)}"><span class="brand-mark" aria-hidden="true">AI</span><span class="brand-name">AI‑dev workshop</span></a>
   <nav class="site-nav" aria-label="Fő navigáció">
     <ul>${topLinks}</ul>
   </nav>
@@ -389,6 +446,9 @@ function renderShellTop(route, nav) {
     <ul id="site-search-results" class="search-results" hidden></ul>
   </form>
 </header>
+<div class="layout${isRoot ? " layout-full" : ""}">
+${sidebar}
+<div class="content-col">
 <nav class="breadcrumbs" aria-label="Elérési útvonal"><ol>${crumbs}</ol></nav>
 ${progress}
 <div id="tartalom">`;
@@ -411,13 +471,15 @@ function renderShellBottom(route, nav) {
   const pager =
     prev || next
       ? `<nav class="page-nav" aria-label="Előző és következő oldal">
-${prev ? `  <a class="prev" href="${p(prev)}">← ${escapeHtml(prev.title)}</a>` : "  <span></span>"}
-${next ? `  <a class="next" href="${p(next)}">${escapeHtml(next.title)} →</a>` : "  <span></span>"}
+${prev ? `  <a class="prev" href="${p(prev)}"><small>← Előző</small><span>${escapeHtml(prev.title)}</span></a>` : "  <span></span>"}
+${next ? `  <a class="next" href="${p(next)}"><small>Következő →</small><span>${escapeHtml(next.title)}</span></a>` : "  <span></span>"}
 </nav>`
       : "";
 
   return `</div>
 ${pager}
+</div>
+</div>
 <footer class="site-footer">
   <p><a href="${p(nav.byId.get("/"))}">Kezdőlap</a> · <a href="${p(glossary)}">Fogalomtár</a> · <a href="${p(moduleIndexRoute)}">Modulok</a></p>
   <p>AI-assisted fejlesztési workshop · offline is használható tananyag</p>
@@ -465,7 +527,7 @@ function ensureHeadingIds(html) {
 function extractHeadings(html) {
   const headings = [];
   for (const m of html.matchAll(/<h([23])[^>]*\bid\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/h\1>/gi)) {
-    headings.push({ t: stripTags(m[3]), a: m[2] });
+    headings.push({ t: stripTags(m[3]), a: m[2], l: Number(m[1]) });
   }
   return headings;
 }
@@ -590,9 +652,17 @@ function main() {
       return `href="${relHref(route.output, target)}${fragment ?? ""}"`;
     });
     html = injectHead(html, route);
+    // Inline teaching SVGs carry small viewBoxes (e.g. 360×680); rendered at
+    // width:100% they blow up far past their design size. Expose the design
+    // width so the stylesheet can cap the rendered width deterministically.
+    html = html.replace(/<svg(\s[^>]*viewBox="0 0 (\d+(?:\.\d+)?) \d+(?:\.\d+)?"[^>]*)>/gi, (m, attrs, w) => {
+      if (/\bstyle\s*=/i.test(attrs)) return m;
+      return `<svg${attrs} style="--svg-w:${w}px">`;
+    });
+    const pageHeadings = extractHeadings(html);
     html = html.replace(/(<body)(\s[^>]*)?>/i, (m, tag, attrs = "") => {
       const cleaned = (attrs ?? "").replace(/\sdata-site-root\s*=\s*["'][^"']*["']/i, "");
-      return `${tag}${cleaned} data-site-root="${rootPrefix(route.output)}">${renderShellTop(route, nav)}`;
+      return `${tag}${cleaned} data-site-root="${rootPrefix(route.output)}">${renderShellTop(route, nav, pageHeadings)}`;
     });
     html = html.replace(/<\/body>/i, `${renderShellBottom(route, nav)}\n</body>`);
 

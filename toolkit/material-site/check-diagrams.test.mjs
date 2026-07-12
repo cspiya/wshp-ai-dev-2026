@@ -121,3 +121,12 @@ test('animation metadata rejects autoplay and missing control/static contracts',
   assert.ok(failures.some((x) => x.includes('userInitiated=true')));
   assert.ok(failures.some((x) => x.includes('autoplay must be false')));
 });
+
+test('inline SVG hashing ignores only the build-injected --svg-w marker', async () => {
+  const { normalizedInlineSvg } = await import('./check-diagrams.mjs');
+  const source = '<svg viewBox="0 0 360 680" role="img"><title>Ábra</title></svg>';
+  const generated = '<svg viewBox="0 0 360 680" role="img" style="--svg-w:360px"><title>Ábra</title></svg>';
+  const tampered = '<svg viewBox="0 0 360 680" role="img" style="--svg-w:360px;color:red"><title>Ábra</title></svg>';
+  assert.equal(normalizedInlineSvg(generated), normalizedInlineSvg(source));
+  assert.notEqual(normalizedInlineSvg(tampered), normalizedInlineSvg(source));
+});

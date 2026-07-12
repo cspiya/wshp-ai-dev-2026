@@ -6,6 +6,13 @@
 (function () {
   "use strict";
 
+  // Sidebar ships expanded (full experience without JS); on narrow
+  // viewports collapse it so content stays first.
+  var sidebar = document.querySelector(".sidebar-toggle");
+  if (sidebar && window.matchMedia && window.matchMedia("(max-width: 63.99rem)").matches) {
+    sidebar.open = false;
+  }
+
   var form = document.querySelector(".site-search");
   var input = document.getElementById("site-search-input");
   var results = document.getElementById("site-search-results");
