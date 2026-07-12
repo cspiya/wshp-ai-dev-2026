@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="hu">
+<head><meta charset="utf-8"><title>Fixture — load never completes</title></head>
+<body>
+<h1>Timeout fixture</h1>
+<script>
+// Busy-loop before the load event so page.goto(waitUntil:'load') times out.
+while (true) { /* intentional */ }
+</script>
+</body>
+</html>
