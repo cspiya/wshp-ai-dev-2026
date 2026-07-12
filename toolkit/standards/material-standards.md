@@ -55,9 +55,13 @@ template, it does not replace it.
 
 ## Project-specific mechanical gates
 
-Replace these placeholders with the repository's actual commands before use:
+This repository's commands (run from the repo root; adapt the list when you
+port the checklist to another project):
 
-- Template/placeholder scan: `<command>`
-- Structural HTML/shell check: `<command>`
-- Public-content guard: `<command>`
-- Link validity check: `<command>`
+- Template/placeholder scan: `node toolkit/hooks/check-placeholders.mjs`
+- Structural HTML/shell check: `node toolkit/hooks/check-notebooks.mjs`
+- Public-content guard: `node toolkit/hooks/check-public-content.mjs`
+- Link validity check: `node toolkit/hooks/check-links.mjs`
+
+Each validator scans the tracked repo files by default and accepts explicit
+file paths as arguments (useful for checking a single artifact or a fixture).

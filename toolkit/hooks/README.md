@@ -12,6 +12,19 @@ node toolkit/hooks/guard-public-content.mjs README.md materials/example.md
 
 Exit `0` permits the operation; exit `1` blocks known secret/private markers or unreadable inputs; exit `2` means incorrect usage. Extend the `forbidden` list with reviewed project-specific patterns. This is a backstop, not a complete secret scanner.
 
+## Repo quality gates (WEN-185)
+
+Self-globbing validators behind the canonical standards' "mechanical gates"
+sections — each scans the tracked repo files by default and accepts explicit
+file paths as arguments; exit `1` on any violation:
+
+```powershell
+node toolkit/hooks/check-placeholders.mjs   # unfinished-work and template-leftover markers
+node toolkit/hooks/check-notebooks.mjs      # notebook HTML: doctype, title, self-contained
+node toolkit/hooks/check-links.mjs          # relative href/src/markdown links resolve
+node toolkit/hooks/check-public-content.mjs # guard-public-content over all tracked md/html
+```
+
 ## Stop-runs-checks
 
 Copy `checks.project.example.json`, replace commands and working directories with real project gates, then run:
