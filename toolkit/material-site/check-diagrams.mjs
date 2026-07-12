@@ -91,9 +91,9 @@ function resolveShared(page, href, site) {
 }
 function isNegativeFixture(file) { return file.replaceAll('\\', '/').includes('/fixtures/'); }
 
-export function shouldValidateRouteRegistry({ phase, routeId, incrementalRealRoutes, isToolReference = false }) {
-  if (isToolReference || phase !== 'incremental' || !routeId) return true;
-  return incrementalRealRoutes?.has(routeId) === true;
+export function shouldValidateRouteRegistry({ phase, routeId, renderedRealRoutes, isToolReference = false }) {
+  if (isToolReference || phase === 'final' || !routeId) return true;
+  return renderedRealRoutes?.has(routeId) === true;
 }
 
 export function validateDiagrams({ source, site, phase }) {
@@ -104,21 +104,21 @@ export function validateDiagrams({ source, site, phase }) {
   let routes = [];
   let glossarySlugs = null;
   let glossaryVisualCoverage = null;
-  let incrementalRealRoutes = null;
+  let renderedRealRoutes = null;
   try { routes = readRoutes(source); glossarySlugs = readGlossarySlugs(source); glossaryVisualCoverage = readGlossaryVisualCoverage(source); }
   catch (error) { failures.push(`visual contract input is invalid: ${error.message}`); }
   if (!routes.length) failures.push('site manifest with visual-question declarations is missing');
-  if (phase === 'incremental') {
+  if (phase !== 'final') {
     const dispositionFile = path.join(site, 'assets', 'route-disposition.json');
     try {
       const disposition = JSON.parse(fs.readFileSync(dispositionFile, 'utf8'));
-      if (disposition.phase !== 'incremental' || !Array.isArray(disposition.real) || !Array.isArray(disposition.substituted)) throw new Error('invalid shape');
-      incrementalRealRoutes = new Set(disposition.real);
+      if (disposition.phase !== phase || !Array.isArray(disposition.real) || !Array.isArray(disposition.substituted)) throw new Error('invalid shape or phase');
+      renderedRealRoutes = new Set(disposition.real);
       const all = [...disposition.real, ...disposition.substituted];
       if (all.length !== routes.length || new Set(all).size !== routes.length || routes.some((route) => !all.includes(route.id))) throw new Error('route coverage differs from site manifest');
     } catch (error) {
-      failures.push(`incremental route disposition is missing or invalid: ${error.message}`);
-      incrementalRealRoutes = new Set();
+      failures.push(`${phase} route disposition is missing or invalid: ${error.message}`);
+      renderedRealRoutes = new Set();
     }
   }
   const configFile = path.join(source, 'toolkit/material-site/mermaid.config.json');
@@ -135,7 +135,7 @@ export function validateDiagrams({ source, site, phase }) {
     const route = routes.find((candidate) => pageDirForRoute(candidate) === pageRelative);
     const isToolReference = path.relative(source, manifestFile).replaceAll('\\', '/').startsWith('toolkit/material-site/diagram/');
     if (!route && !isToolReference) failures.push(`${path.relative(source, manifestFile)}: no canonical route owns this page-local diagram manifest`);
-    if (!shouldValidateRouteRegistry({ phase, routeId: route?.id, incrementalRealRoutes, isToolReference })) continue;
+    if (!shouldValidateRouteRegistry({ phase, routeId: route?.id, renderedRealRoutes, isToolReference })) continue;
     let diagrams;
     try { diagrams = diagramsOf(JSON.parse(fs.readFileSync(manifestFile, 'utf8'))); } catch (error) { failures.push(`${path.relative(source, manifestFile)}: invalid JSON: ${error.message}`); continue; }
     if (!Array.isArray(diagrams)) { failures.push(`${path.relative(source, manifestFile)}: diagrams array missing`); continue; }
@@ -272,10 +272,9 @@ export function validateDiagrams({ source, site, phase }) {
     }
   }
   for (const route of routes) {
-    if (phase === 'foundation' && !['/', '/materials/fogalomtar/'].includes(route.id)) continue;
+    if (phase !== 'final' && !renderedRealRoutes?.has(route.id)) continue;
     const sourcePage = path.join(source, route.source);
     const generatedPage = generatedForRoute(site, route);
-    if (phase === 'incremental' && !incrementalRealRoutes?.has(route.id)) continue;
     if (phase === 'foundation' ? !fs.existsSync(sourcePage) : (!fs.existsSync(sourcePage) && !fs.existsSync(generatedPage))) continue;
     const diagramManifest = diagramManifestForRoute(source, route);
     if (!fs.existsSync(diagramManifest)) failures.push(`${route.id}: page has no media/diagrams.json visual dispositions`);

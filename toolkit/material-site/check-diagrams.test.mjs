@@ -29,6 +29,7 @@ function fixture({ diagrams, questions, owner = 'SHELL-BUILD' } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-diagrams-'));
   const media = path.join(root, 'page/media'); const site = path.join(root, '.site');
   fs.mkdirSync(media, { recursive: true }); fs.mkdirSync(path.join(site, 'page'), { recursive: true });
+  fs.mkdirSync(path.join(site, 'assets'), { recursive: true });
   fs.mkdirSync(path.join(root, 'toolkit/material-site'), { recursive: true });
   fs.mkdirSync(path.join(root, 'materials/fogalomtar'), { recursive: true });
   fs.writeFileSync(path.join(root, 'toolkit/material-site/mermaid.config.json'), JSON.stringify(CONFIG));
@@ -40,6 +41,7 @@ function fixture({ diagrams, questions, owner = 'SHELL-BUILD' } = {}) {
   const visualQuestions = questions ?? [visualQuestion()];
   const route = { id: '/page/', source: 'page/index.html', output: '.site/page/index.html', owner, overviewDiagramId: visualQuestions[0]?.diagramId ?? 'flow', visualQuestions };
   fs.writeFileSync(path.join(root, 'toolkit/material-site/site-manifest.json'), JSON.stringify({ routes: [route] }));
+  fs.writeFileSync(path.join(site, 'assets/route-disposition.json'), JSON.stringify({ phase: 'foundation', real: ['/page/'], substituted: [] }));
   const figures = records.filter((item) => (item.record ?? item).disposition === 'page-local').map((item) => {
     const d = item.record ?? item;
     if (d.rendering === 'inline-svg') return `<figure id="${d.id}">${item.inlineSvg}<figcaption>Kapcsolati térkép</figcaption><p id="${d.id}-text">Teljes szöveges magyarázat.</p></figure>`;
