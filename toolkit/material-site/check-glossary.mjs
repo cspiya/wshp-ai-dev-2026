@@ -47,7 +47,7 @@ export function validateGlossary({ source, site, phase }) {
   const aliases = new Map();
   for (const [index, record] of records.entries()) {
     const label = `term[${index}]`;
-    for (const key of ['slug', 'preferredHu', 'english', 'definitionHu']) if (typeof record[key] !== 'string' || !record[key].trim()) failures.push(`${label}: missing ${key}`);
+    for (const key of ['slug', 'preferred', 'english', 'definitionHu']) if (typeof record[key] !== 'string' || !record[key].trim()) failures.push(`${label}: missing ${key}`);
     for (const key of ['aliases', 'avoid', 'related', 'usedIn']) if (!Array.isArray(record[key])) failures.push(`${label}: ${key} must be an array`);
     if (record.slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.slug)) failures.push(`${label}: invalid slug ${record.slug}`);
     const slugKey = record.slug?.toLowerCase();
@@ -67,7 +67,7 @@ export function validateGlossary({ source, site, phase }) {
       const page = pageForRoute(site, route);
       if (!fs.existsSync(page)) { if (phase === 'final') failures.push(`${record.slug}: usedIn page missing ${route}`); continue; }
       const html = fs.readFileSync(page, 'utf8');
-      const candidates = [record.preferredHu, record.english, ...array(record.aliases)].filter(Boolean);
+      const candidates = [record.preferred, record.english, ...array(record.aliases)].filter(Boolean);
       const found = firstOccurrence(html, candidates);
       if (!found) { failures.push(`${record.slug}: usedIn page does not use the term: ${route}`); continue; }
       if (!found.href || !new RegExp(`fogalomtar/(?:index\\.html)?#${record.slug}$`, 'i').test(found.href)) failures.push(`${record.slug}: first use is not linked to its exact glossary anchor on ${route}`);

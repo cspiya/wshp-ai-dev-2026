@@ -12,7 +12,7 @@ function fixture(term) {
   fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), '<p><a href="../fogalomtar/#scope">scope</a> segít kijelölni a munka határait.</p>');
   return root;
 }
-const valid = { slug: 'scope', preferredHu: 'a munka határai', english: 'scope', definitionHu: 'A vállalt munka pontos határa.', aliases: ['hatókör'], avoid: [], related: [], usedIn: ['/materials/modulok/'] };
+const valid = { slug: 'scope', preferred: 'a munka határai', english: 'scope', definitionHu: 'A vállalt munka pontos határa.', aliases: ['hatókör'], avoid: [], related: [], usedIn: ['/materials/modulok/'] };
 
 test('valid registry and exact first-use link pass', () => {
   const root = fixture(valid);

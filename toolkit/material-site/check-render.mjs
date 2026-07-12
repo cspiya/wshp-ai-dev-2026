@@ -28,6 +28,16 @@ export function validateStaticPage(html, label = 'page') {
   if (!/<title>\s*[^<]+\s*<\/title>/i.test(html)) failures.push(`${label}: non-empty title missing`);
   if (!/<main\b/i.test(html)) failures.push(`${label}: main landmark missing`);
   if (/<marquee\b|autoplay|animation\s*:\s*[^;]+\binfinite\b/i.test(html) && !/prefers-reduced-motion/i.test(html)) failures.push(`${label}: motion has no reduced-motion fallback`);
+  if (/\bautoplay\b/i.test(html)) failures.push(`${label}: autoplay is forbidden`);
+  const animations = [...html.matchAll(/<[^>]+\bdata-animation=["']([^"']+)["'][^>]*>/gi)];
+  for (const match of animations) {
+    const id = match[1]; const tag = match[0];
+    if (!/data-animation-state=["']static["']/i.test(tag)) failures.push(`${label}: animation ${id} must start in a complete static state`);
+    for (const control of ['start', 'pause', 'restart']) if (!new RegExp(`data-animation-${control}=["']${id}["']`, 'i').test(html)) failures.push(`${label}: animation ${id} missing ${control} control`);
+    if (!new RegExp(`data-animation-fallback=["']${id}["']`, 'i').test(html)) failures.push(`${label}: animation ${id} missing static fallback`);
+    if (!/prefers-reduced-motion\s*:\s*reduce/i.test(html)) failures.push(`${label}: animation ${id} has no reduced-motion rule`);
+    if (!/@media\s+print/i.test(html)) failures.push(`${label}: animation ${id} has no print rule`);
+  }
   return failures;
 }
 
@@ -62,6 +72,35 @@ async function browserChecks(page, label, mode, failures) {
   await page.keyboard.press('Tab');
   const focus = await page.evaluate(() => document.activeElement?.tagName ?? '');
   if (!focus || focus === 'BODY' || focus === 'HTML') failures.push(`${label} (${mode}): keyboard focus is not visible/reachable`);
+  const animationIds = await page.locator('[data-animation]').evaluateAll((els) => els.map((el) => el.getAttribute('data-animation')).filter(Boolean));
+  for (const id of animationIds) {
+    const root = page.locator(`[data-animation="${id}"]`);
+    const fallback = page.locator(`[data-animation-fallback="${id}"]`);
+    if (await fallback.count() !== 1 || !(await fallback.isVisible())) failures.push(`${label} (${mode}): animation ${id} lacks a visible static fallback`);
+    const initial = await root.getAttribute('data-animation-state');
+    if (initial === 'running') failures.push(`${label} (${mode}): animation ${id} autoplayed`);
+    const disabledMode = ['no-js', 'reduced-motion', 'print'].includes(mode);
+    if (disabledMode) {
+      const state = await root.getAttribute('data-animation-state');
+      const motion = await root.evaluate((el) => { const css = getComputedStyle(el); return { name: css.animationName, duration: css.animationDuration }; });
+      if (state !== 'static') failures.push(`${label} (${mode}): animation ${id} is not in static final state`);
+      if (motion.name !== 'none' && motion.duration !== '0s') failures.push(`${label} (${mode}): animation ${id} motion is not disabled`);
+      for (const action of ['start', 'pause', 'restart']) {
+        const control = page.locator(`[data-animation-${action}="${id}"]`);
+        if (await control.count() !== 1) continue;
+        const unavailable = await control.evaluate((el) => el.hasAttribute('disabled') || el.hidden || getComputedStyle(el).display === 'none' || getComputedStyle(el).visibility === 'hidden');
+        if (!unavailable) failures.push(`${label} (${mode}): animation ${id} ${action} control remains enabled`);
+      }
+    } else {
+      for (const [action, expected] of [['start', 'running'], ['pause', 'paused'], ['restart', 'running']]) {
+        const control = page.locator(`[data-animation-${action}="${id}"]`);
+        if (await control.count() !== 1) continue;
+        await control.focus(); await page.keyboard.press('Enter');
+        await page.waitForTimeout(10);
+        if (await root.getAttribute('data-animation-state') !== expected) failures.push(`${label} (${mode}): animation ${id} ${action} is not keyboard-operable`);
+      }
+    }
+  }
 }
 
 export async function validateRender({ site, modes }) {
