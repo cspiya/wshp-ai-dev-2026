@@ -40,10 +40,11 @@ This is the single checklist used by makers, fixers, and reviewers. Link to this
 
 ## Project-specific mechanical gates
 
-Replace these placeholders with the repository's actual commands before use:
+This repository's commands (run from the repo root; adapt the list when you
+port the checklist to another project):
 
-- Format/lint: `<command>`
-- Typecheck/build: `<command>`
-- Unit/contract tests: `<command>`
-- Integration/e2e: `<command>`
-- Security/public-content guard: `<command>`
+- Format/lint: `npm --prefix reference-app run lint`
+- Typecheck/build: `npm --prefix reference-app run typecheck && npm --prefix reference-app run build`
+- Unit/contract tests: `npm --prefix reference-app run test` (set `TEST_DATABASE_URL` to a disposable Neon branch for a zero-skip run)
+- Integration/e2e: `npm --prefix reference-app run test:e2e` (add `PLAYWRIGHT_BASE_URL=<preview-url>` to target a preview)
+- Security/public-content guard: `node toolkit/hooks/check-public-content.mjs`
