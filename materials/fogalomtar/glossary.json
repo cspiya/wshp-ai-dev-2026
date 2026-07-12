@@ -1,6 +1,11 @@
 {
   "schemaVersion": 2,
   "registryVersion": "2.0.0",
+  "visualCoverage": {
+    "diagramId": "fig-terms-to-modules",
+    "strategy": "A látható térkép modulonként jellemző fogalmakat emel ki; a teljes szöveges megfelelő és ez a nyilvántartás mind az 57 fogalom elsődleges tananyaghelyét rögzíti.",
+    "termToLearningArea": {"agent-ready-repo":"01","coding-agent":"01","context":"01","repository-rules":"02","scope":"01","spec":"03","acceptance-criteria":"03","given-when-then":"03","definition-of-done":"02","quality-gate":"02","decision-gate":"03","review":"01","review-finding":"04","maker":"04","reviewer":"04","fixer":"04","rug":"04","orchestrator":"04","trace":"04","branch":"02","worktree":"02","commit":"02","pull-request":"02","ci":"02","preview":"02","provenance":"06","rule":"05","skill":"05","hook":"05","mcp":"05","fixture":"05","project-memory":"05","checkpoint":"support","artifact":"03","evidence":"06","guard":"05","baseline":"08","public-safe":"support","repository-constitution":"03","canonical":"support","reference-task":"06","unit-test":"06","contract-test":"06","e2e":"06","context-budget":"06","legacy-system":"07","characterization-test":"07","safety-net":"07","seam":"07","strangler-pattern":"07","rollback":"07","operating-model":"08","owner":"08","eval":"08","pilot":"08","golden-path":"08","plan-b":"08"}
+  },
   "terms": [
     {
       "slug": "agent-ready-repo",

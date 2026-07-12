@@ -9,7 +9,8 @@ const FORBIDDEN = [
   [/linear\.app\/wenova/gi, 'internal Linear URL'],
   [/Wenova-Shared/gi, 'internal Drive root'],
   [/10_Internal/gi, 'internal Drive folder'],
-  [/\b(?:client|customer)[-_ ]?(?:name|id)\s*[:=]/gi, 'client marker'],
+  [/\b(?:client|customer)[-_ ]?name\s*["']?\s*[:=]/gi, 'client identity name'],
+  [/\b(?:client|customer)[-_ ]?id\s*["']?\s*[:=]\s*["'][^"'\r\n]+["']/gi, 'client identity identifier'],
   [/\b(?:private|personal)[-_ ]?(?:invite|email|token)\s*[:=]/gi, 'private marker'],
 ];
 const TEXT_EXT = new Set(['.html', '.md', '.txt', '.json', '.js', '.mjs', '.css', '.svg', '.mmd', '.yml', '.yaml', '.xml', '.csv', '.tsv', '.ps1', '.sh', '.cs', '.ts', '.tsx']);

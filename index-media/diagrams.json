@@ -1,0 +1,50 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-product-reference",
+      "visualQuestionId": "q-root-product-reference",
+      "question": "Mi a workshop terméke, és min próbáljuk ki?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "A fejlesztési rendszer a hazavihető termék; a referenciaalkalmazás annak próbapadja.",
+      "glossarySlugs": ["repository-rules", "spec", "review", "quality-gate", "reference-task"],
+      "figureSelector": "#fig-product-reference",
+      "svgSelector": "#fig-product-reference svg",
+      "textFallbackSelector": "#fig-product-reference-text",
+      "inlineSvgHash": "103e4685bdc71335ce2339d7bebc9bfca78eff74117cb3b5a2d7a0019a826f9a"
+    },
+    {
+      "id": "fig-route-map",
+      "visualQuestionId": "q-root-route-map",
+      "question": "Melyik élethelyzetből melyik területre vezet az utad?",
+      "type": "decision",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "decision-tree",
+      "takeaway": "A workshop előtt, közben és után más terület adja a következő használható lépést.",
+      "glossarySlugs": ["agent-ready-repo", "reference-task", "golden-path"],
+      "figureSelector": "#fig-route-map",
+      "svgSelector": "#fig-route-map svg",
+      "textFallbackSelector": "#fig-route-map-text",
+      "inlineSvgHash": "1f98ae1808bec86c4b0b8aa516a08fd69ec4c76cd725535a6562934d21070366"
+    },
+    {
+      "id": "fig-learning-roadmap",
+      "visualQuestionId": "q-root-learning-roadmap",
+      "question": "Hogyan épül egymásra a nyolc modul?",
+      "type": "timeline",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "timeline",
+      "takeaway": "Minden modul a következő bemenetét készíti el, a közös nyelvtől a csapatszintű bevezetésig.",
+      "glossarySlugs": ["coding-agent", "repository-rules", "spec", "review", "quality-gate", "e2e", "legacy-system", "operating-model"],
+      "figureSelector": "#fig-learning-roadmap",
+      "svgSelector": "#fig-learning-roadmap svg",
+      "textFallbackSelector": "#fig-learning-roadmap-text",
+      "inlineSvgHash": "dca158ace525712f1995d98fb320ea0c1a3a13435f1525aa96a0f6b20da3f867",
+      "generatedInlineSvgHash": "88e54e42aa5f19f178f6f0d4bc41bf1caada97e59b5f64ee6440cc4e8b63c5d5"
+    }
+  ]
+}

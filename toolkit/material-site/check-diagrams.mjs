@@ -16,7 +16,7 @@ export function parseArgs(argv) {
   if (!['foundation', 'final'].includes(out.phase)) throw new Error('--phase must be foundation or final');
   return out;
 }
-function walk(dir) { return fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]) : []; }
+function walk(dir) { return fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? (['.git', '.site', 'node_modules'].includes(e.name) ? [] : walk(path.join(dir, e.name))) : [path.join(dir, e.name)]) : []; }
 function sha(bytes) { return crypto.createHash('sha256').update(bytes).digest('hex'); }
 function normalized(file) { return fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n').replace(/<!--\s*(?:Generated|generator|created)[\s\S]*?-->/gi, ''); }
 function canonicalJson(value) {
@@ -26,6 +26,32 @@ function canonicalJson(value) {
 }
 function diagramsOf(json) { return Array.isArray(json) ? json : json.diagrams; }
 function attr(tag, name) { const m = tag.match(new RegExp(`\\b${name}=(?:"([^"]*)"|'([^']*)')`, 'i')); return m?.[1] ?? m?.[2]; }
+function selectorId(selector) { return typeof selector === 'string' && /^#[A-Za-z][\w:.-]*$/.test(selector) ? selector.slice(1) : null; }
+function escapeRegex(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function elementById(html, tag, id) {
+  if (!id) return null;
+  const safe = escapeRegex(id);
+  return html.match(new RegExp(`<${tag}\\b(?=[^>]*\\bid=(?:"${safe}"|'${safe}'))[^>]*>[\\s\\S]*?<\\/${tag}>`, 'i'))?.[0] ?? null;
+}
+function inlineSvgFromFigure(html, figureSelector, svgSelector) {
+  const figureId = selectorId(figureSelector);
+  if (!figureId || svgSelector !== `${figureSelector} svg`) return null;
+  const figure = elementById(html, 'figure', figureId);
+  return figure?.match(/<svg\b[\s\S]*?<\/svg>/i)?.[0] ?? null;
+}
+function normalizedInlineSvg(svg) {
+  return svg.replaceAll('\r\n', '\n').replace(/<!--\s*(?:Generated|generator|created)[\s\S]*?-->/gi, '').replace(/>\s+</g, '><').trim();
+}
+function inlineFigureIds(html) {
+  const ids = [];
+  for (const figure of html.match(/<figure\b[\s\S]*?<\/figure>/gi) ?? []) {
+    if (!/<svg\b/i.test(figure)) continue;
+    const opening = figure.match(/<figure\b[^>]*>/i)?.[0] ?? '';
+    const id = attr(opening, 'id');
+    if (id) ids.push(id);
+  }
+  return ids;
+}
 const COMPLEX_TYPES = new Set(['process', 'cycle', 'structure', 'relationship', 'decision', 'timeline', 'quantitative-data']);
 const DIAGRAM_TYPES = {
   'key-concept': new Set(['concept-map', 'relationship-map', 'component-map', 'annotated-diagram']),
@@ -49,6 +75,11 @@ function readGlossarySlugs(source) {
   const json = JSON.parse(fs.readFileSync(file, 'utf8'));
   return new Set((json.terms ?? json.entries ?? json.records ?? []).map((record) => record.slug));
 }
+function readGlossaryVisualCoverage(source) {
+  const file = path.join(source, 'materials/fogalomtar/glossary.json');
+  if (!fs.existsSync(file)) return null;
+  return JSON.parse(fs.readFileSync(file, 'utf8')).visualCoverage ?? null;
+}
 function pageDirForRoute(route) { const dir = path.dirname(route.source).replaceAll('\\', '/'); return dir === '.' ? '' : dir; }
 function diagramManifestForRoute(source, route) { return route.source === 'index.html' ? path.join(source, 'index-media/diagrams.json') : path.join(source, pageDirForRoute(route), 'media/diagrams.json'); }
 function generatedForRoute(site, route) { return path.join(site, route.output.replace(/^\.site[\\/]/, '')); }
@@ -67,7 +98,8 @@ export function validateDiagrams({ source, site, phase }) {
   const outputReferenced = new Set();
   let routes = [];
   let glossarySlugs = null;
-  try { routes = readRoutes(source); glossarySlugs = readGlossarySlugs(source); }
+  let glossaryVisualCoverage = null;
+  try { routes = readRoutes(source); glossarySlugs = readGlossarySlugs(source); glossaryVisualCoverage = readGlossaryVisualCoverage(source); }
   catch (error) { failures.push(`visual contract input is invalid: ${error.message}`); }
   if (!routes.length) failures.push('site manifest with visual-question declarations is missing');
   const configFile = path.join(source, 'toolkit/material-site/mermaid.config.json');
@@ -90,6 +122,7 @@ export function validateDiagrams({ source, site, phase }) {
     const declaredQuestions = new Map((route?.visualQuestions ?? []).map((question) => [question.id, question]));
     const dispositions = new Map();
     const ids = new Set();
+    const registeredInlineFigures = new Set();
     for (const [index, diagram] of diagrams.entries()) {
       const label = `${path.relative(source, manifestFile)}[${index}]`;
       for (const key of ['visualQuestionId', 'question', 'type', 'disposition', 'takeaway']) if (typeof diagram[key] !== 'string' || !diagram[key].trim()) failures.push(`${label}: missing ${key}`);
@@ -107,6 +140,15 @@ export function validateDiagrams({ source, site, phase }) {
         if (actualSlugs !== expectedSlugs) failures.push(`${label}: glossary coverage does not match manifest`);
       }
       if (diagram.disposition === 'decorative-only') failures.push(`${label}: decorative-only disposition is forbidden`);
+      if (glossaryVisualCoverage && glossaryVisualCoverage.diagramId === diagram.id) {
+        const coverageSlugs = Object.keys(glossaryVisualCoverage.termToLearningArea ?? {}).sort();
+        const frozenSlugs = [...(glossarySlugs ?? [])].sort();
+        if (coverageSlugs.join('|') !== frozenSlugs.join('|')) failures.push(`${label}: glossary visual coverage must disposition every frozen term exactly once`);
+        for (const [slug, area] of Object.entries(glossaryVisualCoverage.termToLearningArea ?? {})) {
+          if (!/^(?:0[1-8]|support)$/.test(area)) failures.push(`${label}: invalid learning area ${area} for glossary term ${slug}`);
+        }
+        if ([...(diagram.glossarySlugs ?? [])].sort().join('|') !== frozenSlugs.join('|')) failures.push(`${label}: glossary overview registry must include every frozen term slug`);
+      }
       if (diagram.disposition === 'prose-only') {
         if (COMPLEX_TYPES.has(diagram.type) || diagram.atomicGlossaryTerm !== true) failures.push(`${label}: prose-only cannot disposition a complex or non-atomic visual question`);
         continue;
@@ -123,7 +165,7 @@ export function validateDiagrams({ source, site, phase }) {
         continue;
       }
       if (diagram.disposition !== 'page-local') { failures.push(`${label}: invalid disposition ${diagram.disposition}`); continue; }
-      for (const key of ['id', 'diagramType', 'source', 'output', 'textFallbackSelector', 'sourceHash', 'outputHash']) if (typeof diagram[key] !== 'string' || !diagram[key].trim()) failures.push(`${label}: missing ${key}`);
+      for (const key of ['id', 'diagramType', 'textFallbackSelector']) if (typeof diagram[key] !== 'string' || !diagram[key].trim()) failures.push(`${label}: missing ${key}`);
       if (route && (declared?.coverage !== 'page-local' || diagram.id !== declared.diagramId)) failures.push(`${label}: page-local figure does not match declared diagramId/coverage`);
       if (!DIAGRAM_TYPES[diagram.type]?.has(diagram.diagramType)) failures.push(`${label}: invalid diagram type ${diagram.diagramType} for ${diagram.type}`);
       const isChart = /-chart$|^scatter-plot$/.test(diagram.diagramType ?? '');
@@ -136,33 +178,66 @@ export function validateDiagrams({ source, site, phase }) {
         if (animation.autoplay !== false) failures.push(`${label}: animation autoplay must be false`);
       }
       if (ids.has(diagram.id)) failures.push(`${label}: duplicate diagram id ${diagram.id}`); else ids.add(diagram.id);
-      if (!/^[a-f0-9]{64}$/.test(diagram.sourceHash ?? '')) failures.push(`${label}: invalid sourceHash`);
-      if (!/^[a-f0-9]{64}$/.test(diagram.outputHash ?? '')) failures.push(`${label}: invalid outputHash`);
-      const dir = path.dirname(manifestFile);
-      const mmd = path.resolve(dir, diagram.source ?? '');
-      const svg = path.resolve(dir, diagram.output ?? '');
-      if (!mmd.startsWith(`${dir}${path.sep}`) || !svg.startsWith(`${dir}${path.sep}`)) { failures.push(`${label}: diagram path escapes media directory`); continue; }
-      if (!fs.existsSync(mmd)) failures.push(`${label}: Mermaid source missing`);
-      else if (mermaidConfig) {
-        const expectedSourceHash = sha(`${normalized(mmd)}${canonicalJson(mermaidConfig)}11.16.0`);
-        if (expectedSourceHash !== diagram.sourceHash) failures.push(`${label}: stale Mermaid source/config/version hash`);
-      }
-      if (!fs.existsSync(svg)) failures.push(`${label}: SVG output missing`);
-      else {
-        outputReferenced.add(path.relative(source, svg).replaceAll('\\', '/').toLowerCase());
-        if (sha(normalized(svg)) !== diagram.outputHash) failures.push(`${label}: stale or changed SVG output hash`);
-      }
       const generatedPage = route ? generatedForRoute(site, route) : path.join(site, pageRelative, 'index.html');
+      const sourcePage = route ? path.join(source, route.source) : path.join(source, pageRelative, 'index.html');
+      if (diagram.rendering === 'inline-svg') {
+        for (const key of ['figureSelector', 'svgSelector', 'inlineSvgHash']) if (typeof diagram[key] !== 'string' || !diagram[key].trim()) failures.push(`${label}: inline SVG missing ${key}`);
+        const figureId = selectorId(diagram.figureSelector);
+        if (!figureId || diagram.id !== figureId || diagram.svgSelector !== `${diagram.figureSelector} svg`) failures.push(`${label}: inline SVG selectors must identify the registered figure exactly`);
+        if (!/^[a-f0-9]{64}$/.test(diagram.inlineSvgHash ?? '')) failures.push(`${label}: invalid inlineSvgHash`);
+        if (figureId) registeredInlineFigures.add(figureId);
+        const sourceHtml = fs.existsSync(sourcePage) ? fs.readFileSync(sourcePage, 'utf8') : '';
+        const sourceSvg = inlineSvgFromFigure(sourceHtml, diagram.figureSelector, diagram.svgSelector);
+        if (!sourceSvg) failures.push(`${label}: registered inline SVG is absent from source page`);
+        else if (sha(normalizedInlineSvg(sourceSvg)) !== diagram.inlineSvgHash) failures.push(`${label}: stale or changed inline SVG hash`);
+        if (fs.existsSync(generatedPage)) {
+          const generatedHtml = fs.readFileSync(generatedPage, 'utf8');
+          const generatedSvg = inlineSvgFromFigure(generatedHtml, diagram.figureSelector, diagram.svgSelector);
+          if (!generatedSvg) failures.push(`${label}: registered inline SVG is absent from generated page`);
+          else {
+            const generatedHash = sha(normalizedInlineSvg(generatedSvg));
+            const expectedGeneratedHash = diagram.generatedInlineSvgHash ?? diagram.inlineSvgHash;
+            if (generatedHash !== expectedGeneratedHash) failures.push(`${label}: generated inline SVG integrity differs from source/registry`);
+            if (generatedHash !== diagram.inlineSvgHash && !/^[a-f0-9]{64}$/.test(diagram.generatedInlineSvgHash ?? '')) failures.push(`${label}: route-resolved inline SVG requires generatedInlineSvgHash`);
+          }
+        }
+      } else {
+        if (diagram.rendering != null && diagram.rendering !== 'external-svg') failures.push(`${label}: invalid rendering ${diagram.rendering}`);
+        for (const key of ['source', 'output', 'sourceHash', 'outputHash']) if (typeof diagram[key] !== 'string' || !diagram[key].trim()) failures.push(`${label}: external SVG missing ${key}`);
+        if (!/^[a-f0-9]{64}$/.test(diagram.sourceHash ?? '')) failures.push(`${label}: invalid sourceHash`);
+        if (!/^[a-f0-9]{64}$/.test(diagram.outputHash ?? '')) failures.push(`${label}: invalid outputHash`);
+        const dir = path.dirname(manifestFile);
+        const mmd = path.resolve(dir, diagram.source ?? '');
+        const svg = path.resolve(dir, diagram.output ?? '');
+        if (!mmd.startsWith(`${dir}${path.sep}`) || !svg.startsWith(`${dir}${path.sep}`)) { failures.push(`${label}: diagram path escapes media directory`); continue; }
+        if (!fs.existsSync(mmd)) failures.push(`${label}: Mermaid source missing`);
+        else if (mermaidConfig) {
+        const expectedSourceHash = sha(`${normalized(mmd)}\n${canonicalJson(mermaidConfig)}\n11.16.0`);
+          if (expectedSourceHash !== diagram.sourceHash) failures.push(`${label}: stale Mermaid source/config/version hash`);
+        }
+        if (!fs.existsSync(svg)) failures.push(`${label}: SVG output missing`);
+        else {
+          outputReferenced.add(path.relative(source, svg).replaceAll('\\', '/').toLowerCase());
+          if (sha(normalized(svg)) !== diagram.outputHash) failures.push(`${label}: stale or changed SVG output hash`);
+        }
+      }
       if (fs.existsSync(generatedPage) && typeof diagram.textFallbackSelector === 'string') {
         const generatedHtml = fs.readFileSync(generatedPage, 'utf8');
         if (diagram.textFallbackSelector.startsWith('#') && !new RegExp(`id=["']${diagram.textFallbackSelector.slice(1)}["']`, 'i').test(generatedHtml)) failures.push(`${label}: text fallback selector is absent from generated page`);
-        if (diagram.output && !generatedHtml.includes(diagram.output)) failures.push(`${label}: generated page does not reference diagram output`);
+        if (diagram.rendering !== 'inline-svg' && diagram.output && !generatedHtml.includes(diagram.output)) failures.push(`${label}: generated page does not reference diagram output`);
         if (diagram.animation?.id) {
           const id = diagram.animation.id;
           if (!new RegExp(`data-animation=["']${id}["']`, 'i').test(generatedHtml)) failures.push(`${label}: animation root is absent from generated page`);
           for (const action of ['start', 'pause', 'restart']) if (!new RegExp(`data-animation-${action}=["']${id}["']`, 'i').test(generatedHtml)) failures.push(`${label}: animation ${action} control is absent from generated page`);
           if (!new RegExp(`data-animation-fallback=["']${id}["']`, 'i').test(generatedHtml)) failures.push(`${label}: animation static fallback is absent from generated page`);
         }
+      }
+    }
+    if (route) {
+      const sourcePage = path.join(source, route.source);
+      const generatedPage = generatedForRoute(site, route);
+      for (const page of [sourcePage, generatedPage].filter(fs.existsSync)) {
+        for (const id of inlineFigureIds(fs.readFileSync(page, 'utf8'))) if (!registeredInlineFigures.has(id)) failures.push(`${path.relative(source, manifestFile)}: undeclared pedagogical inline SVG figure: ${id}`);
       }
     }
     for (const question of route?.visualQuestions ?? []) if (!dispositions.has(question.id)) failures.push(`${path.relative(source, manifestFile)}: visual question has no disposition: ${question.id}`);
@@ -177,6 +252,7 @@ export function validateDiagrams({ source, site, phase }) {
     }
   }
   for (const route of routes) {
+    if (phase === 'foundation' && !['/', '/materials/fogalomtar/'].includes(route.id)) continue;
     const sourcePage = path.join(source, route.source);
     const generatedPage = generatedForRoute(site, route);
     if (phase === 'foundation' ? !fs.existsSync(sourcePage) : (!fs.existsSync(sourcePage) && !fs.existsSync(generatedPage))) continue;

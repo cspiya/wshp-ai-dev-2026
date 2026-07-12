@@ -3,7 +3,7 @@
 // Default scope: tracked materials/notebooks/*.html; pass explicit paths to
 // override (fixture testing).
 //
-// WEN-216 extensions:
+// Extended notebook checks:
 // - Shell assertions for pages that opted into the shared shell (contain
 //   `<main`): module navigation present (skeleton files prefixed with `_`
 //   are exempt) and no visible content after `</main>`.

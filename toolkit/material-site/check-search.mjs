@@ -58,8 +58,9 @@ export function validateSearch({ site, phase }) {
   const candidates = [path.join(site, 'assets/search-index.js'), path.join(site, 'assets/search-index.json'), path.join(site, 'search-index.json')];
   const indexFile = candidates.find(fs.existsSync);
   if (!indexFile) return ['search index missing (assets/search-index.json or search-index.json)'];
+  let index;
   let entries;
-  try { entries = entriesOf(readIndex(indexFile)); } catch (error) { return [`invalid search index: ${error.message}`]; }
+  try { index = readIndex(indexFile); entries = entriesOf(index); } catch (error) { return [`invalid search index: ${error.message}`]; }
   if (!Array.isArray(entries) || entries.length === 0) return ['search index must contain a non-empty entries/pages/documents array'];
   const routes = new Map();
   const exactTerms = new Map();
@@ -99,11 +100,26 @@ export function validateSearch({ site, phase }) {
   } else terms = glossaryFromHtml(glossaryHtml);
   if (phase === 'final' && terms.length === 0) failures.push('final search smoke requires a generated glossary registry or semantic term cards');
   if (terms.length > 0) {
+    const shared = index && !Array.isArray(index) ? index.glossary : null;
+    if (!shared || shared.path !== 'materials/fogalomtar/index.html' || !Array.isArray(shared.terms)) {
+      failures.push('shared search index must contain one canonical glossary representation at materials/fogalomtar/index.html');
+      return failures;
+    }
     for (const record of terms) {
+      const sharedRecords = shared.terms.filter((term) => term.slug === record.slug);
+      if (sharedRecords.length !== 1) {
+        failures.push(`glossary slug "${record.slug}" must occur exactly once in the shared glossary search representation`);
+        continue;
+      }
+      const sharedRecord = sharedRecords[0];
       for (const query of [record.preferred, record.english, ...(Array.isArray(record.aliases) ? record.aliases : [])].filter(Boolean)) {
         const normalized = String(query).toLocaleLowerCase('hu-HU');
-        const exactOwners = entries.filter((entry) => [...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].some((term) => String(term).toLocaleLowerCase('hu-HU') === normalized)).map(routeOf);
-        if (exactOwners.length !== 1 || exactOwners[0] !== '/materials/fogalomtar/') failures.push(`glossary query "${query}" must have exactly one canonical owner in the shared search index: /materials/fogalomtar/`);
+        const sharedNames = [sharedRecord.preferred, sharedRecord.english, ...(Array.isArray(sharedRecord.aliases) ? sharedRecord.aliases : [])]
+          .map((term) => String(term).toLocaleLowerCase('hu-HU'));
+        if (!sharedNames.includes(normalized))
+          failures.push(`glossary query "${query}" is missing from its canonical shared glossary record`);
+        const duplicatePages = entries.filter((entry) => [...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].some((term) => String(term).toLocaleLowerCase('hu-HU') === normalized)).map(routeOf);
+        if (duplicatePages.length) failures.push(`glossary query "${query}" is duplicated outside the shared glossary representation: ${duplicatePages.join(', ')}`);
       }
     }
   }

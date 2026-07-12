@@ -1,4 +1,4 @@
-/* Shared diagram presentation primitives (WEN-257, DIAGRAM-TOOLS).
+/* Shared diagram presentation primitives (DIAGRAM-TOOLS).
    Used by every page that embeds a rendered Mermaid SVG or a custom
    inline SVG figure. Local resources only; print keeps figures whole;
    reduced motion removes every transition. */

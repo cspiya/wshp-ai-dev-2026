@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "comment": "Sole authoritative route table for the participant site (v3 spec section 5). No other route tree is authoritative. Route IDs start with '/' only inside this manifest; emitted href/src values are calculated page-relative by build-site.mjs.",
+  "schemaVersion": 2,
+  "comment": "Sole authoritative flat v3.4 route and visual-coverage contract for the participant site. Outputs are repo-relative paths inside the generated site; build-site.mjs emits page-relative links.",
   "routes": [
     {
       "id": "/",
@@ -11,24 +11,62 @@
       "order": 0,
       "owner": "SHELL-BUILD",
       "alias": null,
-      "didactic": {
-        "overviewQuestion": "Mi a workshop terméke, és melyik úton indulj el?",
-        "overviewDiagramId": "fig-product-reference",
-        "visualQuestions": [
-          {
-            "question": "Melyik élethelyzetből melyik területre vezet az utad?",
-            "type": "relationship",
-            "slugs": [],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan épül egymásra a nyolc modul?",
-            "type": "timeline",
-            "slugs": [],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Mi a workshop terméke, és min próbáljuk ki?",
+      "overviewDiagramId": "fig-product-reference",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-root-product-reference",
+          "question": "Mi a workshop terméke, és min próbáljuk ki?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "repository-rules",
+            "spec",
+            "review",
+            "quality-gate",
+            "reference-task"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-product-reference",
+          "takeaway": "A fejlesztési rendszer a hazavihető termék; a referenciaalkalmazás annak próbapadja."
+        },
+        {
+          "id": "q-root-route-map",
+          "question": "Melyik élethelyzetből melyik területre vezet az utad?",
+          "type": "decision",
+          "glossarySlugs": [
+            "agent-ready-repo",
+            "reference-task",
+            "golden-path"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-route-map",
+          "takeaway": "A workshop előtt, közben és után más terület adja a következő használható lépést."
+        },
+        {
+          "id": "q-root-learning-roadmap",
+          "question": "Hogyan épül egymásra a nyolc modul?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "coding-agent",
+            "repository-rules",
+            "spec",
+            "review",
+            "quality-gate",
+            "e2e",
+            "legacy-system",
+            "operating-model"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-learning-roadmap",
+          "takeaway": "Minden modul a következő bemenetét készíti el, a közös nyelvtől a csapatszintű bevezetésig."
+        }
+      ]
     },
     {
       "id": "/materials/",
@@ -39,26 +77,50 @@
       "order": 1,
       "owner": "MATERIALS-HUB",
       "alias": null,
-      "didactic": {
-        "overviewQuestion": "Hol kezdd, hol dolgozol, és hogyan ellenőrzöd az eredményt?",
-        "overviewDiagramId": "fig-workspaces",
-        "visualQuestions": [
-          {
-            "question": "Mi a tanulási út a felkészüléstől a zárásig?",
-            "type": "process",
-            "slugs": [],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan áll össze az eredmény és annak ellenőrzése?",
-            "type": "process",
-            "slugs": [
-              "quality-gate"
-            ],
-            "coverage": "shared:fig-evidence-chain"
-          }
-        ]
-      }
+      "overviewQuestion": "Hol kezdd, hol dolgozol, és hogyan ellenőrzöd az eredményt?",
+      "overviewDiagramId": "fig-workspaces",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-materials-overview",
+          "question": "Hol kezdd, hol dolgozol, és hogyan ellenőrzöd az eredményt?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-workspaces",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-materials-process-1",
+          "question": "Mi a tanulási út a felkészüléstől a zárásig?",
+          "type": "process",
+          "glossarySlugs": [
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-materials-mi-a-tanulasi-ut-a",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-materials-process-2",
+          "question": "Hogyan áll össze az eredmény és annak ellenőrzése?",
+          "type": "process",
+          "glossarySlugs": [
+            "quality-gate"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-evidence-chain",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+          "sharedHref": "modszertan/index.html#fig-evidence-chain"
+        }
+      ]
     },
     {
       "id": "/materials/felkeszules/",
@@ -69,21 +131,40 @@
       "order": 1,
       "owner": "MATERIALS-HUB",
       "alias": "setup-guide.md stub",
-      "didactic": {
-        "overviewQuestion": "Mit kell előkészítened, és mi függ mitől?",
-        "overviewDiagramId": "fig-setup-flow",
-        "visualQuestions": [
-          {
-            "question": "Milyen sorrendben épülnek egymásra az előkészületi lépések?",
-            "type": "process",
-            "slugs": [
-              "ci",
-              "preview"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Mit kell előkészítened, és mi függ mitől?",
+      "overviewDiagramId": "fig-setup-flow",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-preparation-overview",
+          "question": "Mit kell előkészítened, és mi függ mitől?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "ci",
+            "preview"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-setup-flow",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-preparation-process-1",
+          "question": "Milyen sorrendben épülnek egymásra az előkészületi lépések?",
+          "type": "process",
+          "glossarySlugs": [
+            "ci",
+            "preview"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-preparation-milyen-sorrendben-epulnek-egymasra-az",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/materials/napirend/",
@@ -94,24 +175,50 @@
       "order": 2,
       "owner": "MATERIALS-HUB",
       "alias": "agenda.md stub",
-      "didactic": {
-        "overviewQuestion": "Hogyan épül fel a nap, és mit adsz le az egyes blokkok végén?",
-        "overviewDiagramId": "fig-day-timeline",
-        "visualQuestions": [
-          {
-            "question": "Mikor melyik modul fut, és mi a kimenete?",
-            "type": "timeline",
-            "slugs": [],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan kapcsolódnak a modulok egymáshoz?",
-            "type": "timeline",
-            "slugs": [],
-            "coverage": "shared:fig-learning-roadmap"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan épül fel a nap, és mit adsz le az egyes blokkok végén?",
+      "overviewDiagramId": "fig-day-timeline",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-agenda-overview",
+          "question": "Hogyan épül fel a nap, és mit adsz le az egyes blokkok végén?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "checkpoint"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-day-timeline",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-agenda-timeline-1",
+          "question": "Mikor melyik modul fut, és mi a kimenete?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "checkpoint"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-agenda-mikor-melyik-modul-fut-es",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény."
+        },
+        {
+          "id": "q-agenda-timeline-2",
+          "question": "Hogyan kapcsolódnak a modulok egymáshoz?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "checkpoint"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-learning-roadmap",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
+          "sharedHref": "../../index.html#fig-learning-roadmap"
+        }
+      ]
     },
     {
       "id": "/materials/modszertan/",
@@ -122,31 +229,56 @@
       "order": 3,
       "owner": "MATERIALS-HUB",
       "alias": "big-picture.md stub",
-      "didactic": {
-        "overviewQuestion": "Milyen elemekből áll a fejlesztési rendszer, és hogyan ellenőrzi önmagát?",
-        "overviewDiagramId": "fig-method-components",
-        "visualQuestions": [
-          {
-            "question": "Hogyan zajlik a döntés–review–kapu kör?",
-            "type": "cycle",
-            "slugs": [
-              "rug",
-              "review",
-              "decision-gate"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan áll össze az ellenőrzési eredmények lánca?",
-            "type": "process",
-            "slugs": [
-              "quality-gate",
-              "trace"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Milyen elemekből áll a fejlesztési rendszer, és hogyan ellenőrzi önmagát?",
+      "overviewDiagramId": "fig-method-components",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-method-overview",
+          "question": "Milyen elemekből áll a fejlesztési rendszer, és hogyan ellenőrzi önmagát?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "rug",
+            "review",
+            "decision-gate",
+            "quality-gate",
+            "trace"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-method-components",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-method-cycle-1",
+          "question": "Hogyan zajlik a döntés–review–kapu kör?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "rug",
+            "review",
+            "decision-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-method-hogyan-zajlik-a-dontes-review",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el."
+        },
+        {
+          "id": "q-method-process-2",
+          "question": "Hogyan áll össze az ellenőrzési eredmények lánca?",
+          "type": "process",
+          "glossarySlugs": [
+            "quality-gate",
+            "trace"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-method-hogyan-all-ossze-az-ellenorzesi",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/materials/agent-ready-repo/",
@@ -157,29 +289,52 @@
       "order": 4,
       "owner": "MATERIALS-HUB",
       "alias": "agent-ready-repo.md stub",
-      "didactic": {
-        "overviewQuestion": "Milyen rétegekből áll az agent-ready repo, és ki mit birtokol?",
-        "overviewDiagramId": "fig-repo-layers",
-        "visualQuestions": [
-          {
-            "question": "Hogyan függ össze a szabály, a munka és az ellenőrzési eredmény?",
-            "type": "structure",
-            "slugs": [
-              "agent-ready-repo",
-              "repository-rules"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mi a legkisebb biztonságos változtatás útja?",
-            "type": "structure",
-            "slugs": [
-              "scope"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Milyen rétegekből áll az agent-ready repo, és ki mit birtokol?",
+      "overviewDiagramId": "fig-repo-layers",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-agent-ready-overview",
+          "question": "Milyen rétegekből áll az agent-ready repo, és ki mit birtokol?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "agent-ready-repo",
+            "repository-rules",
+            "scope"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-repo-layers",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-agent-ready-structure-1",
+          "question": "Hogyan függ össze a szabály, a munka és az ellenőrzési eredmény?",
+          "type": "structure",
+          "glossarySlugs": [
+            "agent-ready-repo",
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-agent-ready-hogyan-fugg-ossze-a-szabaly",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-agent-ready-structure-2",
+          "question": "Mi a legkisebb biztonságos változtatás útja?",
+          "type": "structure",
+          "glossarySlugs": [
+            "scope"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-agent-ready-mi-a-legkisebb-biztonsagos-valtoztatas",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        }
+      ]
     },
     {
       "id": "/materials/minoseg/",
@@ -190,22 +345,42 @@
       "order": 5,
       "owner": "MATERIALS-HUB",
       "alias": "mernoki-standardok.md stub",
-      "didactic": {
-        "overviewQuestion": "Milyen védelmi rétegek őrzik a közös minőséget?",
-        "overviewDiagramId": "fig-quality-defense",
-        "visualQuestions": [
-          {
-            "question": "Hogyan lesz egy megerősített hibából tartós automatikus védelem?",
-            "type": "process",
-            "slugs": [
-              "review-finding",
-              "quality-gate",
-              "fixture"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Milyen védelmi rétegek őrzik a közös minőséget?",
+      "overviewDiagramId": "fig-quality-defense",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-quality-overview",
+          "question": "Milyen védelmi rétegek őrzik a közös minőséget?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "review-finding",
+            "quality-gate",
+            "fixture"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-quality-defense",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-quality-process-1",
+          "question": "Hogyan lesz egy megerősített hibából tartós automatikus védelem?",
+          "type": "process",
+          "glossarySlugs": [
+            "review-finding",
+            "quality-gate",
+            "fixture"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-quality-hogyan-lesz-egy-megerositett-hibabol",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/materials/eszkozok/",
@@ -216,23 +391,44 @@
       "order": 6,
       "owner": "MATERIALS-HUB",
       "alias": "plugins-es-skillek.md stub",
-      "didactic": {
-        "overviewQuestion": "Melyik mechanizmus melyik feladatra való?",
-        "overviewDiagramId": "fig-responsibility-map",
-        "visualQuestions": [
-          {
-            "question": "Hogyan döntesz szabály, skill, hook és MCP között?",
-            "type": "decision",
-            "slugs": [
-              "rule",
-              "skill",
-              "hook",
-              "mcp"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Melyik mechanizmus melyik feladatra való?",
+      "overviewDiagramId": "fig-responsibility-map",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-tools-overview",
+          "question": "Melyik mechanizmus melyik feladatra való?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "rule",
+            "skill",
+            "hook",
+            "mcp"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-responsibility-map",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-tools-decision-1",
+          "question": "Hogyan döntesz szabály, skill, hook és MCP között?",
+          "type": "decision",
+          "glossarySlugs": [
+            "rule",
+            "skill",
+            "hook",
+            "mcp"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-tools-hogyan-dontesz-szabaly-skill-hook",
+          "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli."
+        }
+      ]
     },
     {
       "id": "/materials/fogalomtar/",
@@ -243,18 +439,100 @@
       "order": 7,
       "owner": "GLOSSARY",
       "alias": "fogalomtar.md stub",
-      "didactic": {
-        "overviewQuestion": "Hogyan kapcsolódnak egymáshoz a workshop fogalmai?",
-        "overviewDiagramId": "fig-concept-families",
-        "visualQuestions": [
-          {
-            "question": "Melyik fogalom melyik modulban kerül elő?",
-            "type": "relationship",
-            "slugs": [],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Milyen témák rendezik rendszerbe a fogalmakat?",
+      "overviewDiagramId": "fig-concept-families",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-glossary-concept-families",
+          "question": "Milyen témák rendezik rendszerbe a fogalmakat?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "spec",
+            "review",
+            "commit",
+            "skill",
+            "e2e",
+            "legacy-system",
+            "operating-model"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-concept-families",
+          "takeaway": "Egy fogalom jelentését a szakmai kérdésköre és a többi fogalomhoz fűződő kapcsolata teszi használhatóvá."
+        },
+        {
+          "id": "q-glossary-terms-to-modules",
+          "question": "Hol találkozol a fogalmakkal a workshopon?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "agent-ready-repo",
+            "coding-agent",
+            "context",
+            "repository-rules",
+            "scope",
+            "spec",
+            "acceptance-criteria",
+            "given-when-then",
+            "definition-of-done",
+            "quality-gate",
+            "decision-gate",
+            "review",
+            "review-finding",
+            "maker",
+            "reviewer",
+            "fixer",
+            "rug",
+            "orchestrator",
+            "trace",
+            "branch",
+            "worktree",
+            "commit",
+            "pull-request",
+            "ci",
+            "preview",
+            "provenance",
+            "rule",
+            "skill",
+            "hook",
+            "mcp",
+            "fixture",
+            "project-memory",
+            "checkpoint",
+            "artifact",
+            "evidence",
+            "guard",
+            "baseline",
+            "public-safe",
+            "repository-constitution",
+            "canonical",
+            "reference-task",
+            "unit-test",
+            "contract-test",
+            "e2e",
+            "context-budget",
+            "legacy-system",
+            "characterization-test",
+            "safety-net",
+            "seam",
+            "strangler-pattern",
+            "rollback",
+            "operating-model",
+            "owner",
+            "eval",
+            "pilot",
+            "golden-path",
+            "plan-b"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-terms-to-modules",
+          "takeaway": "A szakmai kérdéskör megmutatja, melyik modulban és mely fogalmakkal kezdd a munkát."
+        }
+      ]
     },
     {
       "id": "/materials/modulok/",
@@ -265,18 +543,38 @@
       "order": 8,
       "owner": "MATERIALS-HUB",
       "alias": "notebooks/README.md",
-      "didactic": {
-        "overviewQuestion": "Melyik modul mit ad hozzá, és honnan hová lépsz?",
-        "overviewDiagramId": "fig-modulok-roadmap",
-        "visualQuestions": [
-          {
-            "question": "Hogyan épül egymásra a nyolc modul kimenete?",
-            "type": "timeline",
-            "slugs": [],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Melyik modul mit ad hozzá, és honnan hová lépsz?",
+      "overviewDiagramId": "fig-modulok-roadmap",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-modules-overview",
+          "question": "Melyik modul mit ad hozzá, és honnan hová lépsz?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "checkpoint"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-modulok-roadmap",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-modules-timeline-1",
+          "question": "Hogyan épül egymásra a nyolc modul kimenete?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "checkpoint"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-modules-hogyan-epul-egymasra-a-nyolc",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény."
+        }
+      ]
     },
     {
       "id": "/materials/modulok/01-agentikus-fejlesztes/",
@@ -287,54 +585,90 @@
       "order": 1,
       "owner": "MODULE-01",
       "alias": "notebooks/00-bevezeto.html",
-      "didactic": {
-        "overviewQuestion": "Mi a különbség a modell, a coding agent és a fejlesztési rendszer között?",
-        "overviewDiagramId": "fig-m01-overview",
-        "visualQuestions": [
-          {
-            "question": "Hogyan rétegződik a modell, az agent és a köré épített rendszer?",
-            "type": "structure",
-            "slugs": [
-              "coding-agent",
-              "agent-ready-repo"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan szűkül a kontextus a hasznos munkadarabig?",
-            "type": "process",
-            "slugs": [
-              "context",
-              "scope"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan lesz a homályos kérésből munkára fogható kérés?",
-            "type": "process",
-            "slugs": [
-              "scope"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Miben más az önellenőrzés és a független review?",
-            "type": "relationship",
-            "slugs": [
-              "review"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mi a termék és mi a referenciafeladat?",
-            "type": "relationship",
-            "slugs": [
-              "reference-task"
-            ],
-            "coverage": "shared:fig-product-reference"
-          }
-        ]
-      }
+      "overviewQuestion": "Mi a különbség a modell, a coding agent és a fejlesztési rendszer között?",
+      "overviewDiagramId": "fig-m01-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m01-overview",
+          "question": "Mi a különbség a modell, a coding agent és a fejlesztési rendszer között?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "coding-agent",
+            "agent-ready-repo",
+            "context",
+            "scope",
+            "review",
+            "reference-task"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m01-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m01-structure-1",
+          "question": "Hogyan rétegződik a modell, az agent és a köré épített rendszer?",
+          "type": "structure",
+          "glossarySlugs": [
+            "coding-agent",
+            "agent-ready-repo"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m01-hogyan-retegzodik-a-modell-az",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m01-process-2",
+          "question": "Hogyan szűkül a kontextus a hasznos munkadarabig?",
+          "type": "process",
+          "glossarySlugs": [
+            "context",
+            "scope"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m01-hogyan-szukul-a-kontextus-a",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m01-process-3",
+          "question": "Hogyan lesz a homályos kérésből munkára fogható kérés?",
+          "type": "process",
+          "glossarySlugs": [
+            "scope"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m01-hogyan-lesz-a-homalyos-keresbol",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m01-relationship-4",
+          "question": "Miben más az önellenőrzés és a független review?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "review"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m01-miben-mas-az-onellenorzes-es",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást."
+        },
+        {
+          "id": "q-m01-relationship-5",
+          "question": "Mi a termék és mi a referenciafeladat?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "reference-task"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-product-reference",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
+          "sharedHref": "../../../index.html#fig-product-reference"
+        }
+      ]
     },
     {
       "id": "/materials/modulok/02-repo-felkeszitese/",
@@ -345,56 +679,94 @@
       "order": 2,
       "owner": "MODULE-02",
       "alias": "notebooks/01-greenfield-setup.html",
-      "didactic": {
-        "overviewQuestion": "Mitől lesz egy repo AI-agentekkel művelhető?",
-        "overviewDiagramId": "fig-m02-overview",
-        "visualQuestions": [
-          {
-            "question": "Hol a határ a három munkaterület között?",
-            "type": "structure",
-            "slugs": [
-              "worktree",
-              "branch"
-            ],
-            "coverage": "shared:fig-workspaces"
-          },
-          {
-            "question": "Hogyan függnek össze a repo szabályai?",
-            "type": "structure",
-            "slugs": [
-              "repository-rules",
-              "definition-of-done"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan jut el a változtatás a helyi ellenőrzéstől a preview-ig?",
-            "type": "process",
-            "slugs": [
-              "ci",
-              "preview",
-              "pull-request"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mi a PR, a preview és az adatbázis kapcsolata?",
-            "type": "structure",
-            "slugs": [
-              "preview"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mikor állsz meg, és hogyan állsz helyre?",
-            "type": "decision",
-            "slugs": [
-              "quality-gate"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Mitől lesz egy repo AI-agentekkel művelhető?",
+      "overviewDiagramId": "fig-m02-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m02-overview",
+          "question": "Mitől lesz egy repo AI-agentekkel művelhető?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "worktree",
+            "branch",
+            "repository-rules",
+            "definition-of-done",
+            "ci",
+            "preview",
+            "pull-request",
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m02-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m02-structure-1",
+          "question": "Hol a határ a három munkaterület között?",
+          "type": "structure",
+          "glossarySlugs": [
+            "worktree",
+            "branch"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-workspaces",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+          "sharedHref": "../../index.html#fig-workspaces"
+        },
+        {
+          "id": "q-m02-structure-2",
+          "question": "Hogyan függnek össze a repo szabályai?",
+          "type": "structure",
+          "glossarySlugs": [
+            "repository-rules",
+            "definition-of-done"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m02-hogyan-fuggnek-ossze-a-repo",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m02-process-3",
+          "question": "Hogyan jut el a változtatás a helyi ellenőrzéstől a preview-ig?",
+          "type": "process",
+          "glossarySlugs": [
+            "ci",
+            "preview",
+            "pull-request"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m02-hogyan-jut-el-a-valtoztatas",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m02-structure-4",
+          "question": "Mi a PR, a preview és az adatbázis kapcsolata?",
+          "type": "structure",
+          "glossarySlugs": [
+            "preview"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m02-mi-a-pr-a-preview",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m02-decision-5",
+          "question": "Mikor állsz meg, és hogyan állsz helyre?",
+          "type": "decision",
+          "glossarySlugs": [
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m02-mikor-allsz-meg-es-hogyan",
+          "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli."
+        }
+      ]
     },
     {
       "id": "/materials/modulok/03-specifikacio/",
@@ -405,45 +777,76 @@
       "order": 3,
       "owner": "MODULE-03",
       "alias": "notebooks/02-spec-driven.html",
-      "didactic": {
-        "overviewQuestion": "Hogyan lesz a kérésből jóváhagyható specifikáció és végrehajtható terv?",
-        "overviewDiagramId": "fig-m03-overview",
-        "visualQuestions": [
-          {
-            "question": "Hogyan függ össze az öt spec-fájl?",
-            "type": "structure",
-            "slugs": [
-              "spec"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Milyen állapotokon megy át a jóváhagyás?",
-            "type": "cycle",
-            "slugs": [
-              "decision-gate"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan követhető az elfogadási feltétel a taskig és az ellenőrzésig?",
-            "type": "relationship",
-            "slugs": [
-              "acceptance-criteria",
-              "given-when-then"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan adja át egymásnak a munkát a BA és a fejlesztő?",
-            "type": "process",
-            "slugs": [
-              "scope"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan lesz a kérésből jóváhagyható specifikáció és végrehajtható terv?",
+      "overviewDiagramId": "fig-m03-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m03-overview",
+          "question": "Hogyan lesz a kérésből jóváhagyható specifikáció és végrehajtható terv?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "spec",
+            "decision-gate",
+            "acceptance-criteria",
+            "given-when-then",
+            "scope"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m03-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m03-structure-1",
+          "question": "Hogyan függ össze az öt spec-fájl?",
+          "type": "structure",
+          "glossarySlugs": [
+            "spec"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m03-hogyan-fugg-ossze-az-ot",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m03-cycle-2",
+          "question": "Milyen állapotokon megy át a jóváhagyás?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "decision-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m03-milyen-allapotokon-megy-at-a",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el."
+        },
+        {
+          "id": "q-m03-relationship-3",
+          "question": "Hogyan követhető az elfogadási feltétel a taskig és az ellenőrzésig?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "acceptance-criteria",
+            "given-when-then"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m03-hogyan-kovetheto-az-elfogadasi-feltetel",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást."
+        },
+        {
+          "id": "q-m03-process-4",
+          "question": "Hogyan adja át egymásnak a munkát a BA és a fejlesztő?",
+          "type": "process",
+          "glossarySlugs": [
+            "scope"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m03-hogyan-adja-at-egymasnak-a",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/materials/modulok/04-fuggetlen-review/",
@@ -454,48 +857,83 @@
       "order": 4,
       "owner": "MODULE-04",
       "alias": "notebooks/03-orchestrator-rug.html",
-      "didactic": {
-        "overviewQuestion": "Miért kell szétválasztani a készítést, a bírálatot és a javítást?",
-        "overviewDiagramId": "fig-m04-overview",
-        "visualQuestions": [
-          {
-            "question": "Hogyan zárul a készítés–review–javítás kör?",
-            "type": "cycle",
-            "slugs": [
-              "rug",
-              "maker",
-              "reviewer",
-              "fixer"
-            ],
-            "coverage": "shared:fig-review-loop"
-          },
-          {
-            "question": "Hogyan vándorol a munkadarab a szerepek között?",
-            "type": "process",
-            "slugs": [
-              "trace"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Milyen életúton megy végig egy review-találat?",
-            "type": "cycle",
-            "slugs": [
-              "review-finding"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Miben más az emberi review és a gépi ellenőrzés?",
-            "type": "relationship",
-            "slugs": [
-              "review",
-              "quality-gate"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Miért kell szétválasztani a készítést, a bírálatot és a javítást?",
+      "overviewDiagramId": "fig-m04-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m04-overview",
+          "question": "Miért kell szétválasztani a készítést, a bírálatot és a javítást?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "rug",
+            "maker",
+            "reviewer",
+            "fixer",
+            "trace",
+            "review-finding",
+            "review",
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m04-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m04-cycle-1",
+          "question": "Hogyan zárul a készítés–review–javítás kör?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "rug",
+            "maker",
+            "reviewer",
+            "fixer"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-review-loop",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el.",
+          "sharedHref": "../../modszertan/index.html#fig-review-loop"
+        },
+        {
+          "id": "q-m04-process-2",
+          "question": "Hogyan vándorol a munkadarab a szerepek között?",
+          "type": "process",
+          "glossarySlugs": [
+            "trace"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m04-hogyan-vandorol-a-munkadarab-a",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m04-cycle-3",
+          "question": "Milyen életúton megy végig egy review-találat?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "review-finding"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m04-milyen-eletuton-megy-vegig-egy",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el."
+        },
+        {
+          "id": "q-m04-relationship-4",
+          "question": "Miben más az emberi review és a gépi ellenőrzés?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "review",
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m04-miben-mas-az-emberi-review",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást."
+        }
+      ]
     },
     {
       "id": "/materials/modulok/05-szabalyok-es-kapuk/",
@@ -506,52 +944,87 @@
       "order": 5,
       "owner": "MODULE-05",
       "alias": "notebooks/04-rules-skills-hooks.html",
-      "didactic": {
-        "overviewQuestion": "Hova kerüljön a tartós tudás, és hogyan lesz belőle automatikus védelem?",
-        "overviewDiagramId": "fig-m05-overview",
-        "visualQuestions": [
-          {
-            "question": "Melyik mechanizmus mire felel?",
-            "type": "structure",
-            "slugs": [
-              "rule",
-              "skill",
-              "hook"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan döntesz a mechanizmusok között?",
-            "type": "decision",
-            "slugs": [
-              "rule",
-              "skill",
-              "hook",
-              "quality-gate",
-              "project-memory"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan kerül elő a projektmemóriából a tudás?",
-            "type": "process",
-            "slugs": [
-              "project-memory",
-              "mcp"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan lesz a találatból blokkoló védelem?",
-            "type": "process",
-            "slugs": [
-              "review-finding",
-              "fixture"
-            ],
-            "coverage": "shared:fig-finding-to-guard"
-          }
-        ]
-      }
+      "overviewQuestion": "Hova kerüljön a tartós tudás, és hogyan lesz belőle automatikus védelem?",
+      "overviewDiagramId": "fig-m05-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m05-overview",
+          "question": "Hova kerüljön a tartós tudás, és hogyan lesz belőle automatikus védelem?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "rule",
+            "skill",
+            "hook",
+            "quality-gate",
+            "project-memory",
+            "mcp",
+            "review-finding",
+            "fixture"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m05-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m05-structure-1",
+          "question": "Melyik mechanizmus mire felel?",
+          "type": "structure",
+          "glossarySlugs": [
+            "rule",
+            "skill",
+            "hook"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m05-melyik-mechanizmus-mire-felel",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m05-decision-2",
+          "question": "Hogyan döntesz a mechanizmusok között?",
+          "type": "decision",
+          "glossarySlugs": [
+            "rule",
+            "skill",
+            "hook",
+            "quality-gate",
+            "project-memory"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m05-hogyan-dontesz-a-mechanizmusok-kozott",
+          "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli."
+        },
+        {
+          "id": "q-m05-process-3",
+          "question": "Hogyan kerül elő a projektmemóriából a tudás?",
+          "type": "process",
+          "glossarySlugs": [
+            "project-memory",
+            "mcp"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m05-hogyan-kerul-elo-a-projektmemoriabol",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m05-process-4",
+          "question": "Hogyan lesz a találatból blokkoló védelem?",
+          "type": "process",
+          "glossarySlugs": [
+            "review-finding",
+            "fixture"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-finding-to-guard",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+          "sharedHref": "../../minoseg/index.html#fig-finding-to-guard"
+        }
+      ]
     },
     {
       "id": "/materials/modulok/06-rendszerellenorzes/",
@@ -562,48 +1035,82 @@
       "order": 6,
       "owner": "MODULE-06",
       "alias": "notebooks/05-qa-e2e-token.html",
-      "didactic": {
-        "overviewQuestion": "Hogyan bizonyítod a változást a böngészőtől az adatbázisig?",
-        "overviewDiagramId": "fig-m06-overview",
-        "visualQuestions": [
-          {
-            "question": "Melyik kockázatra melyik tesztréteg felel?",
-            "type": "relationship",
-            "slugs": [
-              "unit-test",
-              "contract-test",
-              "e2e"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan fut végig az ellenőrzés a böngészőtől az adatbázisig?",
-            "type": "process",
-            "slugs": [
-              "e2e",
-              "preview",
-              "provenance"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hol lokalizálod a hibát, ha valamelyik réteg elbukik?",
-            "type": "structure",
-            "slugs": [
-              "reference-task"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mit bizonyít és mibe kerül az egyes rétegek eredménye?",
-            "type": "structure",
-            "slugs": [
-              "context-budget"
-            ],
-            "coverage": "shared:fig-evidence-chain"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan bizonyítod a változást a böngészőtől az adatbázisig?",
+      "overviewDiagramId": "fig-m06-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m06-overview",
+          "question": "Hogyan bizonyítod a változást a böngészőtől az adatbázisig?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "unit-test",
+            "contract-test",
+            "e2e",
+            "preview",
+            "provenance",
+            "reference-task",
+            "context-budget"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m06-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m06-relationship-1",
+          "question": "Melyik kockázatra melyik tesztréteg felel?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "unit-test",
+            "contract-test",
+            "e2e"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m06-melyik-kockazatra-melyik-tesztreteg-felel",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást."
+        },
+        {
+          "id": "q-m06-process-2",
+          "question": "Hogyan fut végig az ellenőrzés a böngészőtől az adatbázisig?",
+          "type": "process",
+          "glossarySlugs": [
+            "e2e",
+            "preview",
+            "provenance"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m06-hogyan-fut-vegig-az-ellenorzes",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m06-structure-3",
+          "question": "Hol lokalizálod a hibát, ha valamelyik réteg elbukik?",
+          "type": "structure",
+          "glossarySlugs": [
+            "reference-task"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m06-hol-lokalizalod-a-hibat-ha",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m06-structure-4",
+          "question": "Mit bizonyít és mibe kerül az egyes rétegek eredménye?",
+          "type": "structure",
+          "glossarySlugs": [
+            "context-budget"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-evidence-chain",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+          "sharedHref": "../../modszertan/index.html#fig-evidence-chain"
+        }
+      ]
     },
     {
       "id": "/materials/modulok/07-legacy-rendszer/",
@@ -614,46 +1121,78 @@
       "order": 7,
       "owner": "MODULE-07",
       "alias": "notebooks/06-legacy-dotnet.html",
-      "didactic": {
-        "overviewQuestion": "Hogyan változtatsz biztonságosan egy ismeretlen viselkedésű rendszeren?",
-        "overviewDiagramId": "fig-m07-overview",
-        "visualQuestions": [
-          {
-            "question": "Mi a különbség a védtelen és a védőhálós változtatás között?",
-            "type": "relationship",
-            "slugs": [
-              "safety-net"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan rögzíted a megfigyelt viselkedést characterization teszttel?",
-            "type": "process",
-            "slugs": [
-              "characterization-test",
-              "legacy-system"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hol a cserepont a komponensek között?",
-            "type": "structure",
-            "slugs": [
-              "seam",
-              "strangler-pattern"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mikor bővítesz, mikor állsz meg, és hogyan lépsz vissza?",
-            "type": "decision",
-            "slugs": [
-              "rollback"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan változtatsz biztonságosan egy ismeretlen viselkedésű rendszeren?",
+      "overviewDiagramId": "fig-m07-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m07-overview",
+          "question": "Hogyan változtatsz biztonságosan egy ismeretlen viselkedésű rendszeren?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "safety-net",
+            "characterization-test",
+            "legacy-system",
+            "seam",
+            "strangler-pattern",
+            "rollback"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m07-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m07-relationship-1",
+          "question": "Mi a különbség a védtelen és a védőhálós változtatás között?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "safety-net"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m07-mi-a-kulonbseg-a-vedtelen",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást."
+        },
+        {
+          "id": "q-m07-process-2",
+          "question": "Hogyan rögzíted a megfigyelt viselkedést characterization teszttel?",
+          "type": "process",
+          "glossarySlugs": [
+            "characterization-test",
+            "legacy-system"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m07-hogyan-rogzited-a-megfigyelt-viselkedest",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m07-structure-3",
+          "question": "Hol a cserepont a komponensek között?",
+          "type": "structure",
+          "glossarySlugs": [
+            "seam",
+            "strangler-pattern"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m07-hol-a-cserepont-a-komponensek",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-m07-decision-4",
+          "question": "Mikor bővítesz, mikor állsz meg, és hogyan lépsz vissza?",
+          "type": "decision",
+          "glossarySlugs": [
+            "rollback"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m07-mikor-bovitesz-mikor-allsz-meg",
+          "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli."
+        }
+      ]
     },
     {
       "id": "/materials/modulok/08-csapatbevezetes/",
@@ -664,53 +1203,89 @@
       "order": 8,
       "owner": "MODULE-08",
       "alias": "notebooks/07-team-adoption.html",
-      "didactic": {
-        "overviewQuestion": "Hogyan lesz a módszerből a csapat saját, mérhető működése?",
-        "overviewDiagramId": "fig-m08-overview",
-        "visualQuestions": [
-          {
-            "question": "Hogyan épül fel a képességek útja a nap végére?",
-            "type": "timeline",
-            "slugs": [
-              "operating-model"
-            ],
-            "coverage": "shared:fig-learning-roadmap"
-          },
-          {
-            "question": "Ki miért felel a körben?",
-            "type": "cycle",
-            "slugs": [
-              "owner"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan zajlik a kontrollált modell-/eszközértékelés?",
-            "type": "process",
-            "slugs": [
-              "eval",
-              "golden-path"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Mi történik 30, 60 és 90 nap múlva?",
-            "type": "timeline",
-            "slugs": [
-              "pilot"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Milyen jelekből látod a rendszer egészségét?",
-            "type": "structure",
-            "slugs": [
-              "plan-b"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan lesz a módszerből a csapat saját, mérhető működése?",
+      "overviewDiagramId": "fig-m08-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-m08-overview",
+          "question": "Hogyan lesz a módszerből a csapat saját, mérhető működése?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "operating-model",
+            "owner",
+            "eval",
+            "golden-path",
+            "pilot",
+            "plan-b"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m08-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-m08-timeline-1",
+          "question": "Hogyan épül fel a képességek útja a nap végére?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "operating-model"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-learning-roadmap",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
+          "sharedHref": "../../../index.html#fig-learning-roadmap"
+        },
+        {
+          "id": "q-m08-cycle-2",
+          "question": "Ki miért felel a körben?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "owner"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m08-ki-miert-felel-a-korben",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el."
+        },
+        {
+          "id": "q-m08-process-3",
+          "question": "Hogyan zajlik a kontrollált modell-/eszközértékelés?",
+          "type": "process",
+          "glossarySlugs": [
+            "eval",
+            "golden-path"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m08-hogyan-zajlik-a-kontrollalt-modell",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-m08-timeline-4",
+          "question": "Mi történik 30, 60 és 90 nap múlva?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "pilot"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m08-mi-tortenik-30-60-es",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény."
+        },
+        {
+          "id": "q-m08-structure-5",
+          "question": "Milyen jelekből látod a rendszer egészségét?",
+          "type": "structure",
+          "glossarySlugs": [
+            "plan-b"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-m08-milyen-jelekbol-latod-a-rendszer",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        }
+      ]
     },
     {
       "id": "/materials/epitesi-naplo/",
@@ -721,18 +1296,38 @@
       "order": 9,
       "owner": "JOURNAL",
       "alias": "journal README merged",
-      "didactic": {
-        "overviewQuestion": "Milyen döntések és tanulságok mentén épült ez a tananyag?",
-        "overviewDiagramId": "fig-naplo-overview",
-        "visualQuestions": [
-          {
-            "question": "Melyik naplófejezet melyik modul tanulságát adja?",
-            "type": "timeline",
-            "slugs": [],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Milyen döntések és tanulságok mentén épült ez a tananyag?",
+      "overviewDiagramId": "fig-naplo-overview",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-journal-overview",
+          "question": "Milyen döntések és tanulságok mentén épült ez a tananyag?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "trace"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-naplo-overview",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-journal-timeline-1",
+          "question": "Melyik naplófejezet melyik modul tanulságát adja?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "trace"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény."
+        }
+      ]
     },
     {
       "id": "/materials/epitesi-naplo/01-repoinditas/",
@@ -743,18 +1338,39 @@
       "order": 1,
       "owner": "JOURNAL",
       "alias": "day-1.md stub",
-      "didactic": {
-        "overviewQuestion": "Mit tanultunk a repo elindításából?",
-        "overviewDiagramId": "fig-j01-synthesis",
-        "visualQuestions": [
-          {
-            "question": "Mi a termék és mi a referenciafeladat viszonya?",
-            "type": "relationship",
-            "slugs": [],
-            "coverage": "shared:fig-product-reference"
-          }
-        ]
-      }
+      "overviewQuestion": "Mit tanultunk a repo elindításából?",
+      "overviewDiagramId": "fig-j01-synthesis",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-journal-01-overview",
+          "question": "Mit tanultunk a repo elindításából?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "agent-ready-repo"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-j01-synthesis",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-journal-01-relationship-1",
+          "question": "Mi a termék és mi a referenciafeladat viszonya?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "agent-ready-repo"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-product-reference",
+          "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
+          "sharedHref": "../../../index.html#fig-product-reference"
+        }
+      ]
     },
     {
       "id": "/materials/epitesi-naplo/02-elso-vertical-slice/",
@@ -765,18 +1381,39 @@
       "order": 2,
       "owner": "JOURNAL",
       "alias": "day-2.md stub",
-      "didactic": {
-        "overviewQuestion": "Mit tanultunk az első vertical slice-ból?",
-        "overviewDiagramId": "fig-j02-synthesis",
-        "visualQuestions": [
-          {
-            "question": "Hogyan állt össze az első teljes ellenőrzési lánc?",
-            "type": "process",
-            "slugs": [],
-            "coverage": "shared:fig-evidence-chain"
-          }
-        ]
-      }
+      "overviewQuestion": "Mit tanultunk az első vertical slice-ból?",
+      "overviewDiagramId": "fig-j02-synthesis",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-journal-02-overview",
+          "question": "Mit tanultunk az első vertical slice-ból?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "artifact"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-j02-synthesis",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-journal-02-process-1",
+          "question": "Hogyan állt össze az első teljes ellenőrzési lánc?",
+          "type": "process",
+          "glossarySlugs": [
+            "artifact"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-evidence-chain",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+          "sharedHref": "../../modszertan/index.html#fig-evidence-chain"
+        }
+      ]
     },
     {
       "id": "/materials/epitesi-naplo/03-rug-es-preview/",
@@ -787,18 +1424,39 @@
       "order": 3,
       "owner": "JOURNAL",
       "alias": "day-3.md stub",
-      "didactic": {
-        "overviewQuestion": "Mit tanultunk a RUG-körből és a preview-ból?",
-        "overviewDiagramId": "fig-j03-synthesis",
-        "visualQuestions": [
-          {
-            "question": "Hol javított valódi hibát a független review?",
-            "type": "cycle",
-            "slugs": [],
-            "coverage": "shared:fig-review-loop"
-          }
-        ]
-      }
+      "overviewQuestion": "Mit tanultunk a RUG-körből és a preview-ból?",
+      "overviewDiagramId": "fig-j03-synthesis",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-journal-03-overview",
+          "question": "Mit tanultunk a RUG-körből és a preview-ból?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "rug"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-j03-synthesis",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-journal-03-cycle-1",
+          "question": "Hol javított valódi hibát a független review?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "rug"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-review-loop",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el.",
+          "sharedHref": "../../modszertan/index.html#fig-review-loop"
+        }
+      ]
     },
     {
       "id": "/materials/epitesi-naplo/04-gepi-ellenorzes/",
@@ -809,18 +1467,39 @@
       "order": 4,
       "owner": "JOURNAL",
       "alias": "day-4.md stub",
-      "didactic": {
-        "overviewQuestion": "Mit tanultunk a gépi ellenőrzések bevezetéséből?",
-        "overviewDiagramId": "fig-j04-synthesis",
-        "visualQuestions": [
-          {
-            "question": "Hogyan lett a találatokból tartós védelem?",
-            "type": "process",
-            "slugs": [],
-            "coverage": "shared:fig-finding-to-guard"
-          }
-        ]
-      }
+      "overviewQuestion": "Mit tanultunk a gépi ellenőrzések bevezetéséből?",
+      "overviewDiagramId": "fig-j04-synthesis",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-journal-04-overview",
+          "question": "Mit tanultunk a gépi ellenőrzések bevezetéséből?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "quality-gate"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-j04-synthesis",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-journal-04-process-1",
+          "question": "Hogyan lett a találatokból tartós védelem?",
+          "type": "process",
+          "glossarySlugs": [
+            "quality-gate"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-finding-to-guard",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+          "sharedHref": "../../minoseg/index.html#fig-finding-to-guard"
+        }
+      ]
     },
     {
       "id": "/toolkit/",
@@ -831,30 +1510,60 @@
       "order": 2,
       "owner": "TOOLKIT-WEB",
       "alias": "toolkit/README.md",
-      "didactic": {
-        "overviewQuestion": "Melyik feladathoz melyik hazavihető útmutató és eszköz tartozik?",
-        "overviewDiagramId": "fig-toolkit-routes",
-        "visualQuestions": [
-          {
-            "question": "Melyik úton indulj a hat feladat közül?",
-            "type": "decision",
-            "slugs": [],
-            "coverage": "local"
-          },
-          {
-            "question": "Mi található a toolkitben, és hol?",
-            "type": "structure",
-            "slugs": [],
-            "coverage": "local"
-          },
-          {
-            "question": "Hogyan másolod, igazítod és ellenőrzöd az átvett elemet?",
-            "type": "process",
-            "slugs": [],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Melyik feladathoz melyik hazavihető útmutató és eszköz tartozik?",
+      "overviewDiagramId": "fig-toolkit-routes",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-toolkit-overview",
+          "question": "Melyik feladathoz melyik hazavihető útmutató és eszköz tartozik?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-toolkit-routes",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-toolkit-decision-1",
+          "question": "Melyik úton indulj a hat feladat közül?",
+          "type": "decision",
+          "glossarySlugs": [
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-toolkit-melyik-uton-indulj-a-hat",
+          "takeaway": "A választást a bemeneti feltételek és a következő ellenőrzési pont vezérli."
+        },
+        {
+          "id": "q-toolkit-structure-2",
+          "question": "Mi található a toolkitben, és hol?",
+          "type": "structure",
+          "glossarySlugs": [
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-toolkit-mi-talalhato-a-toolkitben-es",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-toolkit-process-3",
+          "question": "Hogyan másolod, igazítod és ellenőrzöd az átvett elemet?",
+          "type": "process",
+          "glossarySlugs": [
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-toolkit-hogyan-masolod-igazitod-es-ellenorzod",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/toolkit/utmutatok/repo-szabalyok/",
@@ -865,21 +1574,40 @@
       "order": 1,
       "owner": "TOOLKIT-WEB",
       "alias": "#repo-szabalyok",
-      "didactic": {
-        "overviewQuestion": "Hogyan írod meg a saját repód célját és szabályait?",
-        "overviewDiagramId": "fig-guide-repo",
-        "visualQuestions": [
-          {
-            "question": "Milyen elemekből áll a működő reposzabályzat?",
-            "type": "structure",
-            "slugs": [
-              "repository-rules",
-              "definition-of-done"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan írod meg a saját repód célját és szabályait?",
+      "overviewDiagramId": "fig-guide-repo",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-guide-rules-overview",
+          "question": "Hogyan írod meg a saját repód célját és szabályait?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "repository-rules",
+            "definition-of-done"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-repo",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-guide-rules-structure-1",
+          "question": "Milyen elemekből áll a működő reposzabályzat?",
+          "type": "structure",
+          "glossarySlugs": [
+            "repository-rules",
+            "definition-of-done"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-rules-milyen-elemekbol-all-a-mukodo",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        }
+      ]
     },
     {
       "id": "/toolkit/utmutatok/specifikacio/",
@@ -890,21 +1618,40 @@
       "order": 2,
       "owner": "TOOLKIT-WEB",
       "alias": "#specifikacio",
-      "didactic": {
-        "overviewQuestion": "Hogyan készítesz jóváhagyható specifikációt a sablonokból?",
-        "overviewDiagramId": "fig-guide-spec",
-        "visualQuestions": [
-          {
-            "question": "Hogyan épül fel az öt sablon egymásra?",
-            "type": "process",
-            "slugs": [
-              "spec",
-              "acceptance-criteria"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan készítesz jóváhagyható specifikációt a sablonokból?",
+      "overviewDiagramId": "fig-guide-spec",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-guide-spec-overview",
+          "question": "Hogyan készítesz jóváhagyható specifikációt a sablonokból?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "spec",
+            "acceptance-criteria"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-spec",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-guide-spec-process-1",
+          "question": "Hogyan épül fel az öt sablon egymásra?",
+          "type": "process",
+          "glossarySlugs": [
+            "spec",
+            "acceptance-criteria"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-spec-hogyan-epul-fel-az-ot",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/toolkit/utmutatok/fuggetlen-review/",
@@ -915,21 +1662,40 @@
       "order": 3,
       "owner": "TOOLKIT-WEB",
       "alias": "#fuggetlen-review",
-      "didactic": {
-        "overviewQuestion": "Hogyan futtatsz független review-t a saját csapatodban?",
-        "overviewDiagramId": "fig-guide-review",
-        "visualQuestions": [
-          {
-            "question": "Hogyan zajlik a kör a készítőtől az újraellenőrzésig?",
-            "type": "cycle",
-            "slugs": [
-              "rug",
-              "reviewer"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan futtatsz független review-t a saját csapatodban?",
+      "overviewDiagramId": "fig-guide-review",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-guide-review-overview",
+          "question": "Hogyan futtatsz független review-t a saját csapatodban?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "rug",
+            "reviewer"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-review",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-guide-review-cycle-1",
+          "question": "Hogyan zajlik a kör a készítőtől az újraellenőrzésig?",
+          "type": "cycle",
+          "glossarySlugs": [
+            "rug",
+            "reviewer"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-review-hogyan-zajlik-a-kor-a",
+          "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el."
+        }
+      ]
     },
     {
       "id": "/toolkit/utmutatok/automatizalt-kapuk/",
@@ -940,22 +1706,42 @@
       "order": 4,
       "owner": "TOOLKIT-WEB",
       "alias": "#automatizalt-kapuk",
-      "didactic": {
-        "overviewQuestion": "Hogyan építesz blokkoló automatikus ellenőrzési pontokat?",
-        "overviewDiagramId": "fig-guide-gates",
-        "visualQuestions": [
-          {
-            "question": "Hol kapcsolódnak a kapuk a munkafolyamathoz?",
-            "type": "process",
-            "slugs": [
-              "quality-gate",
-              "hook",
-              "fixture"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan építesz blokkoló automatikus ellenőrzési pontokat?",
+      "overviewDiagramId": "fig-guide-gates",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-guide-gates-overview",
+          "question": "Hogyan építesz blokkoló automatikus ellenőrzési pontokat?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "quality-gate",
+            "hook",
+            "fixture"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-gates",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-guide-gates-process-1",
+          "question": "Hol kapcsolódnak a kapuk a munkafolyamathoz?",
+          "type": "process",
+          "glossarySlugs": [
+            "quality-gate",
+            "hook",
+            "fixture"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-gates-hol-kapcsolodnak-a-kapuk-a",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/toolkit/utmutatok/projektmemoria/",
@@ -966,20 +1752,38 @@
       "order": 5,
       "owner": "TOOLKIT-WEB",
       "alias": "#projektmemoria",
-      "didactic": {
-        "overviewQuestion": "Hogyan őrzöd meg és keresed vissza a projekt tudását?",
-        "overviewDiagramId": "fig-guide-memory",
-        "visualQuestions": [
-          {
-            "question": "Hogyan jut vissza a tárolt tudás a munkába?",
-            "type": "process",
-            "slugs": [
-              "project-memory"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan őrzöd meg és keresed vissza a projekt tudását?",
+      "overviewDiagramId": "fig-guide-memory",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-guide-memory-overview",
+          "question": "Hogyan őrzöd meg és keresed vissza a projekt tudását?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "project-memory"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-memory",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-guide-memory-process-1",
+          "question": "Hogyan jut vissza a tárolt tudás a munkába?",
+          "type": "process",
+          "glossarySlugs": [
+            "project-memory"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-memory-hogyan-jut-vissza-a-tarolt",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        }
+      ]
     },
     {
       "id": "/toolkit/utmutatok/legacy-es-bevezetes/",
@@ -990,21 +1794,40 @@
       "order": 6,
       "owner": "TOOLKIT-WEB",
       "alias": "#legacy-es-bevezetes",
-      "didactic": {
-        "overviewQuestion": "Hogyan viszed be a módszert legacy környezetbe és a csapatba?",
-        "overviewDiagramId": "fig-guide-legacy",
-        "visualQuestions": [
-          {
-            "question": "Milyen lépcsőkön halad a bevezetés?",
-            "type": "timeline",
-            "slugs": [
-              "legacy-system",
-              "pilot"
-            ],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Hogyan viszed be a módszert legacy környezetbe és a csapatba?",
+      "overviewDiagramId": "fig-guide-legacy",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-guide-legacy-overview",
+          "question": "Hogyan viszed be a módszert legacy környezetbe és a csapatba?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "legacy-system",
+            "pilot"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-legacy",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-guide-legacy-timeline-1",
+          "question": "Milyen lépcsőkön halad a bevezetés?",
+          "type": "timeline",
+          "glossarySlugs": [
+            "legacy-system",
+            "pilot"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes",
+          "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény."
+        }
+      ]
     },
     {
       "id": "/participant-starter/",
@@ -1015,18 +1838,38 @@
       "order": 3,
       "owner": "STARTER-WEB",
       "alias": "participant-starter/README.md",
-      "didactic": {
-        "overviewQuestion": "Mi van készen a starterben, és mi hiányzik belőle szándékosan?",
-        "overviewDiagramId": "fig-starter-boundary",
-        "visualQuestions": [
-          {
-            "question": "Mely rétegek adottak, és mit építesz te?",
-            "type": "structure",
-            "slugs": [],
-            "coverage": "local"
-          }
-        ]
-      }
+      "overviewQuestion": "Mi van készen a starterben, és mi hiányzik belőle szándékosan?",
+      "overviewDiagramId": "fig-starter-boundary",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-starter-overview",
+          "question": "Mi van készen a starterben, és mi hiányzik belőle szándékosan?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-starter-boundary",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-starter-structure-1",
+          "question": "Mely rétegek adottak, és mit építesz te?",
+          "type": "structure",
+          "glossarySlugs": [
+            "repository-rules"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-starter-mely-retegek-adottak-es-mit",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        }
+      ]
     },
     {
       "id": "/reference-app/",
@@ -1037,29 +1880,53 @@
       "order": 4,
       "owner": "REFERENCE-WEB",
       "alias": "reference-app/README.md",
-      "didactic": {
-        "overviewQuestion": "Miért létezik a referenciaalkalmazás, és hogyan igazolja a módszert?",
-        "overviewDiagramId": "fig-app-topology",
-        "visualQuestions": [
-          {
-            "question": "Hogyan épül fel az alkalmazás és a környezete?",
-            "type": "structure",
-            "slugs": [
-              "reference-task"
-            ],
-            "coverage": "local"
-          },
-          {
-            "question": "Merre fut az ellenőrzés útja a felülettől az adatig?",
-            "type": "process",
-            "slugs": [
-              "e2e",
-              "provenance"
-            ],
-            "coverage": "shared:fig-evidence-chain"
-          }
-        ]
-      }
+      "overviewQuestion": "Miért létezik a referenciaalkalmazás, és hogyan igazolja a módszert?",
+      "overviewDiagramId": "fig-app-topology",
+      "overviewCovers": [
+        "page-purpose",
+        "learner-value",
+        "main-relationships",
+        "learner-output-or-decision"
+      ],
+      "visualQuestions": [
+        {
+          "id": "q-reference-overview",
+          "question": "Miért létezik a referenciaalkalmazás, és hogyan igazolja a módszert?",
+          "type": "relationship",
+          "glossarySlugs": [
+            "reference-task",
+            "e2e",
+            "provenance"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-app-topology",
+          "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
+        },
+        {
+          "id": "q-reference-structure-1",
+          "question": "Hogyan épül fel az alkalmazás és a környezete?",
+          "type": "structure",
+          "glossarySlugs": [
+            "reference-task"
+          ],
+          "coverage": "page-local",
+          "diagramId": "fig-reference-hogyan-epul-fel-az-alkalmazas",
+          "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet."
+        },
+        {
+          "id": "q-reference-process-2",
+          "question": "Merre fut az ellenőrzés útja a felülettől az adatig?",
+          "type": "process",
+          "glossarySlugs": [
+            "e2e",
+            "provenance"
+          ],
+          "coverage": "shared",
+          "diagramId": "fig-evidence-chain",
+          "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+          "sharedHref": "../materials/modszertan/index.html#fig-evidence-chain"
+        }
+      ]
     }
   ],
   "assets": {

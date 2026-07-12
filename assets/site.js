@@ -1,4 +1,4 @@
-// Shared site shell behavior (WEN-256). Classic script, loaded with defer.
+// Shared site shell behavior. Classic script, loaded with defer.
 // Consumes window.WorkshopSearchIndex (generated assets/search-index.js).
 // Progressive enhancement only: without JS the static navigation is the
 // full experience; the search form stays hidden. No fetch/XHR/worker/

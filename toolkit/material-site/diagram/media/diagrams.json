@@ -1,12 +1,21 @@
-[
-  {
-    "id": "rug-kor",
-    "learnerQuestion": "Hogyan jut el egy változtatás a jóváhagyott specifikációtól az elfogadott, visszakereshető eredményig?",
-    "source": "media/rug-kor.mmd",
-    "output": "media/rug-kor.svg",
-    "fallbackSelector": "#rug-kor-fallback",
-    "sourceHash": "9b9210df4cfee70ff030d9417d843d3ab9d3de5645d853bb6d0b4c7b3ced03f7",
-    "outputHash": "0a07e5aff5fc5111faead122692f914a413090f99af9597b7c89340f07b5252f",
-    "cliVersion": "11.16.0"
-  }
-]
+{
+  "diagrams": [
+    {
+      "id": "rug-kor",
+      "visualQuestionId": "q-operator-rug-cycle",
+      "question": "Hogyan jut el egy változtatás a jóváhagyott specifikációtól az elfogadott, visszakereshető eredményig?",
+      "type": "cycle",
+      "disposition": "page-local",
+      "rendering": "external-svg",
+      "diagramType": "cycle-diagram",
+      "takeaway": "Az eredmény csak független review és az ellenőrzött javítási kör után fogadható el.",
+      "glossarySlugs": ["rug", "maker", "reviewer", "fixer", "review-finding"],
+      "source": "rug-kor.mmd",
+      "output": "rug-kor.svg",
+      "textFallbackSelector": "#rug-kor-fallback",
+      "sourceHash": "9b9210df4cfee70ff030d9417d843d3ab9d3de5645d853bb6d0b4c7b3ced03f7",
+      "outputHash": "0a07e5aff5fc5111faead122692f914a413090f99af9597b7c89340f07b5252f",
+      "cliVersion": "11.16.0"
+    }
+  ]
+}

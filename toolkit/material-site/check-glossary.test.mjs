@@ -26,3 +26,10 @@ test('negative fixture rejects duplicate aliases and unlinked first use', () => 
   assert.ok(failures.some((x) => x.includes('duplicate alias')));
   assert.ok(failures.some((x) => x.includes('first use is not linked')));
 });
+
+test('foundation validates registry relations but defers future-content first use', () => {
+  const root = fixture(valid);
+  fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), '<p>Semleges foundation fixture.</p>');
+  assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'foundation' }), []);
+  assert.ok(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }).some((x) => x.includes('does not use the term')));
+});

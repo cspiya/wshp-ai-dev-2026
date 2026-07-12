@@ -2,7 +2,7 @@
 // Placeholder/TODO scan: teaching artifacts must ship without template
 // leftovers. Default scope: tracked materials/**/*.{html,md} and
 // toolkit/**/*.md; pass explicit file paths to override (fixture testing).
-// `--self-test` proves the gate fails on a violating fixture (WEN-216).
+// `--self-test` proves the gate fails on a violating fixture.
 import { execFileSync, spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";

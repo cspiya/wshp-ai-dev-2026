@@ -82,13 +82,20 @@ function loadPageManifest(pageDir) {
   if (!fs.existsSync(manifestPath)) {
     throw new Error(`no media/diagrams.json under ${pageDir}`);
   }
-  const entries = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const parsed = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const wrapped = !Array.isArray(parsed);
+  const entries = wrapped ? parsed.diagrams : parsed;
+  if (!Array.isArray(entries)) throw new Error(`diagrams.json under ${pageDir} has no diagrams array`);
   for (const e of entries) {
-    for (const field of ["id", "learnerQuestion", "source", "output", "fallbackSelector"]) {
+    for (const field of ["id", "source", "output"]) {
       if (typeof e[field] !== "string" || e[field].length === 0) {
         throw new Error(`diagrams.json entry ${e.id ?? "?"}: missing required field "${field}"`);
       }
     }
+    if (typeof (e.question ?? e.learnerQuestion) !== "string" || !(e.question ?? e.learnerQuestion).length)
+      throw new Error(`diagrams.json entry ${e.id ?? "?"}: missing required learner question`);
+    if (typeof (e.textFallbackSelector ?? e.fallbackSelector) !== "string" || !(e.textFallbackSelector ?? e.fallbackSelector).length)
+      throw new Error(`diagrams.json entry ${e.id ?? "?"}: missing required fallback selector`);
     // Paths reach a shell on Windows (.cmd shim): keep them boring.
     for (const field of ["source", "output"]) {
       if (!/^[\w./-]+$/.test(e[field])) {
@@ -96,7 +103,7 @@ function loadPageManifest(pageDir) {
       }
     }
   }
-  return { manifestPath, entries };
+  return { manifestPath, entries, wrapped };
 }
 
 function combinedSourceHash(mmdNormalized) {
@@ -104,9 +111,9 @@ function combinedSourceHash(mmdNormalized) {
   return sha256(`${mmdNormalized}\n${canonicalJson(config)}\n${cliVersion()}`);
 }
 
-function renderOne(pageDir, entry) {
-  const src = path.join(pageDir, entry.source);
-  const out = path.join(pageDir, entry.output);
+function renderOne(mediaDir, entry) {
+  const src = path.join(mediaDir, entry.source);
+  const out = path.join(mediaDir, entry.output);
   // Invoke the lockfile-pinned local binary directly (equivalent to the
   // spec's `npm --prefix toolkit/material-site exec mmdc -- …` form, which
   // current npm rejects when --prefix and exec are combined this way).
@@ -123,11 +130,12 @@ function renderOne(pageDir, entry) {
 }
 
 function processPage(mode, pageDir) {
-  const { manifestPath, entries } = loadPageManifest(pageDir);
+  const { manifestPath, entries, wrapped } = loadPageManifest(pageDir);
+  const mediaDir = path.dirname(manifestPath);
   const problems = [];
   for (const entry of entries) {
-    const srcPath = path.join(pageDir, entry.source);
-    const outPath = path.join(pageDir, entry.output);
+    const srcPath = path.join(mediaDir, entry.source);
+    const outPath = path.join(mediaDir, entry.output);
     if (!fs.existsSync(srcPath)) {
       problems.push(`${entry.id}: source missing (${entry.source})`);
       continue;
@@ -138,7 +146,7 @@ function processPage(mode, pageDir) {
 
     if (mode === "render") {
       if (sourceProblems.length > 0) continue; // never render a flagged source
-      renderOne(pageDir, entry);
+      renderOne(mediaDir, entry);
     }
     if (!fs.existsSync(outPath)) {
       problems.push(`${entry.id}: output missing (${entry.output})`);
@@ -165,7 +173,7 @@ function processPage(mode, pageDir) {
     }
   }
   if (mode === "render" && problems.length === 0) {
-    fs.writeFileSync(manifestPath, JSON.stringify(entries, null, 2) + "\n");
+    fs.writeFileSync(manifestPath, JSON.stringify(wrapped ? { diagrams: entries } : entries, null, 2) + "\n");
   }
   return problems;
 }
