@@ -1,0 +1,42 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-guide-gates",
+      "visualQuestionId": "q-guide-gates-overview",
+      "question": "Hogyan építesz blokkoló automatikus ellenőrzési pontokat?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "quality-gate",
+        "hook",
+        "fixture"
+      ],
+      "figureSelector": "#fig-guide-gates",
+      "svgSelector": "#fig-guide-gates svg",
+      "textFallbackSelector": "#fig-guide-gates-text",
+      "inlineSvgHash": "b88229001bfbc64a5c19562d9639b3ef23ae158bca4d2ff28fc3fdfb4efff30a"
+    },
+    {
+      "id": "fig-guide-gates-hol-kapcsolodnak-a-kapuk-a",
+      "visualQuestionId": "q-guide-gates-process-1",
+      "question": "Hol kapcsolódnak a kapuk a munkafolyamathoz?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "quality-gate",
+        "hook",
+        "fixture"
+      ],
+      "figureSelector": "#fig-guide-gates-hol-kapcsolodnak-a-kapuk-a",
+      "svgSelector": "#fig-guide-gates-hol-kapcsolodnak-a-kapuk-a svg",
+      "textFallbackSelector": "#fig-guide-gates-hol-kapcsolodnak-a-kapuk-a-text",
+      "inlineSvgHash": "46f180bf2498a8adc0f83d5e3211d1427d51042868df20b1e9a3d721c7366cc4"
+    }
+  ]
+}

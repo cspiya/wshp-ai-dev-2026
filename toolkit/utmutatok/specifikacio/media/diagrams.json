@@ -1,0 +1,40 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-guide-spec",
+      "visualQuestionId": "q-guide-spec-overview",
+      "question": "Hogyan készítesz jóváhagyható specifikációt a sablonokból?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "spec",
+        "acceptance-criteria"
+      ],
+      "figureSelector": "#fig-guide-spec",
+      "svgSelector": "#fig-guide-spec svg",
+      "textFallbackSelector": "#fig-guide-spec-text",
+      "inlineSvgHash": "5066f9b2935b84663a1c4d120c7a975a1a4ad10cb9c3e13d532203bbf93ea7d1"
+    },
+    {
+      "id": "fig-guide-spec-hogyan-epul-fel-az-ot",
+      "visualQuestionId": "q-guide-spec-process-1",
+      "question": "Hogyan épül fel az öt sablon egymásra?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": [
+        "spec",
+        "acceptance-criteria"
+      ],
+      "figureSelector": "#fig-guide-spec-hogyan-epul-fel-az-ot",
+      "svgSelector": "#fig-guide-spec-hogyan-epul-fel-az-ot svg",
+      "textFallbackSelector": "#fig-guide-spec-hogyan-epul-fel-az-ot-text",
+      "inlineSvgHash": "6c136e0b259a10b9de739b6abd34d4f9fdffdcfeab764a2a136d75cea90d4f51"
+    }
+  ]
+}

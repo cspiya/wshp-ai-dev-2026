@@ -1,0 +1,40 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-guide-repo",
+      "visualQuestionId": "q-guide-rules-overview",
+      "question": "Hogyan írod meg a saját repód célját és szabályait?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": [
+        "repository-rules",
+        "definition-of-done"
+      ],
+      "figureSelector": "#fig-guide-repo",
+      "svgSelector": "#fig-guide-repo svg",
+      "textFallbackSelector": "#fig-guide-repo-text",
+      "inlineSvgHash": "7580fb570d1364bf978d1f7adf8478aee631a5761e1e15ff7034b0b78bd7637e"
+    },
+    {
+      "id": "fig-guide-rules-milyen-elemekbol-all-a-mukodo",
+      "visualQuestionId": "q-guide-rules-structure-1",
+      "question": "Milyen elemekből áll a működő reposzabályzat?",
+      "type": "structure",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "hierarchy",
+      "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+      "glossarySlugs": [
+        "repository-rules",
+        "definition-of-done"
+      ],
+      "figureSelector": "#fig-guide-rules-milyen-elemekbol-all-a-mukodo",
+      "svgSelector": "#fig-guide-rules-milyen-elemekbol-all-a-mukodo svg",
+      "textFallbackSelector": "#fig-guide-rules-milyen-elemekbol-all-a-mukodo-text",
+      "inlineSvgHash": "f6dc1dc01c714ea0a3010abd7302304cb42a638e1e8374d76c34f60f38ec671e"
+    }
+  ]
+}
