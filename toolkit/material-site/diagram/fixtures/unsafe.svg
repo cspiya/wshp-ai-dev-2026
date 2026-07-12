@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Negative fixture: every element below is intentionally forbidden. -->
+  <script>alert('forbidden');</script>
+  <rect width="100" height="100" onclick="alert('forbidden')"/>
+  <foreignObject width="100" height="100"><div>forbidden</div></foreignObject>
+  <image href="https://example.invalid/forbidden.png"/>
+  <style>@import "https://example.invalid/forbidden.css";</style>
+</svg>

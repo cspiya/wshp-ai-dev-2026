@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagram-referencia — a tananyag vizuális szerződése</title>
+<link rel="stylesheet" href="../../../assets/diagram.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; color: #1f2733; line-height: 1.55; max-width: 62rem; margin: 0 auto; padding: 1rem; }
+  h1 { font-size: 1.6rem; }
+  code { background: #f4f6f9; padding: 0.1rem 0.35rem; border-radius: 0.25rem; }
+  .operator-note { border-left: 4px solid #b45309; background: #fff7ed; padding: 0.6rem 1rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>Diagram-referencia</h1>
+<p class="operator-note">Ez az oldal a diagram-készítés műszaki referenciája a tartalmi sávok számára —
+nem része a résztvevői navigációnak. Minden itt bemutatott minta kötelező szerződés: külső Mermaid SVG
+<code>&lt;img&gt;</code>-ként, akadálymentes egyedi inline SVG, felirat, teljes szöveges megfelelő,
+és opcionális, felhasználó által vezérelt léptetés.</p>
+
+<h2 id="mermaid-minta">1. Külső Mermaid SVG — a kötelező beágyazási minta</h2>
+<p>A forrás a <code>media/rug-kor.mmd</code>, a kimenet build-időben készül
+(<code>node toolkit/material-site/render-diagram.mjs render &lt;oldal-könyvtár&gt;</code>) —
+futásidejű Mermaid vagy CDN nincs. Az <code>&lt;img&gt;</code> kötelezően kap magyar
+<code>alt</code> szöveget, belső méreteket, feliratot és teljes szöveges megfelelőt.</p>
+<figure class="diagram">
+  <img src="media/rug-kor.svg" alt="Folyamatábra: a jóváhagyott specifikációból a készítő agent dolgozik,
+  az eredményt automatikus ellenőrzési pontok szűrik, majd független ellenőrző dönt; elfogadáskor
+  visszakereshető eredmény születik, javítási igénykor a javító agent visszaküldi az ellenőrzési pontokra."
+  width="900" height="450">
+  <figcaption>A független review és javítási kör: melyik lépés után születhet elfogadott eredmény?</figcaption>
+  <table class="diagram-fallback" id="rug-kor-fallback">
+    <caption>A diagram teljes szöveges megfelelője</caption>
+    <tr><th>Lépés</th><th>Mi történik?</th><th>Hová vezet?</th></tr>
+    <tr><td>Jóváhagyott specifikáció</td><td>A munka egyetlen bemenete.</td><td>Készítő (agent)</td></tr>
+    <tr><td>Készítő (agent)</td><td>Elkészíti a változtatást.</td><td>Automatikus ellenőrzési pontok</td></tr>
+    <tr><td>Automatikus ellenőrzési pontok</td><td>Gépi ellenőrzések futnak.</td><td>Független ellenőrző</td></tr>
+    <tr><td>Független ellenőrző</td><td>Friss kontextussal dönt.</td><td>Elfogadva → visszakereshető eredmény · Javítandó → Javító (agent)</td></tr>
+    <tr><td>Javító (agent)</td><td>A megerősített hibákat javítja.</td><td>Vissza az automatikus ellenőrzési pontokra</td></tr>
+  </table>
+</figure>
+
+<h2 id="inline-minta">2. Egyedi inline SVG — az akadálymentességi minta</h2>
+<p>Egyedi (nem Mermaidből készült) ábrához kötelező: <code>role="img"</code>, egyedi
+<code>&lt;title id&gt;</code> és <code>&lt;desc id&gt;</code> a rájuk mutató
+<code>aria-labelledby</code>-jal, látható szöveges címkék, és a teljes szöveges megfelelő.</p>
+<figure class="diagram">
+  <svg viewBox="0 0 600 140" role="img" aria-labelledby="allapot-title allapot-desc">
+    <title id="allapot-title">Egy diagram három állapota</title>
+    <desc id="allapot-desc">Három doboz nyilakkal összekötve: forrás (.mmd), renderelt kimenet (.svg),
+    és a hash-nyilvántartás (diagrams.json). A forrásból render készít kimenetet; mindkettő
+    lenyomata a nyilvántartásba kerül.</desc>
+    <g font-size="14" fill="#1f2733">
+      <rect x="10" y="40" width="160" height="56" rx="8" fill="#eef2ff" stroke="#0b5fff"/>
+      <text x="90" y="63" text-anchor="middle">Forrás</text>
+      <text x="90" y="83" text-anchor="middle">media/*.mmd</text>
+      <rect x="220" y="40" width="160" height="56" rx="8" fill="#ecfdf5" stroke="#047857"/>
+      <text x="300" y="63" text-anchor="middle">Kimenet</text>
+      <text x="300" y="83" text-anchor="middle">media/*.svg</text>
+      <rect x="430" y="40" width="160" height="56" rx="8" fill="#f4f6f9" stroke="#b45309"/>
+      <text x="510" y="63" text-anchor="middle">Nyilvántartás</text>
+      <text x="510" y="83" text-anchor="middle">diagrams.json</text>
+    </g>
+    <g stroke="#5a6675" stroke-width="2" fill="#5a6675">
+      <line x1="170" y1="68" x2="216" y2="68"/><polygon points="220,68 212,64 212,72"/>
+      <line x1="380" y1="68" x2="426" y2="68"/><polygon points="430,68 422,64 422,72"/>
+    </g>
+  </svg>
+  <figcaption>Mi köti össze a forrást, a kimenetet és a hash-nyilvántartást?</figcaption>
+  <table class="diagram-fallback" id="allapot-fallback">
+    <caption>A diagram teljes szöveges megfelelője</caption>
+    <tr><th>Elem</th><th>Szerep</th></tr>
+    <tr><td>Forrás (media/*.mmd)</td><td>A diagram szerkeszthető definíciója; ebből készül a kimenet.</td></tr>
+    <tr><td>Kimenet (media/*.svg)</td><td>Build-időben renderelt, normalizált statikus kép.</td></tr>
+    <tr><td>Nyilvántartás (diagrams.json)</td><td>Mindkettő SHA-256 lenyomata + a tanulói kérdés; az elavulást gépi ellenőrzés fogja.</td></tr>
+  </table>
+</figure>
+
+<h2 id="leptetes">3. Opcionális léptetés — JavaScript nélkül</h2>
+<p>Ha egy folyamatot lépésenként érdemes felfedezni, natív <code>&lt;details&gt;</code> elemeket
+használunk: billentyűzettel teljes értékű, JavaScript és hálózat nélkül is működik, nyomtatásban
+minden lépés láthatóvá válik.</p>
+<div class="diagram-steps">
+  <details open>
+    <summary>1. lépés — a specifikáció megérkezik a készítőhöz</summary>
+    <p>A készítő agent egyetlen bemenete a jóváhagyott specifikáció; ami nincs benne, arról nem dönthet.</p>
+  </details>
+  <details>
+    <summary>2. lépés — gépi ellenőrzési pontok futnak</summary>
+    <p>Az automatikus ellenőrzések a review előtt szűrik a nyilvánvaló hibákat.</p>
+  </details>
+  <details>
+    <summary>3. lépés — a független ellenőrző dönt</summary>
+    <p>Friss kontextusú döntés: elfogadás vagy megerősített javítási lista a javítónak.</p>
+  </details>
+</div>
+
+<h2 id="parancsok">4. Parancsok</h2>
+<p>
+  Render: <code>node toolkit/material-site/render-diagram.mjs render &lt;oldal-könyvtár&gt;</code> ·
+  Frissesség/biztonság: <code>… check &lt;oldal-könyvtár&gt;</code> ·
+  Beágyazási szerződés: <code>… check-page &lt;oldal.html&gt;</code> ·
+  Önteszt: <code>… --self-test</code> ·
+  Normalizálás: <code>node toolkit/material-site/normalize-svg.mjs &lt;fájl.svg&gt;</code>
+</p>
+</main>
+</body>
+</html>

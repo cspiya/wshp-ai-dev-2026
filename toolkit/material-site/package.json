@@ -1,0 +1,8 @@
+{
+  "name": "material-site-tools",
+  "private": true,
+  "description": "Deterministic diagram toolchain for the participant site (DIAGRAM-TOOLS lane). Pinned mermaid-cli renders page-local .mmd sources to static SVG; no runtime Mermaid anywhere.",
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "11.16.0"
+  }
+}

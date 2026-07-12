@@ -1,0 +1,7 @@
+flowchart LR
+  spec["Jóváhagyott<br/>specifikáció"] --> keszito["Készítő<br/>(agent)"]
+  keszito --> kapuk["Automatikus<br/>ellenőrzési pontok"]
+  kapuk --> review["Független<br/>ellenőrző"]
+  review -->|elfogadva| kesz["Kész:<br/>visszakereshető eredmény"]
+  review -->|javítandó| javito["Javító<br/>(agent)"]
+  javito --> kapuk

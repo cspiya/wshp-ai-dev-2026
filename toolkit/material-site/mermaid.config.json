@@ -1,0 +1,31 @@
+{
+  "theme": "base",
+  "securityLevel": "strict",
+  "deterministicIds": true,
+  "deterministicIDSeed": "wshp-ai-dev-2026-v2",
+  "htmlLabels": false,
+  "fontFamily": "system-ui, 'Segoe UI', Arial, sans-serif",
+  "themeVariables": {
+    "fontFamily": "system-ui, 'Segoe UI', Arial, sans-serif",
+    "fontSize": "16px",
+    "primaryColor": "#eef2ff",
+    "primaryBorderColor": "#0b5fff",
+    "primaryTextColor": "#1f2733",
+    "secondaryColor": "#ecfdf5",
+    "secondaryBorderColor": "#047857",
+    "secondaryTextColor": "#1f2733",
+    "tertiaryColor": "#f4f6f9",
+    "tertiaryBorderColor": "#d8dee6",
+    "tertiaryTextColor": "#1f2733",
+    "lineColor": "#5a6675",
+    "textColor": "#1f2733",
+    "background": "#ffffff"
+  },
+  "flowchart": {
+    "htmlLabels": false,
+    "useMaxWidth": true
+  },
+  "sequence": {
+    "useMaxWidth": true
+  }
+}
