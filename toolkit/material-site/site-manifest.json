@@ -36,19 +36,6 @@
           "takeaway": "A fejlesztési rendszer a hazavihető termék; a referenciaalkalmazás annak próbapadja."
         },
         {
-          "id": "q-root-route-map",
-          "question": "Melyik élethelyzetből melyik területre vezet az utad?",
-          "type": "decision",
-          "glossarySlugs": [
-            "agent-ready-repo",
-            "reference-task",
-            "golden-path"
-          ],
-          "coverage": "page-local",
-          "diagramId": "fig-route-map",
-          "takeaway": "A workshop előtt, közben és után más terület adja a következő használható lépést."
-        },
-        {
           "id": "q-root-learning-roadmap",
           "question": "Hogyan épül egymásra a nyolc modul?",
           "type": "timeline",
