@@ -40,6 +40,14 @@ export function readManifest(source) {
   return routes;
 }
 
+function readManifestDocument(source) {
+  const filename = path.join(source, 'toolkit/material-site/site-manifest.json');
+  const json = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  const document = Array.isArray(json) ? { routes: json } : json;
+  if (!Array.isArray(document.routes) || document.routes.length === 0) throw new Error('manifest must contain a non-empty routes array');
+  return document;
+}
+
 const VISUAL_TYPES = new Set(['key-concept', 'process', 'cycle', 'structure', 'relationship', 'decision', 'timeline', 'quantitative-data']);
 const OVERVIEW_CATEGORIES = new Set(['page-purpose', 'learner-value', 'main-relationships', 'learner-output-or-decision']);
 export const FROZEN_ROUTES = new Map([
@@ -111,6 +119,48 @@ export const FROZEN_PRESENTATION = new Map(Object.entries({
   '/reference-app/': ['Referenciaalkalmazás', 'reference-app/README.md'],
 }));
 
+export const FROZEN_COMPATIBILITY_OUTPUTS = new Set([
+  'materials/notebooks/00-bevezeto.html',
+  'materials/notebooks/01-greenfield-setup.html',
+  'materials/notebooks/02-spec-driven.html',
+  'materials/notebooks/03-orchestrator-rug.html',
+  'materials/notebooks/04-rules-skills-hooks.html',
+  'materials/notebooks/05-qa-e2e-token.html',
+  'materials/notebooks/06-legacy-dotnet.html',
+  'materials/notebooks/07-team-adoption.html',
+]);
+
+function safeCompatibilityOutput(output) {
+  return typeof output === 'string' && output.endsWith('.html') && !path.posix.isAbsolute(output) && !output.includes('\\') && !output.split('/').some((segment) => ['', '.', '..'].includes(segment)) && !/^[a-z][a-z0-9+.-]*:/i.test(output);
+}
+
+function validateCompatibilityRoutes(document, routes, routeIds, outputs, site, phase, failures) {
+  const block = document.compatibilityRoutes;
+  if (!block || block.sunset !== '2026-08-15') failures.push('compatibilityRoutes.sunset must be 2026-08-15');
+  if (!Array.isArray(block?.routes) || block.routes.length !== FROZEN_COMPATIBILITY_OUTPUTS.size) {
+    failures.push(`compatibilityRoutes.routes must contain exactly ${FROZEN_COMPATIBILITY_OUTPUTS.size} routes`);
+    return new Set();
+  }
+  const seen = new Set();
+  for (const [index, compat] of block.routes.entries()) {
+    const label = `compatibilityRoutes.routes[${index}]`;
+    if (!safeCompatibilityOutput(compat.output)) failures.push(`${label}: unsafe compatibility output ${compat.output ?? '?'}`);
+    const output = typeof compat.output === 'string' ? compat.output.replaceAll('\\', '/').toLowerCase() : '';
+    if (seen.has(output)) failures.push(`${label}: duplicate compatibility output ${compat.output}`);
+    seen.add(output);
+    if (outputs.has(output)) failures.push(`${label}: compatibility output collides with canonical output ${compat.output}`);
+    if (!routeIds.has(String(compat.canonical).toLowerCase())) failures.push(`${label}: canonical target is not a manifest route: ${compat.canonical ?? '?'}`);
+    if (!FROZEN_COMPATIBILITY_OUTPUTS.has(compat.output)) failures.push(`${label}: unexpected compatibility output ${compat.output ?? '?'}`);
+    const alias = typeof compat.output === 'string' && compat.output.startsWith('materials/') ? compat.output.slice('materials/'.length) : null;
+    const canonicalRoute = routes.find((route) => route.alias === alias);
+    if (canonicalRoute && compat.canonical !== canonicalRoute.id) failures.push(`${label}: wrong canonical target for ${compat.output}; expected ${canonicalRoute.id}`);
+    else if (!canonicalRoute && FROZEN_COMPATIBILITY_OUTPUTS.has(compat.output)) failures.push(`${label}: no canonical route owns legacy alias ${alias}`);
+    if (phase === 'final' && safeCompatibilityOutput(compat.output) && !fs.existsSync(path.join(site, compat.output))) failures.push(`${label}: final compatibility output missing: ${compat.output}`);
+  }
+  for (const output of FROZEN_COMPATIBILITY_OUTPUTS) if (!seen.has(output.toLowerCase())) failures.push(`missing compatibility output: ${output}`);
+  return seen;
+}
+
 function validateVisualContract(route, label, failures, canonicalSlugs) {
   if (typeof route.overviewQuestion !== 'string' || !route.overviewQuestion.trim()) failures.push(`${label}: missing overviewQuestion`);
   if (typeof route.overviewDiagramId !== 'string' || !route.overviewDiagramId.trim()) failures.push(`${label}: missing overviewDiagramId`);
@@ -138,8 +188,9 @@ function validateVisualContract(route, label, failures, canonicalSlugs) {
 
 export function validateManifest({ source, site, phase }) {
   const failures = [];
-  let routes;
-  try { routes = readManifest(source); } catch (error) { return [error.message]; }
+  let document;
+  try { document = readManifestDocument(source); } catch (error) { return [error.message]; }
+  const routes = document.routes;
   let canonicalSlugs = null;
   const glossaryFile = path.join(source, 'materials/fogalomtar/glossary.json');
   if (fs.existsSync(glossaryFile)) {
@@ -186,6 +237,8 @@ export function validateManifest({ source, site, phase }) {
     const parent = route.parent ?? (route.id === '/' ? null : '/');
     if (parent && !routeIds.has(parent.toLowerCase())) failures.push(`${route.id}: parent route does not exist: ${parent}`);
   }
+  const compatibilityOutputs = validateCompatibilityRoutes(document, routes, routeIds, outputs, site, phase, failures);
+  for (const output of compatibilityOutputs) forwards.add(output);
   if (phase === 'final') {
     for (const relative of participantHtml(source)) if (!sources.has(relative.toLowerCase()) && !forwards.has(relative.toLowerCase())) failures.push(`unmanifested participant HTML: ${relative}`);
   }

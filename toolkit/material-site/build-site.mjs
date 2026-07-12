@@ -123,7 +123,51 @@ export function validateManifest(manifest) {
     errors.push("glossary ownership missing — no route with owner GLOSSARY to carry the shared search terms");
   if (glossaryOwners.length > 1)
     errors.push(`duplicate glossary ownership — ${glossaryOwners.length} routes claim owner GLOSSARY`);
+  validateCompatibilityRoutes(manifest, ids, outputs, errors);
   return errors;
+}
+
+function safeCompatibilityOutput(output) {
+  return (
+    typeof output === "string" &&
+    output.endsWith(".html") &&
+    !path.posix.isAbsolute(output) &&
+    !output.includes("\\") &&
+    !output.split("/").some((segment) => segment === "" || segment === "." || segment === "..") &&
+    !/^[a-z][a-z0-9+.-]*:/i.test(output)
+  );
+}
+
+function validateCompatibilityRoutes(manifest, canonicalIds, canonicalOutputs, errors) {
+  const block = manifest.compatibilityRoutes;
+  if (!block || block.sunset !== "2026-08-15") {
+    errors.push("compatibilityRoutes.sunset must be 2026-08-15");
+  }
+  if (!Array.isArray(block?.routes) || block.routes.length !== 8) {
+    errors.push("compatibilityRoutes.routes must contain exactly eight routes");
+    return;
+  }
+  const legacyOutputs = new Set();
+  for (const [index, compat] of block.routes.entries()) {
+    const label = `compatibilityRoutes.routes[${index}]`;
+    if (!safeCompatibilityOutput(compat.output)) errors.push(`${label}: unsafe compatibility output ${compat.output ?? "?"}`);
+    const normalizedOutput = typeof compat.output === "string" ? compat.output.toLowerCase() : "";
+    if (legacyOutputs.has(normalizedOutput)) errors.push(`${label}: duplicate compatibility output ${compat.output}`);
+    legacyOutputs.add(normalizedOutput);
+    if (canonicalOutputs.has(compat.output)) errors.push(`${label}: compatibility output collides with a canonical output`);
+    if (typeof compat.canonical !== "string" || !canonicalIds.has(compat.canonical)) {
+      errors.push(`${label}: canonical target is not a manifest route: ${compat.canonical ?? "?"}`);
+    }
+    const alias = typeof compat.output === "string" && compat.output.startsWith("materials/")
+      ? compat.output.slice("materials/".length)
+      : null;
+    const canonicalRoute = manifest.routes.find((route) => route.alias === alias);
+    if (canonicalRoute && compat.canonical !== canonicalRoute.id) {
+      errors.push(`${label}: wrong canonical target for ${compat.output}; expected ${canonicalRoute.id}`);
+    } else if (!canonicalRoute) {
+      errors.push(`${label}: no canonical route owns legacy alias ${alias ?? "?"}`);
+    }
+  }
 }
 
 function loadManifest() {
@@ -238,6 +282,48 @@ function rootPrefix(output) {
 function relHref(fromOutput, route) {
   const prefix = rootPrefix(fromOutput);
   return `${prefix}${route.output}`;
+}
+
+function compatibilityHref(fromOutput, targetOutput) {
+  return path.posix.relative(path.posix.dirname(fromOutput), targetOutput);
+}
+
+function renderCompatibilityPage(compat, target, sunset) {
+  const href = compatibilityHref(compat.output, target.output);
+  const safeHref = escapeHtml(href);
+  const safeTitle = escapeHtml(target.title);
+  const prefix = rootPrefix(compat.output);
+  return `<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="${CSP}">
+  <meta http-equiv="refresh" content="4; url=${safeHref}">
+  <link rel="canonical" href="${safeHref}">
+  <link rel="stylesheet" href="${prefix}assets/site.css">
+  <title>Az oldal új helyre költözött · ${safeTitle}</title>
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; }
+    .compatibility-card { width: min(42rem, 100%); padding: clamp(1.5rem, 5vw, 3rem); border: 1px solid var(--border, #cbd5e1); border-radius: 1.25rem; background: var(--surface, #fff); box-shadow: 0 1rem 3rem rgba(15, 23, 42, .08); }
+    .compatibility-card h1 { margin-block: .35rem 1rem; }
+    .compatibility-label { color: var(--accent, #1d4ed8); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .compatibility-action { display: inline-block; margin-block: 1rem; padding: .75rem 1rem; border-radius: .65rem; background: var(--accent, #1d4ed8); color: #fff; font-weight: 700; }
+    .compatibility-note { color: var(--muted, #475569); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <main class="compatibility-card">
+    <p class="compatibility-label">Az oldal elköltözött</p>
+    <h1>${safeTitle}</h1>
+    <p>Ez a workshopmodul már a tananyag egységes, számozott moduljai között található.</p>
+    <p><a class="compatibility-action" href="${safeHref}">Tovább a modul új oldalára</a></p>
+    <p class="compatibility-note">Négy másodperc múlva automatikusan továbblépünk. Ha az átirányítás nem indul el, használd a fenti hivatkozást.</p>
+    <p class="compatibility-note">Ez a régi cím <time datetime="${sunset}">2026. augusztus 15-ig</time> marad elérhető.</p>
+  </main>
+</body>
+</html>
+`;
 }
 
 function buildNavModel(manifest) {
@@ -538,7 +624,23 @@ function main() {
     });
   }
 
-  // 3. Downloads: exact allowlisted files only, mirrored under downloads/.
+  // 3. Legacy compatibility routes. These are generated from the manifest,
+  // never enter navigation/module progression/search, and use only relative
+  // targets so the same artifact works over HTTP and direct file:// access.
+  const compatibilityOutputs = [];
+  for (const compat of manifest.compatibilityRoutes.routes) {
+    const target = nav.byId.get(compat.canonical);
+    if (!target) {
+      errors.push(`${compat.output}: compatibility target missing: ${compat.canonical}`);
+      continue;
+    }
+    const destPath = path.join(outRoot, compat.output);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(destPath, renderCompatibilityPage(compat, target, manifest.compatibilityRoutes.sunset));
+    compatibilityOutputs.push(compat.output);
+  }
+
+  // 4. Downloads: exact allowlisted files only, mirrored under downloads/.
   for (const rel of manifest.downloads) {
     const src = path.join(REPO_ROOT, rel);
     if (!fs.existsSync(src)) {
@@ -548,7 +650,7 @@ function main() {
     copyFile(src, path.join(outRoot, "downloads", rel));
   }
 
-  // 4. Search index (classic script, immutable assignment, no fetch).
+  // 5. Search index (classic script, immutable assignment, no fetch).
   // Glossary terms are emitted ONLY on the canonical GLOSSARY-owned route:
   // preferred Hungarian term, retained English term and aliases all resolve
   // to that single route with the term slug as the exact anchor.
@@ -573,6 +675,7 @@ function main() {
       phase: opts.phase,
       real: realRoutes.map((entry) => entry.split(" <- ")[0]),
       substituted: substitutions.map((entry) => entry.split(" <- ")[0]),
+      compatibility: compatibilityOutputs,
     }, null, 2)}\n`
   );
   fs.writeFileSync(
