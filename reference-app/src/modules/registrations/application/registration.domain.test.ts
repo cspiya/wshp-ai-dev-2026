@@ -24,3 +24,9 @@ it("rejects cancellation exactly 48 hours before an offset workshop instant", ()
 it("rejects cancellation one millisecond inside the 48-hour window", () => {
   expect(canCancelRegistration("2027-01-03T09:59:59.999Z", now)).toBe(false);
 });
+
+it("honors a configured cancellation window (24h): exclusive boundary holds", () => {
+  const dayWindowMs = 24 * 60 * 60 * 1_000;
+  expect(canCancelRegistration("2027-01-02T10:00:00.000Z", now, dayWindowMs)).toBe(false);
+  expect(canCancelRegistration("2027-01-02T10:00:00.001Z", now, dayWindowMs)).toBe(true);
+});
