@@ -59,9 +59,22 @@ This repository's commands (run from the repo root; adapt the list when you
 port the checklist to another project):
 
 - Template/placeholder scan: `node toolkit/hooks/check-placeholders.mjs`
-- Structural HTML/shell check: `node toolkit/hooks/check-notebooks.mjs`
+- Structural HTML/shell/SVG-accessibility check: `node toolkit/hooks/check-notebooks.mjs`
 - Public-content guard: `node toolkit/hooks/check-public-content.mjs`
-- Link validity check: `node toolkit/hooks/check-links.mjs`
+- Link validity + directory-landing check: `node toolkit/hooks/check-links.mjs`
+- Publication smoke (records URL, status, content-type of the live site):
+  `node toolkit/hooks/check-links.mjs --publication-smoke`
+- Render matrix (desktop/mobile/print evidence + manifest):
+  `node toolkit/material-qa/material-qa.mjs materials/notebooks`
 
-Each validator scans the tracked repo files by default and accepts explicit
-file paths as arguments (useful for checking a single artifact or a fixture).
+Each validator scans the tracked repo files by default (negative-fixture
+directories named `fixtures/` are excluded) and accepts explicit file paths
+as arguments (useful for checking a single artifact or a fixture). Each has
+a `--self-test` mode proving it fails on a violating fixture. CI runs the
+IDENTICAL commands in `.github/workflows/materials.yml` — if the lists
+diverge, that is a defect. `.md` links inside notebook HTML are reported as
+raw-Markdown-routing warnings until rendered routes exist
+(`--strict-md-routing` upgrades them to failures); the full shared-shell
+contract for every module is enforced via
+`node toolkit/hooks/check-notebooks.mjs --strict-shell` once Wave-2
+converts modules 04–07.

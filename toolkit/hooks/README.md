@@ -20,10 +20,35 @@ file paths as arguments; exit `1` on any violation:
 
 ```powershell
 node toolkit/hooks/check-placeholders.mjs   # unfinished-work and template-leftover markers
-node toolkit/hooks/check-notebooks.mjs      # notebook HTML: doctype, title, self-contained
-node toolkit/hooks/check-links.mjs          # relative href/src/markdown links resolve
+node toolkit/hooks/check-notebooks.mjs      # notebook HTML: doctype, title, self-contained, shell, SVG a11y
+node toolkit/hooks/check-links.mjs          # relative links resolve; directory links need a landing page
 node toolkit/hooks/check-public-content.mjs # guard-public-content over all tracked md/html
 ```
+
+### WEN-216 gate extensions
+
+- Every validator has a `--self-test` mode: it generates violating fixtures
+  in a temp directory and exits `0` only if its own detection fails them
+  for the intended reason. CI runs all four self-tests.
+- Default scans exclude `fixtures/` directories (negative fixtures violate
+  on purpose); explicit file arguments still check them.
+- `check-notebooks.mjs`: pages that opt into the shared shell (contain
+  `<main`) must carry module navigation (skeleton files prefixed `_` are
+  exempt) and no visible content after `</main>`. Every inline `<svg>`
+  needs `role="img"`, `aria-labelledby` matched to its own
+  `<title id>`/`<desc id>`, and a `static-fallback` equivalent
+  (see `materials/notebooks/visual-contract.md`). `--strict-shell` enforces
+  the end-state contract (shell + nav + `aria-current="step"` checkpoint
+  strip on every notebook) — switches on when Wave-2 converts 04–07.
+- `check-links.mjs`: directory links must have `README.md`/`index.html`
+  in the target (published directories 404 otherwise). `.md` links inside
+  `.html` are raw-Markdown-routing WARNINGS (`--strict-md-routing` fails
+  them). `--publication-smoke [baseUrl]` records URL, HTTP status and
+  content-type for the published site's key routes; it fails only on
+  transport errors.
+- CI: `.github/workflows/materials.yml` runs these exact commands plus the
+  `toolkit/material-qa` render matrix; local and CI command lists are
+  intentionally identical.
 
 ## Protected-path guard (PreToolUse)
 
