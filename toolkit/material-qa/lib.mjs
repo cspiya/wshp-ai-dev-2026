@@ -214,6 +214,9 @@ export async function renderAll({
         // files in different directories never overwrite each other.
         const baseName = `${rel.replace(/\.[^.]+$/, '').split('/').join('__')}.${modeName}`;
         const outPath = path.join(outDir, mode.kind === 'pdf' ? `${baseName}.pdf` : `${baseName}.png`);
+        // A reused evidence dir must never let a failed attempt point at a
+        // previous run's capture of older content.
+        fs.rmSync(outPath, { force: true });
         const context = await browser.newContext({
           viewport: mode.viewport,
           deviceScaleFactor: 1,
