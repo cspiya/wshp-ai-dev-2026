@@ -20,7 +20,6 @@ function canonicalRoute(site, file) {
 }
 function entriesOf(json) { return Array.isArray(json) ? json : json.entries ?? json.pages ?? json.documents; }
 function routeOf(entry) { return entry.route ?? entry.href ?? entry.url ?? entry.id; }
-function searchable(entry) { return [entry.title, entry.text, entry.content, ...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].filter(Boolean).join(' ').toLocaleLowerCase('hu-HU'); }
 function readIndex(file) {
   const text = fs.readFileSync(file, 'utf8');
   if (file.toLowerCase().endsWith('.json')) return JSON.parse(text);
@@ -75,8 +74,8 @@ export function validateSearch({ site, phase }) {
     for (const record of terms) {
       for (const query of [record.preferred, record.english, ...(Array.isArray(record.aliases) ? record.aliases : [])].filter(Boolean)) {
         const normalized = String(query).toLocaleLowerCase('hu-HU');
-        const resultRoutes = entries.filter((entry) => searchable(entry).includes(normalized)).map(routeOf);
-        if (!resultRoutes.includes('/materials/fogalomtar/')) failures.push(`glossary query "${query}" does not resolve to /materials/fogalomtar/`);
+        const exactOwners = entries.filter((entry) => [...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].some((term) => String(term).toLocaleLowerCase('hu-HU') === normalized)).map(routeOf);
+        if (exactOwners.length !== 1 || exactOwners[0] !== '/materials/fogalomtar/') failures.push(`glossary query "${query}" must have exactly one canonical owner: /materials/fogalomtar/`);
       }
     }
   }

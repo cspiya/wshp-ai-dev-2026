@@ -76,6 +76,40 @@ export const FROZEN_ROUTES = new Map([
   ['/participant-starter/', { source: 'participant-starter/index.html', output: 'participant-starter/index.html', parent: '/', order: 3, owner: 'STARTER-WEB' }],
   ['/reference-app/', { source: 'reference-app/index.html', output: 'reference-app/index.html', parent: '/', order: 4, owner: 'REFERENCE-WEB' }],
 ]);
+export const FROZEN_PRESENTATION = new Map(Object.entries({
+  '/': ['AI-assisted fejlesztési workshop', null],
+  '/materials/': ['Tananyag és haladási térkép', null],
+  '/materials/felkeszules/': ['Felkészülés a workshopra', 'setup-guide.md stub'],
+  '/materials/napirend/': ['A workshop menete', 'agenda.md stub'],
+  '/materials/modszertan/': ['Mit építünk, és hogyan ellenőrizzük?', 'big-picture.md stub'],
+  '/materials/agent-ready-repo/': ['Az agent-ready repo felépítése', 'agent-ready-repo.md stub'],
+  '/materials/minoseg/': ['Közös mérnöki minőség', 'mernoki-standardok.md stub'],
+  '/materials/eszkozok/': ['Pluginek, skillek és automatizálás', 'plugins-es-skillek.md stub'],
+  '/materials/fogalomtar/': ['Fejlesztői fogalomtár', 'fogalomtar.md stub'],
+  '/materials/modulok/': ['A workshop nyolc modulja', 'notebooks/README.md'],
+  '/materials/modulok/01-agentikus-fejlesztes/': ['1. Agentikus fejlesztés: szerepek és korlátok', 'notebooks/00-bevezeto.html'],
+  '/materials/modulok/02-repo-felkeszitese/': ['2. A repo felkészítése AI-agentekkel végzett fejlesztésre', 'notebooks/01-greenfield-setup.html'],
+  '/materials/modulok/03-specifikacio/': ['3. Specifikációból végrehajtható terv', 'notebooks/02-spec-driven.html'],
+  '/materials/modulok/04-fuggetlen-review/': ['4. Független review és javítási ciklus', 'notebooks/03-orchestrator-rug.html'],
+  '/materials/modulok/05-szabalyok-es-kapuk/': ['5. Szabályok, skillek és automatizált kapuk', 'notebooks/04-rules-skills-hooks.html'],
+  '/materials/modulok/06-rendszerellenorzes/': ['6. Ellenőrzés a böngészőtől az adatbázisig', 'notebooks/05-qa-e2e-token.html'],
+  '/materials/modulok/07-legacy-rendszer/': ['7. Legacy rendszer biztonságos változtatása', 'notebooks/06-legacy-dotnet.html'],
+  '/materials/modulok/08-csapatbevezetes/': ['8. Csapatszintű bevezetés', 'notebooks/07-team-adoption.html'],
+  '/materials/epitesi-naplo/': ['Építési napló: döntések és tanulságok', 'journal README merged'],
+  '/materials/epitesi-naplo/01-repoinditas/': ['1. Repoindítás', 'day-1.md stub'],
+  '/materials/epitesi-naplo/02-elso-vertical-slice/': ['2. Az első vertical slice', 'day-2.md stub'],
+  '/materials/epitesi-naplo/03-rug-es-preview/': ['3. RUG és preview', 'day-3.md stub'],
+  '/materials/epitesi-naplo/04-gepi-ellenorzes/': ['4. Gépi ellenőrzések', 'day-4.md stub'],
+  '/toolkit/': ['Hazavihető fejlesztési toolkit', 'toolkit/README.md'],
+  '/toolkit/utmutatok/repo-szabalyok/': ['A repo célja és szabályai', '#repo-szabalyok'],
+  '/toolkit/utmutatok/specifikacio/': ['Jóváhagyható specifikáció', '#specifikacio'],
+  '/toolkit/utmutatok/fuggetlen-review/': ['Független review és javítás', '#fuggetlen-review'],
+  '/toolkit/utmutatok/automatizalt-kapuk/': ['Automatizált minőségi kapuk', '#automatizalt-kapuk'],
+  '/toolkit/utmutatok/projektmemoria/': ['Projektmemória és visszakeresés', '#projektmemoria'],
+  '/toolkit/utmutatok/legacy-es-bevezetes/': ['Legacy és csapatszintű bevezetés', '#legacy-es-bevezetes'],
+  '/participant-starter/': ['Résztvevői starter', 'participant-starter/README.md'],
+  '/reference-app/': ['Referenciaalkalmazás', 'reference-app/README.md'],
+}));
 
 function validateVisualContract(route, label, failures, canonicalSlugs) {
   if (typeof route.overviewQuestion !== 'string' || !route.overviewQuestion.trim()) failures.push(`${label}: missing overviewQuestion`);
@@ -127,6 +161,8 @@ export function validateManifest({ source, site, phase }) {
     const frozen = FROZEN_ROUTES.get(route.id);
     if (!frozen) failures.push(`${label}: route is not in the frozen canonical table: ${route.id}`);
     else for (const key of ['source', 'output', 'parent', 'order', 'owner']) if (route[key] !== frozen[key]) failures.push(`${label}: frozen ${key} mismatch for ${route.id}; expected ${frozen[key]}`);
+    const presentation = FROZEN_PRESENTATION.get(route.id);
+    if (presentation && (route.title !== presentation[0] || (route.alias ?? null) !== presentation[1])) failures.push(`${label}: frozen title/alias mismatch for ${route.id}`);
     if (!Number.isInteger(route.order) || route.order < 0) failures.push(`${label}: order must be a non-negative integer`);
     if (route.id && (!route.id.startsWith('/') || (route.id !== '/' && !route.id.endsWith('/')))) failures.push(`${label}: route id must be a canonical directory route`);
     for (const [value, set, name] of [[route.id, routeIds, 'route id'], [route.output, outputs, 'output'], [route.source, sources, 'source']]) {
@@ -138,7 +174,7 @@ export function validateManifest({ source, site, phase }) {
     if (orders.has(orderKey)) failures.push(`${label}: duplicate sibling order ${route.order} under ${parent}`);
     orders.add(orderKey);
     if (phase === 'final' && route.source && !fs.existsSync(path.join(source, route.source))) failures.push(`${label}: final source missing: ${route.source}`);
-    if (phase === 'final' && route.output && !fs.existsSync(path.join(site, path.relative('.site', route.output)))) {
+    if (phase === 'final' && route.output) {
       const relativeOutput = route.output.replace(/^\.site[\\/]/, '');
       if (!fs.existsSync(path.join(site, relativeOutput))) failures.push(`${label}: final output missing: ${route.output}`);
     }

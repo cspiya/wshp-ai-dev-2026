@@ -18,9 +18,18 @@ function fixture(entries, pages = ['index.html'], classicScript = false, glossar
 test('Hungarian, English and alias terms resolve to one exact route', () => {
   const root = fixture([
     { route: '/', title: 'Kezdőlap', text: 'A workshop kezdőlapja.' },
-    { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'A munka határai, scope, hatókör.' },
+    { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'A munka határai, scope, hatókör.', terms: ['a munka határai', 'scope'], aliases: ['hatókör'] },
   ], ['index.html', 'materials/fogalomtar/index.html'], true, [{ slug: 'scope', preferred: 'a munka határai', english: 'scope', aliases: ['hatókör'] }]);
   assert.deepEqual(validateSearch({ site: root, phase: 'final' }), []);
+});
+
+test('negative fixture rejects ambiguous canonical glossary query owners', () => {
+  const root = fixture([
+    { route: '/', title: 'Kezdőlap', text: 'Scope magyarázat.', terms: ['scope'] },
+    { route: '/materials/fogalomtar/', title: 'Fogalomtár', text: 'Scope.', terms: ['scope', 'a munka határai'], aliases: ['hatókör'] },
+  ], ['index.html', 'materials/fogalomtar/index.html'], false, [{ slug: 'scope', preferred: 'a munka határai', english: 'scope', aliases: ['hatókör'] }]);
+  const failures = validateSearch({ site: root, phase: 'final' });
+  assert.ok(failures.some((x) => x.includes('exactly one canonical owner')));
 });
 
 test('negative fixture rejects a missing canonical preferred/English/alias query route', () => {

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { FROZEN_ROUTES, validateManifest } from './check-manifest.mjs';
+import { FROZEN_PRESENTATION, FROZEN_ROUTES, validateManifest } from './check-manifest.mjs';
 
 function fixture(routes) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-manifest-'));
@@ -13,9 +13,10 @@ function fixture(routes) {
 }
 function route(id = '/', overrides = {}) {
   const frozen = FROZEN_ROUTES.get(id);
+  const presentation = FROZEN_PRESENTATION.get(id);
   const suffix = id === '/' ? 'root' : id.replaceAll('/', '-').replace(/^-|-$/g, '');
   return {
-    id, ...frozen, title: `Tesztoldal ${suffix}`, overviewQuestion: 'Hogyan áll össze a workshop?', overviewDiagramId: `fig-overview-${suffix}`,
+    id, ...frozen, title: presentation[0], alias: presentation[1], overviewQuestion: 'Hogyan áll össze a workshop?', overviewDiagramId: `fig-overview-${suffix}`,
     overviewCovers: ['page-purpose', 'learner-value', 'main-relationships', 'learner-output-or-decision'],
     visualQuestions: [{ id: `q-overview-${suffix}`, question: 'Hogyan áll össze?', type: 'relationship', glossarySlugs: ['agent-ready-repo'], coverage: 'page-local', diagramId: `fig-overview-${suffix}`, takeaway: 'A módszer részei egymásra épülnek.' }],
     ...overrides,
@@ -64,4 +65,15 @@ test('foundation rejects omitted canonical routes and wrong frozen ownership', (
   assert.ok(failures.some((x) => x.includes('exactly 32 frozen canonical routes')));
   assert.ok(failures.some((x) => x.includes('frozen owner mismatch')));
   assert.ok(failures.some((x) => x.includes('missing frozen canonical route: /reference-app/')));
+});
+
+test('final rejects an empty generated site even when every canonical source exists', () => {
+  const routes = canonicalRoutes();
+  routes[0] = { ...routes[0], title: 'Arbitrary title', alias: 'wrong alias' };
+  const root = fixture(routes);
+  for (const route of routes) { const file = path.join(root, route.source); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, '<!doctype html>'); }
+  const site = path.join(root, '.site'); fs.mkdirSync(site);
+  const failures = validateManifest({ source: root, site, phase: 'final' });
+  assert.ok(failures.some((x) => x.includes('final output missing: index.html')));
+  assert.ok(failures.some((x) => x.includes('frozen title/alias mismatch')));
 });
