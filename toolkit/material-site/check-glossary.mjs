@@ -23,15 +23,23 @@ function pageForRoute(site, route) {
 }
 function teachingContent(html) {
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
-  return (main?.[1] ?? html)
-    // First-use links belong in explanatory prose. Figure labels/fallbacks,
-    // headings, file names and the module clock are useful teaching aids, but
-    // forcing glossary links into them would make the content less readable.
-    .replace(/<figure\b[\s\S]*?<\/figure>/gi, '')
-    .replace(/<pre\b[\s\S]*?<\/pre>/gi, '')
-    .replace(/<code\b[\s\S]*?<\/code>/gi, '')
-    .replace(/<h[1-6]\b[\s\S]*?<\/h[1-6]>/gi, '')
-    .replace(/<ol\b[^>]*class=(?:"[^"]*\b(?:time-plan|times)\b[^"]*"|'[^']*\b(?:time-plan|times)\b[^']*')[^>]*>[\s\S]*?<\/ol>/gi, '');
+  // The generated shell is outside <main>. Keep authored headings, captions
+  // and text equivalents in scope; only omit raw SVG internals because their
+  // accessible teaching equivalent is the surrounding HTML figure content.
+  return (main?.[1] ?? html).replace(/<svg\b[\s\S]*?<\/svg>/gi, '');
+}
+const CASE_SUFFIXES = ['', 't', 'at', 'et', 'ot', 'öt', 'nak', 'nek', 'ban', 'ben', 'ba', 'be', 'ból', 'ből', 'ról', 'ről', 'tól', 'től', 'ra', 're', 'hoz', 'hez', 'höz', 'nál', 'nél', 'on', 'en', 'ön', 'ért', 'ig', 'ként', 'kor', 'ul', 'ül', 'vá', 'vé', 'val', 'vel'];
+const NUMBER_SUFFIXES = ['k', 'ak', 'ek', 'ok', 'ök'];
+const POSSESSIVE_SUFFIXES = ['a', 'e', 'á', 'é', 'ja', 'je', 'já', 'jé', 'am', 'em', 'om', 'öm', 'ad', 'ed', 'od', 'öd', 'unk', 'ünk', 'atok', 'etek', 'otok', 'ötök', 'uk', 'ük', 'aim', 'eim', 'jaim', 'jeim', 'aink', 'eink', 'jaink', 'jeink', 'aitok', 'eitek', 'jaitok', 'jeitek', 'aik', 'eik', 'jaik', 'jeik'];
+function isCaseSuffix(base, suffix) {
+  if (CASE_SUFFIXES.includes(suffix)) return true;
+  const last = [...base].at(-1);
+  return Boolean(last && suffix.startsWith(last) && ['al', 'el', 'á', 'é'].includes(suffix.slice(last.length)));
+}
+function isHungarianInflection(needle, suffix) {
+  if (isCaseSuffix(needle, suffix)) return true;
+  if (NUMBER_SUFFIXES.some((number) => suffix.startsWith(number) && isCaseSuffix(`${needle}${number}`, suffix.slice(number.length)))) return true;
+  return POSSESSIVE_SUFFIXES.some((possessive) => suffix.startsWith(possessive) && isCaseSuffix(`${needle}${possessive}`, suffix.slice(possessive.length)));
 }
 function firstTermIndex(text, term) {
   const lower = text.toLocaleLowerCase('hu-HU');
@@ -41,9 +49,7 @@ function firstTermIndex(text, term) {
     const before = at === 0 ? '' : lower[at - 1];
     const tail = lower.slice(at + needle.length);
     const suffix = tail.match(/^[\p{L}]+/u)?.[0] ?? '';
-    const inflected = /^(?:[aeoö]?k)?(?:hoz|hez|höz|nak|nek|ban|ben|ba|be|ból|ből|ról|ről|tól|től|ra|re|val|vel|kal|kel|sal|sel|tal|tel|nál|nél|on|en|ön|ért|ig|ként|at|et|ot|öt|t)?$/u.test(suffix)
-      || /^(?:a|e|ja|je|já|jé|juk|jük|ai|ei|jai|jei)(?:t|k|nak|nek|ban|ben|ba|be|hoz|hez|höz|nál|nél|on|en|ön)?$/u.test(suffix);
-    if (!/[\p{L}\p{N}]/u.test(before) && inflected) return at;
+    if (!/[\p{L}\p{N}]/u.test(before) && isHungarianInflection(needle, suffix)) return at;
     at = lower.indexOf(needle, at + 1);
   }
   return -1;

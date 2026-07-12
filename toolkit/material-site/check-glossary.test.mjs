@@ -37,16 +37,23 @@ test('generated shell text cannot steal first use from linked teaching content',
   assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
 });
 
-test('orientation labels and code names cannot steal first explanatory use', () => {
+test('unlinked first occurrence in a meaningful heading still fails', () => {
   const root = fixture(valid);
   fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), `
-    <main>
-      <h1>Scope</h1>
-      <figure><svg><text>scope</text></svg><figcaption>Scope térkép.</figcaption></figure>
-      <p>Kimenet: <code>scope.md</code>.</p>
-      <p>A <a href="../fogalomtar/#scope">scope</a> segít kijelölni a munka határait.</p>
-    </main>`);
-  assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
+    <main><h2>A scope határai</h2>
+    <p>A <a href="../fogalomtar/#scope">scope</a> később linkelt.</p></main>`);
+  assert.ok(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' })
+    .some((x) => x.includes('first use is not linked')));
+});
+
+test('unlinked first occurrence in a figure caption still fails', () => {
+  const root = fixture(valid);
+  fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), `
+    <main><figure><svg><text>scope</text></svg><figcaption>A scope kijelöli a határt.</figcaption>
+    <p class="static-fallback">A scope szöveges magyarázata.</p></figure>
+    <p>A <a href="../fogalomtar/#scope">scope</a> később linkelt.</p></main>`);
+  assert.ok(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' })
+    .some((x) => x.includes('first use is not linked')));
 });
 
 test('unlinked first occurrence in teaching content still fails', () => {
@@ -69,6 +76,16 @@ test('a term substring inside a longer word does not steal first use', () => {
 test('a Hungarian inflected term remains a valid first use', () => {
   const root = fixture({ ...valid, preferred: 'elfogadási feltétel', english: 'acceptance criterion', aliases: [] });
   fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), '<main><p>Az <a href="../fogalomtar/#scope">elfogadási feltételekhez</a> ellenőrzés tartozik.</p></main>');
+  assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
+});
+
+test('assimilated and possessive Hungarian forms remain valid first uses', () => {
+  const root = fixture({ ...valid, preferred: 'munkadarab', english: 'artifact', aliases: [] });
+  fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), '<main><p>A <a href="../fogalomtar/#scope">munkadarabbal</a> igazoljuk az eredményt.</p></main>');
+  assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
+
+  fs.writeFileSync(path.join(root, 'materials/modulok/index.html'), '<main><p>A <a href="../fogalomtar/#scope">szabályainkhoz</a> ellenőrzés tartozik.</p></main>');
+  fs.writeFileSync(path.join(root, 'glossary.json'), JSON.stringify({ schemaVersion: 2, registryVersion: '2.0.0', terms: [{ ...valid, preferred: 'szabály', english: 'rule', aliases: [] }] }));
   assert.deepEqual(validateGlossary({ source: path.join(root, 'glossary.json'), site: root, phase: 'final' }), []);
 });
 
