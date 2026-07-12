@@ -4,6 +4,7 @@
 // pages are served from a loopback static server with path-traversal guards.
 
 import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -186,16 +187,20 @@ export async function renderAll({
   const serveRoot = targets.length === 1 ? path.dirname(targets[0]) : commonDir(targets);
   const { origin, close } = await startServer(serveRoot);
   let assertFn = null;
-  if (assertModulePath) {
-    const mod = await import(new URL(`file://${path.resolve(assertModulePath).replace(/\\/g, '/')}`));
-    if (typeof mod.assertPage !== 'function') {
-      await close();
-      throw new Error(`assert module has no exported assertPage(): ${assertModulePath}`);
+  let browser;
+  try {
+    if (assertModulePath) {
+      const mod = await import(pathToFileURL(path.resolve(assertModulePath)));
+      if (typeof mod.assertPage !== 'function') {
+        throw new Error(`assert module has no exported assertPage(): ${assertModulePath}`);
+      }
+      assertFn = mod.assertPage;
     }
-    assertFn = mod.assertPage;
+    browser = await playwright.chromium.launch();
+  } catch (err) {
+    await close();
+    throw err;
   }
-
-  const browser = await playwright.chromium.launch();
   const entries = [];
   try {
     for (const file of targets) {
@@ -205,7 +210,9 @@ export async function renderAll({
       for (const modeName of modes) {
         const mode = MODES[modeName];
         const failures = [];
-        const baseName = `${path.basename(file, path.extname(file))}.${modeName}`;
+        // Output names mirror the serve-root-relative path so same-named
+        // files in different directories never overwrite each other.
+        const baseName = `${rel.replace(/\.[^.]+$/, '').split('/').join('__')}.${modeName}`;
         const outPath = path.join(outDir, mode.kind === 'pdf' ? `${baseName}.pdf` : `${baseName}.png`);
         const context = await browser.newContext({
           viewport: mode.viewport,
@@ -245,12 +252,16 @@ export async function renderAll({
         }
         const ok = failures.length === 0;
         entries.push({
-          source: path.relative(process.cwd(), file).split(path.sep).join('/'),
+          // Anchored to serveRoot/outDir (not cwd) so manifests from
+          // identical inputs are comparable regardless of where the CLI ran.
+          source: rel,
           sourceSha: source.sha,
           sourceDirty: source.dirty,
           mode: modeName,
           viewport: mode.viewport,
-          output: ok ? path.relative(process.cwd(), outPath).split(path.sep).join('/') : null,
+          output: fs.existsSync(outPath)
+            ? path.relative(outDir, outPath).split(path.sep).join('/')
+            : null,
           ok,
           failures,
         });
@@ -263,6 +274,7 @@ export async function renderAll({
 
   const manifest = {
     tool: 'material-qa',
+    serveRoot,
     modes,
     timeoutMs,
     summary: {
@@ -276,10 +288,20 @@ export async function renderAll({
   return manifest;
 }
 
-function commonDir(files) {
+// Longest common ancestor directory, compared segment-wise so a sibling
+// whose name is a string prefix of another ("bar" vs "barbaz") is never
+// mistaken for its ancestor.
+export function commonDir(files) {
+  const roots = new Set(files.map((f) => path.parse(path.resolve(f)).root.toLowerCase()));
+  if (roots.size > 1) {
+    throw new Error('inputs span multiple drives/roots; run once per drive');
+  }
   let prefix = path.dirname(files[0]);
   for (const f of files.slice(1)) {
-    while (!path.dirname(f).startsWith(prefix) && prefix !== path.dirname(prefix)) {
+    while (
+      !(path.dirname(f) + path.sep).startsWith(prefix + path.sep) &&
+      prefix !== path.dirname(prefix)
+    ) {
       prefix = path.dirname(prefix);
     }
   }

@@ -33,18 +33,26 @@ For every input file × mode: `NAME.desktop.png`, `NAME.mobile.png`
 ```json
 {
   "summary": { "total": 24, "passed": 23, "failed": 1 },
+  "serveRoot": "<absolute directory the pages were served from>",
   "entries": [{
-    "source": "materials/notebooks/00-bevezeto.html",
+    "source": "00-bevezeto.html",
     "sourceSha": "<git HEAD of the source repo>",
     "sourceDirty": false,
     "mode": "desktop",
     "viewport": { "width": 1440, "height": 900 },
-    "output": "toolkit/material-qa/evidence/00-bevezeto.desktop.png",
+    "output": "00-bevezeto.desktop.png",
     "ok": true,
     "failures": []
   }]
 }
 ```
+
+`source` is relative to `serveRoot` and `output` to the evidence directory,
+so manifests from identical inputs are comparable regardless of the CLI's
+working directory. Output names mirror the serve-root-relative path
+(`one/index.html` → `one__index.desktop.png`), so same-named files never
+overwrite each other; failed entries keep their capture file referenced for
+triage.
 
 An entry FAILS (never silently passes) on: load timeout, page/console
 error, failed local request, HTTP ≥ 400 from the built-in server, or an

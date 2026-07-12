@@ -12,7 +12,7 @@ import path from 'node:path';
 import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { discoverTargets, validateOutDir, startServer, resolvePlaywright, renderAll } from './lib.mjs';
+import { discoverTargets, validateOutDir, startServer, resolvePlaywright, renderAll, commonDir } from './lib.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURES = path.join(HERE, 'fixtures');
@@ -40,6 +40,14 @@ test('discoverTargets: directory scan is sorted, missing input throws', () => {
   assert.deepEqual(names, [...names].sort());
   assert.throws(() => discoverTargets([path.join(FIXTURES, 'nope.html')]), /input not found/);
   assert.throws(() => discoverTargets([path.join(HERE, 'lib.mjs')]), /not an HTML file/);
+});
+
+test('commonDir: segment-wise ancestor, sibling name-prefix is not an ancestor', () => {
+  const base = tmpDir();
+  const a = path.join(base, 'bar', 'a.html');
+  const b = path.join(base, 'barbaz', 'b.html');
+  assert.equal(commonDir([a, b]), base);
+  assert.equal(commonDir([a]), path.join(base, 'bar'));
 });
 
 test('startServer: serves files, blocks traversal, 404s directories', async () => {
@@ -104,6 +112,43 @@ test('renderAll: pass/fail matrix over fixtures, manifest written, idempotent', 
     second.entries.map(({ source, mode, ok }) => ({ source, mode, ok })),
     first.entries.map(({ source, mode, ok }) => ({ source, mode, ok }))
   );
+});
+
+test('renderAll: same-named files in different directories get distinct outputs', async () => {
+  const playwright = resolvePlaywright(REPO_ROOT, PLAYWRIGHT_ROOT);
+  const base = tmpDir();
+  for (const dir of ['one', 'two']) {
+    fs.mkdirSync(path.join(base, dir));
+    fs.copyFileSync(path.join(FIXTURES, 'ok.html'), path.join(base, dir, 'index.html'));
+  }
+  const out = tmpDir();
+  const manifest = await renderAll({
+    targets: [path.join(base, 'one', 'index.html'), path.join(base, 'two', 'index.html')],
+    outDir: out,
+    modes: ['desktop'],
+    timeoutMs: 20000,
+    playwright,
+  });
+  assert.equal(manifest.summary.passed, 2);
+  const outputs = manifest.entries.map((e) => e.output);
+  assert.equal(new Set(outputs).size, 2);
+  for (const o of outputs) assert.ok(fs.existsSync(path.join(out, o)));
+});
+
+test('renderAll: console.error without exception fails with console-error kind', async () => {
+  const playwright = resolvePlaywright(REPO_ROOT, PLAYWRIGHT_ROOT);
+  const out = tmpDir();
+  const manifest = await renderAll({
+    targets: [path.join(FIXTURES, 'console-only.html')],
+    outDir: out,
+    modes: ['desktop'],
+    timeoutMs: 20000,
+    playwright,
+  });
+  assert.equal(manifest.summary.failed, 1);
+  assert.ok(manifest.entries[0].failures.some((f) => f.kind === 'console-error'));
+  // failed entries still reference their capture file for reviewer triage
+  assert.ok(manifest.entries[0].output && fs.existsSync(path.join(out, manifest.entries[0].output)));
 });
 
 test('renderAll: load timeout is a captured render-failure, not a silent pass', async () => {
