@@ -51,6 +51,9 @@ body {
   font-size: 1.02rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  /* Inherited emergency wrap: long Hungarian words in headings must never
+     widen the page on 320px viewports with wide platform fonts. */
+  overflow-wrap: break-word;
 }
 
 h1, h2, h3 { line-height: 1.22; letter-spacing: -0.018em; }
