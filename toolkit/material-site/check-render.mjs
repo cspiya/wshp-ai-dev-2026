@@ -92,6 +92,9 @@ async function browserChecks(page, label, mode, failures) {
         if (!unavailable) failures.push(`${label} (${mode}): animation ${id} ${action} control remains enabled`);
       }
     } else {
+      const runningMotion = await root.evaluate((el) => [el, ...el.querySelectorAll('*')].some((node) => { const css = getComputedStyle(node); const durations = css.animationDuration.split(',').map((value) => Number.parseFloat(value) || 0); return css.animationName !== 'none' && durations.some((value) => value > 0) && css.animationPlayState.split(',').some((value) => value.trim() === 'running'); }));
+      const before = await root.screenshot(); await page.waitForTimeout(120); const after = await root.screenshot();
+      if (runningMotion || !before.equals(after)) failures.push(`${label} (${mode}): animation ${id} changes before user initiation`);
       for (const [action, expected] of [['start', 'running'], ['pause', 'paused'], ['restart', 'running']]) {
         const control = page.locator(`[data-animation-${action}="${id}"]`);
         if (await control.count() !== 1) continue;

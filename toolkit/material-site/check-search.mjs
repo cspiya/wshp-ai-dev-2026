@@ -20,6 +20,7 @@ function canonicalRoute(site, file) {
 }
 function entriesOf(json) { return Array.isArray(json) ? json : json.entries ?? json.pages ?? json.documents; }
 function routeOf(entry) { return entry.route ?? entry.href ?? entry.url ?? entry.id; }
+function searchable(entry) { return [entry.title, entry.text, entry.content, ...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].filter(Boolean).join(' ').toLocaleLowerCase('hu-HU'); }
 function readIndex(file) {
   const text = fs.readFileSync(file, 'utf8');
   if (file.toLowerCase().endsWith('.json')) return JSON.parse(text);
@@ -64,6 +65,21 @@ export function validateSearch({ site, phase }) {
   }
   for (const route of routes.keys()) if (!pageRoutes.has(route)) failures.push(`search index route has no generated page ${route}`);
   for (const [term, resultRoutes] of exactTerms) if (resultRoutes.size !== 1 && term.length > 2) failures.push(`ambiguous exact search term "${term}" resolves to ${resultRoutes.size} routes`);
+  const glossaryFile = path.join(site, 'materials/fogalomtar/glossary.json');
+  if (!fs.existsSync(glossaryFile)) {
+    if (phase === 'final') failures.push('final search smoke requires materials/fogalomtar/glossary.json');
+  } else {
+    let terms = [];
+    try { const glossary = JSON.parse(fs.readFileSync(glossaryFile, 'utf8')); terms = glossary.terms ?? glossary.entries ?? glossary.records ?? []; }
+    catch (error) { failures.push(`cannot read glossary search contract: ${error.message}`); }
+    for (const record of terms) {
+      for (const query of [record.preferred, record.english, ...(Array.isArray(record.aliases) ? record.aliases : [])].filter(Boolean)) {
+        const normalized = String(query).toLocaleLowerCase('hu-HU');
+        const resultRoutes = entries.filter((entry) => searchable(entry).includes(normalized)).map(routeOf);
+        if (!resultRoutes.includes('/materials/fogalomtar/')) failures.push(`glossary query "${query}" does not resolve to /materials/fogalomtar/`);
+      }
+    }
+  }
   if (phase === 'final' && routes.size !== pages.filter((p) => !/http-equiv=["']refresh["']/i.test(fs.readFileSync(p, 'utf8')) && !/data-search-exclude/i.test(fs.readFileSync(p, 'utf8'))).length) failures.push('final search index contains missing or extra canonical pages');
   return failures;
 }

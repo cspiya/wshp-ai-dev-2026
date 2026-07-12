@@ -42,3 +42,12 @@ test('real browser proves user-controlled animation and disabled fallback modes'
   fs.writeFileSync(path.join(root, 'index.html'), html); fs.writeFileSync(path.join(root, 'animation.js'), js);
   assert.deepEqual(await validateRender({ site: root, modes: ['desktop', 'no-js', 'reduced-motion', 'print', 'file'] }), []);
 });
+
+test('real browser rejects CSS autoplay even when data state falsely says static', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-autoplay-'));
+  const css = '@keyframes pulse { from { opacity:.2 } to { opacity:1 } } [data-animation] span { animation:pulse .4s infinite alternate } @media (prefers-reduced-motion: reduce) { [data-animation] span { animation:none } } @media print { [data-animation] span { animation:none } [data-animation-control] { display:none } }';
+  const html = `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Hibás animáció</title><style>${css}</style></head><body><a href="#main">Tartalom</a><main id="main"><div data-animation="cycle" data-animation-state="static"><span>Magától mozog</span><p data-animation-fallback="cycle">Statikus leírás.</p></div><button data-animation-control data-animation-start="cycle">Indítás</button><button data-animation-control data-animation-pause="cycle">Szünet</button><button data-animation-control data-animation-restart="cycle">Újrakezdés</button></main></body></html>`;
+  fs.writeFileSync(path.join(root, 'index.html'), html);
+  const failures = await validateRender({ site: root, modes: ['desktop'] });
+  assert.ok(failures.some((x) => x.includes('changes before user initiation')));
+});

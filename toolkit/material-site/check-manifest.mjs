@@ -42,6 +42,40 @@ export function readManifest(source) {
 
 const VISUAL_TYPES = new Set(['key-concept', 'process', 'cycle', 'structure', 'relationship', 'decision', 'timeline', 'quantitative-data']);
 const OVERVIEW_CATEGORIES = new Set(['page-purpose', 'learner-value', 'main-relationships', 'learner-output-or-decision']);
+export const FROZEN_ROUTES = new Map([
+  ['/', { source: 'index.html', output: 'index.html', parent: null, order: 0, owner: 'SHELL-BUILD' }],
+  ['/materials/', { source: 'materials/index.html', output: 'materials/index.html', parent: '/', order: 1, owner: 'MATERIALS-HUB' }],
+  ['/materials/felkeszules/', { source: 'materials/felkeszules/index.html', output: 'materials/felkeszules/index.html', parent: '/materials/', order: 1, owner: 'MATERIALS-HUB' }],
+  ['/materials/napirend/', { source: 'materials/napirend/index.html', output: 'materials/napirend/index.html', parent: '/materials/', order: 2, owner: 'MATERIALS-HUB' }],
+  ['/materials/modszertan/', { source: 'materials/modszertan/index.html', output: 'materials/modszertan/index.html', parent: '/materials/', order: 3, owner: 'MATERIALS-HUB' }],
+  ['/materials/agent-ready-repo/', { source: 'materials/agent-ready-repo/index.html', output: 'materials/agent-ready-repo/index.html', parent: '/materials/', order: 4, owner: 'MATERIALS-HUB' }],
+  ['/materials/minoseg/', { source: 'materials/minoseg/index.html', output: 'materials/minoseg/index.html', parent: '/materials/', order: 5, owner: 'MATERIALS-HUB' }],
+  ['/materials/eszkozok/', { source: 'materials/eszkozok/index.html', output: 'materials/eszkozok/index.html', parent: '/materials/', order: 6, owner: 'MATERIALS-HUB' }],
+  ['/materials/fogalomtar/', { source: 'materials/fogalomtar/index.html', output: 'materials/fogalomtar/index.html', parent: '/materials/', order: 7, owner: 'GLOSSARY' }],
+  ['/materials/modulok/', { source: 'materials/modulok/index.html', output: 'materials/modulok/index.html', parent: '/materials/', order: 8, owner: 'MATERIALS-HUB' }],
+  ['/materials/modulok/01-agentikus-fejlesztes/', { source: 'materials/modulok/01-agentikus-fejlesztes/index.html', output: 'materials/modulok/01-agentikus-fejlesztes/index.html', parent: '/materials/modulok/', order: 1, owner: 'MODULE-01' }],
+  ['/materials/modulok/02-repo-felkeszitese/', { source: 'materials/modulok/02-repo-felkeszitese/index.html', output: 'materials/modulok/02-repo-felkeszitese/index.html', parent: '/materials/modulok/', order: 2, owner: 'MODULE-02' }],
+  ['/materials/modulok/03-specifikacio/', { source: 'materials/modulok/03-specifikacio/index.html', output: 'materials/modulok/03-specifikacio/index.html', parent: '/materials/modulok/', order: 3, owner: 'MODULE-03' }],
+  ['/materials/modulok/04-fuggetlen-review/', { source: 'materials/modulok/04-fuggetlen-review/index.html', output: 'materials/modulok/04-fuggetlen-review/index.html', parent: '/materials/modulok/', order: 4, owner: 'MODULE-04' }],
+  ['/materials/modulok/05-szabalyok-es-kapuk/', { source: 'materials/modulok/05-szabalyok-es-kapuk/index.html', output: 'materials/modulok/05-szabalyok-es-kapuk/index.html', parent: '/materials/modulok/', order: 5, owner: 'MODULE-05' }],
+  ['/materials/modulok/06-rendszerellenorzes/', { source: 'materials/modulok/06-rendszerellenorzes/index.html', output: 'materials/modulok/06-rendszerellenorzes/index.html', parent: '/materials/modulok/', order: 6, owner: 'MODULE-06' }],
+  ['/materials/modulok/07-legacy-rendszer/', { source: 'materials/modulok/07-legacy-rendszer/index.html', output: 'materials/modulok/07-legacy-rendszer/index.html', parent: '/materials/modulok/', order: 7, owner: 'MODULE-07' }],
+  ['/materials/modulok/08-csapatbevezetes/', { source: 'materials/modulok/08-csapatbevezetes/index.html', output: 'materials/modulok/08-csapatbevezetes/index.html', parent: '/materials/modulok/', order: 8, owner: 'MODULE-08' }],
+  ['/materials/epitesi-naplo/', { source: 'materials/epitesi-naplo/index.html', output: 'materials/epitesi-naplo/index.html', parent: '/materials/', order: 9, owner: 'JOURNAL' }],
+  ['/materials/epitesi-naplo/01-repoinditas/', { source: 'materials/epitesi-naplo/01-repoinditas/index.html', output: 'materials/epitesi-naplo/01-repoinditas/index.html', parent: '/materials/epitesi-naplo/', order: 1, owner: 'JOURNAL' }],
+  ['/materials/epitesi-naplo/02-elso-vertical-slice/', { source: 'materials/epitesi-naplo/02-elso-vertical-slice/index.html', output: 'materials/epitesi-naplo/02-elso-vertical-slice/index.html', parent: '/materials/epitesi-naplo/', order: 2, owner: 'JOURNAL' }],
+  ['/materials/epitesi-naplo/03-rug-es-preview/', { source: 'materials/epitesi-naplo/03-rug-es-preview/index.html', output: 'materials/epitesi-naplo/03-rug-es-preview/index.html', parent: '/materials/epitesi-naplo/', order: 3, owner: 'JOURNAL' }],
+  ['/materials/epitesi-naplo/04-gepi-ellenorzes/', { source: 'materials/epitesi-naplo/04-gepi-ellenorzes/index.html', output: 'materials/epitesi-naplo/04-gepi-ellenorzes/index.html', parent: '/materials/epitesi-naplo/', order: 4, owner: 'JOURNAL' }],
+  ['/toolkit/', { source: 'toolkit/index.html', output: 'toolkit/index.html', parent: '/', order: 2, owner: 'TOOLKIT-WEB' }],
+  ['/toolkit/utmutatok/repo-szabalyok/', { source: 'toolkit/utmutatok/repo-szabalyok/index.html', output: 'toolkit/utmutatok/repo-szabalyok/index.html', parent: '/toolkit/', order: 1, owner: 'TOOLKIT-WEB' }],
+  ['/toolkit/utmutatok/specifikacio/', { source: 'toolkit/utmutatok/specifikacio/index.html', output: 'toolkit/utmutatok/specifikacio/index.html', parent: '/toolkit/', order: 2, owner: 'TOOLKIT-WEB' }],
+  ['/toolkit/utmutatok/fuggetlen-review/', { source: 'toolkit/utmutatok/fuggetlen-review/index.html', output: 'toolkit/utmutatok/fuggetlen-review/index.html', parent: '/toolkit/', order: 3, owner: 'TOOLKIT-WEB' }],
+  ['/toolkit/utmutatok/automatizalt-kapuk/', { source: 'toolkit/utmutatok/automatizalt-kapuk/index.html', output: 'toolkit/utmutatok/automatizalt-kapuk/index.html', parent: '/toolkit/', order: 4, owner: 'TOOLKIT-WEB' }],
+  ['/toolkit/utmutatok/projektmemoria/', { source: 'toolkit/utmutatok/projektmemoria/index.html', output: 'toolkit/utmutatok/projektmemoria/index.html', parent: '/toolkit/', order: 5, owner: 'TOOLKIT-WEB' }],
+  ['/toolkit/utmutatok/legacy-es-bevezetes/', { source: 'toolkit/utmutatok/legacy-es-bevezetes/index.html', output: 'toolkit/utmutatok/legacy-es-bevezetes/index.html', parent: '/toolkit/', order: 6, owner: 'TOOLKIT-WEB' }],
+  ['/participant-starter/', { source: 'participant-starter/index.html', output: 'participant-starter/index.html', parent: '/', order: 3, owner: 'STARTER-WEB' }],
+  ['/reference-app/', { source: 'reference-app/index.html', output: 'reference-app/index.html', parent: '/', order: 4, owner: 'REFERENCE-WEB' }],
+]);
 
 function validateVisualContract(route, label, failures, canonicalSlugs) {
   if (typeof route.overviewQuestion !== 'string' || !route.overviewQuestion.trim()) failures.push(`${label}: missing overviewQuestion`);
@@ -83,12 +117,16 @@ export function validateManifest({ source, site, phase }) {
   const sources = new Set();
   const orders = new Set();
   const forwards = new Set();
+  if (routes.length !== FROZEN_ROUTES.size) failures.push(`manifest must contain exactly ${FROZEN_ROUTES.size} frozen canonical routes`);
   for (const [index, route] of routes.entries()) {
     const label = `route[${index}]`;
     for (const key of ['id', 'source', 'output', 'title', 'owner']) {
       if (typeof route[key] !== 'string' || route[key].trim() === '') failures.push(`${label}: missing ${key}`);
     }
     validateVisualContract(route, label, failures, canonicalSlugs);
+    const frozen = FROZEN_ROUTES.get(route.id);
+    if (!frozen) failures.push(`${label}: route is not in the frozen canonical table: ${route.id}`);
+    else for (const key of ['source', 'output', 'parent', 'order', 'owner']) if (route[key] !== frozen[key]) failures.push(`${label}: frozen ${key} mismatch for ${route.id}; expected ${frozen[key]}`);
     if (!Number.isInteger(route.order) || route.order < 0) failures.push(`${label}: order must be a non-negative integer`);
     if (route.id && (!route.id.startsWith('/') || (route.id !== '/' && !route.id.endsWith('/')))) failures.push(`${label}: route id must be a canonical directory route`);
     for (const [value, set, name] of [[route.id, routeIds, 'route id'], [route.output, outputs, 'output'], [route.source, sources, 'source']]) {
@@ -107,6 +145,7 @@ export function validateManifest({ source, site, phase }) {
     const declaredForwards = [route.alias, route.forward, route['alias/forward'], ...(Array.isArray(route.aliases) ? route.aliases : [])].filter((value) => typeof value === 'string');
     for (const forward of declaredForwards) if (forward.toLowerCase().endsWith('.html')) forwards.add(forward.replaceAll('\\', '/').toLowerCase());
   }
+  for (const id of FROZEN_ROUTES.keys()) if (!routes.some((route) => route.id === id)) failures.push(`missing frozen canonical route: ${id}`);
   for (const route of routes) {
     const parent = route.parent ?? (route.id === '/' ? null : '/');
     if (parent && !routeIds.has(parent.toLowerCase())) failures.push(`${route.id}: parent route does not exist: ${parent}`);
