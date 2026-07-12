@@ -27,8 +27,17 @@ export const registrationSchema = registrationRecordInputSchema.extend({
 export type Registration = z.infer<typeof registrationSchema>;
 export type RegistrationStatus = z.infer<typeof registrationStatusSchema>;
 
-export const CANCELLATION_WINDOW_MS = 48 * 60 * 60 * 1_000;
+export const DEFAULT_CANCELLATION_WINDOW_HOURS = 48;
+export const CANCELLATION_WINDOW_MS = DEFAULT_CANCELLATION_WINDOW_HOURS * 60 * 60 * 1_000;
 
-export function canCancelRegistration(workshopStartsAt: string, now: Date): boolean {
-  return Date.parse(workshopStartsAt) - now.getTime() >= CANCELLATION_WINDOW_MS;
+export function canCancelRegistration(
+  workshopStartsAt: string,
+  now: Date,
+  windowMs: number = CANCELLATION_WINDOW_MS,
+): boolean {
+  // Exclusive boundary per approved spec (WEN-118, ratified 2026-07-12):
+  // cancellation exactly at workshopStartsAt minus the window is rejected;
+  // strictly earlier is allowed. The window is configurable — wired at the
+  // composition root, never read from env here (domain stays pure).
+  return Date.parse(workshopStartsAt) - now.getTime() > windowMs;
 }

@@ -60,3 +60,13 @@ Fixes and re-checks:
 Human decisions:
 Residual risks:
 ```
+
+## Executable form (WEN-118)
+
+`rug-cycle.workflow.js` is the runnable distillation of this contract for
+Claude Code's Workflow tool: maker → two fresh-context reviewer lenses →
+per-finding verification → fixer, max two rounds, every prompt LINKING the
+role files and the canonical standard. `trace/sample-run.md` is one complete
+real run (with the machine-readable journal beside it) — including a
+materially false maker summary caught by review, a mutation-tested finding,
+and a rejected false positive.

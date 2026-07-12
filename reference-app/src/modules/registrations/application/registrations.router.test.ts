@@ -86,3 +86,29 @@ describe("registrations router", () => {
     expect(results.filter((result) => result.status === "rejected")).toHaveLength(1);
   });
 });
+
+it("uses the configured window in both the rule and the error message", async () => {
+  const dayWindowMs = 24 * 60 * 60 * 1_000;
+  const api = createRegistrationsRouter(
+    createInMemoryRegistrationRepo(),
+    schedule,
+    // workshop starts 2027-01-10T10:00Z; 30h before start = inside a 48h
+    // window but OUTSIDE a 24h window, so cancellation must be allowed here.
+    () => new Date("2027-01-09T04:00:00.000Z"),
+    dayWindowMs,
+  ).createCaller({});
+  const created = await api.create(input);
+  await expect(api.cancel({ id: created.id })).resolves.toMatchObject({ status: "cancelled" });
+
+  const lateApi = createRegistrationsRouter(
+    createInMemoryRegistrationRepo(),
+    schedule,
+    // 23h before start: inside the 24h window -> rejected, message names 24 hours.
+    () => new Date("2027-01-09T11:00:00.000Z"),
+    dayWindowMs,
+  ).createCaller({});
+  const late = await lateApi.create(input);
+  await expect(lateApi.cancel({ id: late.id })).rejects.toMatchObject({
+    message: expect.stringContaining("24 hours"),
+  });
+});

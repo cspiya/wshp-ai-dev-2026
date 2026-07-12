@@ -81,11 +81,27 @@ const workshopSchedule = {
     (await workshopRepo.getById(workshopId))?.date ?? null,
 };
 
+/**
+ * Cancellation window is deployment-configurable (WEN-118 ratified rule:
+ * exclusive boundary). Env parsing lives HERE at the composition root — the
+ * domain and router take a plain number and stay env-free. Invalid or unset
+ * values fall back to the module's 48h default (undefined → router default).
+ */
+function configuredCancellationWindowMs(): number | undefined {
+  const hours = Number(process.env.CANCELLATION_WINDOW_HOURS);
+  return Number.isFinite(hours) && hours > 0 ? hours * 3_600_000 : undefined;
+}
+
 export const appRouter = router({
   workshops: createWorkshopsRouter(workshopRepo),
   pricing: createPricingRouter(),
   checkout: createCheckoutRouter(createFakePaymentAdapter()),
-  registrations: createRegistrationsRouter(createRegistrationRepo(), workshopSchedule),
+  registrations: createRegistrationsRouter(
+    createRegistrationRepo(),
+    workshopSchedule,
+    undefined,
+    configuredCancellationWindowMs(),
+  ),
 
   health: router({
     // End-to-end wiring proof: Zod-validated input, typed output,

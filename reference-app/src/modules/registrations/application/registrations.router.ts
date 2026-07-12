@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { publicProcedure, router } from "@/platform/api/trpc";
 
 import {
+  CANCELLATION_WINDOW_MS,
   canCancelRegistration,
   registrationInputSchema,
   registrationSchema,
@@ -39,7 +40,9 @@ export function createRegistrationsRouter(
   repo: RegistrationRepo,
   schedule: WorkshopSchedule,
   clock: Clock = () => new Date(),
+  cancellationWindowMs: number = CANCELLATION_WINDOW_MS,
 ) {
+  const windowHours = cancellationWindowMs / 3_600_000;
   return router({
     list: publicProcedure.query(() => repo.list()),
     create: publicProcedure.input(registrationInputSchema).mutation(async ({ input }) => {
@@ -66,10 +69,10 @@ export function createRegistrationsRouter(
         throw conflict("Registration is already cancelled");
       }
       const now = clock();
-      if (!canCancelRegistration(registration.workshopStartsAt, now)) {
+      if (!canCancelRegistration(registration.workshopStartsAt, now, cancellationWindowMs)) {
         throw new TRPCError({
           code: "PRECONDITION_FAILED",
-          message: "Cancellation closes 48 hours before the workshop starts",
+          message: `Cancellation closes ${windowHours} hours before the workshop starts`,
         });
       }
       const updated = await repo.transitionStatus(
