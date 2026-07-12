@@ -16,7 +16,7 @@
       "figureSelector": "#fig-guide-spec",
       "svgSelector": "#fig-guide-spec svg",
       "textFallbackSelector": "#fig-guide-spec-text",
-      "inlineSvgHash": "5066f9b2935b84663a1c4d120c7a975a1a4ad10cb9c3e13d532203bbf93ea7d1"
+      "inlineSvgHash": "efe67d7930e034d381fc5fc0b760e7d80929f5567b603eea04f94177fa105620"
     },
     {
       "id": "fig-guide-spec-hogyan-epul-fel-az-ot",
@@ -34,7 +34,7 @@
       "figureSelector": "#fig-guide-spec-hogyan-epul-fel-az-ot",
       "svgSelector": "#fig-guide-spec-hogyan-epul-fel-az-ot svg",
       "textFallbackSelector": "#fig-guide-spec-hogyan-epul-fel-az-ot-text",
-      "inlineSvgHash": "6c136e0b259a10b9de739b6abd34d4f9fdffdcfeab764a2a136d75cea90d4f51"
+      "inlineSvgHash": "cb9feb2a262b2c6ab4dc7788b7fbf081b2bc03ba0b2ecf59fbaafc75ce25da82"
     }
   ]
 }
