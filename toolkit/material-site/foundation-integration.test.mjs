@@ -23,7 +23,7 @@ function run(args) {
   return result.stdout;
 }
 
-test('checked-in foundation composes through every canonical site gate', { timeout: 120_000 }, () => {
+test('fully populated source tree still validates the foundation fixture disposition', { timeout: 120_000 }, () => {
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-foundation-'));
   const site = path.join(temp, 'site');
   try {
