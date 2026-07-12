@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <!-- Deliberately pre-nullable style: this project imitates a legacy
+         codebase. Do not modernize it before the safety net exists. -->
+  </PropertyGroup>
+
+</Project>
