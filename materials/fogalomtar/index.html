@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+  <title>Fejlesztői fogalomtár</title>
+  <meta name="description" content="Az agentikus fejlesztési workshop kereshető, magyar nyelvű szakmai fogalomtára.">
+  <link rel="stylesheet" href="glossary.css">
+  <script defer src="glossary.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#fogalmak">Ugrás a fogalmakhoz</a>
+  <header class="site-header"><div class="site-header__inner">
+    <a class="brand" href="../../index.html">AI-assisted fejlesztési workshop</a>
+    <nav class="site-nav" aria-label="Fő navigáció"><a href="../index.html">Tananyag</a><a href="../modulok/index.html">Modulok</a><a href="index.html" aria-current="page">Fogalomtár</a></nav>
+  </div></header>
+
+  <section class="hero" aria-labelledby="page-title"><div class="hero__inner">
+    <div><p class="eyebrow">Kereshető szakmai nyelv</p><h1 id="page-title">Fejlesztői fogalomtár</h1><p class="lead">Az angol szakkifejezéseket ott tartjuk meg, ahol a magyar fejlesztői gyakorlatban is természetesek. Minden bejegyzés megmutatja a javasolt szóhasználatot, a kerülendő tükörfordításokat és a kapcsolódó modulokat.</p></div>
+    <p class="version"><strong>Fogalomjegyzék 2.0.0</strong>A fogalomkártyák stabil hivatkozással nyithatók meg, és internetkapcsolat nélkül is kereshetők.</p>
+  </div></section>
+
+  <main>
+    <section class="intro-grid" aria-label="A fogalomtár használata">
+      <article class="panel"><h2>Hogyan használd?</h2><p>Keress magyar vagy angol kifejezésre, válassz témacsaládot, vagy nyiss meg egy pontos hivatkozást, például <a href="#quality-gate">kötelező ellenőrzési pont</a>. A „Kerüld” sor olyan félreérthető fordításokat mutat, amelyek helyett természetesebb megfogalmazást ajánlunk.</p></article>
+      <article class="panel"><h2>Szakmai nyelvi elv</h2><p>Először természetes magyar mondatot írunk. Az angol szakkifejezést akkor tartjuk meg, ha a fejlesztők a mindennapi munkában is így használják. Az első nem magától értetődő előfordulás erre a fogalomkártyára mutat.</p></article>
+    </section>
+
+    <section class="visuals" aria-label="A fogalmak kapcsolatai">
+      <figure class="visual" id="fig-concept-families">
+        <h2>Milyen témák rendezik rendszerbe a fogalmakat?</h2>
+        <svg viewBox="0 0 720 410" role="img" aria-labelledby="families-title families-desc">
+          <title id="families-title">A fogalomtár hét témacsaládja</title><desc id="families-desc">Középen az agentikus fejlesztési rendszer áll. Körülötte hét szakmai témacsalád helyezkedik el.</desc>
+          <defs><marker id="families-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7181a3"/></marker></defs>
+          <g fill="none" stroke="#7181a3" stroke-width="2" marker-end="url(#families-arrow)"><path d="M360 194 L360 72"/><path d="M405 205 L575 104"/><path d="M415 238 L604 238"/><path d="M405 271 L563 348"/><path d="M315 271 L157 348"/><path d="M305 238 L116 238"/><path d="M315 205 L145 104"/></g>
+          <rect x="275" y="184" width="170" height="105" rx="20" fill="#183083"/><g fill="#fff" font-size="19" font-weight="700" text-anchor="middle"><text x="360" y="225">Agentikus</text><text x="360" y="252">fejlesztési rendszer</text></g>
+          <g fill="#e8edff" stroke="#2949c7" stroke-width="2" font-size="15" font-weight="700" text-anchor="middle"><rect x="250" y="18" width="220" height="55" rx="14"/><text x="360" y="51" fill="#172033">Alapok és specifikáció</text><rect x="500" y="63" width="210" height="70" rx="14"/><text x="605" y="93" fill="#172033">Review és minőség</text><text x="605" y="114" fill="#172033">ellenőrzése</text><rect x="545" y="208" width="165" height="60" rx="14"/><text x="628" y="244" fill="#172033">Git és kiadás</text><rect x="480" y="326" width="230" height="65" rx="14"/><text x="595" y="354" fill="#172033">Eszközök és</text><text x="595" y="376" fill="#172033">automatizálás</text><rect x="10" y="326" width="230" height="65" rx="14"/><text x="125" y="354" fill="#172033">Tesztelés és</text><text x="125" y="376" fill="#172033">rendszerellenőrzés</text><rect x="10" y="208" width="165" height="60" rx="14"/><text x="93" y="234" fill="#172033">Legacy rendszer</text><text x="93" y="255" fill="#172033">változtatása</text><rect x="10" y="63" width="210" height="70" rx="14"/><text x="115" y="93" fill="#172033">Csapatszintű</text><text x="115" y="114" fill="#172033">bevezetés</text></g>
+        </svg>
+        <div class="mobile-diagram mobile-family-map" role="img" aria-label="Az agentikus fejlesztési rendszer hét fogalomcsaládja">
+          <strong>Agentikus fejlesztési rendszer</strong>
+          <ul><li>Alapok és specifikáció</li><li>Review és minőség</li><li>Git és kiadás</li><li>Eszközök és automatizálás</li><li>Tesztelés és rendszerellenőrzés</li><li>Legacy rendszer változtatása</li><li>Csapatszintű bevezetés</li></ul>
+        </div>
+        <figcaption>A térkép arra válaszol, hogy egy ismeretlen fogalom melyik szakmai kérdéskörbe illeszkedik. <strong>Röviden:</strong> egy fogalom jelentését a kapcsolatai és a fejlesztési folyamatban betöltött szerepe teszi használhatóvá.</figcaption>
+        <details class="text-equivalent static-fallback"><summary>Az ábra teljes szöveges megfelelője</summary><p>Az agentikus fejlesztési rendszer fogalmait hét család rendezi: alapok és specifikáció; review és minőség; Git és kiadás; eszközök és automatizálás; tesztelés és rendszerellenőrzés; legacy rendszer változtatása; csapatszintű bevezetés.</p></details>
+      </figure>
+      <figure class="visual" id="fig-terms-to-modules">
+        <h2>Hol találkozol a fogalmakkal a workshopon?</h2>
+        <svg viewBox="0 0 720 310" role="img" aria-labelledby="modules-title modules-desc">
+          <title id="modules-title">A fogalmak kapcsolata a nyolc modullal</title><desc id="modules-desc">Nyolc egymásra épülő állomás mutatja a workshop útját az alapoktól a csapatbevezetésig.</desc>
+          <defs><marker id="modules-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2949c7"/></marker></defs><path d="M70 155 H650" stroke="#2949c7" stroke-width="4" fill="none" marker-end="url(#modules-arrow)"/>
+          <g font-weight="700" text-anchor="middle" fill="#172033"><g transform="translate(70 155)"><circle r="31" fill="#183083"/><text y="7" fill="#fff" font-size="20">1</text><text y="-55">Alapok</text></g><g transform="translate(150 155)"><circle r="31" fill="#2949c7"/><text y="7" fill="#fff" font-size="20">2</text><text y="58">Repo</text></g><g transform="translate(230 155)"><circle r="31" fill="#3859d7"/><text y="7" fill="#fff" font-size="20">3</text><text y="-55">Spec</text></g><g transform="translate(310 155)"><circle r="31" fill="#4869df"/><text y="7" fill="#fff" font-size="20">4</text><text y="58">Review</text></g><g transform="translate(390 155)"><circle r="31" fill="#5878e5"/><text y="7" fill="#fff" font-size="20">5</text><text y="-55">Kapuk</text></g><g transform="translate(470 155)"><circle r="31" fill="#5c6fba"/><text y="7" fill="#fff" font-size="20">6</text><text y="58">Rendszer</text></g><g transform="translate(550 155)"><circle r="31" fill="#6b638f"/><text y="7" fill="#fff" font-size="20">7</text><text y="-55">Legacy</text></g><g transform="translate(630 155)"><circle r="31" fill="#714c72"/><text y="7" fill="#fff" font-size="20">8</text><text y="58">Csapat</text></g></g>
+        </svg>
+        <ol class="mobile-diagram mobile-timeline" aria-label="A workshop nyolc egymásra épülő modulja"><li>Alapok</li><li>Repo</li><li>Spec</li><li>Review</li><li>Kapuk</li><li>Rendszer</li><li>Legacy</li><li>Csapat</li></ol>
+        <figcaption>Az útvonal arra válaszol, hogy a workshop mely pontján kapnak gyakorlati szerepet az egyes fogalmak. <strong>Röviden:</strong> a fogalmak nem egyszerre jelennek meg, hanem az egymásra épülő feladatokkal válnak gyakorlattá.</figcaption>
+        <details class="text-equivalent static-fallback"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>Agentikus fejlesztési alapok.</li><li>A repo felkészítése.</li><li>Specifikáció.</li><li>Független review.</li><li>Szabályok és automatizált ellenőrzések.</li><li>Teljes rendszerellenőrzés.</li><li>Legacy rendszer változtatása.</li><li>Csapatszintű bevezetés.</li></ol></details>
+      </figure>
+    </section>
+
+    <p class="panel visual-coverage"><strong>Hogyan követhető egy fogalom?</strong> A kártya témacsaládja elhelyezi az első térképen, a „Kapcsolódik” sor megmutatja a közvetlen fogalmi kapcsolatokat, a „Tananyagban” sor pedig ahhoz a modulhoz vezet, ahol a fogalom magyarázó ábrán és gyakorlatban is szerepet kap.</p>
+
+    <section id="fogalmak" aria-labelledby="terms-title"><h2 id="terms-title">Fogalmak</h2>
+      <noscript><p class="no-js-note">A kereséshez JavaScript szükséges, de az összes fogalom alább olvasható és a böngésző saját oldal-keresőjével is megtalálható.</p></noscript>
+      <div class="controls" role="search"><div class="control-grid"><label for="term-search">Keresés magyarul vagy angolul<input id="term-search" type="search" autocomplete="off" placeholder="Például: worktree, ellenőrzés, legacy"></label><label for="family-filter">Témacsalád<select id="family-filter"><option value="">Minden témacsalád</option><option value="alapok">Alapok és specifikáció</option><option value="minoseg">Review és minőség</option><option value="git">Git és kiadás</option><option value="automatizalas">Eszközök és automatizálás</option><option value="teszteles">Tesztelés és rendszerellenőrzés</option><option value="legacy">Legacy rendszer változtatása</option><option value="bevezetes">Csapatszintű bevezetés</option></select></label><button id="clear-filters" type="button">Szűrők törlése</button></div><p class="result-line" id="result-count" aria-live="polite">A teljes fogalomtár látható.</p></div>
+      <div class="term-list" id="term-list">
+        <article class="term-card" id="repository-constitution" data-family="alapok" data-search="a repo alapszabályai repository constitution repoalapszabályok repóalkotmány repository constitution résztvevői magyarázat nélkül A repo célját, változtathatatlan korlátait, döntési felelőseit és kötelező ellenőrzéseit összefogó, jóváhagyott szabálycsomag.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#repository-constitution">a repo alapszabályai</a></h2>
+          <p class="english"><span lang="en">repository constitution</span></p>
+          <p class="definition">A repo célját, változtathatatlan korlátait, döntési felelőseit és kötelező ellenőrzéseit összefogó, jóváhagyott szabálycsomag.</p>
+          <p class="example"><strong>Példa:</strong> A specifikációs csomag első fájlja a repo alapszabályait rögzíti, és minden későbbi tervnek ezekhez kell igazodnia.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">repoalapszabályok</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">repóalkotmány</span><span class="pill">repository constitution résztvevői magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#repository-rules">repo szabályai</a><a href="#spec">spec</a><a href="#definition-of-done">Definition of Done</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a><a href="../../toolkit/utmutatok/specifikacio/index.html">Toolkit: specifikáció</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="agent-ready-repo" data-family="alapok" data-search="agent-ready repo agent-ready repository agent-ready repository ágenskész repó repoidentitás Olyan fejlesztési repo, amelyből egy coding agent külön szóbeli magyarázat nélkül megérti a célt, a feladat határait, a szabályokat és az ellenőrzés módját.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#agent-ready-repo">agent-ready repo</a></h2>
+          <p class="english"><span lang="en">agent-ready repository</span></p>
+          <p class="definition">Olyan fejlesztési repo, amelyből egy coding agent külön szóbeli magyarázat nélkül megérti a célt, a feladat határait, a szabályokat és az ellenőrzés módját.</p>
+          <p class="example"><strong>Példa:</strong> A repo akkor agent-ready, ha egy új agent megtalálja benne a szabályokat és le tudja futtatni a szükséges ellenőrzéseket.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">agent-ready repository</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">ágenskész repó</span><span class="pill">repoidentitás</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#coding-agent">coding agent</a><a href="#context">kontextus</a><a href="#repository-rules">repo szabályai</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/01-agentikus-fejlesztes/index.html">1. Agentikus fejlesztés</a><a href="../agent-ready-repo/index.html">Az agent-ready repo</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="checkpoint" data-family="minoseg" data-search="állomás checkpoint mérföldkő C0–C7 bizonyítható képesség A tanulási vagy munkafolyamat egy megnevezett pontja, ahol röviden ellenőrizzük az addigi eredményt és a továbblépés feltételeit.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#checkpoint">állomás</a></h2>
+          <p class="english"><span lang="en">checkpoint</span></p>
+          <p class="definition">A tanulási vagy munkafolyamat egy megnevezett pontja, ahol röviden ellenőrizzük az addigi eredményt és a továbblépés feltételeit.</p>
+          <p class="example"><strong>Példa:</strong> A modul végi állomáson a résztvevő megmutatja az elkészült fájlt és lefuttatja a hozzá tartozó ellenőrzést.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">mérföldkő</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">C0–C7</span><span class="pill">bizonyítható képesség</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#decision-gate">döntési pont</a><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#trace">visszakövetési napló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../index.html">Tananyag és haladási térkép</a><a href="../napirend/index.html">A workshop menete</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="golden-path" data-family="bevezetes" data-search="bevált mintaút golden path golden path referencia-slice egyetlen kötelező út Jól dokumentált, végig ellenőrzött alapfolyamat, amelyet a csapat a gyakori feladatok első választásaként követhet és szükség esetén tudatosan módosíthat.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#golden-path">bevált mintaút</a></h2>
+          <p class="english"><span lang="en">golden path</span></p>
+          <p class="definition">Jól dokumentált, végig ellenőrzött alapfolyamat, amelyet a csapat a gyakori feladatok első választásaként követhet és szükség esetén tudatosan módosíthat.</p>
+          <p class="example"><strong>Példa:</strong> A bevált mintaút megmutatja, hogyan jut el egy kis változtatás a jóváhagyott spectől a merge utáni ellenőrzésig.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">golden path</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">referencia-slice</span><span class="pill">egyetlen kötelező út</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#reference-task">referenciafeladat</a><a href="#operating-model">működési modell</a><a href="#pilot">pilot</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="safety-net" data-family="legacy" data-search="biztonsági háló safety net regressziós védelem safety net magyarázat nélkül A változtatás előtt létrehozott tesztek és ellenőrzések együttese, amely észleli a nem szándékos viselkedésváltozást.">
+          <span class="family">Legacy rendszer változtatása</span>
+          <h2><a href="#safety-net">biztonsági háló</a></h2>
+          <p class="english"><span lang="en">safety net</span></p>
+          <p class="definition">A változtatás előtt létrehozott tesztek és ellenőrzések együttese, amely észleli a nem szándékos viselkedésváltozást.</p>
+          <p class="example"><strong>Példa:</strong> A három characterization teszt olyan biztonsági hálót ad, amely már a refaktor első hibás lépését jelzi.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">regressziós védelem</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">safety net magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#characterization-test">characterization teszt</a><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#rollback">rollback</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/07-legacy-rendszer/index.html">7. Legacy rendszer</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="branch" data-family="git" data-search="branch branch Git branch Git-ág magyarázat nélkül A Git történetének névvel ellátott, önálló ága, amelyen egy változtatás a main érintése nélkül készülhet el.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#branch">branch</a></h2>
+          <p class="english"><span lang="en">branch</span></p>
+          <p class="definition">A Git történetének névvel ellátott, önálló ága, amelyen egy változtatás a main érintése nélkül készülhet el.</p>
+          <p class="example"><strong>Példa:</strong> Minden párhuzamos feladat saját branchen készül, így a változtatások külön ellenőrizhetők.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Git branch</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">Git-ág magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#worktree">worktree</a><a href="#commit">commit</a><a href="#pull-request">pull request</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="characterization-test" data-family="legacy" data-search="characterization teszt characterization test viselkedésrögzítő teszt befotózó teszt Olyan teszt, amely a legacy kód jelenlegi, megfigyelt viselkedését rögzíti, mielőtt annak helyességéről vagy megváltoztatásáról döntünk.">
+          <span class="family">Legacy rendszer változtatása</span>
+          <h2><a href="#characterization-test">characterization teszt</a></h2>
+          <p class="english"><span lang="en">characterization test</span></p>
+          <p class="definition">Olyan teszt, amely a legacy kód jelenlegi, megfigyelt viselkedését rögzíti, mielőtt annak helyességéről vagy megváltoztatásáról döntünk.</p>
+          <p class="example"><strong>Példa:</strong> A characterization teszt rögzíti a jelenlegi kuponszámítást akkor is, ha később kiderül, hogy az üzleti szabály hibás.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">viselkedésrögzítő teszt</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">befotózó teszt</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#legacy-system">legacy rendszer</a><a href="#safety-net">biztonsági háló</a><a href="#seam">seam</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/07-legacy-rendszer/index.html">7. Legacy rendszer</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="ci" data-family="git" data-search="CI continuous integration continuous integration pipeline mint minden automatizálás Automatikus ellenőrzési folyamat, amely a repó változásaira például fordítást, lintet és teszteket futtat.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#ci">CI</a></h2>
+          <p class="english"><span lang="en">continuous integration</span></p>
+          <p class="definition">Automatikus ellenőrzési folyamat, amely a repó változásaira például fordítást, lintet és teszteket futtat.</p>
+          <p class="example"><strong>Példa:</strong> A CI ugyanazt a tesztparancsot futtatja, mint amelyet a fejlesztő helyben is el tud indítani.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">continuous integration</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">pipeline mint minden automatizálás</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#preview">preview környezet</a><a href="#hook">hook</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="coding-agent" data-family="alapok" data-search="coding agent coding agent kódoló agent bíráló-agent kódoló ágens Kódon és fejlesztői eszközökön dolgozó AI-agent, amely fájlokat olvas és módosít, parancsokat futtat, majd ellenőrizhető eredményt ad át.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#coding-agent">coding agent</a></h2>
+          <p class="english"><span lang="en">coding agent</span></p>
+          <p class="definition">Kódon és fejlesztői eszközökön dolgozó AI-agent, amely fájlokat olvas és módosít, parancsokat futtat, majd ellenőrizhető eredményt ad át.</p>
+          <p class="example"><strong>Példa:</strong> A coding agent megírhatja a változtatást, de az üzleti döntést és a merge jóváhagyását ember végzi.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">kódoló agent</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">bíráló-agent</span><span class="pill">kódoló ágens</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#agent-ready-repo">agent-ready repo</a><a href="#context">kontextus</a><a href="#scope">scope</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/01-agentikus-fejlesztes/index.html">1. Agentikus fejlesztés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="commit" data-family="git" data-search="commit commit Git commit mentésként emlegetett commit A Gitben rögzített, azonosítóval ellátott változtatáscsomag és a hozzá tartozó üzenet.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#commit">commit</a></h2>
+          <p class="english"><span lang="en">commit</span></p>
+          <p class="definition">A Gitben rögzített, azonosítóval ellátott változtatáscsomag és a hozzá tartozó üzenet.</p>
+          <p class="example"><strong>Példa:</strong> A review pontos commitot vizsgál, ezért ugyanarról a változatról beszél a készítő és az ellenőrző.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Git commit</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">mentésként emlegetett commit</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#branch">branch</a><a href="#pull-request">pull request</a><a href="#provenance">eredet és verzió</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="contract-test" data-family="teszteles" data-search="contract test contract test szerződésteszt API-tesztként használt általános címke Egy komponens vagy adapter közösen elvárt viselkedését ellenőrző teszt, amely ugyanazt a szerződést több megvalósításon is számon kérheti.">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#contract-test">contract test</a></h2>
+          <p class="english"><span lang="en">contract test</span></p>
+          <p class="definition">Egy komponens vagy adapter közösen elvárt viselkedését ellenőrző teszt, amely ugyanazt a szerződést több megvalósításon is számon kérheti.</p>
+          <p class="example"><strong>Példa:</strong> Ugyanaz a contract test fut az in-memory és a Postgres repository-adapteren.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">szerződésteszt</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">API-tesztként használt általános címke</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#unit-test">unit teszt</a><a href="#e2e">E2E teszt</a><a href="#fixture">test fixture</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="definition-of-done" data-family="minoseg" data-search="Definition of Done Definition of Done DoD szakmai léc minőségi léc A csapat közösen elfogadott készültségi feltételei, amelyek minden releváns munkadarabra érvényesek.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#definition-of-done">Definition of Done</a></h2>
+          <p class="english"><span lang="en">Definition of Done</span></p>
+          <p class="definition">A csapat közösen elfogadott készültségi feltételei, amelyek minden releváns munkadarabra érvényesek.</p>
+          <p class="example"><strong>Példa:</strong> A Definition of Done része, hogy a tesztek zöldek, a review lezárult, és a változtatás visszakövethető.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">DoD</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">szakmai léc</span><span class="pill">minőségi léc</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#acceptance-criteria">elfogadási feltételek</a><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#review">review</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../minoseg/index.html">Közös mérnöki minőség</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="decision-gate" data-family="minoseg" data-search="döntési pont decision gate jóváhagyási pont validation gate önjóváhagyás Olyan kijelölt állomás, ahol egy megnevezett ember jóváhagyja a folytatást, vagy rögzíti, milyen döntés hiányzik még.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#decision-gate">döntési pont</a></h2>
+          <p class="english"><span lang="en">decision gate</span></p>
+          <p class="definition">Olyan kijelölt állomás, ahol egy megnevezett ember jóváhagyja a folytatást, vagy rögzíti, milyen döntés hiányzik még.</p>
+          <p class="example"><strong>Példa:</strong> A spec végén a Product Owner az előre kijelölt döntési pontnál APPROVED vagy BLOCKED állapotot rögzít.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">jóváhagyási pont</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">validation gate</span><span class="pill">önjóváhagyás</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#spec">spec</a><a href="#scope">scope</a><a href="#owner">felelős</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="e2e" data-family="teszteles" data-search="E2E teszt end-to-end test end-to-end test teljes teszt E2E bizonyíték A felhasználó által bejárható teljes rendszerutat ellenőrző teszt, jellemzően a felülettől az API-n át az adattárolásig.">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#e2e">E2E teszt</a></h2>
+          <p class="english"><span lang="en">end-to-end test</span></p>
+          <p class="definition">A felhasználó által bejárható teljes rendszerutat ellenőrző teszt, jellemzően a felülettől az API-n át az adattárolásig.</p>
+          <p class="example"><strong>Példa:</strong> Az E2E teszt böngészőből létrehoz egy jelentkezést, majd ellenőrzi a megjelenő visszaigazolást.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">end-to-end test</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">teljes teszt</span><span class="pill">E2E bizonyíték</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#unit-test">unit teszt</a><a href="#contract-test">contract test</a><a href="#preview">preview környezet</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="acceptance-criteria" data-family="alapok" data-search="elfogadási feltételek acceptance criteria AC kész, ha jó acceptance criteria magyarázat nélkül Ellenőrizhető állítások arról, minek kell teljesülnie ahhoz, hogy a feladat eredményét elfogadhassuk.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#acceptance-criteria">elfogadási feltételek</a></h2>
+          <p class="english"><span lang="en">acceptance criteria</span></p>
+          <p class="definition">Ellenőrizhető állítások arról, minek kell teljesülnie ahhoz, hogy a feladat eredményét elfogadhassuk.</p>
+          <p class="example"><strong>Példa:</strong> Az egyik elfogadási feltétel kimondja, hogy a keresés billentyűzettel és közvetlenül fájlból megnyitva is működik.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">AC</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">kész, ha jó</span><span class="pill">acceptance criteria magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#spec">spec</a><a href="#given-when-then">Given–When–Then</a><a href="#definition-of-done">Definition of Done</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="evidence" data-family="minoseg" data-search="ellenőrzési eredmény evidence visszakereshető bizonyíték evidence evidence-léc evidence-hely Visszakereshető adat vagy eredmény, amelyből egy konkrét állítás ellenőrizhető, például tesztkimenet, képernyőkép vagy commitazonosító.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#evidence">ellenőrzési eredmény</a></h2>
+          <p class="english"><span lang="en">evidence</span></p>
+          <p class="definition">Visszakereshető adat vagy eredmény, amelyből egy konkrét állítás ellenőrizhető, például tesztkimenet, képernyőkép vagy commitazonosító.</p>
+          <p class="example"><strong>Példa:</strong> A teszt neve, kimenete és a vizsgált commit együtt használható ellenőrzési eredményként.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">visszakereshető bizonyíték</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">evidence</span><span class="pill">evidence-léc</span><span class="pill">evidence-hely</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#artifact">munkadarab</a><a href="#provenance">eredet és verzió</a><a href="#trace">visszakövetési napló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modszertan/index.html">A workshop módszere</a><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="provenance" data-family="git" data-search="eredet és verzió provenance származási adatok provenance magyarázat nélkül futásnyom Az ellenőrzött eredmény származásának adatai: melyik forrásverzió, build és környezet hozta létre.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#provenance">eredet és verzió</a></h2>
+          <p class="english"><span lang="en">provenance</span></p>
+          <p class="definition">Az ellenőrzött eredmény származásának adatai: melyik forrásverzió, build és környezet hozta létre.</p>
+          <p class="example"><strong>Példa:</strong> A teszteredmény mellett rögzítjük a commit azonosítóját és a környezetet, így az eredet és a verzió ellenőrizhető.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">származási adatok</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">provenance magyarázat nélkül</span><span class="pill">futásnyom</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#commit">commit</a><a href="#preview">preview környezet</a><a href="#trace">visszakövetési napló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="eval" data-family="bevezetes" data-search="eval evaluation modellértékelés modellcsere-eval érzésre jobb modell Rögzített feladatokon, mérési szabályokkal végzett összehasonlító értékelés modellek, agentek vagy munkafolyamatok között.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#eval">eval</a></h2>
+          <p class="english"><span lang="en">evaluation</span></p>
+          <p class="definition">Rögzített feladatokon, mérési szabályokkal végzett összehasonlító értékelés modellek, agentek vagy munkafolyamatok között.</p>
+          <p class="example"><strong>Példa:</strong> Az eval ugyanazt az öt referenciafeladatot futtatja mindkét modellen, majd az eredményt és a költséget együtt hasonlítja össze.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">modellértékelés</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">modellcsere-eval</span><span class="pill">érzésre jobb modell</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#reference-task">referenciafeladat</a><a href="#pilot">pilot</a><a href="#golden-path">bevált mintaút</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="owner" data-family="bevezetes" data-search="felelős owner döntési felelős owner-lista gazda magyarázat nélkül Az a megnevezett szerep vagy személy, aki egy döntésért, eredményért vagy következő lépésért elszámoltatható.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#owner">felelős</a></h2>
+          <p class="english"><span lang="en">owner</span></p>
+          <p class="definition">Az a megnevezett szerep vagy személy, aki egy döntésért, eredményért vagy következő lépésért elszámoltatható.</p>
+          <p class="example"><strong>Példa:</strong> Minden döntési ponthoz egyetlen felelőst és határidőt rendelünk.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">döntési felelős</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">owner-lista</span><span class="pill">gazda magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#decision-gate">döntési pont</a><a href="#operating-model">működési modell</a><a href="#pilot">pilot</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="reviewer" data-family="minoseg" data-search="független ellenőrző reviewer reviewer bíráló-agent saját munka független review-ja A készítőtől független személy vagy agent, aki az előzményektől elkülönítve vizsgálja meg az eredményt, és a megállapításait konkrét ellenőrzési eredménnyel támasztja alá.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#reviewer">független ellenőrző</a></h2>
+          <p class="english"><span lang="en">reviewer</span></p>
+          <p class="definition">A készítőtől független személy vagy agent, aki az előzményektől elkülönítve vizsgálja meg az eredményt, és a megállapításait konkrét ellenőrzési eredménnyel támasztja alá.</p>
+          <p class="example"><strong>Példa:</strong> A független ellenőrző nem a készítő magyarázatából, hanem a specből és a tényleges változtatásból indul ki.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">reviewer</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">bíráló-agent</span><span class="pill">saját munka független review-ja</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#maker">készítő</a><a href="#fixer">javító</a><a href="#review">review</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="given-when-then" data-family="alapok" data-search="Given–When–Then Given–When–Then Gherkin példa adott-amikor-akkor kód Viselkedési példa három részből: az induló helyzet, a végrehajtott művelet és az elvárt, megfigyelhető eredmény.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#given-when-then">Given–When–Then</a></h2>
+          <p class="english"><span lang="en">Given–When–Then</span></p>
+          <p class="definition">Viselkedési példa három részből: az induló helyzet, a végrehajtott művelet és az elvárt, megfigyelhető eredmény.</p>
+          <p class="example"><strong>Példa:</strong> Given: a kereső üres; When: a résztvevő beírja, hogy worktree; Then: csak a kapcsolódó fogalomkártya marad látható.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Gherkin példa</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">adott-amikor-akkor kód</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#acceptance-criteria">elfogadási feltételek</a><a href="#spec">spec</a><a href="#contract-test">contract test</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="hook" data-family="automatizalas" data-search="hook hook Git hook a hook garancia láthatatlan automatika Egy meghatározott eseménynél automatikusan lefutó program vagy parancs, amely következetesen kikényszerít egy ellenőrzést vagy műveletet.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#hook">hook</a></h2>
+          <p class="english"><span lang="en">hook</span></p>
+          <p class="definition">Egy meghatározott eseménynél automatikusan lefutó program vagy parancs, amely következetesen kikényszerít egy ellenőrzést vagy műveletet.</p>
+          <p class="example"><strong>Példa:</strong> A pre-commit hook megállítja a commitot, ha a publikus oldal belső hivatkozást tartalmaz.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Git hook</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">a hook garancia</span><span class="pill">láthatatlan automatika</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#rule">szabály</a><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#ci">CI</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a><a href="../eszkozok/index.html">Eszközök és automatizálás</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="fixer" data-family="minoseg" data-search="javító fixer fixer foltozó agent Az a szerep, amely az igazolt review-megállapításokat kijavítja, majd ugyanazokat az ellenőrzéseket újra lefuttatja.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#fixer">javító</a></h2>
+          <p class="english"><span lang="en">fixer</span></p>
+          <p class="definition">Az a szerep, amely az igazolt review-megállapításokat kijavítja, majd ugyanazokat az ellenőrzéseket újra lefuttatja.</p>
+          <p class="example"><strong>Példa:</strong> A javító csak az igazolt hibákat módosítja, és külön jelzi, ha egy javaslatot bizonyíték alapján elutasít.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">fixer</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">foltozó agent</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#maker">készítő</a><a href="#reviewer">független ellenőrző</a><a href="#review-finding">review-megállapítás</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="maker" data-family="minoseg" data-search="készítő maker builder gyártó agent Az a személy vagy agent, aki a jóváhagyott specifikáció alapján elkészíti az első változatot.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#maker">készítő</a></h2>
+          <p class="english"><span lang="en">maker</span></p>
+          <p class="definition">Az a személy vagy agent, aki a jóváhagyott specifikáció alapján elkészíti az első változatot.</p>
+          <p class="example"><strong>Példa:</strong> A készítő először visszamondja az elfogadási feltételeket, majd csak a kijelölt fájlokon dolgozik.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">builder</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">gyártó agent</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#reviewer">független ellenőrző</a><a href="#fixer">javító</a><a href="#rug">RUG-ciklus</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="baseline" data-family="bevezetes" data-search="kiinduló állapot baseline összehasonlítási alap kanonikus baseline baseline-SHA magyarázat nélkül Rögzített és azonosítható állapot, amelyhez a későbbi változást vagy mérési eredményt hasonlítjuk.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#baseline">kiinduló állapot</a></h2>
+          <p class="english"><span lang="en">baseline</span></p>
+          <p class="definition">Rögzített és azonosítható állapot, amelyhez a későbbi változást vagy mérési eredményt hasonlítjuk.</p>
+          <p class="example"><strong>Példa:</strong> A pilot előtt rögzítjük a kiinduló állapotot, hogy később ugyanazon mutatók mentén hasonlíthassunk.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">összehasonlítási alap</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">kanonikus baseline</span><span class="pill">baseline-SHA magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#eval">eval</a><a href="#provenance">eredet és verzió</a><a href="#pilot">pilot</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="canonical" data-family="bevezetes" data-search="kijelölt elsődleges canonical elsődleges forrás kanonikus asset-térkép kanonikus minden közös fájlra Az az egyértelműen kijelölt forrás vagy változat, amelyet eltérés esetén irányadónak tekintünk.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#canonical">kijelölt elsődleges</a></h2>
+          <p class="english"><span lang="en">canonical</span></p>
+          <p class="definition">Az az egyértelműen kijelölt forrás vagy változat, amelyet eltérés esetén irányadónak tekintünk.</p>
+          <p class="example"><strong>Példa:</strong> A fogalmak kijelölt elsődleges forrása a registry; az oldalak nem találnak ki helyi definíciókat.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">elsődleges forrás</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">kanonikus asset-térkép</span><span class="pill">kanonikus minden közös fájlra</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#baseline">kiinduló állapot</a><a href="#repository-rules">repo szabályai</a><a href="#project-memory">projektmemória</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../fogalomtar/index.html">Fejlesztői fogalomtár</a><a href="../modszertan/index.html">A workshop módszere</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="context" data-family="alapok" data-search="kontextus context modellkontextus mindent töltsünk a kontextusba context pollution A modell számára az adott munkamenetben elérhető információk összessége: például utasítások, kiválasztott fájlok, korábbi döntések és eszközeredmények.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#context">kontextus</a></h2>
+          <p class="english"><span lang="en">context</span></p>
+          <p class="definition">A modell számára az adott munkamenetben elérhető információk összessége: például utasítások, kiválasztott fájlok, korábbi döntések és eszközeredmények.</p>
+          <p class="example"><strong>Példa:</strong> Csak a döntéshez szükséges fájlokat adjuk a kontextushoz, mert a több információ nem feltétlenül jelent jobb választ.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">modellkontextus</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">mindent töltsünk a kontextusba</span><span class="pill">context pollution</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#coding-agent">coding agent</a><a href="#context-budget">kontextuskeret</a><a href="#project-memory">projektmemória</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/01-agentikus-fejlesztes/index.html">1. Agentikus fejlesztés</a><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="context-budget" data-family="teszteles" data-search="kontextuskeret context budget context budget tokenbudget minden token költségként kezelése A modell számára egy feladat során rendelkezésre álló kontextus tudatosan beosztott része.">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#context-budget">kontextuskeret</a></h2>
+          <p class="english"><span lang="en">context budget</span></p>
+          <p class="definition">A modell számára egy feladat során rendelkezésre álló kontextus tudatosan beosztott része.</p>
+          <p class="example"><strong>Példa:</strong> A böngésző-, API- és adatbázis-eredményekből csak a hibát elkülönítő részt tesszük a kontextuskeretbe.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">context budget</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">tokenbudget</span><span class="pill">minden token költségként kezelése</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#context">kontextus</a><a href="#project-memory">projektmemória</a><a href="#trace">visszakövetési napló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="quality-gate" data-family="minoseg" data-search="kötelező ellenőrzési pont quality gate minőségi kapu gate minden ellenőrzésre evidence-léc Olyan előre rögzített feltétel vagy ellenőrzés, amelynek teljesülnie kell, mielőtt a munka a következő állapotba léphet.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#quality-gate">kötelező ellenőrzési pont</a></h2>
+          <p class="english"><span lang="en">quality gate</span></p>
+          <p class="definition">Olyan előre rögzített feltétel vagy ellenőrzés, amelynek teljesülnie kell, mielőtt a munka a következő állapotba léphet.</p>
+          <p class="example"><strong>Példa:</strong> A linkellenőrző kötelező ellenőrzési pont: törött hivatkozással az oldal nem kerülhet kiadásra.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">minőségi kapu</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">gate minden ellenőrzésre</span><span class="pill">evidence-léc</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#definition-of-done">Definition of Done</a><a href="#hook">hook</a><a href="#ci">CI</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="legacy-system" data-family="legacy" data-search="legacy rendszer legacy system örökölt rendszer régi rendszer mint automatikus minősítés Üzletileg fontos, működő, de nehezen változtatható rendszer, amelynek jelenlegi viselkedése és függőségei csak részben ismertek vagy védettek tesztekkel.">
+          <span class="family">Legacy rendszer változtatása</span>
+          <h2><a href="#legacy-system">legacy rendszer</a></h2>
+          <p class="english"><span lang="en">legacy system</span></p>
+          <p class="definition">Üzletileg fontos, működő, de nehezen változtatható rendszer, amelynek jelenlegi viselkedése és függőségei csak részben ismertek vagy védettek tesztekkel.</p>
+          <p class="example"><strong>Példa:</strong> A legacy rendszerhez először megfigyelésekkel és characterization tesztekkel építünk biztonsági hálót.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">örökölt rendszer</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">régi rendszer mint automatikus minősítés</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#characterization-test">characterization teszt</a><a href="#safety-net">biztonsági háló</a><a href="#seam">seam</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/07-legacy-rendszer/index.html">7. Legacy rendszer</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="mcp" data-family="automatizalas" data-search="MCP Model Context Protocol Model Context Protocol MCP mint általános API-szinonima Nyílt protokoll, amelyen keresztül egy AI-alkalmazás szabványos módon érhet el külső eszközöket és adatforrásokat.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#mcp">MCP</a></h2>
+          <p class="english"><span lang="en">Model Context Protocol</span></p>
+          <p class="definition">Nyílt protokoll, amelyen keresztül egy AI-alkalmazás szabványos módon érhet el külső eszközöket és adatforrásokat.</p>
+          <p class="example"><strong>Példa:</strong> Az MCP-kapcsolat lehetővé teszi, hogy az agent strukturált eszközhívással olvassa a feladatkezelőt.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Model Context Protocol</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">MCP mint általános API-szinonima</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#skill">skill</a><a href="#coding-agent">coding agent</a><a href="#context">kontextus</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a><a href="../eszkozok/index.html">Eszközök és automatizálás</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="artifact" data-family="teszteles" data-search="munkadarab artifact munkaeredmény artifact-szerződés automatikusan publikálandó artifact A munka kézzelfogható eredménye, például egy fájl, diff, buildcsomag vagy tesztjelentés; a mondatban mindig a legpontosabb magyar megnevezést érdemes használni.">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#artifact">munkadarab</a></h2>
+          <p class="english"><span lang="en">artifact</span></p>
+          <p class="definition">A munka kézzelfogható eredménye, például egy fájl, diff, buildcsomag vagy tesztjelentés; a mondatban mindig a legpontosabb magyar megnevezést érdemes használni.</p>
+          <p class="example"><strong>Példa:</strong> A gyakorlat munkadarabja egy kitöltött specifikáció és az abból származó feladatlista.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">munkaeredmény</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">artifact-szerződés</span><span class="pill">automatikusan publikálandó artifact</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#evidence">ellenőrzési eredmény</a><a href="#provenance">eredet és verzió</a><a href="#trace">visszakövetési napló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modszertan/index.html">A workshop módszere</a><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="operating-model" data-family="bevezetes" data-search="működési modell operating model csapatműködés operating model minden mondatban egyéni AI-trükk A csapat ismételhető együttműködési rendszere: szerepek, döntési jogok, munkafolyamatok, szabályok és ellenőrzések összefüggő egésze.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#operating-model">működési modell</a></h2>
+          <p class="english"><span lang="en">operating model</span></p>
+          <p class="definition">A csapat ismételhető együttműködési rendszere: szerepek, döntési jogok, munkafolyamatok, szabályok és ellenőrzések összefüggő egésze.</p>
+          <p class="example"><strong>Példa:</strong> A működési modell rögzíti, ki írhat specifikációt, ki hagyja jóvá, és mikor kötelező a független review.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">csapatműködés</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">operating model minden mondatban</span><span class="pill">egyéni AI-trükk</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#owner">felelős</a><a href="#pilot">pilot</a><a href="#golden-path">bevált mintaút</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a><a href="../modszertan/index.html">A workshop módszere</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="public-safe" data-family="bevezetes" data-search="nyilvánosan megosztható safe for public sharing publikálható tartalom publikus-safe public-safe Olyan tartalom, amely nem tartalmaz belső munkakövetési adatot, titkot, személyes vagy ügyféladatot, meghívót és privát környezetre mutató hivatkozást.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#public-safe">nyilvánosan megosztható</a></h2>
+          <p class="english"><span lang="en">safe for public sharing</span></p>
+          <p class="definition">Olyan tartalom, amely nem tartalmaz belső munkakövetési adatot, titkot, személyes vagy ügyféladatot, meghívót és privát környezetre mutató hivatkozást.</p>
+          <p class="example"><strong>Példa:</strong> A résztvevői oldal csak kitalált példákat és nyilvánosan megosztható hivatkozásokat tartalmaz.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">publikálható tartalom</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">publikus-safe</span><span class="pill">public-safe</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#repository-rules">repo szabályai</a><a href="#fixture">test fixture</a><a href="#provenance">eredet és verzió</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../felkeszules/index.html">Felkészülés</a><a href="../agent-ready-repo/index.html">Az agent-ready repo</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="orchestrator" data-family="alapok" data-search="orchestrator agent orchestrator koordináló agent orkesztrátor karmester-agent Olyan koordináló agent, amely felosztja a munkát, kezeli a függőségeket, kijelöli az ellenőrzéseket és összefogja az eredményeket; az üzleti döntéseket nem veszi át az embertől.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#orchestrator">orchestrator agent</a></h2>
+          <p class="english"><span lang="en">orchestrator</span></p>
+          <p class="definition">Olyan koordináló agent, amely felosztja a munkát, kezeli a függőségeket, kijelöli az ellenőrzéseket és összefogja az eredményeket; az üzleti döntéseket nem veszi át az embertől.</p>
+          <p class="example"><strong>Példa:</strong> Az orchestrator agent külön munkaterületet ad a készítőnek és a független ellenőrzőnek.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">koordináló agent</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">orkesztrátor</span><span class="pill">karmester-agent</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#coding-agent">coding agent</a><a href="#rug">RUG-ciklus</a><a href="#owner">felelős</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="pilot" data-family="bevezetes" data-search="pilot pilot próbaidőszak teljes bevezetésnek nevezett próba Korlátozott idejű és hatókörű bevezetési próba, amely előre kijelölt feladatokon, felelősökkel és megállási feltételekkel gyűjt tapasztalatot.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#pilot">pilot</a></h2>
+          <p class="english"><span lang="en">pilot</span></p>
+          <p class="definition">Korlátozott idejű és hatókörű bevezetési próba, amely előre kijelölt feladatokon, felelősökkel és megállási feltételekkel gyűjt tapasztalatot.</p>
+          <p class="example"><strong>Példa:</strong> A 30 napos pilot két csapattal és három referenciafeladattal indul, majd a döntési ponton értékeljük az eredményt.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">próbaidőszak</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">teljes bevezetésnek nevezett próba</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#operating-model">működési modell</a><a href="#owner">felelős</a><a href="#eval">eval</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="plan-b" data-family="bevezetes" data-search="Plan B Plan B tartalék eljárás fallbackkel helyben kitalált kerülőút Előre kijelölt tartalék eljárás arra az esetre, ha a workshop vagy a fejlesztés egyik külső feltétele nem elérhető.">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#plan-b">Plan B</a></h2>
+          <p class="english"><span lang="en">Plan B</span></p>
+          <p class="definition">Előre kijelölt tartalék eljárás arra az esetre, ha a workshop vagy a fejlesztés egyik külső feltétele nem elérhető.</p>
+          <p class="example"><strong>Példa:</strong> Ha a preview nem elérhető, a Plan B a commitazonosítóhoz kötött, előre elkészített eredménycsomag visszajátszása.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">tartalék eljárás</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">fallbackkel</span><span class="pill">helyben kitalált kerülőút</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#rollback">rollback</a><a href="#decision-gate">döntési pont</a><a href="#provenance">eredet és verzió</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../felkeszules/index.html">Felkészülés</a><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="preview" data-family="git" data-search="preview környezet preview environment preview deployment élő bizonyíték preview deploy minden környezetre A változtatás elkülönített, megnyitható példánya, amelyen a merge előtt ellenőrizhető a tényleges működés.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#preview">preview környezet</a></h2>
+          <p class="english"><span lang="en">preview environment</span></p>
+          <p class="definition">A változtatás elkülönített, megnyitható példánya, amelyen a merge előtt ellenőrizhető a tényleges működés.</p>
+          <p class="example"><strong>Példa:</strong> A preview környezet csak akkor használható ellenőrzésre, ha ismert, melyik commit fut rajta.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">preview deployment</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">élő bizonyíték</span><span class="pill">preview deploy minden környezetre</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#ci">CI</a><a href="#provenance">eredet és verzió</a><a href="#e2e">E2E teszt</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="project-memory" data-family="automatizalas" data-search="projektmemória project memory project memory minden chat naplózása agentmemória Visszakereshető, tartós tudás a projekt döntéseiről, mintáiról és tanulságairól, amelyet a későbbi munkamenetek célzottan elő tudnak venni.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#project-memory">projektmemória</a></h2>
+          <p class="english"><span lang="en">project memory</span></p>
+          <p class="definition">Visszakereshető, tartós tudás a projekt döntéseiről, mintáiról és tanulságairól, amelyet a későbbi munkamenetek célzottan elő tudnak venni.</p>
+          <p class="example"><strong>Példa:</strong> Az elfogadott architekturális döntést a projektmemóriában rögzítjük, az egyetlen futáshoz tartozó naplót viszont nem.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">project memory</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">minden chat naplózása</span><span class="pill">agentmemória</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#context">kontextus</a><a href="#trace">visszakövetési napló</a><a href="#rule">szabály</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a><a href="../../toolkit/utmutatok/projektmemoria/index.html">Toolkit: projektmemória</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="pull-request" data-family="git" data-search="pull request pull request PR merge-kérés Javaslat egy branch változtatásainak áttekintésére és egy másik branchbe történő beemelésére.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#pull-request">pull request</a></h2>
+          <p class="english"><span lang="en">pull request</span></p>
+          <p class="definition">Javaslat egy branch változtatásainak áttekintésére és egy másik branchbe történő beemelésére.</p>
+          <p class="example"><strong>Példa:</strong> A pull requestben látható a diff, a CI eredménye és a review állapota, de a merge-ről továbbra is ember dönt.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">PR</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">merge-kérés</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#branch">branch</a><a href="#commit">commit</a><a href="#ci">CI</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="reference-task" data-family="teszteles" data-search="referenciafeladat reference task összetett próbafeladat validation workload validációs munkaterhelés próbaterhelés Kellően összetett, ismételhető feladat, amellyel a csapat a teljes fejlesztési módszert és annak ellenőrzéseit végigpróbálja.">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#reference-task">referenciafeladat</a></h2>
+          <p class="english"><span lang="en">reference task</span></p>
+          <p class="definition">Kellően összetett, ismételhető feladat, amellyel a csapat a teljes fejlesztési módszert és annak ellenőrzéseit végigpróbálja.</p>
+          <p class="example"><strong>Példa:</strong> A referenciaalkalmazás egyik változtatása referenciafeladatként a specifikációtól az E2E tesztig végigvezeti a folyamatot.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">összetett próbafeladat</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">validation workload</span><span class="pill">validációs munkaterhelés</span><span class="pill">próbaterhelés</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#golden-path">bevált mintaút</a><a href="#eval">eval</a><a href="#provenance">eredet és verzió</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a><a href="../../reference-app/index.html">Referenciaalkalmazás</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="repository-rules" data-family="alapok" data-search="repo szabályai repository rules repo rules repóalkotmány repository constitution A repóban verziózott, rövid és végrehajtható utasítások, amelyek rögzítik a célt, a tiltott műveleteket, a munkaterületeket és a kötelező ellenőrzéseket.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#repository-rules">repo szabályai</a></h2>
+          <p class="english"><span lang="en">repository rules</span></p>
+          <p class="definition">A repóban verziózott, rövid és végrehajtható utasítások, amelyek rögzítik a célt, a tiltott műveleteket, a munkaterületeket és a kötelező ellenőrzéseket.</p>
+          <p class="example"><strong>Példa:</strong> A gyökérben lévő agent-utasítás megmondja, melyik mappában dolgozhat az agent és milyen tesztet kell futtatnia.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">repo rules</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">repóalkotmány</span><span class="pill">repository constitution</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#agent-ready-repo">agent-ready repo</a><a href="#definition-of-done">Definition of Done</a><a href="#quality-gate">kötelező ellenőrzési pont</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../../toolkit/utmutatok/repo-szabalyok/index.html">Toolkit: repo szabályai</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="review" data-family="minoseg" data-search="review review szakmai ellenőrzés review-hurok ránézés A munkadarab célzott, szakmai ellenőrzése, amely a specifikációhoz és a közös követelményekhez viszonyítja az eredményt.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#review">review</a></h2>
+          <p class="english"><span lang="en">review</span></p>
+          <p class="definition">A munkadarab célzott, szakmai ellenőrzése, amely a specifikációhoz és a közös követelményekhez viszonyítja az eredményt.</p>
+          <p class="example"><strong>Példa:</strong> A review nem csak stílust néz: ellenőrzi, hogy a változtatás valóban teljesíti-e az elfogadási feltételeket.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">szakmai ellenőrzés</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">review-hurok</span><span class="pill">ránézés</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#review-finding">review-megállapítás</a><a href="#reviewer">független ellenőrző</a><a href="#rug">RUG-ciklus</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/01-agentikus-fejlesztes/index.html">1. Agentikus fejlesztés</a><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="review-finding" data-family="minoseg" data-search="review-megállapítás review finding ellenőrzési megállapítás finding finding-disposition A review során azonosított, konkrét és ellenőrizhető eltérés, amelyhez súlyosság, bizonyíték és javasolt következő lépés tartozik.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#review-finding">review-megállapítás</a></h2>
+          <p class="english"><span lang="en">review finding</span></p>
+          <p class="definition">A review során azonosított, konkrét és ellenőrizhető eltérés, amelyhez súlyosság, bizonyíték és javasolt következő lépés tartozik.</p>
+          <p class="example"><strong>Példa:</strong> A review-megállapítás megnevezi a hibás linket, a pontos fájlt és azt, hogyan igazolható a javítás.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">ellenőrzési megállapítás</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">finding</span><span class="pill">finding-disposition</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#review">review</a><a href="#fixer">javító</a><a href="#trace">visszakövetési napló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="rollback" data-family="legacy" data-search="rollback rollback visszaállási terv majd visszacsináljuk Előre megtervezett visszaállás egy korábbi, ismert működő állapotra, ha a változtatás elfogadhatatlan hibát okoz.">
+          <span class="family">Legacy rendszer változtatása</span>
+          <h2><a href="#rollback">rollback</a></h2>
+          <p class="english"><span lang="en">rollback</span></p>
+          <p class="definition">Előre megtervezett visszaállás egy korábbi, ismert működő állapotra, ha a változtatás elfogadhatatlan hibát okoz.</p>
+          <p class="example"><strong>Példa:</strong> A bevezetési terv megnevezi azt a mérőszámot és parancsot, amelynél rollback indul.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">visszaállási terv</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">majd visszacsináljuk</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#safety-net">biztonsági háló</a><a href="#seam">seam</a><a href="#plan-b">Plan B</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/07-legacy-rendszer/index.html">7. Legacy rendszer</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="rug" data-family="minoseg" data-search="RUG-ciklus Repeat Until Good Repeat Until Good review-hurok bizonyított PASS Ismételt készítés, független review, javítás és újraellenőrzés addig, amíg minden igazolt, súlyos megállapítás le nem zárul.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#rug">RUG-ciklus</a></h2>
+          <p class="english"><span lang="en">Repeat Until Good</span></p>
+          <p class="definition">Ismételt készítés, független review, javítás és újraellenőrzés addig, amíg minden igazolt, súlyos megállapítás le nem zárul.</p>
+          <p class="example"><strong>Példa:</strong> A RUG-ciklus csak akkor ér véget, amikor a javított változatot a független ellenőrző újra megvizsgálta.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Repeat Until Good</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">review-hurok</span><span class="pill">bizonyított PASS</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#maker">készítő</a><a href="#reviewer">független ellenőrző</a><a href="#fixer">javító</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a><a href="../../toolkit/utmutatok/fuggetlen-review/index.html">Toolkit: független review</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="scope" data-family="alapok" data-search="scope scope feladathatár hatókörhatár scope-határ A feladat pontos határa: mit kell megváltoztatni, mi marad érintetlen, és mely döntések nem tartoznak az adott munkába.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#scope">scope</a></h2>
+          <p class="english"><span lang="en">scope</span></p>
+          <p class="definition">A feladat pontos határa: mit kell megváltoztatni, mi marad érintetlen, és mely döntések nem tartoznak az adott munkába.</p>
+          <p class="example"><strong>Példa:</strong> A scope felsorolja az érintett oldalakat, és külön kimondja, hogy az adatbázis-sémához nem nyúlunk.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">feladathatár</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">hatókörhatár</span><span class="pill">scope-határ</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#spec">spec</a><a href="#acceptance-criteria">elfogadási feltételek</a><a href="#decision-gate">döntési pont</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/01-agentikus-fejlesztes/index.html">1. Agentikus fejlesztés</a><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="seam" data-family="legacy" data-search="seam seam cserepont varrás e2e seam magyarázat nélkül Tudatos illesztési vagy cserepont, ahol egy függőség vagy viselkedés a környező rendszer nagyobb átírása nélkül leválasztható.">
+          <span class="family">Legacy rendszer változtatása</span>
+          <h2><a href="#seam">seam</a></h2>
+          <p class="english"><span lang="en">seam</span></p>
+          <p class="definition">Tudatos illesztési vagy cserepont, ahol egy függőség vagy viselkedés a környező rendszer nagyobb átírása nélkül leválasztható.</p>
+          <p class="example"><strong>Példa:</strong> Az adatbázis-hozzáférés interface-e biztosítja azt a seamet, ahol először csak egy adaptert cserélünk le.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">cserepont</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">varrás</span><span class="pill">e2e seam magyarázat nélkül</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#legacy-system">legacy rendszer</a><a href="#strangler-pattern">Strangler pattern</a><a href="#rollback">rollback</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/07-legacy-rendszer/index.html">7. Legacy rendszer</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="skill" data-family="automatizalas" data-search="skill skill agent skill minden dokumentum skill Újra felhasználható, célhoz kötött agent-útmutató, amely megmondja, milyen eljárást és eszközöket kell követni egy feladattípusnál.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#skill">skill</a></h2>
+          <p class="english"><span lang="en">skill</span></p>
+          <p class="definition">Újra felhasználható, célhoz kötött agent-útmutató, amely megmondja, milyen eljárást és eszközöket kell követni egy feladattípusnál.</p>
+          <p class="example"><strong>Példa:</strong> A dokumentumkészítő skill csak akkor aktiválódik, amikor a feladat ténylegesen dokumentum létrehozása vagy szerkesztése.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">agent skill</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">minden dokumentum skill</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#rule">szabály</a><a href="#hook">hook</a><a href="#mcp">MCP</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a><a href="../eszkozok/index.html">Eszközök és automatizálás</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="spec" data-family="alapok" data-search="spec specification feladatspecifikáció issue-spec chatből összeszedett feladat Jóváhagyható feladatspecifikáció, amely rögzíti a kívánt eredményt, a scope-ot, a korlátokat, az elfogadási feltételeket és az ellenőrzés módját.">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#spec">spec</a></h2>
+          <p class="english"><span lang="en">specification</span></p>
+          <p class="definition">Jóváhagyható feladatspecifikáció, amely rögzíti a kívánt eredményt, a scope-ot, a korlátokat, az elfogadási feltételeket és az ellenőrzés módját.</p>
+          <p class="example"><strong>Példa:</strong> A fejlesztés csak akkor indul, ha minden, az implementációt érdemben befolyásoló döntés megszületett és bekerült a specbe.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">feladatspecifikáció</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">issue-spec</span><span class="pill">chatből összeszedett feladat</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#scope">scope</a><a href="#acceptance-criteria">elfogadási feltételek</a><a href="#given-when-then">Given–When–Then</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/03-specifikacio/index.html">3. Specifikáció</a><a href="../../toolkit/utmutatok/specifikacio/index.html">Toolkit: specifikáció</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="strangler-pattern" data-family="legacy" data-search="Strangler pattern Strangler Fig pattern Strangler Fig fojtogató füge big-bang csere Legacy-modernizálási minta, amelyben az új megoldás kis, átirányítható részenként veszi át a régi rendszer feladatait a teljes egyszeri újraírás helyett.">
+          <span class="family">Legacy rendszer változtatása</span>
+          <h2><a href="#strangler-pattern">Strangler pattern</a></h2>
+          <p class="english"><span lang="en">Strangler Fig pattern</span></p>
+          <p class="definition">Legacy-modernizálási minta, amelyben az új megoldás kis, átirányítható részenként veszi át a régi rendszer feladatait a teljes egyszeri újraírás helyett.</p>
+          <p class="example"><strong>Példa:</strong> Először egyetlen olvasási útvonalat irányítunk az új komponensre, és csak mért siker után bővítjük a Strangler mintát.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Strangler Fig</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">fojtogató füge</span><span class="pill">big-bang csere</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#legacy-system">legacy rendszer</a><a href="#seam">seam</a><a href="#rollback">rollback</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/07-legacy-rendszer/index.html">7. Legacy rendszer</a><a href="../../toolkit/utmutatok/legacy-es-bevezetes/index.html">Toolkit: legacy és bevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="rule" data-family="automatizalas" data-search="szabály rule agent rule promptba rejtett állandó szabály Tartós, rövid előírás arról, hogyan kell vagy nem szabad dolgozni egy adott repóban vagy munkafolyamatban.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#rule">szabály</a></h2>
+          <p class="english"><span lang="en">rule</span></p>
+          <p class="definition">Tartós, rövid előírás arról, hogyan kell vagy nem szabad dolgozni egy adott repóban vagy munkafolyamatban.</p>
+          <p class="example"><strong>Példa:</strong> A biztonsági tiltást repószabályként rögzítjük, mert minden agentnek minden alkalommal ismernie kell.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">agent rule</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">promptba rejtett állandó szabály</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#skill">skill</a><a href="#hook">hook</a><a href="#repository-rules">repo szabályai</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="fixture" data-family="automatizalas" data-search="test fixture test fixture tesztminta fixture magyarázat nélkül valós adatnak látszó minta Ellenőrzéshez előre elkészített, kontrollált bemenet vagy rendszerállapot, amelyből ismételhető teszteredmény várható.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#fixture">test fixture</a></h2>
+          <p class="english"><span lang="en">test fixture</span></p>
+          <p class="definition">Ellenőrzéshez előre elkészített, kontrollált bemenet vagy rendszerállapot, amelyből ismételhető teszteredmény várható.</p>
+          <p class="example"><strong>Példa:</strong> A hibás test fixture szándékosan tartalmaz törött linket, így bizonyítja, hogy az ellenőrző valóban megállítja a kiadást.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">tesztminta</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">fixture magyarázat nélkül</span><span class="pill">valós adatnak látszó minta</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#contract-test">contract test</a><a href="#safety-net">biztonsági háló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="unit-test" data-family="teszteles" data-search="unit teszt unit test egységteszt minden automatikus teszt unit teszt Egy kis kódegység viselkedését gyorsan, elkülönítve ellenőrző automatikus teszt.">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#unit-test">unit teszt</a></h2>
+          <p class="english"><span lang="en">unit test</span></p>
+          <p class="definition">Egy kis kódegység viselkedését gyorsan, elkülönítve ellenőrző automatikus teszt.</p>
+          <p class="example"><strong>Példa:</strong> A kedvezményszámítás unit tesztje adatbázis és böngésző nélkül vizsgálja az üzleti szabályt.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">egységteszt</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">minden automatikus teszt unit teszt</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#contract-test">contract test</a><a href="#e2e">E2E teszt</a><a href="#safety-net">biztonsági háló</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="guard" data-family="automatizalas" data-search="védőellenőrzés guard blokkoló ellenőrzés guard mint általános főnév mechanikus garancia Automatikus ellenőrzés, amely egy ismert, káros vagy tiltott állapotot felismer és megállítja a továbblépést.">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#guard">védőellenőrzés</a></h2>
+          <p class="english"><span lang="en">guard</span></p>
+          <p class="definition">Automatikus ellenőrzés, amely egy ismert, káros vagy tiltott állapotot felismer és megállítja a továbblépést.</p>
+          <p class="example"><strong>Példa:</strong> A publikus tartalmat vizsgáló védőellenőrzés hibával leáll, ha belső hivatkozást talál.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">blokkoló ellenőrzés</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">guard mint általános főnév</span><span class="pill">mechanikus garancia</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#quality-gate">kötelező ellenőrzési pont</a><a href="#hook">hook</a><a href="#fixture">test fixture</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/05-szabalyok-es-kapuk/index.html">5. Szabályok és kapuk</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="trace" data-family="minoseg" data-search="visszakövetési napló trace audit trail tracker-trace futásnyom A döntések, commitok, ellenőrzések és review-eredmények rendezett kapcsolata, amelyből utólag megállapítható, mi és miért történt.">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#trace">visszakövetési napló</a></h2>
+          <p class="english"><span lang="en">trace</span></p>
+          <p class="definition">A döntések, commitok, ellenőrzések és review-eredmények rendezett kapcsolata, amelyből utólag megállapítható, mi és miért történt.</p>
+          <p class="example"><strong>Példa:</strong> A visszakövetési napló összeköti a készítő commitját, a review-megállapításokat és a javítás utáni teszteredményt.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">audit trail</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">tracker-trace</span><span class="pill">futásnyom</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#commit">commit</a><a href="#provenance">eredet és verzió</a><a href="#review-finding">review-megállapítás</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="worktree" data-family="git" data-search="worktree Git worktree Git worktree munkafa Egy Git-repó külön munkakönyvtára, amely saját branchre mutat, ezért több feladat fizikailag elkülönítve futhat párhuzamosan.">
+          <span class="family">Git és kiadás</span>
+          <h2><a href="#worktree">worktree</a></h2>
+          <p class="english"><span lang="en">Git worktree</span></p>
+          <p class="definition">Egy Git-repó külön munkakönyvtára, amely saját branchre mutat, ezért több feladat fizikailag elkülönítve futhat párhuzamosan.</p>
+          <p class="example"><strong>Példa:</strong> A második agent külön worktree-ben dolgozik, így nem írja felül az első agent fájljait.</p>
+          <dl class="meta">
+            <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">Git worktree</span></span></dd></div>
+            <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">munkafa</span></span></dd></div>
+            <div><dt>Kapcsolódik</dt><dd><span class="pill-list"><a href="#branch">branch</a><a href="#commit">commit</a><a href="#orchestrator">orchestrator agent</a></span></dd></div>
+            <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
+          </dl>
+        </article>
+      </div>
+      <p class="empty" id="empty-state" hidden>Nincs találat. Próbálj rövidebb kifejezést, angol aliast vagy másik témacsaládot.</p>
+    </section>
+  </main>
+  <footer class="footer"><div class="footer__inner"><p>Ez az oldal hálózati kapcsolat nélkül is használható. A definíciók kijelölt elsődleges forrása a <code>glossary.json</code> fájl.</p></div></footer>
+</body>
+</html>
