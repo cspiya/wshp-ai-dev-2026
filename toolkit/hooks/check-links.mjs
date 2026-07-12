@@ -9,7 +9,12 @@ import { dirname, resolve } from "node:path";
 
 function trackedFiles() {
   const out = execFileSync("git", ["ls-files"], { encoding: "utf8" });
-  return out.split("\n").filter((f) => /\.(html|md)$/.test(f));
+  return out.split("\n").filter(
+    (f) =>
+      /\.(html|md)$/.test(f) &&
+      // Material-QA negative fixtures are test inputs, not publishable content.
+      !f.startsWith("toolkit/material-qa/fixtures/"),
+  );
 }
 
 const linkPatterns = [

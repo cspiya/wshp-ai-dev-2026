@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -8,15 +8,79 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const guard = path.join(here, "guard-public-content.mjs");
+const links = path.join(here, "check-links.mjs");
 const runner = path.join(here, "run-stop-checks.mjs");
 
-function run(script, args) {
+function run(script, args, cwd) {
   return spawnSync(process.execPath, [script, ...args], {
+    cwd,
     encoding: "utf8",
     shell: false,
     timeout: 5000,
   });
 }
+
+function git(args, cwd) {
+  const result = spawnSync("git", args, {
+    cwd,
+    encoding: "utf8",
+    shell: false,
+    timeout: 5000,
+  });
+  assert.equal(result.status, 0, result.stderr);
+}
+
+async function initializeTrackedLinkFixture(directory, safeContents) {
+  const negativeFixture = path.join(
+    directory,
+    "toolkit",
+    "material-qa",
+    "fixtures",
+    "broken-resource.html",
+  );
+  const safeMaterial = path.join(directory, "materials", "safe.md");
+  await mkdir(path.dirname(negativeFixture), { recursive: true });
+  await mkdir(path.dirname(safeMaterial), { recursive: true });
+  await writeFile(negativeFixture, '<img src="missing.png">\n', "utf8");
+  await writeFile(safeMaterial, safeContents, "utf8");
+  git(["init", "--quiet"], directory);
+  git(["add", "."], directory);
+  return { negativeFixture, safeMaterial };
+}
+
+test("default link scan excludes only material-QA negative fixtures", async () => {
+  await withTempFiles(async (directory) => {
+    await initializeTrackedLinkFixture(directory, "Safe material.\n");
+
+    const result = run(links, [], directory);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /passed 1 file\(s\)/);
+  });
+});
+
+test("explicit link scan still validates a material-QA negative fixture", async () => {
+  await withTempFiles(async (directory) => {
+    const { negativeFixture } = await initializeTrackedLinkFixture(
+      directory,
+      "Safe material.\n",
+    );
+
+    const result = run(links, [negativeFixture], directory);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /broken-resource\.html:1: broken internal link "missing\.png"/);
+  });
+});
+
+test("default link scan still validates tracked publishable material", async () => {
+  await withTempFiles(async (directory) => {
+    await initializeTrackedLinkFixture(directory, "[Missing](missing.md)\n");
+
+    const result = run(links, [], directory);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /materials\/safe\.md:1: broken internal link "missing\.md"/);
+    assert.doesNotMatch(result.stderr, /broken-resource\.html/);
+  });
+});
 
 async function withTempFiles(callback) {
   const directory = await mkdtemp(path.join(tmpdir(), "toolkit-hooks-"));
