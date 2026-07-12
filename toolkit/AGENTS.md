@@ -30,3 +30,14 @@ Deliver the smallest change that satisfies the approved specification. Treat the
 ## Evidence format
 
 Report changed files, commands run with outcomes, remaining risks, and any human decision still required. Never claim a check ran when it did not.
+
+## House rules
+
+- **SOLID without scaffolding:** introduce a port/interface only at a boundary
+  that actually varies (database, payment vendor, LLM provider). One
+  implementation means no interface. No factories, wrappers, or config objects
+  "for flexibility" that nothing exercises.
+- **Language policy:** code, prompts, AI instructions, commits, and technical
+  artifacts are English; participant-facing prose follows the project's
+  audience language. Business-spec examples may be written in the audience
+  language and translated into English acceptance criteria.

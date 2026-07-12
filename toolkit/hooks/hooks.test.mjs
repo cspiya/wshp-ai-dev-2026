@@ -76,3 +76,26 @@ test("stop runner reports and propagates timeout", async () => {
     assert.match(result.stderr, /timed out after 50ms: intentional timeout/);
   });
 });
+
+test("protected-path guard blocks protected targets and allows safe ones", async () => {
+  await withTempFiles(async (directory) => {
+    const config = path.join(directory, "protected.json");
+    await writeFile(
+      config,
+      JSON.stringify({ protected: [".env", "drizzle/", ".github/workflows/"] }),
+      "utf8",
+    );
+    const pathGuard = path.join(here, "guard-protected-paths.mjs");
+
+    assert.equal(run(pathGuard, [config, "src/modules/workshops/ui/page.tsx"]).status, 0);
+
+    const blockedEnv = run(pathGuard, [config, "reference-app/.env.local"]);
+    assert.equal(blockedEnv.status, 1);
+    assert.match(blockedEnv.stderr, /protected by rule "\.env"/);
+
+    const blockedDir = run(pathGuard, [config, "drizzle/0001_add_table.sql"]);
+    assert.equal(blockedDir.status, 1);
+
+    assert.equal(run(pathGuard, [config]).status, 2);
+  });
+});
