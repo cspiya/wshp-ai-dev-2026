@@ -68,9 +68,10 @@ template, it does not replace it.
 - [ ] The repository-wide high-risk scan still applies to every tracked text file,
       including operator files: secrets, personal/client data, invite URLs and explicit
       private markers always fail, regardless of filename extension. Exact participant
-      routes/downloads fail closed when they cannot be inspected as UTF-8 text. Only the
-      named boundary negative-fixture directory is excluded from source scanning;
-      generated `.site/` traverses every nested directory name with no exemptions.
+      routes/downloads and every generated `.site/` file fail closed when they cannot be
+      inspected as UTF-8 text. Only the named boundary negative-fixture directory is
+      excluded from source scanning; generated `.site/` traverses every nested directory
+      name with no exemptions.
 
 ## Fallback rule
 

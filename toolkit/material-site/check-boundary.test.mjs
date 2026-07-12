@@ -136,6 +136,26 @@ test('generated traversal has no directory-name exemptions', () => {
   assert.ok(failures.some((failure) => failure.includes('.site/.site/nested/leak.toml [generated]')));
 });
 
+test('generated output fails closed on NUL and invalid UTF-8 artifacts', () => {
+  const nulPayload = Buffer.concat([
+    Buffer.from('<html>WEN-994'),
+    Buffer.from([0]),
+    Buffer.from('https://example.invalid/' + 'invite/hidden</html>'),
+  ]);
+  const invalidUtf8 = Buffer.concat([
+    Buffer.from('<html>WEN-993'),
+    Buffer.from([0xc3, 0x28]),
+    Buffer.from('</html>'),
+  ]);
+  const setup = fixture({ site: {
+    'nested/nul.html': nulPayload,
+    'nested/invalid.html': invalidUtf8,
+  } });
+  const failures = validate(setup);
+  assert.ok(failures.some((failure) => failure.includes('.site/nested/nul.html [generated]') && failure.includes('boundary cannot inspect')));
+  assert.ok(failures.some((failure) => failure.includes('.site/nested/invalid.html [generated]') && failure.includes('not valid UTF-8 text')));
+});
+
 test('ordinary code is not an operator class and rejects issue traces in final phase', () => {
   const setup = fixture({ files: { 'src/example.js': sample('negative/ordinary-code.js') } });
   assert.ok(validate(setup).some((failure) => failure.includes('src/example.js [repository]')));

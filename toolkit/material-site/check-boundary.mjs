@@ -66,10 +66,10 @@ function trackedRelative(source) {
   }
 }
 
-function decodeText(file, required, failures, label) {
+function decodeText(file, failClosed, failures, label) {
   const bytes = fs.readFileSync(file);
   if (bytes.includes(0)) {
-    if (required) failures.push(`${label}: participant artifact is binary or contains NUL bytes; boundary cannot inspect it`);
+    if (failClosed) failures.push(`${label}: artifact is binary or contains NUL bytes; boundary cannot inspect it`);
     return null;
   }
   const sample = bytes.subarray(0, 8192);
@@ -78,13 +78,13 @@ function decodeText(file, required, failures, label) {
     if ((byte < 7 || (byte > 13 && byte < 32)) && byte !== 9 && byte !== 10 && byte !== 13) controls++;
   }
   if (sample.length > 0 && controls / sample.length > 0.01) {
-    if (required) failures.push(`${label}: participant artifact is not recognizable text; boundary cannot inspect it`);
+    if (failClosed) failures.push(`${label}: artifact is not recognizable text; boundary cannot inspect it`);
     return null;
   }
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
   } catch {
-    if (required) failures.push(`${label}: participant artifact is not valid UTF-8 text; boundary cannot inspect it`);
+    if (failClosed) failures.push(`${label}: artifact is not valid UTF-8 text; boundary cannot inspect it`);
     return null;
   }
 }
@@ -206,7 +206,7 @@ export function validateBoundary({ source, site, phase }) {
   }
   const siteFiles = walk(site);
   for (const relative of siteFiles) {
-    const text = decodeText(path.join(site, relative), false, failures, `.site/${relative} [generated]`);
+    const text = decodeText(path.join(site, relative), true, failures, `.site/${relative} [generated]`);
     if (text == null) continue;
     scanText(text, [...INTERNAL_RULES, ...HIGH_RISK_RULES], `.site/${relative} [generated]`, failures);
   }
