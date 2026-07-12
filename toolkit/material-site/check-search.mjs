@@ -19,13 +19,21 @@ function canonicalRoute(site, file) {
   return rel === 'index.html' ? '/' : `/${rel.replace(/index\.html$/, '')}`;
 }
 function entriesOf(json) { return Array.isArray(json) ? json : json.entries ?? json.pages ?? json.documents; }
-function routeOf(entry) { return entry.route ?? entry.href ?? entry.url ?? entry.id; }
+function routeOf(entry) {
+  const explicit = entry.route ?? entry.href ?? entry.url ?? entry.id;
+  if (explicit) return explicit;
+  if (typeof entry.path !== 'string') return null;
+  const normalized = entry.path.replaceAll('\\', '/');
+  return normalized === 'index.html' ? '/' : `/${normalized.replace(/index\.html$/, '')}`;
+}
 function readIndex(file) {
   const text = fs.readFileSync(file, 'utf8');
   if (file.toLowerCase().endsWith('.json')) return JSON.parse(text);
   const match = text.match(/(?:window\.)?WorkshopSearchIndex\s*=\s*([\s\S]*?)\s*;?\s*$/);
   if (!match) throw new Error('search-index.js must assign JSON data to window.WorkshopSearchIndex');
-  return JSON.parse(match[1].replace(/;\s*$/, ''));
+  let expression = match[1].replace(/;\s*$/, '').trim();
+  if (expression.startsWith('Object.freeze(') && expression.endsWith(')')) expression = expression.slice('Object.freeze('.length, -1);
+  return JSON.parse(expression);
 }
 
 export function validateSearch({ site, phase }) {
@@ -45,7 +53,8 @@ export function validateSearch({ site, phase }) {
     if (routes.has(key)) failures.push(`entry[${index}]: duplicate route ${route}`);
     routes.set(key, entry);
     if (typeof entry.title !== 'string' || !entry.title.trim()) failures.push(`entry[${index}]: missing title`);
-    if (typeof (entry.text ?? entry.content) !== 'string' || !(entry.text ?? entry.content).trim()) failures.push(`entry[${index}]: missing searchable text`);
+    const hasText = (typeof (entry.text ?? entry.content) === 'string' && (entry.text ?? entry.content).trim()) || (Array.isArray(entry.headings) && entry.headings.length > 0);
+    if (!hasText) failures.push(`entry[${index}]: missing searchable text/headings`);
     const terms = [entry.title, ...(Array.isArray(entry.aliases) ? entry.aliases : [])].filter(Boolean);
     for (const term of terms) {
       const normalized = String(term).trim().toLocaleLowerCase('hu-HU');

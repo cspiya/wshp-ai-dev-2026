@@ -79,12 +79,14 @@ async function browserChecks(page, label, mode, failures) {
     if (await fallback.count() !== 1 || !(await fallback.isVisible())) failures.push(`${label} (${mode}): animation ${id} lacks a visible static fallback`);
     const initial = await root.getAttribute('data-animation-state');
     if (initial === 'running') failures.push(`${label} (${mode}): animation ${id} autoplayed`);
+    const hasRunningMotion = () => root.evaluate((el) => [el, ...el.querySelectorAll('*')].some((node) => { const css = getComputedStyle(node); const durations = css.animationDuration.split(',').map((value) => Number.parseFloat(value) || 0); return css.animationName !== 'none' && durations.some((value) => value > 0) && css.animationPlayState.split(',').some((value) => value.trim() === 'running'); }));
     const disabledMode = ['no-js', 'reduced-motion', 'print'].includes(mode);
     if (disabledMode) {
       const state = await root.getAttribute('data-animation-state');
-      const motion = await root.evaluate((el) => { const css = getComputedStyle(el); return { name: css.animationName, duration: css.animationDuration }; });
+      const runningMotion = await hasRunningMotion();
+      const disabledBefore = await root.screenshot(); await page.waitForTimeout(120); const disabledAfter = await root.screenshot();
       if (state !== 'static') failures.push(`${label} (${mode}): animation ${id} is not in static final state`);
-      if (motion.name !== 'none' && motion.duration !== '0s') failures.push(`${label} (${mode}): animation ${id} motion is not disabled`);
+      if (runningMotion || !disabledBefore.equals(disabledAfter)) failures.push(`${label} (${mode}): animation ${id} descendant motion is not disabled`);
       for (const action of ['start', 'pause', 'restart']) {
         const control = page.locator(`[data-animation-${action}="${id}"]`);
         if (await control.count() !== 1) continue;
@@ -92,7 +94,6 @@ async function browserChecks(page, label, mode, failures) {
         if (!unavailable) failures.push(`${label} (${mode}): animation ${id} ${action} control remains enabled`);
       }
     } else {
-      const hasRunningMotion = () => root.evaluate((el) => [el, ...el.querySelectorAll('*')].some((node) => { const css = getComputedStyle(node); const durations = css.animationDuration.split(',').map((value) => Number.parseFloat(value) || 0); return css.animationName !== 'none' && durations.some((value) => value > 0) && css.animationPlayState.split(',').some((value) => value.trim() === 'running'); }));
       const runningMotion = await hasRunningMotion();
       const before = await root.screenshot(); await page.waitForTimeout(120); const after = await root.screenshot();
       if (runningMotion || !before.equals(after)) failures.push(`${label} (${mode}): animation ${id} changes before user initiation`);

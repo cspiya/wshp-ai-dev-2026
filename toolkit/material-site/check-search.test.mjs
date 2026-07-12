@@ -15,6 +15,14 @@ function fixture(entries, pages = ['index.html'], classicScript = false, glossar
   return root;
 }
 
+test('accepted Object.freeze page/path/title/headings index schema is consumable', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-search-freeze-'));
+  fs.mkdirSync(path.join(root, 'assets'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'index.html'), '<h1>Kezdőlap</h1>');
+  fs.writeFileSync(path.join(root, 'assets/search-index.js'), 'window.WorkshopSearchIndex = Object.freeze({"pages":[{"path":"index.html","title":"Kezdőlap","headings":[{"t":"Áttekintés","a":"attekintes"}]}]});');
+  assert.deepEqual(validateSearch({ site: root, phase: 'foundation' }), []);
+});
+
 test('Hungarian, English and alias terms resolve to one exact route', () => {
   const root = fixture([
     { route: '/', title: 'Kezdőlap', text: 'A workshop kezdőlapja.' },

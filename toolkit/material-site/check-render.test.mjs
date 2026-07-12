@@ -61,3 +61,12 @@ test('real browser rejects CSS autoplay even when data state falsely says static
   const failures = await validateRender({ site: root, modes: ['desktop'] });
   assert.ok(failures.some((x) => x.includes('changes before user initiation')));
 });
+
+test('real browser rejects descendant motion active only in reduced-motion and print', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-disabled-descendant-motion-'));
+  const css = '@keyframes bad { from { transform:translateX(0) } to { transform:translateX(12px) } } @media (prefers-reduced-motion: reduce) { [data-animation] span { animation:bad .3s infinite alternate } [data-animation-control] { display:none } } @media print { [data-animation] span { animation:bad .3s infinite alternate } [data-animation-control] { display:none } }';
+  const html = `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Hibás fallback</title><style>${css}</style></head><body><a href="#main">Tartalom</a><main id="main"><div data-animation="cycle" data-animation-state="static"><span>Magától mozog</span><p data-animation-fallback="cycle">Statikus leírás.</p></div><button disabled data-animation-control data-animation-start="cycle">Indítás</button><button disabled data-animation-control data-animation-pause="cycle">Szünet</button><button disabled data-animation-control data-animation-restart="cycle">Újrakezdés</button></main></body></html>`;
+  fs.writeFileSync(path.join(root, 'index.html'), html);
+  const failures = await validateRender({ site: root, modes: ['reduced-motion', 'print'] });
+  assert.ok(failures.filter((x) => x.includes('descendant motion is not disabled')).length >= 2);
+});
