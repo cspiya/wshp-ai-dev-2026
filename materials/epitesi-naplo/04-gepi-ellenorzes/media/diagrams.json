@@ -1,0 +1,29 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-j04-synthesis",
+      "visualQuestionId": "q-journal-04-overview",
+      "question": "Mit tanultunk a gépi ellenőrzések bevezetéséből?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["quality-gate"],
+      "figureSelector": "#fig-j04-synthesis",
+      "svgSelector": "#fig-j04-synthesis svg",
+      "textFallbackSelector": "#fig-j04-synthesis-text",
+      "inlineSvgHash": "96b85aa18c190f33c38ae1490e376cbb66e7c982e0c187afc6e125fd35ce7e59"
+    },
+    {
+      "visualQuestionId": "q-journal-04-process-1",
+      "question": "Hogyan lett a találatokból tartós védelem?",
+      "type": "process",
+      "disposition": "shared",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": ["quality-gate"],
+      "sharedDiagramId": "fig-finding-to-guard",
+      "sharedHref": "../../minoseg/index.html#fig-finding-to-guard"
+    }
+  ]
+}

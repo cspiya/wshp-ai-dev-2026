@@ -1,0 +1,29 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-j01-synthesis",
+      "visualQuestionId": "q-journal-01-overview",
+      "question": "Mit tanultunk a repo elindításából?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["agent-ready-repo"],
+      "figureSelector": "#fig-j01-synthesis",
+      "svgSelector": "#fig-j01-synthesis svg",
+      "textFallbackSelector": "#fig-j01-synthesis-text",
+      "inlineSvgHash": "17174af8e35387a862f7e5768e35d1025f1d58579f76840ef90daf3e961b818e"
+    },
+    {
+      "visualQuestionId": "q-journal-01-relationship-1",
+      "question": "Mi a termék és mi a referenciafeladat viszonya?",
+      "type": "relationship",
+      "disposition": "shared",
+      "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
+      "glossarySlugs": ["agent-ready-repo"],
+      "sharedDiagramId": "fig-product-reference",
+      "sharedHref": "../../../index.html#fig-product-reference"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-j02-synthesis",
+      "visualQuestionId": "q-journal-02-overview",
+      "question": "Mit tanultunk az első vertical slice-ból?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["artifact"],
+      "figureSelector": "#fig-j02-synthesis",
+      "svgSelector": "#fig-j02-synthesis svg",
+      "textFallbackSelector": "#fig-j02-synthesis-text",
+      "inlineSvgHash": "cebf8c438f7c856db178306926c2cd7556aaab2d4e1aef0b3fbdaebca697e840"
+    },
+    {
+      "visualQuestionId": "q-journal-02-process-1",
+      "question": "Hogyan állt össze az első teljes ellenőrzési lánc?",
+      "type": "process",
+      "disposition": "shared",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": ["artifact"],
+      "sharedDiagramId": "fig-evidence-chain",
+      "sharedHref": "../../modszertan/index.html#fig-evidence-chain"
+    }
+  ]
+}
