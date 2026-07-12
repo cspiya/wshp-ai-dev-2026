@@ -13,7 +13,7 @@
       "figureSelector": "#fig-app-topology",
       "svgSelector": "#fig-app-topology svg",
       "textFallbackSelector": "#fig-app-topology-text",
-      "inlineSvgHash": "2dd6a086fedebcece5aa691c919161518ecb5be5472aef4ff9e7ee90b18a7757"
+      "inlineSvgHash": "d0431115a947ce6659d24b0628adee783e8c491e17c0bd01ac9f7ddb42be3552"
     },
     {
       "id": "fig-reference-hogyan-epul-fel-az-alkalmazas",
@@ -28,7 +28,7 @@
       "figureSelector": "#fig-reference-hogyan-epul-fel-az-alkalmazas",
       "svgSelector": "#fig-reference-hogyan-epul-fel-az-alkalmazas svg",
       "textFallbackSelector": "#fig-reference-structure-text",
-      "inlineSvgHash": "589929f1e335b6cf6515ec809c1b7ff2d4581ecbbd297f198ede331bea96ea8f"
+      "inlineSvgHash": "d84fd6ad17d024fbde23486d15bde3fb35ea00360a9a973821e52e65bf8bfcda"
     },
     {
       "visualQuestionId": "q-reference-process-2",
