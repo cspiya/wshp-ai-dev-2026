@@ -35,6 +35,23 @@ function readIndex(file) {
   if (expression.startsWith('Object.freeze(') && expression.endsWith(')')) expression = expression.slice('Object.freeze('.length, -1);
   return JSON.parse(expression);
 }
+function stripTags(value) { return value.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim(); }
+function glossaryFromHtml(file) {
+  if (!fs.existsSync(file)) return [];
+  const html = fs.readFileSync(file, 'utf8');
+  const records = [];
+  for (const match of html.matchAll(/<article\b([^>]*\bclass=["'][^"']*\bterm-card\b[^"']*["'][^>]*)>([\s\S]*?)<\/article>/gi)) {
+    const attrs = match[1]; const body = match[2];
+    const slug = attrs.match(/\bid=["']([^"']+)["']/i)?.[1];
+    const localSearch = attrs.match(/\bdata-search=["']([^"']*)["']/i)?.[1] ?? '';
+    const preferred = stripTags(body.match(/<h2\b[^>]*>([\s\S]*?)<\/h2>/i)?.[1] ?? '');
+    const english = stripTags(body.match(/<p\b[^>]*class=["'][^"']*\benglish\b[^"']*["'][^>]*>([\s\S]*?)<\/p>/i)?.[1] ?? '');
+    const aliasBlock = body.match(/<dt>\s*M[áa]s alakok\s*<\/dt>\s*<dd\b[^>]*>([\s\S]*?)<\/dd>/i)?.[1] ?? '';
+    const aliases = [...aliasBlock.matchAll(/<span\b[^>]*class=["'][^"']*\bpill\b[^"']*["'][^>]*>([\s\S]*?)<\/span>/gi)].map((item) => stripTags(item[1])).filter(Boolean);
+    if (slug && preferred && english) records.push({ slug, preferred, english, aliases, localSearch });
+  }
+  return records;
+}
 
 export function validateSearch({ site, phase }) {
   const failures = [];
@@ -74,17 +91,20 @@ export function validateSearch({ site, phase }) {
   for (const route of routes.keys()) if (!pageRoutes.has(route)) failures.push(`search index route has no generated page ${route}`);
   for (const [term, resultRoutes] of exactTerms) if (resultRoutes.size !== 1 && term.length > 2) failures.push(`ambiguous exact search term "${term}" resolves to ${resultRoutes.size} routes`);
   const glossaryFile = path.join(site, 'materials/fogalomtar/glossary.json');
-  if (!fs.existsSync(glossaryFile)) {
-    if (phase === 'final') failures.push('final search smoke requires materials/fogalomtar/glossary.json');
-  } else {
-    let terms = [];
+  const glossaryHtml = path.join(site, 'materials/fogalomtar/index.html');
+  let terms = [];
+  if (fs.existsSync(glossaryFile)) {
     try { const glossary = JSON.parse(fs.readFileSync(glossaryFile, 'utf8')); terms = glossary.terms ?? glossary.entries ?? glossary.records ?? []; }
     catch (error) { failures.push(`cannot read glossary search contract: ${error.message}`); }
+  } else terms = glossaryFromHtml(glossaryHtml);
+  if (phase === 'final' && terms.length === 0) failures.push('final search smoke requires a generated glossary registry or semantic term cards');
+  if (terms.length > 0) {
     for (const record of terms) {
       for (const query of [record.preferred, record.english, ...(Array.isArray(record.aliases) ? record.aliases : [])].filter(Boolean)) {
         const normalized = String(query).toLocaleLowerCase('hu-HU');
         const exactOwners = entries.filter((entry) => [...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].some((term) => String(term).toLocaleLowerCase('hu-HU') === normalized)).map(routeOf);
-        if (exactOwners.length !== 1 || exactOwners[0] !== '/materials/fogalomtar/') failures.push(`glossary query "${query}" must have exactly one canonical owner: /materials/fogalomtar/`);
+        const localCardOwns = exactOwners.length === 0 && typeof record.localSearch === 'string' && record.localSearch.toLocaleLowerCase('hu-HU').includes(normalized) && fs.readFileSync(glossaryHtml, 'utf8').includes(`id="${record.slug}"`);
+        if (!localCardOwns && (exactOwners.length !== 1 || exactOwners[0] !== '/materials/fogalomtar/')) failures.push(`glossary query "${query}" must have exactly one canonical owner: /materials/fogalomtar/`);
       }
     }
   }
