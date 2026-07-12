@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>G4 — Szándékból mechanikus garancia</title>
 <style>
-:root{--ink:#172033;--muted:#52606d;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--code:#172033}*{box-sizing:border-box}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1040px;margin:auto;padding:28px;color:var(--ink)}h1,h2,h3{line-height:1.25}h1{font-size:2.25rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.5rem}nav,.box,.decision,.exercise{padding:16px 20px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint,.done{background:var(--green);border-left:5px solid #16864b}.decision{background:var(--amber);border-left:5px solid #d98a00}.exercise{border:2px solid #8aa9cf}.warning{background:var(--red);border-left:5px solid #c33}code,pre{background:var(--code);color:#f6f8ff;border-radius:5px}code{padding:2px 6px}pre{padding:16px;overflow:auto;white-space:pre-wrap}table{border-collapse:collapse;width:100%;margin:18px 0}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.eyebrow{color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.evidence{background:#f7f4ff;border-left:5px solid #7453c6}.steps>li{margin:.65rem 0}.small{color:var(--muted);font-size:.92rem}.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line)}@media(max-width:700px){body{padding:18px}h1{font-size:1.8rem}table{font-size:.9rem}.pager{display:block}.pager a{display:block;margin:.5rem 0}}
+:root{--ink:#172033;--muted:#52606d;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--code:#172033}*{box-sizing:border-box}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1040px;margin:auto;padding:28px;color:var(--ink)}h1,h2,h3{line-height:1.25}h1{font-size:2.25rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.5rem}nav,.box,.decision,.exercise{padding:16px 20px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint,.done{background:var(--green);border-left:5px solid #16864b}.decision{background:var(--amber);border-left:5px solid #d98a00}.exercise{border:2px solid #8aa9cf}.warning{background:var(--red);border-left:5px solid #c33}code,pre{background:var(--code);color:#f6f8ff;border-radius:5px}code{padding:2px 6px;overflow-wrap:anywhere}pre{padding:16px;overflow:auto;white-space:pre-wrap;max-width:100%}table{border-collapse:collapse;width:100%;margin:18px 0}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.eyebrow{color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.evidence{background:#f7f4ff;border-left:5px solid #7453c6}.steps>li{margin:.65rem 0}.small{color:var(--muted);font-size:.92rem}.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line)}@media(max-width:700px){body{padding:18px}h1{font-size:1.8rem}table{font-size:.9rem}.pager{display:block}.pager a{display:block;margin:.5rem 0}}
 </style>
 </head>
 <body>
@@ -86,18 +86,20 @@
 <h2>5. Gyakorlat: egy findingból blokkoló védelem</h2>
 <div class="exercise">
 <p><strong>Cél:</strong> a toolkit public-content guardját helyes és hibás, kitalált mintán kipróbálni, majd a futási evidence-et rögzíteni.</p>
+<p><strong>Előfeltételek:</strong> a <code>workshop-lab/workshop-source</code> olvasható workshop-forrás legyen, benne a <code>toolkit/hooks/</code> fájlokkal; a gépen a <code>node --version</code> működjön. A fixture és az evidence a lokális, nem publikálandó <code>workshop-lab/workshop-evidence</code> mappába kerül, nem a <code>participant-repo</code> repóba.</p>
 <ol class="steps">
-<li>Olvasd el a <code>toolkit/hooks/README.md</code> fájlt, és azonosítsd az exit code-ok jelentését.</li>
-<li>Hozz létre egy ideiglenes, nem commitolandó <code>invented-safe.md</code> fájlt ezzel: <code>Fiktív workshop-minta, publikus használatra.</code></li>
-<li>Futtasd: <pre>node toolkit/hooks/guard-public-content.mjs invented-safe.md</pre><strong>Várt eredmény:</strong> exit code 0.</li>
-<li>Hozd létre az ideiglenes negatív fixture-t úgy, hogy maga a publikus notebook ne tartalmazza egyben a tiltott markert: <pre>Set-Content invented-blocked.md ("TODO" + "-PRIVATE remove before publish.")</pre></li>
-<li>Futtasd: <pre>node toolkit/hooks/guard-public-content.mjs invented-blocked.md</pre><strong>Várt eredmény:</strong> exit code 1 és a blokkolás oka a stderr-ben.</li>
-<li>Futtasd a regressziós suite-ot: <pre>node --test toolkit/hooks/hooks.test.mjs</pre><strong>Várt eredmény:</strong> a safe út, a blokkoló út, a child failure és a timeout tesztje zöld.</li>
-<li>Töröld a két ideiglenes fájlt. Az issue/run logba írd a három parancsot, exit code-ot és a releváns összegzést; környezeti titkot ne másolj.</li>
+<li>A <code>workshop-lab/workshop-source</code> gyökeréből olvasd el a <code>toolkit/hooks/README.md</code> fájlt, és azonosítsd az exit code-ok jelentését.</li>
+<li>PowerShellben hozd létre a lokális fixture-mappát és az angol, biztonságos, kitalált mintát:<pre>New-Item -ItemType Directory -Force ../workshop-evidence/g4-fixtures | Out-Null
+Set-Content ../workshop-evidence/g4-fixtures/invented-safe.md "Invented workshop fixture for public use."</pre></li>
+<li>A <code>workshop-lab/workshop-source</code> gyökeréből futtasd:<pre>node toolkit/hooks/guard-public-content.mjs ../workshop-evidence/g4-fixtures/invented-safe.md</pre><strong>Várt eredmény:</strong> exit code 0.</li>
+<li>Hozd létre az angol, ideiglenes negatív fixture-t úgy, hogy maga a publikus notebook ne tartalmazza egyben a tiltott markert:<pre>Set-Content ../workshop-evidence/g4-fixtures/invented-blocked.md (("TO" + "DO-PRIVATE") + " remove before publish.")</pre></li>
+<li>Ugyanonnan futtasd:<pre>node toolkit/hooks/guard-public-content.mjs ../workshop-evidence/g4-fixtures/invented-blocked.md</pre><strong>Várt eredmény:</strong> exit code 1 és az explicit private marker blokkolási oka a stderr-ben.</li>
+<li>Futtasd a valódi regressziós suite-ot:<pre>node --test toolkit/hooks/hooks.test.mjs</pre><strong>Várt eredmény:</strong> három zöld teszt: public guard, child failure és timeout.</li>
+<li>Töröld a <code>g4-fixtures</code> mappát. A <code>workshop-lab/workshop-evidence/g4-gates-run.md</code> fájlba írd a pontos working directoryt, a három parancsot, exit code-ot és rövid releváns összegzést; hosszú nyers logot és környezeti titkot ne másolj bele.</li>
 </ol>
-<div class="box done"><strong>Kész, ha:</strong> a helyes minta átmegy, a tiltott marker elbukik, a regressziós suite zöld, és másik résztvevő az evidence-ből meg tudja mondani, mi futott és mit bizonyított.</div>
+<div class="box done"><strong>Kész, ha:</strong> a helyes minta átmegy, a tiltott marker elbukik, a három regressziós teszt zöld, az ideiglenes fixture-t törölted, és másik résztvevő a <code>g4-gates-run.md</code> evidence-ből meg tudja mondani, mi futott és mit bizonyított.</div>
 <p><strong>Tipikus elakadások:</strong> rossz working directory; hiányzó Node.js; csak a „nem működik” állítás kerül a logba; a tesztmarker bent marad a repóban.</p>
-<p><strong>Plan B:</strong> ha a lokális Node nem működik, a tréner futtatja ugyanezeket a parancsokat a tiszta referencia-repóban, a résztvevő pedig a parancs–exit code–állítás hármast elemzi. CI-only fallback: <code>node toolkit/hooks/run-stop-checks.mjs toolkit/hooks/checks.smoke.json</code>.</p>
+<p><strong>Plan B:</strong> ha a lokális Node nem működik, a tréner futtatja ugyanezeket a parancsokat az aktuális <code>workshop-source</code> commiton, a résztvevő pedig a parancs–exit code–állítás hármast elemzi. A stop-runner külön smoke-próbája: <code>node toolkit/hooks/run-stop-checks.mjs toolkit/hooks/checks.smoke.json</code>; ez nem helyettesíti a guard negatív próbáját.</p>
 </div>
 </section>
 
@@ -106,10 +108,10 @@
 <p>Nem új feature-t építünk. A referenciaalkalmazás meglévő modulhatára azt teszteli, hogy az operating model meg tud-e állítani egy szabályszegést.</p>
 <div class="box evidence"><strong>Validációs csomag:</strong>
 <ol>
-<li><code>cd reference-app</code></li>
+<li>A <code>workshop-lab/workshop-source/reference-app</code> mappában futtasd a következőket.</li>
 <li><code>npm run lint</code> — a boundary szabályok aktuális, zöld állapota.</li>
-<li><code>npm run test -- src/platform/lint-boundaries.test.ts</code> — valódi tiltott import-fixture bukik, a megengedett út átmegy.</li>
-<li>A run log hivatkozza a specet, parancsot, eredményt és korlátot: a lint architektúra-invariánst igazol, üzleti működést nem.</li>
+<li><code>npm run test -- src/platform/lint-boundaries.test.ts</code> — a teszt az ESLint Node API-jával virtuális forrásfájlokat lintel. A modul-discovery viszont a valódi <code>src/modules/</code> könyvtárat olvassa, ezért a suite ideiglenesen létrehoz egy valódi, üres <code>src/modules/billing/</code> mappát, majd eltávolítja. A tiltott importok hibát adnak, a megengedett utak átmennek.</li>
+<li>A <code>workshop-lab/workshop-evidence/g4-boundary-run.md</code> hivatkozza a source commitot, parancsot, exit code-ot, rövid eredményt és korlátot: a lint architektúra-invariánst igazol, üzleti működést nem. Nyers log helyett csak összegzés vagy loglink kerüljön bele.</li>
 </ol></div>
 <p><strong>Modell- és harnessfüggetlen mag:</strong> a szabály szándéka, a context packet, a futtatott parancs, az exit code és a negatív fixture változatlan. Csak a skill helye és a hook eseményének konfigurációja adapterfüggő.</p>
 </section>

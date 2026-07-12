@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>G5 — QA, E2E és context budget</title>
 <style>
-:root{--ink:#172033;--muted:#52606d;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--violet:#f7f4ff;--code:#172033}*{box-sizing:border-box}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1040px;margin:auto;padding:28px;color:var(--ink)}h1,h2,h3{line-height:1.25}h1{font-size:2.25rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.5rem}nav,.box,.decision,.exercise{padding:16px 20px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint,.done{background:var(--green);border-left:5px solid #16864b}.decision{background:var(--amber);border-left:5px solid #d98a00}.exercise{border:2px solid #8aa9cf}.warning{background:var(--red);border-left:5px solid #c33}.evidence{background:var(--violet);border-left:5px solid #7453c6}code,pre{background:var(--code);color:#f6f8ff;border-radius:5px}code{padding:2px 6px}pre{padding:16px;overflow:auto;white-space:pre-wrap}table{border-collapse:collapse;width:100%;margin:18px 0}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.eyebrow{color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.steps>li{margin:.65rem 0}.small{color:var(--muted);font-size:.92rem}.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line)}@media(max-width:700px){body{padding:18px}h1{font-size:1.8rem}table{font-size:.9rem}.pager{display:block}.pager a{display:block;margin:.5rem 0}}
+:root{--ink:#172033;--muted:#52606d;--line:#ccd5e0;--blue:#0759b8;--soft:#eef4ff;--green:#edfff4;--amber:#fff7df;--red:#fff0f0;--violet:#f7f4ff;--code:#172033}*{box-sizing:border-box}body{font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;max-width:1040px;margin:auto;padding:28px;color:var(--ink)}h1,h2,h3{line-height:1.25}h1{font-size:2.25rem}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:.35rem}h3{margin-top:1.5rem}nav,.box,.decision,.exercise{padding:16px 20px;border-radius:12px;margin:20px 0}nav,.box{background:var(--soft)}.checkpoint,.done{background:var(--green);border-left:5px solid #16864b}.decision{background:var(--amber);border-left:5px solid #d98a00}.exercise{border:2px solid #8aa9cf}.warning{background:var(--red);border-left:5px solid #c33}.evidence{background:var(--violet);border-left:5px solid #7453c6}code,pre{background:var(--code);color:#f6f8ff;border-radius:5px}code{padding:2px 6px;overflow-wrap:anywhere}pre{padding:16px;overflow:auto;white-space:pre-wrap;max-width:100%}table{border-collapse:collapse;width:100%;margin:18px 0}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#f4f6f8}a{color:var(--blue)}.eyebrow{color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.steps>li{margin:.65rem 0}.small{color:var(--muted);font-size:.92rem}.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line)}@media(max-width:700px){body{padding:18px}h1{font-size:1.8rem}table{font-size:.9rem}.pager{display:block}.pager a{display:block;margin:.5rem 0}}
 </style>
 </head>
 <body>
@@ -16,6 +16,7 @@
 
 <div class="box checkpoint"><strong>C6 · A rendszer új képessége:</strong> a repo nemcsak kódot állít elő, hanem a spectől a valódi futási környezetig visszakövethető, egymásra épülő bizonyítékot szolgáltat.</div>
 <div class="box"><strong>Erre építünk:</strong> a C3 acceptance criteria megmondja, mit jelent a kész; a C4 RUG függetlenül támadja az eredményt; a C5 gate-jei mechanikusan blokkolnak. Most reprezentatív alkalmazási terheléssel ellenőrizzük, hogy a teljes rendszer együtt működik-e.</div>
+<div class="box evidence"><strong>Változatlan C3-szerződés:</strong> a gyakorlatban továbbra is a jóváhagyott, kitalált szabályt bizonyítjuk: a résztvevő saját, megerősített regisztrációja több mint 24 órával a kezdés előtt lemondható; 24 órán belüli kérésnél <code>CANCELLATION_WINDOW_CLOSED</code> hiba látszik és a perzisztált regisztráció változatlan. In scope: parancs és állapot. Out of scope: visszatérítés, e-mail és admin UI.</div>
 
 <section id="workload">
 <h2>1. Az alkalmazás szerepe: validation workload</h2>
@@ -47,9 +48,9 @@
 <h2>3. BA–fejlesztő konvergencia: viselkedés és teszt ugyanazt jelentse</h2>
 <p>A BA megfigyelhető Given–When–Then feltételeket ad; a fejlesztő kockázati térképet és tesztréteget rendel hozzá. Az implementáció előtt együtt zárják a döntési réseket.</p>
 <table><thead><tr><th>BA-kérdés</th><th>Fejlesztői fordítás</th><th>Közös kapu</th></tr></thead><tbody>
-<tr><td>Mikor számít sikeresnek egy regisztráció?</td><td>Domain- és routerteszt a státuszra, összegre és hibakódra.</td><td>A várt eredmény kívülről megfigyelhető, nem belső függvénynév.</td></tr>
-<tr><td>Mi történik fizetési elutasításkor?</td><td>Fake PaymentPort determinisztikus failure ága + UI/API hibaút.</td><td>A sikertelen fizetés nem hoz létre téves sikerállapotot.</td></tr>
-<tr><td>Mit jelent a 48 órás lemondási határ?</td><td>Injektált óra és két határeset unit tesztben.</td><td>Az inkluzív/exkluzív határ BA-döntés, nem agent-találgatás.</td></tr>
+<tr><td>Mikor sikeres a jóváhagyott lemondás?</td><td>Domain- és alkalmazási teszt a saját, megerősített regisztrációra, a több mint 24 órás időablakra és a <code>cancelled</code> eredményre.</td><td>A várt eredmény kívülről megfigyelhető, nem belső függvénynév.</td></tr>
+<tr><td>Mi történik késői lemondáskor?</td><td>Injektált óra, megfigyelhető hiba és állapotváltozatlanságot ellenőrző negatív teszt.</td><td>A visszautasított kérés nem írhatja át a regisztrációt.</td></tr>
+<tr><td>Mit jelent a „több mint 24 óra”?</td><td>A pontosan 24 órás és a határon kívüli eset külön unit tesztben.</td><td>Az inkluzív/exkluzív határ a jóváhagyott BA-döntést követi, nem agent-találgatás.</td></tr>
 <tr><td>Mit kell a preview-n látni?</td><td>Egy keskeny Playwright happy path a hitelesített branch deploy ellen.</td><td>Az E2E a jóváhagyott kritikus utat, nem minden szabályt ismétel.</td></tr>
 </tbody></table>
 </section>
@@ -58,17 +59,18 @@
 <h2>4. Gyakorlat A: kockázatból evidence-terv</h2>
 <div class="exercise">
 <p><strong>Cél:</strong> bizonyítékláncot készíteni a fiktív workshop-regisztráció kritikus útjához anélkül, hogy egyetlen óriás E2E tesztbe zsúfolnánk mindent.</p>
+<p><strong>Előfeltételek:</strong> a <code>workshop-lab/participant-repo</code> tartalmazza a G2-ben jóváhagyott C3 specet és a G3 változtatását; a <code>workshop-lab/workshop-source</code> olvasható referencia; a <code>workshop-lab/workshop-evidence</code> lokális, nem publikálandó evidence-mappa.</p>
 <ol class="steps">
-<li>Olvasd el a jóváhagyott acceptance criteriát és a <code>reference-app/src/modules/registrations/</code>, <code>pricing/</code>, <code>checkout/</code> contractjait. A slice-on kívüli belső fájlokat csak indokoltan add a kontextushoz.</li>
-<li>Írj fel négy kockázatot: árkerekítés, fizetési elutasítás, státusz-perzisztencia, böngészős drótozás.</li>
-<li>Mindegyikhez rendeld a legolcsóbb hiteles réteget: domain unit; port/alkalmazási teszt; repository contract; preview E2E.</li>
+<li>A <code>workshop-lab/participant-repo</code> gyökeréből olvasd el a jóváhagyott C3 specet, majd hozd létre az <code>evidence/g5-risk-matrix.md</code> fájlt. A referencia-app contractjai összehasonlítási források, nem írhatják felül a jóváhagyott 24 órás résztvevői szabályt.</li>
+<li>Írj fel négy kockázatot: tulajdonosi ellenőrzés, megerősített állapot, a több mint 24 órás határ, késői kérés utáni állapotváltozatlanság.</li>
+<li>Mindegyikhez rendeld a legolcsóbb hiteles réteget: domain unit; alkalmazási/API teszt; repository contract; keskeny UI/E2E út.</li>
 <li>Minden sorhoz írd oda: <em>mit bizonyít</em> és <em>mit nem bizonyít</em>.</li>
 <li>A BA ellenőrizze, hogy minden acceptance criterion legalább egy bizonyítékhoz kötődik. A fejlesztő ellenőrizze, hogy nincs két drága réteg ugyanarra az állításra indok nélkül.</li>
-<li>A reviewer kapja meg a specet, a kockázat–teszt mátrixot és a kanonikus standardot, de ne kapja meg a maker „minden rendben” ítéletét.</li>
+<li>A reviewer kapja meg a specet, az <code>evidence/g5-risk-matrix.md</code> fájlt és a kanonikus standardot, de ne kapja meg a maker „minden rendben” ítéletét.</li>
 </ol>
 <div class="box done"><strong>Kész, ha:</strong> minden jóváhagyott viselkedéshez van megfelelő bizonyítékréteg, minden réteg korlátja le van írva, és az E2E csak az integrációs kritikus utat viszi.</div>
 <p><strong>Tipikus elakadások:</strong> technológiai lista készül kockázati térkép helyett; a mockot valódi adapter-evidence-ként kezeljük; a BA csak az elkészült UI-t látja, a hibaágat nem.</p>
-<p><strong>Plan B:</strong> ha a referencia-app nem indul, készítsd el a mátrixot a modul contractokból és a meglévő tesztnevekből. A futási cellákat jelöld <em>nem futott</em> állapotúra; a tervezés elkészülhet, a validációs gate nem.</p>
+<p><strong>Plan B:</strong> ha a résztvevői implementáció nem fut, a mátrixot a jóváhagyott C3 contractból akkor is készítsd el. A futási cellákat jelöld <em>nem futott</em> állapotúra; a tervezés elkészülhet, a résztvevői validációs gate nem.</p>
 </div>
 </section>
 
@@ -76,23 +78,28 @@
 <h2>5. Gyakorlat B: contracttól a preview E2E-ig</h2>
 <div class="exercise">
 <p><strong>Cél:</strong> ugyanahhoz a commithoz kötött lokális, adapter- és böngészős bizonyítékot rögzíteni. A referencia-app itt a keretrendszer próbaterhelése, nem fejlesztési feladat.</p>
+<p><strong>Előfeltételek és környezet:</strong> a <code>workshop-lab/workshop-source/reference-app</code> aktuális, tiszta trainer-owned source legyen; Node.js 22.13 vagy újabb 22-es verzió és npm 10 álljon rendelkezésre. Első futáskor innen futtasd a <code>npx npm@10 ci</code> parancsot. A typecheck/lint/unit és a lokális E2E nem igényel adatbázist; a Drizzle contracthoz kizárólag tréner által adott eldobható branch <code>TEST_DATABASE_URL</code> értéke használható. A Neon Auth a jelenlegi referenciaforrásban hiányos, ezért sem helyi, sem preview-futás nem fogadható el auth/RBAC evidence-ként.</p>
+<div class="box warning"><strong>Két külön evidence-állítás:</strong> előbb a <code>participant-repo</code> saját, C3-ban jóváhagyott parancsai bizonyítják a 24 órás lemondási contractot. A jelenlegi trainer reference app ettől eltérő, 48 órás kitalált szabályt tartalmaz; annak futása csak a gate-ek, adapterek és preview-drótozás reprezentatív rendszerpróbája, nem a résztvevői 24 órás AC bizonyítéka.</div>
 <ol class="steps">
-<li>Rögzítsd a vizsgált commit SHA-ját: <pre>git rev-parse HEAD</pre><strong>Várt eredmény:</strong> egyetlen teljes commit-azonosító.</li>
-<li>A <code>reference-app</code> mappában futtasd külön, hogy az exit code rétegenként látható legyen:
+<li>A <code>workshop-lab/participant-repo</code> gyökeréből futtasd külön a C3-ban jóváhagyott, tényleges domain/API és állapotváltozatlansági parancsokat. A pontos parancsokat ne nevezd át és ne helyettesítsd reference-app paranccsal. A commitot, working directoryt, parancsot, exit code-ot és AC-nkénti rövid eredményt az <code>evidence/g5-c3-run.md</code> fájlba mentsd.</li>
+<li>A <code>workshop-lab/workshop-source</code> gyökeréből rögzítsd a vizsgált source commit SHA-ját: <pre>git rev-parse HEAD</pre><strong>Várt eredmény:</strong> egyetlen teljes commit-azonosító. Hozd létre a <code>workshop-lab/workshop-evidence/g5-reference-run.md</code> fájlt, és ebbe írj.</li>
+<li>A <code>workshop-lab/workshop-source/reference-app</code> mappában futtasd külön, hogy az exit code rétegenként látható legyen:
 <pre>npm run typecheck
 npm run lint
 npm run test</pre><strong>Várt eredmény:</strong> mindhárom exit code 0. Jegyezd fel a tesztösszegzést és minden skipet.</li>
-<li>Ellenőrizd a repository contract suite-ot. Ha van eldobható Neon branchhez tartozó <code>TEST_DATABASE_URL</code>, futtasd a suite-ot azzal is. <strong>Várt eredmény:</strong> ugyanaz a viselkedési suite zöld az in-memory és Drizzle adapteren, releváns skip nélkül.</li>
-<li>Szerezd meg a commit/PR hitelesített <a href="../fogalomtar.md">preview deployment</a> URL-jét GitHub/Vercel állapotból. Ellenőrizd a projektet, branchet, commitot és a sikeres deployment státuszt; URL-t ne találj ki és ne másolj titkot.</li>
-<li>PowerShellben futtasd a kritikus böngészős utat:
-<pre>$env:PLAYWRIGHT_BASE_URL="https://&lt;verified-preview-url&gt;"
-npx playwright test --grep @happy-path</pre><strong>Várt eredmény:</strong> a happy path zöld a hitelesített preview ellen.</li>
+<li>Az in-memory repository contract a teljes <code>npm run test</code> részeként fut. Ha a tréner eldobható Neon branchhez beállította a <code>TEST_DATABASE_URL</code> környezeti változót, futtasd célzottan:<pre>if (-not $env:TEST_DATABASE_URL) { throw "Trainer-provided disposable TEST_DATABASE_URL is required." }
+npm run test -- src/modules/registrations/infra/registration-repo.contract.test.ts</pre><strong>Várt eredmény:</strong> az in-memory és Drizzle adapter ugyanazon contract suite-ja zöld, releváns skip nélkül. Ha nincs változó, írd <em>not run — no disposable DB branch</em>; ne használd a production adatbázist.</li>
+<li>Szerezd meg a tréner által kijelölt, aktuális <a href="../fogalomtar.md">preview deployment</a> provenance-ét: Vercel projekt, branch/PR, source commit SHA, deployment státusz és ellenőrzési időpont. Csak akkor állítsd be a tréner által átadott <code>TRAINER_REFERENCE_PREVIEW_URL</code> változót, ha a source SHA egyezik; URL-t ne találj ki és titkot ne másolj a logba. Egy korábbi zöld preview vagy a befejezetlen WEN-141 ág nem aktuális acceptance evidence.</li>
+<li>A <code>workshop-lab/workshop-source/reference-app</code> mappában PowerShellből futtasd a kritikus böngészős utat:
+<pre>if (-not $env:TRAINER_REFERENCE_PREVIEW_URL) { throw "Verified trainer preview URL is required." }
+$env:PLAYWRIGHT_BASE_URL=$env:TRAINER_REFERENCE_PREVIEW_URL
+npm run test:e2e -- --grep @happy-path</pre><strong>Várt eredmény:</strong> a happy path zöld az azonosított source commit aktuális trainer preview-ja ellen.</li>
 <li>Kérj friss kontextusú review-t a specre, diffre, pontos parancsokra és eredményekre együtt. Minden findingot reprodukálj, mielőtt javítanád.</li>
-<li>Rögzítsd az evidence-csomagot: commit; parancs; local/preview/isolated DB környezet; exit code; rövid eredmény; skip; mit bizonyít; mit nem; maradék kockázat.</li>
+<li>A <code>workshop-lab/workshop-evidence/g5-reference-run.md</code> fájlban rögzítsd: commit; pontos working directory és parancs; local/preview/isolated DB környezet; exit code; rövid eredmény; skip; mit bizonyít; mit nem; maradék kockázat. Hosszú nyers log helyett rövid összegzés és szükség esetén link legyen.</li>
 </ol>
 <div class="box done"><strong>Kész, ha:</strong> másik ember reprodukálni tudja, mely adaptereken futott a contract, mely commit mely preview-ját tesztelted, és mi maradt bizonyítatlan.</div>
 <p><strong>Tipikus elakadások:</strong> a lokális in-memory E2E-t preview evidence-ként jelentjük; a DB-suite skipje elvész; régi deployment URL fut; a „green” állítás mellől hiányzik a parancs vagy SHA.</p>
-<p><strong>Plan B:</strong> ha nincs preview/auth/hálózat, futtasd a lokális <code>npm run test:e2e</code> in-memory seamet. Jelöld: <em>lokális wiring evidence, nem preview- vagy valódi DB-bizonyíték</em>. A tréner felvétele vagy előre rögzített zöld run logja bemutathatja a lépést, de a résztvevő saját preview gate-je nyitva marad.</p>
+<p><strong>Plan B:</strong> ha nincs aktuális, commitazonos trainer preview vagy hálózat, a <code>workshop-lab/workshop-source/reference-app</code> mappából futtasd a lokális <code>npm run test:e2e</code> in-memory seamet. Jelöld: <em>lokális wiring evidence, nem preview-, valódi DB-, auth- vagy RBAC-bizonyíték</em>. A tréner commitazonos felvétele vagy rövid, provenance-t tartalmazó run logja bemutathatja a preview-lépést, de az aktuális preview gate nyitva marad.</p>
 </div>
 </section>
 
