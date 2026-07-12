@@ -37,7 +37,11 @@
           <rect x="275" y="184" width="170" height="105" rx="20" fill="#183083"/><g fill="#fff" font-size="19" font-weight="700" text-anchor="middle"><text x="360" y="225">Agentikus</text><text x="360" y="252">fejlesztési rendszer</text></g>
           <g fill="#e8edff" stroke="#2949c7" stroke-width="2" font-size="15" font-weight="700" text-anchor="middle"><rect x="250" y="18" width="220" height="55" rx="14"/><text x="360" y="51" fill="#172033">Alapok és specifikáció</text><rect x="500" y="63" width="210" height="70" rx="14"/><text x="605" y="93" fill="#172033">Review és minőség</text><text x="605" y="114" fill="#172033">ellenőrzése</text><rect x="545" y="208" width="165" height="60" rx="14"/><text x="628" y="244" fill="#172033">Git és kiadás</text><rect x="480" y="326" width="230" height="65" rx="14"/><text x="595" y="354" fill="#172033">Eszközök és</text><text x="595" y="376" fill="#172033">automatizálás</text><rect x="10" y="326" width="230" height="65" rx="14"/><text x="125" y="354" fill="#172033">Tesztelés és</text><text x="125" y="376" fill="#172033">rendszerellenőrzés</text><rect x="10" y="208" width="165" height="60" rx="14"/><text x="93" y="234" fill="#172033">Legacy rendszer</text><text x="93" y="255" fill="#172033">változtatása</text><rect x="10" y="63" width="210" height="70" rx="14"/><text x="115" y="93" fill="#172033">Csapatszintű</text><text x="115" y="114" fill="#172033">bevezetés</text></g>
         </svg>
-        <figcaption>A térkép arra válaszol, hogy egy ismeretlen fogalom melyik szakmai kérdéskörbe illeszkedik.</figcaption>
+        <div class="mobile-diagram mobile-family-map" role="img" aria-label="Az agentikus fejlesztési rendszer hét fogalomcsaládja">
+          <strong>Agentikus fejlesztési rendszer</strong>
+          <ul><li>Alapok és specifikáció</li><li>Review és minőség</li><li>Git és kiadás</li><li>Eszközök és automatizálás</li><li>Tesztelés és rendszerellenőrzés</li><li>Legacy rendszer változtatása</li><li>Csapatszintű bevezetés</li></ul>
+        </div>
+        <figcaption>A térkép arra válaszol, hogy egy ismeretlen fogalom melyik szakmai kérdéskörbe illeszkedik. <strong>Röviden:</strong> egy fogalom jelentését a kapcsolatai és a fejlesztési folyamatban betöltött szerepe teszi használhatóvá.</figcaption>
         <details class="text-equivalent static-fallback"><summary>Az ábra teljes szöveges megfelelője</summary><p>Az agentikus fejlesztési rendszer fogalmait hét család rendezi: alapok és specifikáció; review és minőség; Git és kiadás; eszközök és automatizálás; tesztelés és rendszerellenőrzés; legacy rendszer változtatása; csapatszintű bevezetés.</p></details>
       </figure>
       <figure class="visual" id="fig-terms-to-modules">
@@ -47,10 +51,13 @@
           <defs><marker id="modules-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2949c7"/></marker></defs><path d="M70 155 H650" stroke="#2949c7" stroke-width="4" fill="none" marker-end="url(#modules-arrow)"/>
           <g font-weight="700" text-anchor="middle" fill="#172033"><g transform="translate(70 155)"><circle r="31" fill="#183083"/><text y="7" fill="#fff" font-size="20">1</text><text y="-55">Alapok</text></g><g transform="translate(150 155)"><circle r="31" fill="#2949c7"/><text y="7" fill="#fff" font-size="20">2</text><text y="58">Repo</text></g><g transform="translate(230 155)"><circle r="31" fill="#3859d7"/><text y="7" fill="#fff" font-size="20">3</text><text y="-55">Spec</text></g><g transform="translate(310 155)"><circle r="31" fill="#4869df"/><text y="7" fill="#fff" font-size="20">4</text><text y="58">Review</text></g><g transform="translate(390 155)"><circle r="31" fill="#5878e5"/><text y="7" fill="#fff" font-size="20">5</text><text y="-55">Kapuk</text></g><g transform="translate(470 155)"><circle r="31" fill="#5c6fba"/><text y="7" fill="#fff" font-size="20">6</text><text y="58">Rendszer</text></g><g transform="translate(550 155)"><circle r="31" fill="#6b638f"/><text y="7" fill="#fff" font-size="20">7</text><text y="-55">Legacy</text></g><g transform="translate(630 155)"><circle r="31" fill="#714c72"/><text y="7" fill="#fff" font-size="20">8</text><text y="58">Csapat</text></g></g>
         </svg>
-        <figcaption>Az útvonal arra válaszol, hogy a workshop mely pontján kapnak gyakorlati szerepet az egyes fogalmak.</figcaption>
+        <ol class="mobile-diagram mobile-timeline" aria-label="A workshop nyolc egymásra épülő modulja"><li>Alapok</li><li>Repo</li><li>Spec</li><li>Review</li><li>Kapuk</li><li>Rendszer</li><li>Legacy</li><li>Csapat</li></ol>
+        <figcaption>Az útvonal arra válaszol, hogy a workshop mely pontján kapnak gyakorlati szerepet az egyes fogalmak. <strong>Röviden:</strong> a fogalmak nem egyszerre jelennek meg, hanem az egymásra épülő feladatokkal válnak gyakorlattá.</figcaption>
         <details class="text-equivalent static-fallback"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>Agentikus fejlesztési alapok.</li><li>A repo felkészítése.</li><li>Specifikáció.</li><li>Független review.</li><li>Szabályok és automatizált ellenőrzések.</li><li>Teljes rendszerellenőrzés.</li><li>Legacy rendszer változtatása.</li><li>Csapatszintű bevezetés.</li></ol></details>
       </figure>
     </section>
+
+    <p class="panel visual-coverage"><strong>Hogyan követhető egy fogalom?</strong> A kártya témacsaládja elhelyezi az első térképen, a „Kapcsolódik” sor megmutatja a közvetlen fogalmi kapcsolatokat, a „Tananyagban” sor pedig ahhoz a modulhoz vezet, ahol a fogalom magyarázó ábrán és gyakorlatban is szerepet kap.</p>
 
     <section id="fogalmak" aria-labelledby="terms-title"><h2 id="terms-title">Fogalmak</h2>
       <noscript><p class="no-js-note">A kereséshez JavaScript szükséges, de az összes fogalom alább olvasható és a böngésző saját oldal-keresőjével is megtalálható.</p></noscript>
@@ -217,7 +224,7 @@
           <h2><a href="#decision-gate">döntési pont</a></h2>
           <p class="english"><span lang="en">decision gate</span></p>
           <p class="definition">Olyan kijelölt állomás, ahol egy megnevezett ember jóváhagyja a folytatást, vagy rögzíti, milyen döntés hiányzik még.</p>
-          <p class="example"><strong>Példa:</strong> A spec végén a Product Owner döntési ponton APPROVED vagy BLOCKED állapotot rögzít.</p>
+          <p class="example"><strong>Példa:</strong> A spec végén a Product Owner az előre kijelölt döntési pontnál APPROVED vagy BLOCKED állapotot rögzít.</p>
           <dl class="meta">
             <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">jóváhagyási pont</span></span></dd></div>
             <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">validation gate</span><span class="pill">önjóváhagyás</span></span></dd></div>
@@ -303,11 +310,11 @@
             <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/08-csapatbevezetes/index.html">8. Csapatbevezetés</a></span></dd></div>
           </dl>
         </article>
-        <article class="term-card" id="reviewer" data-family="minoseg" data-search="független ellenőrző reviewer reviewer bíráló-agent saját munka független review-ja A készítőtől elkülönülő személy vagy agent, aki friss kontextusból vizsgálja meg az eredményt és a megállapításait bizonyítékhoz köti.">
+        <article class="term-card" id="reviewer" data-family="minoseg" data-search="független ellenőrző reviewer reviewer bíráló-agent saját munka független review-ja A készítőtől független személy vagy agent, aki az előzményektől elkülönítve vizsgálja meg az eredményt, és a megállapításait konkrét ellenőrzési eredménnyel támasztja alá.">
           <span class="family">Review és minőség</span>
           <h2><a href="#reviewer">független ellenőrző</a></h2>
           <p class="english"><span lang="en">reviewer</span></p>
-          <p class="definition">A készítőtől elkülönülő személy vagy agent, aki friss kontextusból vizsgálja meg az eredményt és a megállapításait bizonyítékhoz köti.</p>
+          <p class="definition">A készítőtől független személy vagy agent, aki az előzményektől elkülönítve vizsgálja meg az eredményt, és a megállapításait konkrét ellenőrzési eredménnyel támasztja alá.</p>
           <p class="example"><strong>Példa:</strong> A független ellenőrző nem a készítő magyarázatából, hanem a specből és a tényleges változtatásból indul ki.</p>
           <dl class="meta">
             <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">reviewer</span></span></dd></div>
@@ -394,11 +401,11 @@
             <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../fogalomtar/index.html">Fejlesztői fogalomtár</a><a href="../modszertan/index.html">A workshop módszere</a></span></dd></div>
           </dl>
         </article>
-        <article class="term-card" id="context" data-family="alapok" data-search="kontextus context modellkontextus mindent töltsünk a kontextusba context pollution Az a feladathoz kiválasztott információ, amelyet a modell az adott munkamenetben lát: például utasítások, fájlok, korábbi döntések és eszközeredmények.">
+        <article class="term-card" id="context" data-family="alapok" data-search="kontextus context modellkontextus mindent töltsünk a kontextusba context pollution A modell számára az adott munkamenetben elérhető információk összessége: például utasítások, kiválasztott fájlok, korábbi döntések és eszközeredmények.">
           <span class="family">Alapok és specifikáció</span>
           <h2><a href="#context">kontextus</a></h2>
           <p class="english"><span lang="en">context</span></p>
-          <p class="definition">Az a feladathoz kiválasztott információ, amelyet a modell az adott munkamenetben lát: például utasítások, fájlok, korábbi döntések és eszközeredmények.</p>
+          <p class="definition">A modell számára az adott munkamenetben elérhető információk összessége: például utasítások, kiválasztott fájlok, korábbi döntések és eszközeredmények.</p>
           <p class="example"><strong>Példa:</strong> Csak a döntéshez szükséges fájlokat adjuk a kontextushoz, mert a több információ nem feltétlenül jelent jobb választ.</p>
           <dl class="meta">
             <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">modellkontextus</span></span></dd></div>
@@ -420,11 +427,11 @@
             <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/06-rendszerellenorzes/index.html">6. Rendszerellenőrzés</a></span></dd></div>
           </dl>
         </article>
-        <article class="term-card" id="quality-gate" data-family="minoseg" data-search="kötelező ellenőrzési pont quality gate minőségi kapu gate minden ellenőrzésre evidence-léc Előre rögzített ellenőrzés, amelynek sikeresen le kell futnia, mielőtt a munka a következő állapotba léphet.">
+        <article class="term-card" id="quality-gate" data-family="minoseg" data-search="kötelező ellenőrzési pont quality gate minőségi kapu gate minden ellenőrzésre evidence-léc Olyan előre rögzített feltétel vagy ellenőrzés, amelynek teljesülnie kell, mielőtt a munka a következő állapotba léphet.">
           <span class="family">Review és minőség</span>
           <h2><a href="#quality-gate">kötelező ellenőrzési pont</a></h2>
           <p class="english"><span lang="en">quality gate</span></p>
-          <p class="definition">Előre rögzített ellenőrzés, amelynek sikeresen le kell futnia, mielőtt a munka a következő állapotba léphet.</p>
+          <p class="definition">Olyan előre rögzített feltétel vagy ellenőrzés, amelynek teljesülnie kell, mielőtt a munka a következő állapotba léphet.</p>
           <p class="example"><strong>Példa:</strong> A linkellenőrző kötelező ellenőrzési pont: törött hivatkozással az oldal nem kerülhet kiadásra.</p>
           <dl class="meta">
             <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">minőségi kapu</span></span></dd></div>
@@ -555,7 +562,7 @@
           <h2><a href="#project-memory">projektmemória</a></h2>
           <p class="english"><span lang="en">project memory</span></p>
           <p class="definition">Visszakereshető, tartós tudás a projekt döntéseiről, mintáiról és tanulságairól, amelyet a későbbi munkamenetek célzottan elő tudnak venni.</p>
-          <p class="example"><strong>Példa:</strong> Az elfogadott architekturális döntés a projektmemóriába kerül, a pillanatnyi futási log viszont nem.</p>
+          <p class="example"><strong>Példa:</strong> Az elfogadott architekturális döntést a projektmemóriában rögzítjük, az egyetlen futáshoz tartozó naplót viszont nem.</p>
           <dl class="meta">
             <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">project memory</span></span></dd></div>
             <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">minden chat naplózása</span><span class="pill">agentmemória</span></span></dd></div>
@@ -698,7 +705,7 @@
           <h2><a href="#spec">spec</a></h2>
           <p class="english"><span lang="en">specification</span></p>
           <p class="definition">Jóváhagyható feladatspecifikáció, amely rögzíti a kívánt eredményt, a scope-ot, a korlátokat, az elfogadási feltételeket és az ellenőrzés módját.</p>
-          <p class="example"><strong>Példa:</strong> A fejlesztés csak akkor indul, amikor a specből már nem hiányzik implementációt érdemben befolyásoló döntés.</p>
+          <p class="example"><strong>Példa:</strong> A fejlesztés csak akkor indul, ha minden, az implementációt érdemben befolyásoló döntés megszületett és bekerült a specbe.</p>
           <dl class="meta">
             <div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">feladatspecifikáció</span></span></dd></div>
             <div><dt>Kerüld</dt><dd class="avoid"><span class="pill-list"><span class="pill">issue-spec</span><span class="pill">chatből összeszedett feladat</span></span></dd></div>
