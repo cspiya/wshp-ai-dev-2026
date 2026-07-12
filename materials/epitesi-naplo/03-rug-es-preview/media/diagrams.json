@@ -1,0 +1,29 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-j03-synthesis",
+      "visualQuestionId": "q-journal-03-overview",
+      "question": "Mit tanultunk a RUG-körből és a preview-ból?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["rug"],
+      "figureSelector": "#fig-j03-synthesis",
+      "svgSelector": "#fig-j03-synthesis svg",
+      "textFallbackSelector": "#fig-j03-synthesis-text",
+      "inlineSvgHash": "757ce47bea3dca6da4984081d0dffd94634f6a2b9549af04261df6f65139a3dd"
+    },
+    {
+      "visualQuestionId": "q-journal-03-cycle-1",
+      "question": "Hol javított valódi hibát a független review?",
+      "type": "cycle",
+      "disposition": "shared",
+      "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el.",
+      "glossarySlugs": ["rug"],
+      "sharedDiagramId": "fig-review-loop",
+      "sharedHref": "../../modszertan/index.html#fig-review-loop"
+    }
+  ]
+}
