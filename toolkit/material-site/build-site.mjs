@@ -434,10 +434,10 @@ ${renderToc(headings)}
 </aside>`;
 
   return `
-<a class="skip-link" href="#tartalom">Ugrás a tartalomhoz</a>
-<header class="site-header">
+<a class="shell-skip-link" href="#tartalom">Ugrás a tartalomhoz</a>
+<header class="shell-header">
   <a class="site-brand" href="${p(root)}"><span class="brand-mark" aria-hidden="true">AI</span><span class="brand-name">AI‑dev workshop</span></a>
-  <nav class="site-nav" aria-label="Fő navigáció">
+  <nav class="shell-nav" aria-label="Fő navigáció">
     <ul>${topLinks}</ul>
   </nav>
   <form class="site-search js-only" role="search" hidden>
