@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Agentikus fejlesztés: szerepek és korlátok</title>
+<meta name="description" content="A modell, a coding agent és a fejlesztési rendszer szerepei, valamint egy végrehajtható repo-diagnózis lépései.">
+<style>
+  .hero { padding: 1.5rem 0 .5rem; }
+  .lead { color: var(--muted); font-size: 1.08rem; max-width: 52rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,15rem),1fr)); gap: .8rem; }
+  .card,.takeaway,.check,.plan-b,.handoff { border: 1px solid var(--line); border-radius: .65rem; padding: .9rem 1rem; background: var(--panel); }
+  .takeaway { border-left: .35rem solid var(--accent); background: #eef4ff; }
+  .check { border-left: .35rem solid var(--machine); background: #ecfdf5; }
+  .plan-b { border-left: .35rem solid var(--artifact); background: #fff7ed; }
+  .handoff { border-left: .35rem solid var(--human); background: #f5f3ff; }
+  .time-plan { padding: 0; list-style: none; }
+  .time-plan li { border-top: .3rem solid var(--accent); border-radius: .35rem; padding: .6rem; background: var(--panel); }
+  .visual { border: 1px solid var(--line); border-radius: .75rem; padding: 1rem; background: #fff; }
+  .visual h3 { margin-top: 0; }
+  .node { fill:#fff; stroke:#5a6675; stroke-width:2; }
+  .human { fill:#f5f3ff; stroke:#7c3aed; stroke-width:2; }
+  .agent { fill:#eef4ff; stroke:#0b5fff; stroke-width:2; }
+  .machine { fill:#ecfdf5; stroke:#047857; stroke-width:2; }
+  .artifact { fill:#fff7ed; stroke:#b45309; stroke-width:2; }
+  .line { fill:none; stroke:#5a6675; stroke-width:2.2; }
+  .label { fill:#1f2733; font-size:15px; font-weight:650; text-anchor:middle; }
+  .note { fill:#5a6675; font-size:12px; text-anchor:middle; }
+  details.static-fallback { margin-top:.7rem; }
+  details.static-fallback summary { cursor:pointer; font-weight:650; }
+  pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#172033; color:#f8fafc; border-radius:.55rem; padding:.9rem; }
+  .steps>li { margin-bottom:.85rem; }
+  table { border-collapse:collapse; width:100%; }
+  th,td { border:1px solid var(--line); padding:.5rem; text-align:left; vertical-align:top; }
+  section { margin-bottom:2.2rem; }
+  .mobile-hint { display:none; }
+  @media(max-width:600px){
+    .visual{padding:.5rem;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-gutter:stable}
+    .visual svg{min-width:42rem}
+    .mobile-hint{display:block;color:var(--muted);font-size:.92rem}
+    table{display:block;overflow-x:auto}
+  }
+  @media print{.visual,.card,.check,.plan-b,.handoff{break-inside:avoid-page}.visual svg{min-width:0}details.static-fallback>*{display:block}}
+</style>
+</head>
+<body>
+<main>
+<nav class="module-nav" aria-label="Modulútvonal"><a data-route="/materials/modulok/">A modulok áttekintése</a> · <a data-route="/materials/modulok/02-repo-felkeszitese/">Következő: a repo felkészítése</a></nav>
+<section class="hero" aria-labelledby="page-title">
+  <p><strong>1. modul · 45 perc</strong></p>
+  <h1 id="page-title">Agentikus fejlesztés: szerepek és korlátok</h1>
+  <p class="lead">Szétválasztod a nyelvi modellt, a fájlokon és eszközökön dolgozó agentet, valamint a köréjük épített fejlesztési rendszert. A végére ellenőrizhető helyzetképed lesz arról, mit tudhat az agent a repódról, mit nem feltételezhet, és melyik emberi döntés szükséges a folytatáshoz.</p>
+  <div class="grid" aria-label="A modul tájékozódási összefoglalója">
+    <article class="card"><h2>Előfeltétel</h2><p>Elvégezted a <a data-route="/materials/felkeszules/">felkészülési ellenőrzést</a>, és meg tudod nyitni a gyakorlórepódat. Ha nem, használd a Plan B-t.</p></article>
+    <article class="card"><h2>Eredmény</h2><p><code>workshop-evidence/01-helyzetkep.md</code>: legalább három ismeretlen, a szerepek határai és egy következő emberi döntés.</p></article>
+    <article class="card"><h2>Sikerfeltétel</h2><p>Egy másik résztvevő a fájl alapján pontosan vissza tudja mondani, mit feltételezhet az agent, és mit nem.</p></article>
+  </div>
+  <p class="mobile-hint"><strong>Keskeny képernyőn:</strong> az ábrák oldalirányban görgethetők, így a feliratok olvasható méretűek maradnak. Minden ábra alatt teljes szöveges megfelelő is található.</p>
+</section>
+
+<section aria-labelledby="attekintes">
+<h2 id="attekintes">A teljes kép: mi dolgozik, és ki dönt?</h2>
+<figure class="visual" id="fig-m01-overview">
+  <svg viewBox="0 0 900 380" role="img" aria-labelledby="overview-title overview-desc">
+    <title id="overview-title">A modell, a coding agent és a fejlesztési rendszer kapcsolata</title>
+    <desc id="overview-desc">A feladat és a kiválasztott repókontextus a modellhez jut. A coding agent eszközökkel hajtja végre a modell javaslatát. A repo szabályai korlátozzák a munkát, az ember dönt a hiányzó szándékról, a független review ellenőrzi az eredményt. A modul kimenete egy repo-helyzetkép.</desc>
+    <defs><marker id="arr1" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#5a6675"/></marker></defs>
+    <rect class="artifact" x="20" y="45" width="170" height="75" rx="12"/><text class="label" x="105" y="76">Feladat +</text><text class="label" x="105" y="99">repo-kontextus</text>
+    <rect class="machine" x="245" y="45" width="150" height="75" rx="12"/><text class="label" x="320" y="76">Nyelvi modell</text><text class="note" x="320" y="99">következtet és javasol</text>
+    <rect class="agent" x="450" y="45" width="170" height="75" rx="12"/><text class="label" x="535" y="76">Coding agent</text><text class="note" x="535" y="99">olvas, ír, parancsot futtat</text>
+    <rect class="node" x="675" y="45" width="200" height="75" rx="12"/><text class="label" x="775" y="76">Ellenőrizhető</text><text class="label" x="775" y="99">munkadarab</text>
+    <path class="line" marker-end="url(#arr1)" d="M190 82H237M395 82H442M620 82H667"/>
+    <rect class="machine" x="245" y="200" width="150" height="70" rx="12"/><text class="label" x="320" y="229">Repo szabályai</text><text class="note" x="320" y="251">scope és ellenőrzések</text>
+    <rect class="human" x="450" y="200" width="170" height="70" rx="12"/><text class="label" x="535" y="229">Emberi döntés</text><text class="note" x="535" y="251">szándék és jóváhagyás</text>
+    <rect class="human" x="675" y="200" width="200" height="70" rx="12"/><text class="label" x="775" y="229">Független review</text><text class="note" x="775" y="251">más nézőpontból ellenőriz</text>
+    <path class="line" marker-end="url(#arr1)" d="M320 200V140H515V128M535 200V128M775 200V128"/>
+    <rect class="artifact" x="335" y="315" width="230" height="48" rx="10"/><text class="label" x="450" y="345">Kimenet: helyzetkép</text><path class="line" marker-end="url(#arr1)" d="M450 270V307"/>
+  </svg>
+  <figcaption><strong>Lényeg:</strong> a modell önmagában csak következtet; megbízható fejlesztési munkát az eszközökkel rendelkező agent, a repóban rögzített korlátok, az emberi döntések és a független ellenőrzés együtt tesznek lehetővé.</figcaption>
+  <details class="static-fallback" id="fig-m01-overview-text"><summary>Az ábra teljes szöveges megfelelője</summary><p>A feladat és a kiválasztott repókontextus a modellhez jut. A coding agent fájlolvasással, fájlírással és parancsokkal hajtja végre a javaslatot. Munkáját a repo szabályai és a scope korlátozza. A hiányzó üzleti szándékról és jóváhagyásról ember dönt. A munkadarabot független review ellenőrzi. A modul eredménye a helyzetképfájl.</p></details>
+</figure>
+<p class="takeaway">A workshop terméke nem a referenciaalkalmazás. A fejlesztési rendszer és a <a data-route="/#fig-product-reference">referenciafeladat kapcsolata a központi ábrán</a> látható.</p>
+</section>
+
+<section aria-labelledby="menetrend"><h2 id="menetrend">A 45 perc menete</h2><ol class="time-plan grid"><li><strong>0–5 perc</strong><br>cél és eredmény</li><li><strong>5–12 perc</strong><br>modell, agent, rendszer</li><li><strong>12–18 perc</strong><br>kontextus</li><li><strong>18–24 perc</strong><br>kérés-pontosítás</li><li><strong>24–28 perc</strong><br>ellenőrzési szerepek</li><li><strong>28–40 perc</strong><br>repo-diagnózis</li><li><strong>40–45 perc</strong><br>társellenőrzés és átadás</li></ol></section>
+
+<section aria-labelledby="retegek">
+<h2 id="retegek">1. Mentális modell: három különböző réteg</h2>
+<p>Hasonlat a megszokott fejlesztői környezetből: a fordítóprogram kódot értelmez, az IDE műveleteket ad köré, a build- és kiadási rendszer pedig szabályozza, mikor tekinthető késznek a változtatás. Hasonlóan különül el a modell, a <a data-route="/materials/fogalomtar/#coding-agent">coding agent</a> és az <a data-route="/materials/fogalomtar/#agent-ready-repo">agent-ready repo</a> köré épített fejlesztési rendszer.</p>
+<figure class="visual" id="fig-m01-hogyan-retegzodik-a-modell-az">
+  <svg viewBox="0 0 820 390" role="img" aria-labelledby="layers-title layers-desc">
+    <title id="layers-title">A modell, az agent és a fejlesztési rendszer egymásba ágyazott rétegei</title><desc id="layers-desc">A legbelső réteg a modell. Körülötte az agent eszközei, jogosultságai és munkaciklusa. A külső fejlesztési rendszerben vannak a repo szabályai, a specifikáció, a tesztek, a review és az emberi döntések.</desc>
+    <rect class="human" x="20" y="20" width="780" height="350" rx="24"/><text class="label" x="410" y="52">Fejlesztési rendszer</text><text class="note" x="410" y="75">repo · szabályok · specifikáció · tesztek · review · emberi döntések</text>
+    <rect class="agent" x="115" y="100" width="590" height="225" rx="20"/><text class="label" x="410" y="132">Coding agent</text><text class="note" x="410" y="155">eszközök · jogosultságok · munkaciklus · visszajelzés</text>
+    <rect class="machine" x="245" y="185" width="330" height="100" rx="18"/><text class="label" x="410" y="225">Nyelvi modell</text><text class="note" x="410" y="250">a kapott információból következtet</text>
+  </svg>
+  <figcaption><strong>Lényeg:</strong> a külső réteg pótolja azt, amit a modell nem tudhat magától: a projekt célját, a megengedett műveleteket, a helyes ellenőrzést és a döntési felelősséget.</figcaption>
+  <details class="static-fallback" id="fig-m01-hogyan-retegzodik-a-modell-az-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>A modell a kapott információból következtet.</li><li>A coding agent eszközöket, jogosultságokat és munkaciklust ad köré.</li><li>A fejlesztési rendszer szabályokkal, specifikációval, tesztekkel, review-val és emberi döntésekkel korlátozza és ellenőrzi a munkát.</li></ol></details>
+</figure>
+<div class="grid"><article class="card"><h3>A modell</h3><p>Mintákat értelmez és kódot javasol. Nem látja automatikusan a teljes repót, a futó rendszert vagy a ki nem mondott döntéseket.</p></article><article class="card"><h3>Az agent</h3><p>Eszközökkel feltárja a repót, módosít, parancsot futtat és visszaadja az eredményeket. Csak a megadott jogosultságokkal dolgozhat.</p></article><article class="card"><h3>Az ember</h3><p>Meghatározza a kívánt eredményt, feloldja az üzleti bizonytalanságot, és jóváhagyja a jelentős állapotváltozást.</p></article></div>
+</section>
+
+<section aria-labelledby="kontextus">
+<h2 id="kontextus">2. Kontextus: a döntéshez szükséges információ</h2>
+<p>A <a data-route="/materials/fogalomtar/#context">kontextus</a> nem egyenlő a teljes repó tartalmával. Előbb keresd meg a releváns területet, majd a szabályokat, a kapcsolódó kódot és az ellenőrzési módot. A <a data-route="/materials/fogalomtar/#scope">scope</a> azt mondja meg, hol ér véget a feladat.</p>
+<figure class="visual" id="fig-m01-hogyan-szukul-a-kontextus-a">
+  <svg viewBox="0 0 860 360" role="img" aria-labelledby="funnel-title funnel-desc"><title id="funnel-title">A repó kontextusának kiválasztása</title><desc id="funnel-desc">Öt szűkülő sáv: teljes repo, érintett terület, szabályok és döntések, érintett fájlok és tesztek, végül a következő lépés. Oldalt három stop kérdés: mi a cél, mi tiltott és ki dönt.</desc>
+    <polygon points="20 20,680 20,630 80,70 80" fill="#eef4ff" stroke="#0b5fff" stroke-width="2"/><text class="label" x="350" y="56">1. Teljes repo</text>
+    <polygon points="70 90,630 90,580 150,120 150" fill="#e7efff" stroke="#0b5fff" stroke-width="2"/><text class="label" x="350" y="126">2. Érintett terület és cél</text>
+    <polygon points="120 160,580 160,530 220,170 220" fill="#dbe8ff" stroke="#0b5fff" stroke-width="2"/><text class="label" x="350" y="196">3. Szabályok és döntések</text>
+    <polygon points="170 230,530 230,480 290,220 290" fill="#cfdefe" stroke="#0b5fff" stroke-width="2"/><text class="label" x="350" y="266">4. Fájlok és tesztek</text>
+    <rect class="artifact" x="245" y="305" width="210" height="42" rx="10"/><text class="label" x="350" y="332">5. Következő lépés</text>
+    <rect class="human" x="710" y="45" width="130" height="60" rx="10"/><text class="label" x="775" y="73">Mi a cél?</text><text class="note" x="775" y="94">Ha hiányzik: kérdezz.</text>
+    <rect class="human" x="710" y="145" width="130" height="60" rx="10"/><text class="label" x="775" y="173">Mi tiltott?</text><text class="note" x="775" y="194">Ha hiányzik: állj meg.</text>
+    <rect class="human" x="710" y="245" width="130" height="60" rx="10"/><text class="label" x="775" y="273">Ki dönt?</text><text class="note" x="775" y="294">Ne hagyd az agentre.</text>
+  </svg>
+  <figcaption><strong>Lényeg:</strong> a kontextus szűkítése biztosítja, hogy a releváns cél, korlát és ellenőrzés ne vesszen el a zajban.</figcaption>
+  <details class="static-fallback" id="fig-m01-hogyan-szukul-a-kontextus-a-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>Indulj a teljes repóból.</li><li>Azonosítsd az érintett területet és a célt.</li><li>Olvasd el a szabályokat és a korábbi döntéseket.</li><li>Válaszd ki az érintett fájlokat és teszteket.</li><li>Fogalmazd meg a következő lépést.</li></ol><p>Állj meg, ha a cél, a tiltott művelet vagy a döntési felelős hiányzik.</p></details>
+</figure>
+</section>
+
+<section aria-labelledby="keres">
+<h2 id="keres">3. A homályos kéréstől a végrehajtható, egyértelmű kérésig</h2>
+<p>A „nézd át és javítsd meg” nem ad eredményhatárt, fájlhatárt, korlátot vagy ellenőrzést. Négy rövid kérdés elég ahhoz, hogy az agentnek ne kelljen találgatnia.</p>
+<figure class="visual" id="fig-m01-hogyan-lesz-a-homalyos-keresbol">
+  <svg viewBox="0 0 900 370" role="img" aria-labelledby="request-title request-desc"><title id="request-title">A homályos kérés átalakítása végrehajtható, egyértelmű kéréssé</title><desc id="request-desc">A homályos kérés négy kérdésen halad át: eredmény, scope, korlát és ellenőrzés. A végrehajtható, egyértelmű kérés ezeket mind rögzíti.</desc>
+    <defs><marker id="arr2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#5a6675"/></marker></defs>
+    <rect class="artifact" x="20" y="135" width="170" height="80" rx="12"/><text class="label" x="105" y="168">„Nézd át, és</text><text class="label" x="105" y="191">javítsd meg.”</text><path class="line" marker-end="url(#arr2)" d="M190 175H230"/>
+    <rect class="human" x="245" y="20" width="250" height="58" rx="10"/><text class="label" x="370" y="48">1. Mi legyen az eredmény?</text><text class="note" x="370" y="68">megfigyelhető kimenet</text>
+    <rect class="human" x="245" y="105" width="250" height="58" rx="10"/><text class="label" x="370" y="133">2. Mi tartozik bele?</text><text class="note" x="370" y="153">és mi marad érintetlen</text>
+    <rect class="human" x="245" y="190" width="250" height="58" rx="10"/><text class="label" x="370" y="218">3. Milyen korlát érvényes?</text><text class="note" x="370" y="238">adat, jogosultság, kompatibilitás</text>
+    <rect class="human" x="245" y="275" width="250" height="58" rx="10"/><text class="label" x="370" y="303">4. Hogyan ellenőrizzük?</text><text class="note" x="370" y="323">parancs és elfogadható eredmény</text>
+    <path class="line" d="M495 49H535V304H495"/><path class="line" marker-end="url(#arr2)" d="M535 175H580"/>
+    <rect class="machine" x="595" y="65" width="285" height="220" rx="14"/><text class="label" x="738" y="96">Végrehajtható kérés</text><text x="620" y="133" fill="#1f2733">✓ kívánt eredmény</text><text x="620" y="165" fill="#1f2733">✓ érintett terület</text><text x="620" y="197" fill="#1f2733">✓ érintetlen területek</text><text x="620" y="229" fill="#1f2733">✓ kötelező korlátok</text><text x="620" y="261" fill="#1f2733">✓ pontos ellenőrzés</text>
+  </svg>
+  <figcaption><strong>Lényeg:</strong> egy kérés akkor végrehajtható, ha az agentnek nem kell kitalálnia sem a kívánt eredményt, sem a feladat határait, sem az elfogadás módját.</figcaption>
+  <details class="static-fallback" id="fig-m01-hogyan-lesz-a-homalyos-keresbol-text"><summary>Az ábra teljes szöveges megfelelője</summary><p>Válaszold meg: mi legyen az eredmény; mi tartozik bele és mi marad érintetlen; milyen korlát érvényes; melyik ellenőrzés igazolja a sikert. A válaszokból áll össze a végrehajtható kérés.</p></details>
+</figure>
+<div class="grid"><article><h3>Homályos</h3><pre><code>Nézd át a repót, és készítsd fel az agentes munkára.</code></pre></article><article><h3>Végrehajtható és egyértelmű</h3><pre><code>Diagnosztizáld a repót. Ne módosíts kódot. Írj le legalább három hiányzó információt, a modell, az agent és az ember döntési határát, majd nevezz meg egy következő emberi döntést. Az eredmény: workshop-evidence/01-helyzetkep.md.</code></pre></article></div>
+</section>
+
+<section aria-labelledby="ellenorzes">
+<h2 id="ellenorzes">4. Az önellenőrzés és a független review nem ugyanaz</h2>
+<p>Az önellenőrzés gyorsan megtalálja a nyilvánvaló hiányokat, de ugyanabból a gondolatmenetből indul, mint a készítés. A <a data-route="/materials/fogalomtar/#review">review</a> akkor független, ha az ellenőrző a feladatból és a tényleges munkadarabból indul.</p>
+<figure class="visual" id="fig-m01-miben-mas-az-onellenorzes-es">
+  <svg viewBox="0 0 860 330" role="img" aria-labelledby="review-title review-desc"><title id="review-title">Az önellenőrzés és a független review összehasonlítása</title><desc id="review-desc">Az önellenőrzésben a készítő saját kontextussal ellenőrzi eredményét. A független review-ban másik ellenőrző friss kontextusból veti össze a feladatot és a munkadarabot.</desc>
+    <rect class="agent" x="20" y="25" width="390" height="270" rx="16"/><text class="label" x="215" y="58">Önellenőrzés</text><rect class="node" x="55" y="90" width="130" height="60" rx="10"/><text class="label" x="120" y="116">Készítő</text><text class="note" x="120" y="137">saját kontextus</text><rect class="artifact" x="245" y="90" width="130" height="60" rx="10"/><text class="label" x="310" y="126">Eredmény</text><path class="line" d="M185 120H245M310 150C310 215 120 215 120 150"/><text class="label" x="215" y="250">Gyors visszacsatolás</text><text class="note" x="215" y="274">a közös vakfolt megmaradhat</text>
+    <rect class="human" x="450" y="25" width="390" height="270" rx="16"/><text class="label" x="645" y="58">Független review</text><rect class="node" x="475" y="90" width="140" height="60" rx="10"/><text class="label" x="545" y="116">Ellenőrző</text><text class="note" x="545" y="137">friss kontextus</text><rect class="artifact" x="680" y="90" width="130" height="60" rx="10"/><text class="label" x="745" y="114">Feladat +</text><text class="label" x="745" y="136">eredmény</text><rect class="machine" x="565" y="195" width="160" height="55" rx="10"/><text class="label" x="645" y="228">Ellenőrizhető eltérés</text><path class="line" d="M615 120H680M745 150V185H725"/><text class="note" x="645" y="274">más nézőpont, új vakfoltok</text>
+  </svg>
+  <figcaption><strong>Lényeg:</strong> az önellenőrzés szükséges, de nem helyettesíti azt a második nézőpontot, amely a kiinduló feladatot és az eredményt egymástól függetlenül veti össze.</figcaption>
+  <details class="static-fallback" id="fig-m01-miben-mas-az-onellenorzes-es-text"><summary>Az ábra teljes szöveges megfelelője</summary><table><tr><th>Szempont</th><th>Önellenőrzés</th><th>Független review</th></tr><tr><td>Ki?</td><td>A készítő.</td><td>Másik személy vagy friss kontextusú agent.</td></tr><tr><td>Miből?</td><td>Saját gondolatmenet és eredmény.</td><td>Feladat, követelmények és tényleges eredmény.</td></tr><tr><td>Erősség</td><td>Gyors, nyilvánvaló hibák.</td><td>Új vakfoltok és követelményeltérések.</td></tr></table></details>
+</figure>
+</section>
+
+<section aria-labelledby="gyakorlat">
+<h2 id="gyakorlat">Gyakorlat: készíts repo-helyzetképet</h2>
+<p><strong>Cél:</strong> ne javíts még semmit. Készíts olyan diagnózist, amelyből más megérti, mire van elég információ, hol kell megállni, és mi a következő döntés.</p>
+<ol class="steps">
+  <li><strong>Nyisd meg a gyakorlórepódat.</strong> Ellenőrizd a gyökérkönyvtárat, de ne módosíts fájlt. Ha nincs használható repód, ugorj a Plan B-re.</li>
+  <li><strong>Keresd meg a célt.</strong> Nézd meg a README-t és a gyökérben lévő agent-utasítást. Írd le egy mondatban, mit épít a repo. Ha nem derül ki, ez az első ismeretlen.</li>
+  <li><strong>Keresd meg a határokat.</strong> Jegyezd fel, hol szabad dolgozni, mi marad érintetlen, és van-e tiltott művelet. Amit nem találsz, ne találd ki.</li>
+  <li><strong>Keresd meg az ellenőrzést.</strong> Azonosíts legalább egy futtatható lint-, teszt- vagy buildparancsot. Ha csak annyi áll, hogy „ellenőrizd”, jelöld ismeretlenként a pontos parancsot és az elfogadható eredményt.</li>
+  <li><strong>Válaszd szét a szerepeket.</strong> Írd le, mit következtethet a modell; milyen műveletet végezhet az agent; melyik döntést nem hozhatja meg ember helyett.</li>
+  <li><strong>Rögzíts legalább három ismeretlent.</strong> Mindegyikhez add meg, miért számít, ki tud válaszolni rá, és addig mit nem szabad feltételezni.</li>
+  <li><strong>Nevezd meg a következő döntést.</strong> Egyetlen konkrét kérdést írj, amelynek megválaszolása után a 2. modulban repo-szabály készíthető.</li>
+</ol>
+<h3>A pontos kimenet</h3><p>Hozd létre a <code>workshop-evidence/01-helyzetkep.md</code> fájlt a résztvevői repóban:</p>
+<pre><code># Repo-helyzetkép
+
+## A repo célja
+...
+
+## Amit az agent feltételezhet
+- ... (forrás: fájl vagy parancseredmény)
+
+## Amit az agent nem feltételezhet
+- ...
+
+## Ellenőrzési mód
+- Pontos parancs: `...`
+- Várt, megfigyelhető eredmény: ...
+- Tényleges eredmény: ...
+- Állapot: ELLENŐRZÖTT | ISMERETLEN
+- Ha ismeretlen: döntési felelős és a tisztázandó kérdés: ...
+
+## Ismeretlenek
+1. Kérdés: ...
+   Miért számít: ...
+   Válaszadó szerep: ...
+   Addig tiltott feltételezés: ...
+2. ...
+3. ...
+
+## Szerephatárok
+- Modell: ...
+- Coding agent: ...
+- Ember: ...
+- Független ellenőrző: ...
+
+## Következő emberi döntés
+...</code></pre>
+<div class="grid">
+  <aside class="check"><h3>Ellenőrzés: társ-visszamondás</h3><ol><li>Cseréljetek fájlt.</li><li>A társad csak a fájlt olvassa; ne magyarázd szóban.</li><li>Visszamond két megengedett és két tiltott feltételezést, a pontos ellenőrzési parancsot és annak várt eredményét, valamint a következő döntést.</li><li>Eltérésnél pontosítsd a fájlt, majd ismételjétek meg.</li></ol><p><strong>Kész:</strong> a visszamondás egyezik a leírt határokkal; az ellenőrzés várt és tényleges eredménye elkülönül; mindhárom ismeretlenhez van válaszadó szerep.</p></aside>
+  <aside class="plan-b"><h3>Plan B: nincs használható repo</h3><p>Használd a tréner által adott, kitalált starter-pillanatképet. A helyzetkép első sora legyen: <strong>„PLAN B — kitalált starter-pillanatkép alapján.”</strong> Ugyanazt a hét lépést és társellenőrzést végezd el. Ne állítsd, hogy a saját rendszeredet vizsgáltad.</p><p><strong>Tipikus hiba:</strong> a hiányzó információt valószínű részlettel pótolni. Helyette írd le ismeretlenként és nevezd meg a döntési felelőst.</p></aside>
+</div>
+</section>
+
+<section aria-labelledby="lezaras"><h2 id="lezaras">Lezárás és átadás</h2><div class="handoff"><p><strong>A modul tanulsága:</strong> az agent megbízhatósága nem csak a modelltől függ; a cél, a scope, a repo szabályai, az emberi döntések és a független review együtt adják a munkakeretet.</p><p>A következő modul bemenete a kész <code>01-helyzetkep.md</code>. Vidd tovább a hiányzó repo-szabályokat és a megnevezett emberi döntést a <a data-route="/materials/modulok/02-repo-felkeszitese/">2. modulba</a>. A módszer egészét a <a data-route="/materials/modszertan/">módszertani áttekintő</a>, a szabályok kialakítását a <a data-route="/toolkit/utmutatok/repo-szabalyok/">toolkit repo-szabály útmutatója</a> foglalja össze.</p></div></section>
+</main>
+</body>
+</html>
