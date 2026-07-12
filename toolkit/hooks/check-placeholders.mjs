@@ -2,8 +2,13 @@
 // Placeholder/TODO scan: teaching artifacts must ship without template
 // leftovers. Default scope: tracked materials/**/*.{html,md} and
 // toolkit/**/*.md; pass explicit file paths to override (fixture testing).
-import { execFileSync } from "node:child_process";
+// `--self-test` proves the gate fails on a violating fixture (WEN-216).
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const markers = [
   ["unfinished TODO", /\bTODO[:(\]]/],
@@ -19,10 +24,39 @@ function trackedFiles() {
   return out
     .split("\n")
     .filter((f) => /\.(html|md)$/.test(f))
-    .filter((f) => !f.endsWith(".mjs"));
+    .filter((f) => !f.endsWith(".mjs"))
+    .filter((f) => !/(^|\/)fixtures\//.test(f)); // negative fixtures violate on purpose
 }
 
-const files = process.argv.length > 2 ? process.argv.slice(2) : trackedFiles();
+const args = process.argv.slice(2);
+
+const badFlags = args.filter((a, i) => a.startsWith("--") && !(a === "--self-test" && i === 0));
+if (badFlags.length > 0) {
+  console.error(`[placeholders] unrecognized or misplaced flag(s): ${badFlags.join(" ")}`);
+  process.exit(2);
+}
+
+if (args[0] === "--self-test") {
+  const self = fileURLToPath(import.meta.url);
+  const dir = mkdtempSync(join(tmpdir(), "check-placeholders-"));
+  const bad = join(dir, "bad.md");
+  const good = join(dir, "good.md");
+  writeFileSync(bad, "A leftover " + "TO" + "DO: finish this section\n");
+  writeFileSync(good, "Complete invented teaching prose.\n");
+  const failing = spawnSync(process.execPath, [self, bad], { stdio: "ignore" });
+  const passing = spawnSync(process.execPath, [self, good], { stdio: "ignore" });
+  rmSync(dir, { recursive: true, force: true });
+  if (failing.status === 1 && passing.status === 0) {
+    console.log("[placeholders] self-test passed (violation detected, clean file accepted)");
+    process.exit(0);
+  }
+  console.error(
+    `[placeholders] self-test FAILED (violating fixture exit ${failing.status}, clean fixture exit ${passing.status})`
+  );
+  process.exit(1);
+}
+
+const files = args.length > 0 ? args : trackedFiles();
 let failed = false;
 
 for (const file of files) {

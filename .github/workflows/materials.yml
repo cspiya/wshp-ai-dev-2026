@@ -1,0 +1,72 @@
+# Material publication + mechanical gates (WEN-216).
+# Local commands are IDENTICAL to these steps — see toolkit/hooks/README.md
+# and toolkit/standards/material-standards.md ("mechanical gates").
+name: materials
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "materials/**"
+      - "toolkit/**"
+      - "participant-starter/**"
+      - ".github/workflows/materials.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: materials-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mechanical-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Placeholder scan
+        run: node toolkit/hooks/check-placeholders.mjs
+      - name: Notebook structure, shell and SVG accessibility
+        run: node toolkit/hooks/check-notebooks.mjs
+      - name: Internal links, directory landings, raw-Markdown routing report
+        run: node toolkit/hooks/check-links.mjs
+      - name: Public-content guard
+        run: node toolkit/hooks/check-public-content.mjs
+      - name: Gate self-tests (negative fixtures must fail for the intended reason)
+        run: |
+          node toolkit/hooks/check-placeholders.mjs --self-test
+          node toolkit/hooks/check-notebooks.mjs --self-test
+          node toolkit/hooks/check-links.mjs --self-test
+          node toolkit/hooks/check-public-content.mjs --self-test
+      - name: Hook regression tests
+        run: node --test toolkit/hooks/hooks.test.mjs
+      - name: Publication smoke (records URL, status and content-type)
+        run: node toolkit/hooks/check-links.mjs --publication-smoke
+
+  render-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: reference-app/package-lock.json
+      - name: Install the repo-locked browser toolchain
+        run: npm ci --prefix reference-app
+      - name: Install Chromium
+        run: npm --prefix reference-app exec playwright install --with-deps chromium
+      - name: Render notebooks (desktop / mobile / print)
+        run: node toolkit/material-qa/material-qa.mjs materials/notebooks --out "$RUNNER_TEMP/material-qa"
+      - name: Upload render evidence (manifest + captures)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: material-qa-evidence
+          path: ${{ runner.temp }}/material-qa
+          retention-days: 14
