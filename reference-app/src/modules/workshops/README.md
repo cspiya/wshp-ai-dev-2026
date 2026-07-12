@@ -4,8 +4,9 @@ The first fully-built vertical slice of the training webshop: the workshop
 catalog (course CRUD). **To add a feature module, copy this folder's layout
 and imitate its patterns** (ADR:
 [docs/adr/0001-workshops-is-the-golden-path.md](../../../docs/adr/0001-workshops-is-the-golden-path.md)).
-The adjacent slices follow the same shape: `registrations/` (status flow),
-`pricing/` (pure domain logic), and `checkout/` (PaymentPort + fake adapter).
+The adjacent slices follow the same module-boundary and vertical-slice conventions,
+adapted to their responsibilities: `registrations/` owns the status flow, `pricing/`
+contains pure domain logic, and `checkout/` owns the PaymentPort plus its fake adapter.
 
 ## Layout
 
