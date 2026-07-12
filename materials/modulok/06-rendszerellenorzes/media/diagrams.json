@@ -1,0 +1,74 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-m06-overview",
+      "visualQuestionId": "q-m06-overview",
+      "question": "Hogyan bizonyítod a változást a böngészőtől az adatbázisig?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["unit-test", "contract-test", "e2e", "preview", "provenance", "reference-task", "context-budget"],
+      "figureSelector": "#fig-m06-overview",
+      "svgSelector": "#fig-m06-overview svg",
+      "textFallbackSelector": "#fig-m06-overview-text",
+      "inlineSvgHash": "dd62e4b23694d07c457c371207080864fcd0b71c9e560d79e005967a0323e28a"
+    },
+    {
+      "id": "fig-m06-melyik-kockazatra-melyik-tesztreteg-felel",
+      "visualQuestionId": "q-m06-relationship-1",
+      "question": "Melyik kockázatra melyik tesztréteg felel?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
+      "glossarySlugs": ["unit-test", "contract-test", "e2e"],
+      "figureSelector": "#fig-m06-melyik-kockazatra-melyik-tesztreteg-felel",
+      "svgSelector": "#fig-m06-melyik-kockazatra-melyik-tesztreteg-felel svg",
+      "textFallbackSelector": "#fig-m06-risk-layers-text",
+      "inlineSvgHash": "635a31bca13666c06437ede7457fbba0a0efb3e3b5153a746945dc5ad97ce08f"
+    },
+    {
+      "id": "fig-m06-hogyan-fut-vegig-az-ellenorzes",
+      "visualQuestionId": "q-m06-process-2",
+      "question": "Hogyan fut végig az ellenőrzés a böngészőtől az adatbázisig?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "sequence-diagram",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": ["e2e", "preview", "provenance"],
+      "figureSelector": "#fig-m06-hogyan-fut-vegig-az-ellenorzes",
+      "svgSelector": "#fig-m06-hogyan-fut-vegig-az-ellenorzes svg",
+      "textFallbackSelector": "#fig-m06-sequence-text",
+      "inlineSvgHash": "332a9b7b1aeec3405692a4cffd4213de0b2416df1a560793abd0d04696541d40"
+    },
+    {
+      "id": "fig-m06-hol-lokalizalod-a-hibat-ha",
+      "visualQuestionId": "q-m06-structure-3",
+      "question": "Hol lokalizálod a hibát, ha valamelyik réteg elbukik?",
+      "type": "structure",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "component-diagram",
+      "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+      "glossarySlugs": ["reference-task"],
+      "figureSelector": "#fig-m06-hol-lokalizalod-a-hibat-ha",
+      "svgSelector": "#fig-m06-hol-lokalizalod-a-hibat-ha svg",
+      "textFallbackSelector": "#fig-m06-failure-text",
+      "inlineSvgHash": "45c7dcd0f606b1179d4ec35b69669f8564907557733115fdbddc574bc52c656e"
+    },
+    {
+      "visualQuestionId": "q-m06-structure-4",
+      "question": "Mit bizonyít és mibe kerül az egyes rétegek eredménye?",
+      "type": "structure",
+      "disposition": "shared",
+      "takeaway": "Az elemek határai és függőségei határozzák meg a működő egészet.",
+      "glossarySlugs": ["context-budget"],
+      "sharedDiagramId": "fig-evidence-chain",
+      "sharedHref": "../../modszertan/index.html#fig-evidence-chain"
+    }
+  ]
+}

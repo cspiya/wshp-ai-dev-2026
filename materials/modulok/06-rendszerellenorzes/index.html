@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+  <title>6. Ellenőrzés a böngészőtől az adatbázisig</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;--ink:#172033;--muted:#526078;--line:#cfd7e6;--brand:#2949c7;--soft:#eef2ff;--ok:#e9f8f1;--warn:#fff4e8;--bad:#fff0f1}*{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);line-height:1.62}main{width:min(1100px,calc(100% - 2rem));margin:auto;padding:2rem 0 5rem}h1{font-size:clamp(2rem,6vw,3.8rem);line-height:1.06;margin:.2rem 0}h2{margin-top:0}h3{margin-bottom:.25rem}a{color:#183083}.eyebrow{color:var(--brand);font-weight:800;text-transform:uppercase;letter-spacing:.08em}.lead{max-width:78ch;font-size:1.14rem}.takeaway{border-left:4px solid var(--brand);padding:.7rem 1rem;background:var(--soft);font-weight:700}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0}.card,figure,.exercise{min-width:0;padding:1.2rem;border:1px solid var(--line);border-radius:1rem;background:#fff;box-shadow:0 8px 24px rgba(30,43,77,.05)}figure{margin:1.4rem 0}figure svg{display:block;width:min(100%,620px);height:auto;margin:auto}figcaption{margin-top:.8rem;color:var(--muted)}.text-equivalent{margin-top:.8rem;border-top:1px solid var(--line);padding-top:.6rem}.sequence{counter-reset:s;display:grid;gap:1rem;list-style:none;padding:0}.sequence>li{counter-increment:s;padding:1rem;border-left:4px solid var(--brand);background:#fff}.sequence>li:before{content:counter(s);display:inline-grid;place-items:center;width:1.8rem;height:1.8rem;margin-right:.5rem;border-radius:50%;background:var(--brand);color:#fff;font-weight:800}.time{padding:.1rem .5rem;border-radius:999px;background:var(--soft);font-weight:800}table{width:100%;border-collapse:collapse}th,td{padding:.55rem;border:1px solid var(--line);text-align:left;vertical-align:top}code{overflow-wrap:anywhere}pre{padding:1rem;overflow:auto;border-radius:.7rem;background:#111a31;color:#fff}.ok{background:var(--ok)}.warn{background:var(--warn)}.bad{background:var(--bad)}.module-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-weight:700}.checklist li{margin:.4rem 0}@media(max-width:700px){main{width:min(100% - 1rem,1100px)}.grid{grid-template-columns:1fr}.module-nav{display:grid}figure{padding:.75rem}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}@media print{body{background:#fff}main{width:100%;padding:0}.card,figure,.exercise{box-shadow:none;break-inside:avoid-page}details,details>*{display:block}a{color:#000;text-decoration:none}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">6. modul · 45 perc</p>
+    <h1>Ellenőrzés a böngészőtől az adatbázisig</h1>
+    <p class="lead">Ebben a modulban nem állsz meg annál, hogy „a tesztek zöldek”: ugyanazt a kitalált felhasználói utat követed a böngészőben, az API-ban és az aktív adattárolóban. A sikeres út mellett egy elvárt hibás utat is rögzítesz, majd minden eredményt az ellenőrzött forrásverzióhoz kötsz.</p>
+    <p class="takeaway"><strong>Lényeg:</strong> csak az az <a data-route="/materials/fogalomtar/#evidence">ellenőrzési eredmény</a> használható döntésre, amelyből kiderül, mit futtattál, melyik verzión, milyen környezetben, melyik adapterrel és hol ellenőrizted az eredményt.</p>
+  </header>
+
+  <section class="grid">
+    <article class="card"><h2>Előfeltétel</h2><p>A 3. modul elfogadott specifikációja, a 4. modul ellenőrzött review-eredménye és az 5. modulból hozott automatikus ellenőrzés. Ezekből válassz <a data-route="/materials/fogalomtar/#reference-task">referenciafeladatot</a>. A futás előtt nyisd meg a <a data-route="/reference-app/">referenciaalkalmazás áttekintését</a>, és keresd meg a saját repóban a tényleges parancsokat.</p></article>
+    <article class="card"><h2>Kimenet</h2><p>Egy <code>workshop-evidence/06-rendszerellenorzes/</code> mappa, amelyben egymáshoz illő forrásverzió, <a data-route="/materials/fogalomtar/#preview">preview környezet</a>, aktív adapter, <a data-route="/materials/fogalomtar/#unit-test">unit teszt</a>, <a data-route="/materials/fogalomtar/#contract-test">contract test</a>, <a data-route="/materials/fogalomtar/#e2e">E2E teszt</a>, hibás út, adatellenőrzés és következtetés található.</p></article>
+  </section>
+  <p class="takeaway">Az <a data-route="/materials/fogalomtar/#provenance">eredet és verzió</a> köti össze a futásokat; a döntéshez szükséges <a data-route="/materials/fogalomtar/#context">kontextus</a> férjen bele a tudatosan beosztott <a data-route="/materials/fogalomtar/#context-budget">kontextuskeretbe</a>.</p>
+
+  <figure id="fig-m06-overview">
+    <h2>Hogyan bizonyítod a változást a böngészőtől az adatbázisig?</h2>
+    <svg viewBox="0 0 360 820" role="img" aria-labelledby="m06o-t m06o-d">
+      <title id="m06o-t">A rendszerellenőrzés teljes képe</title>
+      <desc id="m06o-d">A kockázatból kiválasztott referenciafeladatot unit, contract és E2E tesztréteg vizsgálja. Az E2E út a böngészőtől az API-n át az aktív adattárolóig halad. A sikeres és hibás út eredménye azonos forrásverzióval, környezettel és adapterrel kerül az eredménymappába. Memóriabeli adapter nem igazol adatbázis-futást. Az összefoglaló csak a döntéshez szükséges részleteket viszi tovább a kontextuskeretben.</desc>
+      <defs><marker id="m06a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs>
+      <g font-size="15" text-anchor="middle">
+        <rect x="35" y="20" width="290" height="85" rx="12" fill="#fff4e8" stroke="#a75a16" stroke-width="2"/><text x="180" y="52" font-weight="700">Felhasználói kockázat</text><text x="180" y="78">kitalált referenciafeladat</text>
+        <rect x="25" y="145" width="95" height="100" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="72" y="180" font-weight="700">Unit</text><text x="72" y="205">üzleti</text><text x="72" y="226">szabály</text>
+        <rect x="133" y="145" width="95" height="100" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="180" y="180" font-weight="700">Contract</text><text x="180" y="205">adapter</text><text x="180" y="226">szerződés</text>
+        <rect x="240" y="145" width="95" height="100" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="287" y="180" font-weight="700">E2E</text><text x="287" y="205">látható</text><text x="287" y="226">rendszerút</text>
+        <rect x="35" y="285" width="290" height="120" rx="12" fill="#fff" stroke="#2949c7" stroke-width="2"/><text x="180" y="320" font-weight="700">Böngésző → API → aktív adattároló</text><text x="180" y="350">sikeres út + elvárt hibás út</text><text x="180" y="377">ugyanazon a preview környezeten</text>
+        <rect x="35" y="445" width="290" height="115" rx="12" fill="#e9f8f1" stroke="#176346" stroke-width="2"/><text x="180" y="480" font-weight="700">Eredet és verzió</text><text x="180" y="507">commit · build · környezet · adapter</text><text x="180" y="534">időpont · parancs · kilépési kód</text>
+        <rect x="35" y="600" width="290" height="100" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="635" font-weight="700">Ellenőrizhető eredménymappa</text><text x="180" y="662">nyers eredmény + rövid következtetés</text><text x="180" y="686">memória ≠ adatbázis</text>
+        <path d="M55 740H305L270 790H90Z" fill="#fff4e8" stroke="#a75a16"/><text x="180" y="765" font-weight="700">Kontextuskeret</text><text x="180" y="785">csak a döntéshez szükséges rész</text>
+      </g>
+      <g stroke="#526078" stroke-width="3" marker-end="url(#m06a)"><line x1="180" y1="105" x2="180" y2="135"/><line x1="180" y1="245" x2="180" y2="275"/><line x1="180" y1="405" x2="180" y2="435"/><line x1="180" y1="560" x2="180" y2="590"/><line x1="180" y1="700" x2="180" y2="730"/></g>
+    </svg>
+    <figcaption><strong>Röviden:</strong> a tesztrétegek külön kockázatot fednek le, de csak az összeillő rendszerút, eredet- és verzióadat, aktív adapter és következtetés együtt alkot döntésre alkalmas ellenőrzési eredményt.</figcaption>
+    <details class="text-equivalent static-fallback" id="fig-m06-overview-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>Válassz egy referenciafeladatot, amely valódi felhasználói kockázatot képvisel.</li><li>A unit teszt az üzleti szabályt, a contract test az adapter szerződését, az E2E teszt a látható rendszerutat vizsgálja.</li><li>Az E2E út a böngészőtől az API-n át az aktív adattárolóig fut, sikeres és hibás ággal.</li><li>A preview környezet csak akkor hiteles, ha ismert a futó commit, build és adapter.</li><li>Az eredet és verzió adatai minden eredményt ugyanahhoz a futáshoz kötnek.</li><li>Memóriabeli adapterrel az adatbázis-réteg nem ellenőrzött; ezt BLOCKED állapottal vagy SHA-hoz rögzített REPLAY eredménnyel kell kezelni.</li><li>Az eredménymappa nyers adataiból csak a döntéshez szükséges rész kerül a kontextuskeretbe.</li></ol></details>
+  </figure>
+
+  <section>
+    <h2>Tanulási sorrend</h2>
+    <ol class="sequence">
+      <li><span class="time">0–5 perc</span> Válaszd ki a kitalált felhasználói utat, és rögzítsd az ellenőrzött commitot, buildet, környezetet és aktív adaptert.</li>
+      <li><span class="time">5–12 perc</span> Rendeld a fő kockázatokat a megfelelő tesztréteghez. Egy kockázatot ne fedj le három drága teszttel csak megszokásból.</li>
+      <li><span class="time">12–20 perc</span> Futtasd a unit és contract ellenőrzéseket; mentsd a pontos parancsot, kilépési kódot és eredményt.</li>
+      <li><span class="time">20–30 perc</span> Járd be a sikeres utat a böngészőben, majd kösd össze az API-kéréssel és az aktív adapterben látható eredménnyel. Memóriabeli adapterrel ne állíts adatbázis-futást.</li>
+      <li><span class="time">30–36 perc</span> Járj be egy dokumentált, elvárt hibás utat, és ellenőrizd, hogy nem jött létre hibás adat.</li>
+      <li><span class="time">36–41 perc</span> Lokalizáld az esetleges eltérést a legszűkebb rétegre; ne öntsd a teljes naplót az AI kontextusába.</li>
+      <li><span class="time">41–45 perc</span> Zárd le az eredménymappát egy ellenőrizhető következtetéssel, és add át a fennmaradó kockázatot a következő modulnak.</li>
+    </ol>
+  </section>
+
+  <figure id="fig-m06-melyik-kockazatra-melyik-tesztreteg-felel">
+    <h2>Melyik kockázatra melyik tesztréteg felel?</h2>
+    <svg viewBox="0 0 360 720" role="img" aria-labelledby="m06r-t m06r-d">
+      <title id="m06r-t">Kockázatok és tesztrétegek kapcsolata</title>
+      <desc id="m06r-d">Három kockázat kapcsolódik a legolcsóbb megfelelő tesztréteghez. Az üzleti számítás unit teszthez, az adapter szerződése contract testhez, a felhasználó által látható többkomponensű út E2E teszthez. Az alulról felfelé növekvő költség miatt az E2E réteg csak a kritikus teljes utakat fedi.</desc>
+      <defs><marker id="m06b" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs>
+      <g font-size="15" text-anchor="middle">
+        <rect x="25" y="20" width="140" height="105" rx="12" fill="#fff4e8" stroke="#a75a16"/><text x="95" y="50" font-weight="700">Kockázat</text><text x="95" y="78">hibás üzleti</text><text x="95" y="101">számítás</text>
+        <rect x="195" y="20" width="140" height="105" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="265" y="50" font-weight="700">Unit teszt</text><text x="265" y="78">gyors, elkülönített</text><text x="265" y="101">sok példa</text>
+        <rect x="25" y="180" width="140" height="105" rx="12" fill="#fff4e8" stroke="#a75a16"/><text x="95" y="210" font-weight="700">Kockázat</text><text x="95" y="238">adapter eltér a</text><text x="95" y="261">szerződéstől</text>
+        <rect x="195" y="180" width="140" height="105" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="265" y="210" font-weight="700">Contract test</text><text x="265" y="238">ugyanaz az elvárás</text><text x="265" y="261">több megvalósításon</text>
+        <rect x="25" y="340" width="140" height="120" rx="12" fill="#fff4e8" stroke="#a75a16"/><text x="95" y="370" font-weight="700">Kockázat</text><text x="95" y="398">a látható út</text><text x="95" y="421">rétegek között</text><text x="95" y="444">szakad meg</text>
+        <rect x="195" y="340" width="140" height="120" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="265" y="370" font-weight="700">E2E teszt</text><text x="265" y="398">böngésző · API</text><text x="265" y="421">adattárolás</text><text x="265" y="444">kevés kritikus út</text>
+        <path d="M45 525H315L280 670H80Z" fill="#e9f8f1" stroke="#176346"/><text x="180" y="560" font-weight="700">Költség és visszajelzési idő</text><text x="180" y="590">unit: alacsony / gyors</text><text x="180" y="620">contract: közepes</text><text x="180" y="650">E2E: magasabb / lassabb</text>
+      </g>
+      <g stroke="#526078" stroke-width="3" marker-end="url(#m06b)"><line x1="165" y1="72" x2="185" y2="72"/><line x1="165" y1="232" x2="185" y2="232"/><line x1="165" y1="400" x2="185" y2="400"/></g>
+    </svg>
+    <figcaption><strong>Röviden:</strong> a legszűkebb megfelelő réteg adjon gyors visszajelzést; az E2E tesztet a kritikus, több rétegen átmenő felhasználói utakra tartsd fenn.</figcaption>
+    <details class="text-equivalent static-fallback" id="fig-m06-risk-layers-text"><summary>Az ábra teljes szöveges megfelelője</summary><table><thead><tr><th>Kockázat</th><th>Elsődleges tesztréteg</th><th>Miért?</th></tr></thead><tbody><tr><td>Hibás üzleti számítás</td><td>Unit teszt</td><td>Gyorsan, külső rendszer nélkül sok bemenet vizsgálható.</td></tr><tr><td>Az adapter eltér a szerződéstől</td><td>Contract test</td><td>Ugyanaz az elvárás több megvalósításon is számon kérhető.</td></tr><tr><td>A látható rendszerút rétegek között szakad meg</td><td>E2E teszt</td><td>A böngésző, API és adattárolás együtt ellenőrizhető.</td></tr></tbody></table></details>
+  </figure>
+
+  <p class="takeaway"><strong>Két ábra együtt ad teljes választ:</strong> a fenti kockázat–tesztréteg ábra mutatja az egyes rétegek célját és relatív költségét; a közös <a data-route="/materials/modszertan/#fig-evidence-chain">ellenőrzési eredménylánc</a> mutatja meg, hogyan kapcsolódik a futás az állításhoz és a jóváhagyott verzióhoz.</p>
+
+  <figure id="fig-m06-hogyan-fut-vegig-az-ellenorzes">
+    <h2>Hogyan fut végig az ellenőrzés a böngészőtől az adatbázisig?</h2>
+    <svg viewBox="0 0 360 760" role="img" aria-labelledby="m06s-t m06s-d">
+      <title id="m06s-t">A sikeres és hibás rendszerút sorrendje</title>
+      <desc id="m06s-d">A résztvevő megnyitja a felületet, egy egyedi azonosítójú kitalált adatot küld. A böngésző API-kérést indít, az API ellenőriz és a repository-n keresztül az aktív adattárolóba ír. A válasz és a felület ugyanazt az azonosítót mutatja, a célzott lekérdezés pedig megtalálja. A hibás ág elutasított választ és változatlan adattárolót mutat. Memóriabeli adapterrel ez nem adatbázis-ellenőrzés.</desc>
+      <defs><marker id="m06c" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs>
+      <g font-size="14" text-anchor="middle">
+        <text x="45" y="30" font-weight="700">Résztvevő</text><text x="135" y="30" font-weight="700">Böngésző</text><text x="225" y="30" font-weight="700">API</text><text x="315" y="30" font-weight="700">Adat</text>
+        <g stroke="#aab4c7" stroke-dasharray="5 5"><line x1="45" y1="45" x2="45" y2="700"/><line x1="135" y1="45" x2="135" y2="700"/><line x1="225" y1="45" x2="225" y2="700"/><line x1="315" y1="45" x2="315" y2="700"/></g>
+        <text x="90" y="90">egyedi kitalált adat</text><line x1="45" y1="105" x2="125" y2="105" stroke="#2949c7" stroke-width="3" marker-end="url(#m06c)"/>
+        <text x="180" y="150">kérés + azonosító</text><line x1="135" y1="165" x2="215" y2="165" stroke="#2949c7" stroke-width="3" marker-end="url(#m06c)"/>
+        <text x="270" y="210">írás az aktív adapterrel</text><line x1="225" y1="225" x2="305" y2="225" stroke="#2949c7" stroke-width="3" marker-end="url(#m06c)"/>
+        <text x="270" y="270">tárolt azonosító</text><line x1="315" y1="285" x2="235" y2="285" stroke="#176346" stroke-width="3" marker-end="url(#m06c)"/>
+        <text x="180" y="330">sikeres válasz</text><line x1="225" y1="345" x2="145" y2="345" stroke="#176346" stroke-width="3" marker-end="url(#m06c)"/>
+        <text x="90" y="390">látható visszaigazolás</text><line x1="135" y1="405" x2="55" y2="405" stroke="#176346" stroke-width="3" marker-end="url(#m06c)"/>
+        <rect x="20" y="450" width="320" height="220" rx="12" fill="#fff4e8" stroke="#a75a16"/><text x="180" y="480" font-weight="700">Elvárt hibás ág</text><text x="90" y="525">hibás bemenet</text><line x1="45" y1="540" x2="125" y2="540" stroke="#a75a16" stroke-width="3" marker-end="url(#m06c)"/><text x="180" y="575">elutasított kérés</text><line x1="135" y1="590" x2="215" y2="590" stroke="#a75a16" stroke-width="3" marker-end="url(#m06c)"/><text x="270" y="625">nincs új rekord</text><line x1="225" y1="640" x2="305" y2="640" stroke="#a75a16" stroke-width="3" marker-end="url(#m06c)"/>
+      </g>
+    </svg>
+    <figcaption><strong>Röviden:</strong> ugyanaz az egyedi azonosító kösse össze a felületet, a hálózati kérést és az aktív adattároló eredményét; a hibás ágban pedig ellenőrizd a kívánt elutasítást és a hiányzó hibás rekordot.</figcaption>
+    <details class="text-equivalent static-fallback" id="fig-m06-sequence-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>A résztvevő egyedi, kitalált adatot ad meg a böngészőben.</li><li>A böngésző az azonosítót tartalmazó API-kérést küld.</li><li>Az API ellenőriz, majd a repository-n és a megnevezett adapteren keresztül ír.</li><li>Az aktív adattárolóból ugyanaz az azonosító olvasható vissza; memóriabeli adapter esetén ez nem adatbázis-eredmény.</li><li>Az API sikeres választ, a böngésző látható visszaigazolást ad.</li><li>A hibás ág hibás bemenetet küld, elutasított választ vár, és ellenőrzi, hogy nem jött létre új rekord.</li></ol></details>
+  </figure>
+
+  <figure id="fig-m06-hol-lokalizalod-a-hibat-ha">
+    <h2>Hol lokalizálod a hibát, ha valamelyik réteg elbukik?</h2>
+    <svg viewBox="0 0 360 720" role="img" aria-labelledby="m06f-t m06f-d">
+      <title id="m06f-t">A hibakeresés szűkítő térképe</title>
+      <desc id="m06f-d">A felhasználói tünettől először a böngésző és hálózati eredményt vizsgáljuk, majd az API-választ, az adapter contract testjét, végül az üzleti szabály unit tesztjét és az adattárolást. Minden sikeres ellenőrzés kizár egy réteget. Csak a legszűkebb ellentmondó részlet kerül a kontextuskeretbe.</desc>
+      <defs><marker id="m06d" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs>
+      <g font-size="15" text-anchor="middle">
+        <rect x="30" y="20" width="300" height="80" rx="12" fill="#fff0f1" stroke="#a7323f"/><text x="180" y="52" font-weight="700">Látható tünet</text><text x="180" y="78">mi tér el az elvárt eredménytől?</text>
+        <rect x="45" y="135" width="270" height="80" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="167" font-weight="700">1. Böngésző + hálózat</text><text x="180" y="193">kérés, státusz, válasz, felület</text>
+        <rect x="60" y="250" width="240" height="80" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="282" font-weight="700">2. API + üzleti szabály</text><text x="180" y="308">napló, unit eredmény</text>
+        <rect x="75" y="365" width="210" height="80" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="397" font-weight="700">3. Adapter</text><text x="180" y="423">contract test</text>
+        <rect x="90" y="480" width="180" height="80" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="512" font-weight="700">4. Adattárolás</text><text x="180" y="538">célzott lekérdezés</text>
+        <path d="M105 610H255L230 690H130Z" fill="#e9f8f1" stroke="#176346"/><text x="180" y="640" font-weight="700">Legszűkebb eltérés</text><text x="180" y="666">eredmény + következő lépés</text>
+      </g>
+      <g stroke="#526078" stroke-width="3" marker-end="url(#m06d)"><line x1="180" y1="100" x2="180" y2="125"/><line x1="180" y1="215" x2="180" y2="240"/><line x1="180" y1="330" x2="180" y2="355"/><line x1="180" y1="445" x2="180" y2="470"/><line x1="180" y1="560" x2="180" y2="600"/></g>
+    </svg>
+    <figcaption><strong>Röviden:</strong> a hiba lokalizálása kizárásos szűkítés: minden ellenőrzötten jó réteg csökkenti a keresési teret és a szükséges kontextust.</figcaption>
+    <details class="text-equivalent static-fallback" id="fig-m06-failure-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>Írd le pontosan a látható tünetet.</li><li>Ellenőrizd a böngésző állapotát, a hálózati kérést, státuszt és választ.</li><li>Vesd össze az API-naplót és a megfelelő unit tesztet.</li><li>Futtasd az adapter contract testjét.</li><li>Célzott lekérdezéssel ellenőrizd az aktív adattárolót.</li><li>Csak a legszűkebb ellentmondást, az ellenőrzési eredményt és a következő lépést add át.</li></ol></details>
+  </figure>
+
+  <section class="card">
+    <h2>Kitöltött minta: hogyan áll össze a hét fájl?</h2>
+    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden fájl első négy sora ugyanaz a közös fejléc: <code>STATUS=REPLAY</code>, <code>SOURCE_SHA=7f3a2c1</code>, <code>ENVIRONMENT=replay-minta-2026-07-12</code>, <code>ADAPTER=drizzle-neon</code>. Minden sor ugyanahhoz a <code>WSHOP-CSIGA-20260712T120000Z</code> azonosítóhoz tartozik.</p>
+    <table><thead><tr><th>Fájl</th><th>A kitalált minta lényegi tartalma</th></tr></thead><tbody>
+      <tr><td><code>00-eredet-es-verzio.txt</code></td><td>A közös fejléc, a buildazonosító és az UTC-időpont; ez az alaprekord.</td></tr>
+      <tr><td><code>01-unit-test.txt</code></td><td>Közös fejléc; <code>npm test -- pricing</code>; kilépési kód 0; az érintett árszabály PASS.</td></tr>
+      <tr><td><code>02-contract-test.txt</code></td><td>Közös fejléc; <code>npm test -- repository-contract</code>; kilépési kód 0.</td></tr>
+      <tr><td><code>03-e2e-sikeres-ut.txt</code></td><td>Közös fejléc; a böngésző visszaigazolja az azonosítót; API 201; azonos korrelációs azonosító.</td></tr>
+      <tr><td><code>04-adatellenorzes.txt</code></td><td>Közös fejléc; célzott, csak olvasó lekérdezés: pontosan 1 rekord ugyanazzal az azonosítóval.</td></tr>
+      <tr><td><code>05-e2e-hibas-ut.txt</code></td><td>Közös fejléc; hiányzó kötelező mező; API 400; célzott lekérdezés: 0 új rekord.</td></tr>
+      <tr><td><code>06-kovetkeztetes.md</code></td><td>Közös fejléc; a rögzített DB-adapteren mindkét út összefüggő; REPLAY; élő futás nincs ellenőrizve.</td></tr>
+    </tbody></table>
+    <p class="takeaway"><strong>Röviden:</strong> az azonosító, forrásverzió, környezet és adapter minden fájlban egyezik; a REPLAY megjelölés megakadályozza, hogy a mintát saját élő futásként értelmezd.</p>
+  </section>
+
+  <section class="exercise">
+    <h2>Gyakorlat: készíts ellenőrizhető rendszereredményt</h2>
+    <p><strong>Kitalált eset:</strong> egy résztvevő az „Agentikus fejlesztés alapjai” nevű, kitalált workshopra jelentkezik az egyedi <code>WSHOP-&lt;csapat&gt;-&lt;időbélyeg&gt;</code> azonosítóval. A konkrét mezőneveket és parancsokat a saját repód dokumentált felületéhez igazítsd; ne találj ki nem létező végpontot vagy futtatási eredményt.</p>
+    <ol>
+      <li>Hozd létre a mappát: <code>workshop-evidence/06-rendszerellenorzes/</code>.</li>
+      <li>A <code>00-eredet-es-verzio.txt</code> fájlba írd be a <code>STATUS</code>, <code>SOURCE_SHA</code>, <code>ENVIRONMENT</code> és <code>ADAPTER</code> mezőt, továbbá a buildazonosítót és az ellenőrzés UTC-időpontját. Ugyanezt a négymezős fejlécet másold minden további eredményfájl elejére. Ha a futó verzió vagy adapter nem azonosítható, állj meg.</li>
+      <li>Keresd meg a repóban a dokumentált unit teszt parancsát. Futtasd változtatás nélkül; a parancsot, kilépési kódot és releváns eredményt mentsd a <code>01-unit-test.txt</code> fájlba.</li>
+      <li>Futtasd a dokumentált contract testet azzal az adapterrel, amelyet a rendszerút használ. Mentsd a parancsot, adaptert, kilépési kódot és eredményt a <code>02-contract-test.txt</code> fájlba.</li>
+      <li>Nyisd meg a tényleges alkalmazást. Vidd végig a sikeres utat az egyedi, kitalált azonosítóval. A <code>03-e2e-sikeres-ut.txt</code> fájlban rögzítsd a kezdőoldalt vagy helyi útvonalat, a műveletet, a várt és kapott felületi eredményt, az API-státuszt és a kérés korrelációs azonosítóját. Titkot, munkamenet-sütit és személyes adatot ne másolj be.</li>
+      <li>A repository vagy a projekt dokumentált, csak olvasó ellenőrzési módjával keresd meg ugyanezt az azonosítót. A célzott eredményt mentsd a <code>04-adatellenorzes.txt</code> fájlba. A teljes táblát ne exportáld. Ha az aktív adapter memóriabeli, írd le: <code>DB=BLOCKED – a helyi E2E csak memóriabeli tárolást ellenőrzött</code>; adatbázisos állításhoz kérj SHA-hoz rögzített REPLAY csomagot vagy futtass DB-adapterrel.</li>
+      <li>Futtass egy dokumentált, elvárt hibás utat, például hiányzó kötelező mezőt vagy tiltott duplikációt. A <code>05-e2e-hibas-ut.txt</code> fájlban rögzítsd a látható hibaüzenetet, API-státuszt és azt a célzott adatellenőrzést, amely megmutatja, hogy hibás rekord nem jött létre.</li>
+      <li>A <code>06-kovetkeztetes.md</code> fájlban válaszolj: mit támasztanak alá az eredmények; mi maradt ellenőrizetlen; egyezik-e minden eredet- és verzióadat és az adapter; hol lokalizálható az esetleges eltérés; mi a következő döntés.</li>
+      <li>Nyisd meg az <a data-route="/materials/modszertan/#fig-evidence-chain">ellenőrzési eredmények láncát</a>, és ellenőrizd: állítás → futtatható ellenőrzés → megfigyelt eredmény → döntés. A lánc minden elemére mutass rá a saját mappádban.</li>
+    </ol>
+    <p class="takeaway"><strong>Kész, ha:</strong> a hét fájl megvan; a forrásverzió, környezet és aktív adapter minden eredménynél egyezik; a sikeres és hibás út böngésző-, API- és az aktív adattároló szintjén ellenőrizhető; memóriabeli E2E mellett az adatbázis-állítás BLOCKED vagy SHA-hoz rögzített REPLAY; a következtetés különválasztja az ellenőrzött és ellenőrizetlen állításokat.</p>
+  </section>
+
+  <section class="grid">
+    <article class="card warn">
+      <h2>Megállási szabály</h2>
+      <ul class="checklist">
+        <li><strong>Verzióeltérés:</strong> ha nem igazolható, melyik commit fut, ne fogadd el a rendszereredményt.</li>
+        <li><strong>Nem ismert parancs:</strong> ne találj ki tesztparancsot; keresd meg a repó dokumentációjában vagy kérj tréneri segítséget.</li>
+        <li><strong>Váratlan adatírás:</strong> állítsd le a próbát, őrizd meg az ellenőrzési eredményt, és ne ismételd a műveletet vakon.</li>
+        <li><strong>Éles vagy személyes adat:</strong> ne használd; csak kitalált mintával dolgozz.</li>
+      </ul>
+    </article>
+    <article class="card ok">
+      <h2>Plan B: jelölt REPLAY</h2>
+      <p>Ha a helyi rendszer vagy a preview környezet nem fut, használd a tréner által átadott, commitazonosítóhoz és adapterhez rögzített kitalált eredménycsomagot. A saját mappádban minden átvett fájl közös fejlécében szerepeljen <code>STATUS=REPLAY</code> és ugyanaz a SHA, környezet, adapter; ellenőrizd az összefüggéseket, és ne állítsd, hogy te futtattad. Élő URL-t vagy PASS eredményt soha ne találj ki.</p>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="card"><h2>Minőségi önellenőrzés</h2><ul class="checklist"><li>Az egyedi azonosító mindhárom rétegben követhető.</li><li>A nyers eredmény mellett szerepel a parancs és a kilépési kód.</li><li>Az aktív adapter minden fájlban azonos.</li><li>A hibás út a várt okból hibázik.</li><li>A következtetés nem állít többet a megfigyelt eredménynél.</li><li>Csak a döntéshez szükséges kivonat kerül az AI kontextusába.</li></ul></article>
+    <article class="card"><h2>Segédletek és átadás</h2><p>A futtatási mód egységesítéséhez használd az <a data-route="/toolkit/utmutatok/automatizalt-kapuk/">automatizált kapuk</a>, az eredmények visszakereséséhez a <a data-route="/toolkit/utmutatok/projektmemoria/">projektmemória</a> útmutatóját. A fennmaradó rendszerkockázatot és a legszűkebb eltérést add át a <a data-route="/materials/modulok/07-legacy-rendszer/">7. modulnak</a>; az elfogadási döntés a 8. modulba kerül.</p></article>
+  </section>
+
+  <nav class="module-nav"><a data-route="/materials/modulok/05-szabalyok-es-kapuk/">← 5. Szabályok és automatizált kapuk</a><a data-route="/materials/modulok/07-legacy-rendszer/">7. Legacy rendszer →</a></nav>
+</main>
+</body>
+</html>
