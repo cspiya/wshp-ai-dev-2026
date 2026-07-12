@@ -13,14 +13,14 @@
 
 <section id="checkpoint"><h2>1. Helye az agent-ready rendszerben</h2>
 <p>A <a href="../agent-ready-repo.md">C3 checkpoint</a> teszi a kérést munkaszerződéssé. Az <a href="../fogalomtar.md">agent-ready repo</a> ettől kezdve nem a coding agent találgatására bízza, mit jelent a „kész”.</p>
-<table><tr><th>Bemenet</th><th>Új rendszerartifact</th><th>Bizonyíték</th></tr><tr><td>Üzleti igény, korlátok, nyitott kérdések</td><td>Spec + Given–When–Then + scope + evidence-terv</td><td>Névvel és döntéssel lezárt humán spec-kapu</td></tr></table>
+<table><tr><th>Bemenet</th><th>Új rendszerartifact</th><th>Bizonyíték</th></tr><tr><td>Üzleti igény, korlátok, nyitott kérdések</td><td>Constitution + spec + Given–When–Then + plan + rendezett task-/evidence-szerződés</td><td>C1, C3 és P1 humán döntéssel lezárt <code>C3-CLOSED-SPEC-GATE</code></td></tr></table>
 <p><strong>Új megbízható képesség:</strong> másik fejlesztő vagy agent ugyanabból a szerződésből ugyanazt a viselkedést tudja megvalósítani és ellenőrizni.</p>
 <p><strong>Kanonikus, kifejezetten kitalált validation workload:</strong> egy résztvevő a saját, megerősített workshop-regisztrációját lemondhatja, ha a kezdés több mint 24 óra múlva van; 24 órán belül a kérés <code>CANCELLATION_WINDOW_CLOSED</code> eredménnyel elutasított, az adat pedig változatlan. Ez nem valódi üzleti szabály vagy ügyfélpélda. Ugyanezt a változtatást adod át a <a href="03-orchestrator-rug.html">G3 RUG-loopnak</a>, és ennek evidence-láncát zárja majd a <a href="05-qa-e2e-token.html">G5 rendszerpróba</a>.</p></section>
 
 <section id="miert"><h2>2. Miért kell kapu a kód előtt?</h2>
 <div class="decision"><h3>Miért előbb a szerződés?</h3>
 <p><strong>Az alapprobléma:</strong> a „legyen lemondás” kérés nem mondja meg, ki, milyen állapotban, milyen időablakban és milyen hibaeredménnyel mondhat le. Az agent hihető, de önkényes döntéssel töltené ki a hiányt.</p>
-<p><strong>A választásunk:</strong> implementáció előtt kitöltjük a feature-spec sablont, Given–When–Then példákat írunk, majd a product/BA owner kifejezett döntéssel lezárja a kaput.</p>
+<p><strong>A választásunk:</strong> implementáció előtt egy ötfájlos, verziózott csomagban rögzítjük a constitutiont, a bounded specet, a Given–When–Then példákat, a technikai tervet és az evidence-hez kötött taskokat. A C1, C3 és P1 állapotot mindig ember hagyja jóvá.</p>
 <p><strong>Miért ez?</strong> emberileg olvasható, tesztté alakítható, review-zható és modellváltáskor változatlan.</p>
 <p><strong>Alternatívák:</strong> a hosszú chat nehezen auditálható; a technikai tasklista nem rögzíti az üzleti eredményt; a kizárólagos unit teszt túl későn és fejlesztői nyelven rögzíti a döntést.</p></div>
 <p>.NET-es analógia: a user story mellé odatesszük a domain invariánst, a SpecFlow-szerű példákat, az interface-határokat és a pipeline evidence-elvárását.</p></section>
@@ -49,41 +49,60 @@ And the persisted registration remains unchanged</pre>
 <div class="prompt">Restate the problem, observable outcome, in-scope and out-of-scope behavior, and every acceptance criterion.
 List unresolved product decisions under "DECISION REQUIRED". Do not propose defaults.
 Map each acceptance criterion to automated and/or manual evidence.
-Do not implement anything until a human records APPROVED.</div></section>
+Do not implement anything in G2. Stop at C3-CLOSED-SPEC-GATE and hand the package to an independent RUG session.</div></section>
 
-<section id="gyakorlat"><h2>5. Gyakorlat — zárd le a validation workload spec-kapuját</h2>
-<h3>Cél</h3><p>Készíts C3 evidence-csomagot, amelyet a következő modul builder-agentje üzleti találgatás nélkül átvehet.</p>
-<h3>Előfeltételek és workspace</h3><p>A G1-ből legyen meg a <code>workshop-lab/workshop-source/</code> read-only forrás, a <code>workshop-lab/participant-repo/</code> írható saját repo és a <code>workshop-lab/workshop-evidence/</code> privát evidence-mappa. A saját work itemben a fenti, kifejezetten kitalált regisztráció-lemondás szerepeljen. A toolkit sablonját a source repóból olvasod, a kész specet viszont a participant repó <code>docs/specs/registration-cancellation.md</code> fájljába mented.</p>
-<h3>Pontos lépések</h3><ol>
-<li>Lépj a read-only forráshoz: <code>cd ../workshop-source</code>. Ellenőrizd a helyet a <code>git rev-parse --show-toplevel</code> paranccsal, majd olvasd el a <code>toolkit/spec-templates/spec.md</code> sablont és a <code>toolkit/checklists/spec-gate.md</code> checklistet. Ezeket itt ne módosítsd.</li>
-<li>Lépj vissza az írható repóhoz: <code>cd ../participant-repo</code>. Ellenőrizd újra a gyökeret, hozd létre a <code>docs/specs/</code> mappát, és másold a sablon tartalmi szerkezetét a <code>docs/specs/registration-cancellation.md</code> fájlba. A spec mint technikai artifact <strong>angolul</strong> készüljön.</li>
-<li>Írd le egy mondatban a problémát technológianév nélkül, majd külön az observable outcome-ot.</li>
-<li>Nevezd meg az elsődleges szereplőt, az érintett adatot és a stabilan tartandó szerződést.</li>
-<li>Írj külön in-scope és out-of-scope listát; az első slice egy végigérő viselkedés legyen.</li>
-<li>Írj legalább egy happy-path és egy state/authorization/failure Given–When–Then példát angolul.</li>
-<li>Minden <code>Then</code> mellé rendelj evidence-t és valódi parancsot vagy kézi lépést.</li>
-<li>Futtasd a visszafoglaló promptot; mondatonként hasonlítsd a választ a spechez.</li>
-<li>A félreértést a specben javítsd, ne új chatüzenettel takard el.</li>
-<li>Minden nyitott kérdés legyen <code>DECISION REQUIRED — owner — deadline</code>.</li>
-<li>Kérj BA/product review-t a source repó <code>workshop-source/toolkit/checklists/spec-gate.md</code> checklistje alapján; a reviewer ne szerkessze a source repót.</li>
-<li>Rögzítsd a döntést, döntéshozót és időpontot ugyanabban a work itemben.</li>
-<li>Csak <code>APPROVED</code> és nulla gazdátlan döntés esetén, a <code>participant-repo/</code> gyökerében futtasd: <code>git add docs/specs/registration-cancellation.md</code>, <code>git commit -m "Approve registration cancellation specification"</code>, majd <code>git rev-parse HEAD</code>.</li><li>Írd a teljes SHA-t a work itembe és a <code>../workshop-evidence/g2-spec-gate.md</code> fájlba, majd add át a csomagot G3-nak.</li></ol>
-<h3>Megfigyelhető eredmény</h3><ul><li>A visszafoglalásban ugyanaz a szereplő, scope és hibaeredmény áll.</li><li>Minden AC mellett reprodukálható evidence-terv van.</li><li>A kapudöntés névvel, státusszal és időponttal visszakereshető.</li></ul>
-<h3>Kész, ha…</h3><p>A lenti C3 kapu minden feltétele teljesül, és a <code>C3-APPROVED-CONTRACT</code> csomagot egy másik session további üzleti kérdés nélkül át tudja venni.</p>
-<h3>Mentendő bizonyíték</h3><ul><li>A participant repóban commitolt <code>docs/specs/registration-cancellation.md</code> és teljes commit SHA-ja.</li><li>Az agent AC-/scope-visszafoglalása a <code>workshop-lab/workshop-evidence/g2-spec-gate.md</code> privát fájlban (a participant repóból: <code>../workshop-evidence/g2-spec-gate.md</code>).</li><li>Az AC → evidence megfeleltetés: minden parancs, várt exit code és rövid eredmény-összefoglaló.</li><li>A humán kapudöntés döntéshozóval és időponttal a work itemben; a privát evidence-fájlban csak a linkje/azonosítója.</li></ul>
+<section id="gyakorlat"><h2>5. Gyakorlat — építs lezárt spec-csomagot, implementáció nélkül</h2>
+<h3>Cél</h3><p>Az ötfájlos, verziózott spec-csomagot a <code>C3-CLOSED-SPEC-GATE</code> állapotig viszed. A következő modul friss builder-sessionje ebből üzleti találgatás nélkül indíthat RUG-loopot; ebben a modulban feature-kód, teszt vagy adatbázis-módosítás nem készül.</p>
+<h3>Előfeltételek és workspace</h3><p>A parancsblokk a <code>workshop-lab/</code> gyökeréből indul. A <code>workshop-source/</code> a read-only workshop-repo és a sablonok forrása; a <code>participant-repo/</code> a G1-ben létrehozott írható repo; a <code>workshop-evidence/</code> a nem publikálandó futási bizonyíték helye. A saját work item Todo/In Progress állapotban tartalmazza a fenti, kifejezetten kitalált regisztráció-lemondási igényt, és a <code>participant-repo</code> tiszta task branchen áll.</p>
+<h3>1. Ellenőrizd a kiindulópontot, majd másold át mind az öt sablont</h3>
+<pre>git -C workshop-source rev-parse --show-toplevel
+git -C participant-repo rev-parse --show-toplevel
+git -C participant-repo status --short
+Get-ChildItem workshop-source/toolkit/spec-templates -File
+New-Item -ItemType Directory -Force participant-repo/docs/spec-package | Out-Null
+Copy-Item workshop-source/toolkit/spec-templates/constitution.md participant-repo/docs/spec-package/constitution.md
+Copy-Item workshop-source/toolkit/spec-templates/spec.md participant-repo/docs/spec-package/spec.md
+Copy-Item workshop-source/toolkit/spec-templates/given-when-then.md participant-repo/docs/spec-package/given-when-then.md
+Copy-Item workshop-source/toolkit/spec-templates/plan.md participant-repo/docs/spec-package/plan.md
+Copy-Item workshop-source/toolkit/spec-templates/tasks.md participant-repo/docs/spec-package/tasks.md
+Set-Location participant-repo
+$env:G2_START_SHA = git rev-parse HEAD
+Get-ChildItem docs/spec-package -File</pre>
+<p><strong>Várt eredmény:</strong> a két gyökér helyes, az induló participant státusz üres, majd pontosan az öt írható célfájl látszik a <code>docs/spec-package/</code> alatt. A <code>workshop-source</code> egyetlen fájlja sem változik. A sablonok és a kitöltött technikai artifactok angol nyelvűek.</p>
+<h3>2. Zárd le a constitutiont — C1</h3><p>Az agent olvassa el a participant repo instrukcióit és tényleges gate-jeit, majd kizárólag a <code>docs/spec-package/constitution.md</code> fájlt töltse ki. Ne találjon ki szabályt vagy parancsot. Nevezze meg a humán döntési ownereket, és jelölje <code>C1</code> verzióval. Az ember a work itemben <code>APPROVED</code>, <code>CHANGES REQUESTED</code> vagy <code>BLOCKED</code> döntést rögzít. C1-jóváhagyás nélkül nincs továbblépés.</p>
+<h3>3. Specify, majd Given–When–Then — C3</h3><p>A <code>spec.md</code> írja le a kitalált lemondási workload observable outcome-ját, szereplőjét, jogosultságát, stabil szerződését, külön in-/out-of-scope határát, <code>CANCELLATION_WINDOW_CLOSED</code> hibaeredményét és az állapot változatlanságát. Minden nyitott kérdés <code>DECISION REQUIRED — owner — deadline</code>. A <code>given-when-then.md</code> minden AC-hoz rendeljen angol happy vagy negatív scenariót, határértéket, pontos tervezett checket és evidence-helyet. Az agent szó szerint foglalja vissza az AC-kat és a scope-ot; a félreértést a fájlban javítsd, ne új chatüzenettel takard el.</p>
+<p>A BA/product owner függetlenül ellenőrzi C1-hez képest az ellentmondást, gazdátlan döntést, nem megfigyelhető <code>Then</code> ágat és hiányzó evidence-et. Csak emberi <code>APPROVED</code> döntéssel jön létre a <code>C3-APPROVED-CONTRACT</code>; a döntéshozó, UTC-időpont és verzió a work itemben visszakereshető.</p>
+<h3>4. Készíts jóváhagyott tervet — P1</h3><p>Csak érvényes C1 és C3 után töltsd ki a <code>plan.md</code> fájlt. A legkisebb technikai megközelítés minden AC-t valódi modulhoz, szerződéshez, ellenőrző parancshoz, kockázathoz és rollbackhez rendel, de semmit nem implementál. Új termékdöntés esetén térj vissza a C3 kapuhoz. A terv csak humán jóváhagyással kap <code>P1-APPROVED-PLAN</code> verziót.</p>
+<h3>5. Bontsd rendezett taskokra, majd auditáld a zárt kaput</h3><p>A <code>tasks.md</code> kizárólag C3-ból és P1-ből készülhet. Minden taskhoz tartozzon AC, owner, függőség/sorrend, pontos verification command és evidence location. Implementáció helyett futtasd a participant repo gyökeréből a csomaghatár ellenőrzését:</p>
+<pre>$packageFiles = @(Get-ChildItem docs/spec-package -File)
+if ($packageFiles.Count -ne 5) { throw "BLOCKED: expected exactly five spec-package files." }
+git diff --check
+$changed = @(git status --short)
+$outside = @($changed | Where-Object { $_ -notmatch '^.. docs/spec-package/' })
+if ($outside.Count -gt 0) { $outside; throw "BLOCKED: changed file outside docs/spec-package." }
+git status --short</pre>
+<p><strong>Várt eredmény:</strong> öt csomagfájl, tiszta whitespace-check, és változás csak a <code>docs/spec-package/**</code> alatt. Ezután add hozzá és commitold kizárólag a csomagot:</p>
+<pre>git add -- docs/spec-package
+git diff --cached --check
+git commit -m "Close registration cancellation spec gate"
+$env:G2_PACKAGE_SHA = git rev-parse HEAD
+git diff --name-only "$env:G2_START_SHA...$env:G2_PACKAGE_SHA"
+git status --short</pre>
+<p><strong>Várt eredmény:</strong> a fájllista csak az öt spec-package artifactot mutatja, a végső státusz üres, és a teljes SHA visszakereshető.</p>
+<h3>Mentendő bizonyíték</h3><ul><li>A participant repóban commitolt öt <code>docs/spec-package/**</code> fájl és a teljes <code>G2_PACKAGE_SHA</code>.</li><li>A C1, C3 és P1 humán approver, verzió, UTC-időpont és work-item linkje.</li><li>Az AC → scenario → rendezett task → exact check → evidence location mátrix, valamint minden futtatott parancs exit code-ja.</li><li>A <code>G2_START_SHA...G2_PACKAGE_SHA</code> fájllista és a scope-visszafoglalás a <code>../workshop-evidence/g2-spec-gate.md</code> privát fájlban; titok és hosszú nyers log nélkül.</li></ul>
 <h3>Plan B és tipikus elakadások</h3><ul>
-<li><strong>Nincs BA:</strong> <code>BLOCKED</code>, owner és következő döntési időpont; nincs implementáció.</li>
-<li><strong>Túl nagy scope:</strong> egy végigérő slice maradjon, a többi out-of-scope.</li>
-<li><strong>Az agent már tervez:</strong> állítsd le; csak visszafoglalást és döntési réseket kérj.</li>
-<li><strong>Nem található a toolkit:</strong> ellenőrizd, hogy a <code>workshop-source/</code> gyökerében vagy; Plan B-ként a tréner ad read-only sablonmásolatot. Ne hivatkozz nem létező <code>participant-repo/toolkit/</code> útvonalra.</li><li><strong>Nincs futtatható környezet:</strong> rögzítsd a várt parancsot és kézi evidence-et; G3 a tréner tulajdonában lévő referencia-workloadon is futtatható.</li></ul></section>
+<li><strong>Nincs BA vagy kapuowner:</strong> <code>BLOCKED</code>, owner és következő döntési időpont; nincs önjóváhagyás és nincs implementáció.</li>
+<li><strong>Túl nagy scope:</strong> egy végigérő viselkedés maradjon, a többi név szerint out of scope.</li>
+<li><strong>Az agent feature-kódot ír:</strong> állítsd le, vond vissza az ilyen diffet, és csak a <code>docs/spec-package/**</code> scope-pal indulj újra.</li>
+<li><strong>Nem található a toolkit:</strong> térj vissza a <code>workshop-lab/</code> gyökerébe. Plan B-ként a tréner adja át ugyanennek az aktuális source commitnak az öt read-only sablonmásolatát; ne hivatkozz nem létező <code>participant-repo/toolkit/</code> útra.</li><li><strong>Hiányos AC-, task- vagy evidence-mátrix:</strong> a kapu <code>BLOCKED</code>, és visszatér a hiányt birtokló C3/P1/task lépéshez. Nincs emlékezetből kitöltött mező.</li><li><strong>Nincs futtatható környezet:</strong> rögzítsd a várt parancsot és kézi evidence-et; G3 a tréner tulajdonában lévő referencia-workloadon is futtatható.</li></ul></section>
 
-<section id="gate"><h2>6. A lezárt C3 kapu — ezt adod át G3-nak</h2>
+<section id="gate"><h2>6. A lezárt spec-kapu — ezt adod át G3-nak</h2>
 <div class="call done"><strong>Kész, ha mind igaz:</strong><ul>
 <li>probléma és observable outcome egyértelmű;</li><li>in-scope és out-of-scope külön áll;</li>
 <li>szereplő, jogosultság, adat és rendszerhatár ismert;</li><li>happy path és fontos hibaág megfigyelhető GWT formában áll;</li>
-<li>minden AC evidence-hez kötött;</li><li>nincs gazdátlan <code>DECISION REQUIRED</code>;</li>
-<li>a humán owner <code>APPROVED</code> döntése visszakereshető.</li></ul></div>
-<p><strong>Átadási csomag:</strong> <code>C3-APPROVED-CONTRACT</code> — a <code>docs/specs/registration-cancellation.md</code> útvonala és commit SHA-ja, AC-k, bounded scope, check parancsok, kapudöntés és ismert residual risk. A <a href="03-orchestrator-rug.html">G3</a> hiányos csomaggal nem indít buildert; a <a href="05-qa-e2e-token.html">G5</a> ugyanezen kitalált workload teljes evidence-láncát ellenőrzi.</p>
+<li>minden AC scenariohoz, rendezett taskhoz, pontos checkhez és evidence-helyhez kötött;</li><li>nincs gazdátlan <code>DECISION REQUIRED</code>;</li>
+<li>a <code>C1</code>, <code>C3-APPROVED-CONTRACT</code> és <code>P1-APPROVED-PLAN</code> humán döntése visszakereshető;</li><li>a diff kizárólag az öt <code>docs/spec-package/**</code> fájl, feature-implementáció nem indult.</li></ul></div>
+<p><strong>Átadási csomag:</strong> <code>C3-CLOSED-SPEC-GATE</code> — az öt <code>docs/spec-package/{constitution,spec,given-when-then,plan,tasks}.md</code> artifact, teljes commit SHA, C1/C3/P1 kapudöntések, AC–scenario–task–check–evidence lefedettség, ismert residual risk és a független RUG indító utasítása. A <a href="03-orchestrator-rug.html">G3</a> hiányos vagy nem lezárt csomaggal nem indít buildert; a <a href="05-qa-e2e-token.html">G5</a> ugyanezen kitalált workload teljes evidence-láncát ellenőrzi.</p>
 <div class="call"><strong>Vidd haza:</strong> a spec az agent munkaszerződése; a BA-kapu az önkényes implementáció megállítója.</div></section>
 
 <section id="stabil"><h2>7. Mi marad stabil modell- vagy eszközváltáskor?</h2>
