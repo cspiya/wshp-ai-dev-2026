@@ -80,6 +80,8 @@
     <details class="text-equivalent static-fallback" id="fig-m06-risk-layers-text"><summary>Az ábra teljes szöveges megfelelője</summary><table><thead><tr><th>Kockázat</th><th>Elsődleges tesztréteg</th><th>Miért?</th></tr></thead><tbody><tr><td>Hibás üzleti számítás</td><td>Unit teszt</td><td>Gyorsan, külső rendszer nélkül sok bemenet vizsgálható.</td></tr><tr><td>Az adapter eltér a szerződéstől</td><td>Contract test</td><td>Ugyanaz az elvárás több megvalósításon is számon kérhető.</td></tr><tr><td>A látható rendszerút rétegek között szakad meg</td><td>E2E teszt</td><td>A böngésző, API és adattárolás együtt ellenőrizhető.</td></tr></tbody></table></details>
   </figure>
 
+  <p class="takeaway"><strong>Két ábra együtt ad teljes választ:</strong> a fenti kockázat–tesztréteg ábra mutatja az egyes rétegek célját és relatív költségét; a közös <a data-route="/materials/modszertan/#fig-evidence-chain">ellenőrzési eredménylánc</a> mutatja meg, hogyan kapcsolódik a futás az állításhoz és a jóváhagyott verzióhoz.</p>
+
   <figure id="fig-m06-hogyan-fut-vegig-az-ellenorzes">
     <h2>Hogyan fut végig az ellenőrzés a böngészőtől az adatbázisig?</h2>
     <svg viewBox="0 0 360 760" role="img" aria-labelledby="m06s-t m06s-d">
@@ -124,15 +126,15 @@
 
   <section class="card">
     <h2>Kitöltött minta: hogyan áll össze a hét fájl?</h2>
-    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden sor ugyanahhoz a <code>WSHOP-CSIGA-20260712T120000Z</code> azonosítóhoz, a tréner által rögzített <code>7f3a2c1</code> forrásverzióhoz, a <code>replay-minta-2026-07-12</code> környezethez és a <code>drizzle-neon</code> adapterhez tartozik.</p>
+    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden fájl első négy sora ugyanaz a közös fejléc: <code>STATUS=REPLAY</code>, <code>SOURCE_SHA=7f3a2c1</code>, <code>ENVIRONMENT=replay-minta-2026-07-12</code>, <code>ADAPTER=drizzle-neon</code>. Minden sor ugyanahhoz a <code>WSHOP-CSIGA-20260712T120000Z</code> azonosítóhoz tartozik.</p>
     <table><thead><tr><th>Fájl</th><th>A kitalált minta lényegi tartalma</th></tr></thead><tbody>
-      <tr><td><code>00-eredet-es-verzio.txt</code></td><td><code>SHA=7f3a2c1</code>; build <code>replay-minta-2026-07-12</code>; adapter <code>drizzle-neon</code>; állapot <code>REPLAY</code>.</td></tr>
-      <tr><td><code>01-unit-test.txt</code></td><td><code>npm test -- pricing</code>; kilépési kód 0; az érintett árszabály PASS.</td></tr>
-      <tr><td><code>02-contract-test.txt</code></td><td><code>npm test -- repository-contract</code>; adapter <code>drizzle-neon</code>; kilépési kód 0.</td></tr>
-      <tr><td><code>03-e2e-sikeres-ut.txt</code></td><td>A böngésző visszaigazolja az azonosítót; az API státusza 201; ugyanaz a korrelációs azonosító szerepel.</td></tr>
-      <tr><td><code>04-adatellenorzes.txt</code></td><td>Célzott, csak olvasó lekérdezés: pontosan 1 rekord ugyanazzal az azonosítóval.</td></tr>
-      <tr><td><code>05-e2e-hibas-ut.txt</code></td><td>Hiányzó kötelező mező; API 400; célzott lekérdezés: 0 új rekord.</td></tr>
-      <tr><td><code>06-kovetkeztetes.md</code></td><td>A sikeres és hibás út a rögzített DB-adapterrel összefüggő; státusz REPLAY; élő futás továbbra sincs ellenőrizve.</td></tr>
+      <tr><td><code>00-eredet-es-verzio.txt</code></td><td>A közös fejléc, a buildazonosító és az UTC-időpont; ez az alaprekord.</td></tr>
+      <tr><td><code>01-unit-test.txt</code></td><td>Közös fejléc; <code>npm test -- pricing</code>; kilépési kód 0; az érintett árszabály PASS.</td></tr>
+      <tr><td><code>02-contract-test.txt</code></td><td>Közös fejléc; <code>npm test -- repository-contract</code>; kilépési kód 0.</td></tr>
+      <tr><td><code>03-e2e-sikeres-ut.txt</code></td><td>Közös fejléc; a böngésző visszaigazolja az azonosítót; API 201; azonos korrelációs azonosító.</td></tr>
+      <tr><td><code>04-adatellenorzes.txt</code></td><td>Közös fejléc; célzott, csak olvasó lekérdezés: pontosan 1 rekord ugyanazzal az azonosítóval.</td></tr>
+      <tr><td><code>05-e2e-hibas-ut.txt</code></td><td>Közös fejléc; hiányzó kötelező mező; API 400; célzott lekérdezés: 0 új rekord.</td></tr>
+      <tr><td><code>06-kovetkeztetes.md</code></td><td>Közös fejléc; a rögzített DB-adapteren mindkét út összefüggő; REPLAY; élő futás nincs ellenőrizve.</td></tr>
     </tbody></table>
     <p class="takeaway"><strong>Röviden:</strong> az azonosító, forrásverzió, környezet és adapter minden fájlban egyezik; a REPLAY megjelölés megakadályozza, hogy a mintát saját élő futásként értelmezd.</p>
   </section>
@@ -142,7 +144,7 @@
     <p><strong>Kitalált eset:</strong> egy résztvevő az „Agentikus fejlesztés alapjai” nevű, kitalált workshopra jelentkezik az egyedi <code>WSHOP-&lt;csapat&gt;-&lt;időbélyeg&gt;</code> azonosítóval. A konkrét mezőneveket és parancsokat a saját repód dokumentált felületéhez igazítsd; ne találj ki nem létező végpontot vagy futtatási eredményt.</p>
     <ol>
       <li>Hozd létre a mappát: <code>workshop-evidence/06-rendszerellenorzes/</code>.</li>
-      <li>A <code>00-eredet-es-verzio.txt</code> fájlba írd be a forrás commitazonosítóját, a build vagy preview környezet azonosítóját, a környezet nevét, az aktív E2E-adaptert és az ellenőrzés UTC-időpontját. Ha a futó verzió vagy adapter nem azonosítható, állj meg.</li>
+      <li>A <code>00-eredet-es-verzio.txt</code> fájlba írd be a <code>STATUS</code>, <code>SOURCE_SHA</code>, <code>ENVIRONMENT</code> és <code>ADAPTER</code> mezőt, továbbá a buildazonosítót és az ellenőrzés UTC-időpontját. Ugyanezt a négymezős fejlécet másold minden további eredményfájl elejére. Ha a futó verzió vagy adapter nem azonosítható, állj meg.</li>
       <li>Keresd meg a repóban a dokumentált unit teszt parancsát. Futtasd változtatás nélkül; a parancsot, kilépési kódot és releváns eredményt mentsd a <code>01-unit-test.txt</code> fájlba.</li>
       <li>Futtasd a dokumentált contract testet azzal az adapterrel, amelyet a rendszerút használ. Mentsd a parancsot, adaptert, kilépési kódot és eredményt a <code>02-contract-test.txt</code> fájlba.</li>
       <li>Nyisd meg a tényleges alkalmazást. Vidd végig a sikeres utat az egyedi, kitalált azonosítóval. A <code>03-e2e-sikeres-ut.txt</code> fájlban rögzítsd a kezdőoldalt vagy helyi útvonalat, a műveletet, a várt és kapott felületi eredményt, az API-státuszt és a kérés korrelációs azonosítóját. Titkot, munkamenet-sütit és személyes adatot ne másolj be.</li>
@@ -166,7 +168,7 @@
     </article>
     <article class="card ok">
       <h2>Plan B: jelölt REPLAY</h2>
-      <p>Ha a helyi rendszer vagy a preview környezet nem fut, használd a tréner által átadott, commitazonosítóhoz és adapterhez rögzített kitalált eredménycsomagot. A saját mappádban minden átvett fájlt jelölj <strong>REPLAY</strong>-ként, ellenőrizd az összefüggéseket, és ne állítsd, hogy te futtattad. Élő URL-t vagy PASS eredményt soha ne találj ki.</p>
+      <p>Ha a helyi rendszer vagy a preview környezet nem fut, használd a tréner által átadott, commitazonosítóhoz és adapterhez rögzített kitalált eredménycsomagot. A saját mappádban minden átvett fájl közös fejlécében szerepeljen <code>STATUS=REPLAY</code> és ugyanaz a SHA, környezet, adapter; ellenőrizd az összefüggéseket, és ne állítsd, hogy te futtattad. Élő URL-t vagy PASS eredményt soha ne találj ki.</p>
     </article>
   </section>
 
