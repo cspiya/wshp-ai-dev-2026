@@ -30,5 +30,8 @@ export type RegistrationStatus = z.infer<typeof registrationStatusSchema>;
 export const CANCELLATION_WINDOW_MS = 48 * 60 * 60 * 1_000;
 
 export function canCancelRegistration(workshopStartsAt: string, now: Date): boolean {
-  return Date.parse(workshopStartsAt) - now.getTime() >= CANCELLATION_WINDOW_MS;
+  // Exclusive boundary per approved spec (WEN-118): cancellation exactly at
+  // workshopStartsAt minus 48 hours is rejected; strictly more than 48 hours
+  // before the start is allowed.
+  return Date.parse(workshopStartsAt) - now.getTime() > CANCELLATION_WINDOW_MS;
 }
