@@ -23,14 +23,16 @@ test('accepted Object.freeze page/path/title/headings index schema is consumable
   assert.deepEqual(validateSearch({ site: root, phase: 'foundation' }), []);
 });
 
-test('accepted shell index plus semantic glossary cards satisfy final exact-route smoke without copied JSON', () => {
+test('semantic glossary cards define queries but cannot replace shared-index ownership', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-search-integrated-'));
   fs.mkdirSync(path.join(root, 'assets'), { recursive: true }); fs.mkdirSync(path.join(root, 'materials/fogalomtar'), { recursive: true });
   fs.writeFileSync(path.join(root, 'index.html'), '<h1>Kezdőlap</h1>');
   fs.writeFileSync(path.join(root, 'materials/fogalomtar/index.html'), '<article class="term-card" id="scope" data-search="a munka határai scope hatókör"><h2><a href="#scope">a munka határai</a></h2><p class="english"><span lang="en">scope</span></p><dl><div><dt>Más alakok</dt><dd><span class="pill-list"><span class="pill">hatókör</span></span></dd></div></dl></article>');
   const pages = [{ path: 'index.html', title: 'Kezdőlap', headings: [{ t: 'Áttekintés', a: 'attekintes' }] }, { path: 'materials/fogalomtar/index.html', title: 'Fogalomtár', headings: [{ t: 'a munka határai', a: 'scope' }] }];
   fs.writeFileSync(path.join(root, 'assets/search-index.js'), `window.WorkshopSearchIndex = Object.freeze(${JSON.stringify({ pages })});`);
-  assert.deepEqual(validateSearch({ site: root, phase: 'final' }), []);
+  const failures = validateSearch({ site: root, phase: 'final' });
+  assert.ok(failures.some((x) => x.includes('scope') && x.includes('shared search index')));
+  assert.ok(failures.some((x) => x.includes('hatókör') && x.includes('shared search index')));
 });
 
 test('Hungarian, English and alias terms resolve to one exact route', () => {

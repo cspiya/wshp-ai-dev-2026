@@ -103,8 +103,7 @@ export function validateSearch({ site, phase }) {
       for (const query of [record.preferred, record.english, ...(Array.isArray(record.aliases) ? record.aliases : [])].filter(Boolean)) {
         const normalized = String(query).toLocaleLowerCase('hu-HU');
         const exactOwners = entries.filter((entry) => [...(Array.isArray(entry.terms) ? entry.terms : []), ...(Array.isArray(entry.aliases) ? entry.aliases : [])].some((term) => String(term).toLocaleLowerCase('hu-HU') === normalized)).map(routeOf);
-        const localCardOwns = exactOwners.length === 0 && typeof record.localSearch === 'string' && record.localSearch.toLocaleLowerCase('hu-HU').includes(normalized) && fs.readFileSync(glossaryHtml, 'utf8').includes(`id="${record.slug}"`);
-        if (!localCardOwns && (exactOwners.length !== 1 || exactOwners[0] !== '/materials/fogalomtar/')) failures.push(`glossary query "${query}" must have exactly one canonical owner: /materials/fogalomtar/`);
+        if (exactOwners.length !== 1 || exactOwners[0] !== '/materials/fogalomtar/') failures.push(`glossary query "${query}" must have exactly one canonical owner in the shared search index: /materials/fogalomtar/`);
       }
     }
   }
