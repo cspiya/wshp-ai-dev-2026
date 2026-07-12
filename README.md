@@ -1,63 +1,112 @@
-# Wenova AI-Assisted Development Workshop — 2026.07
+# AI-assisted fejlesztési workshop — indulj innen
 
-Materials and reference project for the **Wenova AI-Assisted Development Workshop** (1 day, 2026-07-14,
-Budapest; repo slug: `wshp-ai-dev-2026`). One day, hands-on: professional AI-assisted (agentic)
-development with **Claude Code CLI** on a modern stack — **Linear + GitHub + Vercel + Neon + Next.js/React**.
+Ez az egynapos, magyar nyelvű workshop azt tanítja meg, hogyan építs egy
+[agent-ready repót](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak): olyan
+fejlesztési működést, amelyben a specifikáció, az emberi döntések, a független review,
+a gépi kapuk és a bizonyítékok együtt tartják a minőséget.
 
-> **Primary outcome:** build an agent-ready development system from an empty greenfield repository,
-> then validate it by delivering a realistic application slice end to end. The app is the operating
-> model's integration test; the reusable development framework is the product participants take home.
-> Models and agent tools are replaceable executors: repository contracts, deterministic gates, independent
-> review and evidence keep the quality bar stable across outages, cost changes and rapid model upgrades.
+> **A termék a hordozható fejlesztési keretrendszer.** A hozzá tartozó webalkalmazás
+> egy kifejezetten kitalált [validációs workload](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak):
+> reprezentatív terhelés, amellyel bizonyítjuk, hogy a keretrendszer üzleti szabállyal,
+> adattal, felülettel és szállítási folyamattal együtt is működik.
 
-## What's in this repo
+Workshop: **2026. július 14., 09:00–17:00, Budapest** · A tananyag magyar, a kód,
+a promptok és az agentutasítások angol nyelvűek.
 
+## Melyik útvonal a tiéd?
+
+Válassz egy sort, és először csak a **„Most ezt tedd”** lépést nyisd meg.
+
+| Útvonal | Neked szól, ha… | Most ezt tedd |
+|---|---|---|
+| **Résztvevő — a workshop előtt** | még a környezetedet készíted elő | Kövesd a telepítési útmutatót ([repo](materials/setup-guide.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/setup-guide.html)) elejétől a végén lévő ellenőrzésig. |
+| **Résztvevő — a workshop közben** | már a helyszínen dolgozol | Nyisd meg a B0 — Bevezető notebookot ([offline](materials/notebooks/00-bevezeto.html) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/notebooks/00-bevezeto.html)), és végezd el a C0-diagnózist. |
+| **Résztvevő — a workshop után** | a saját projektedbe vinnéd át a módszert | Indulj a hazavihető toolkitből ([repo](toolkit/README.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/toolkit/)), és válaszd ki a következő bevezetendő képességet. |
+| **Tréner** | a nap menetét, kapuit és tartalék útvonalait készíted elő | Ellenőrizd a napirend ([repo](materials/agenda.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/agenda.html)) első blokkjának célját, idejét és kimenetét. |
+| **Közreműködő vagy agent** | ezen a repón dolgozol vagy review-t végzel | Olvasd el a gyökér működési szerződését ([repo](AGENTS.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/AGENTS.html)), mielőtt feladatot veszel fel. |
+
+A teljes modulválasztó a [tananyag-notebookok indexében](materials/notebooks/README.md), a
+nap központi gondolatmenete pedig a [big picture](materials/big-picture.md) dokumentumban található.
+
+## Mit építünk, és mivel bizonyítjuk?
+
+Az alábbi statikus áttekintésben a felső sor a maradandó termék, az alsó sor annak
+kitalált rendszerpróbája. Az alkalmazás nem váltja ki és nem előzi meg a keretrendszert.
+
+```text
+TERMÉK — AGENT-READY FEJLESZTÉSI KERETRENDSZER
+
+C0          C1            C2          C3         C4          C5          C6          C7
+diagnózis → repo-alapok → szállítás → spec-kapu → RUG-loop → garanciák → bizonyíték → adaptáció
+     │          │             │           │           │           │           │           │
+     └──────────┴─────────────┴───────────┴───────────┴───────────┴───────────┴───────────┘
+                                      ↓ validálja
+KITALÁLT VALIDÁCIÓS WORKLOAD
+üzleti szabály + adat + UI + preview + tesztek + review-evidence
 ```
-wshp-ai-dev-2026/
-├── materials/            ← participant materials: setup guide, agenda, glossary, notebooks (checklists land during prep week)
-├── toolkit/              ← take-home toolkit: AGENTS.md starter, hooks, skills, orchestrator, spec templates
-├── participant-starter/  ← minimal technical substrate — participants make the repo agent-ready first
-└── reference-app/        ← realistic validation workload for the operating model
+
+Ugyanez szemantikus táblázatként:
+
+| Checkpoint | Mit adunk hozzá a működéshez? | Milyen bizonyíték jelzi, hogy működik? |
+|---|---|---|
+| **C0 — Diagnózis** | Megnevezzük a jelenlegi hiányokat és a célállapotot. | Rögzített kiinduló állapot és következő döntés. |
+| **C1 — Repo-alapok** | Küldetés, határok, szabályok és kanonikus standard. | Az ember és az agent ugyanazt a munkaszerződést olvassa. |
+| **C2 — Szállítás** | Futtatható ellenőrzések és elkülönített szállítási út. | Reprodukálható helyi ellenőrzés, CI és preview. |
+| **C3 — Spec-kapu** | Jóváhagyott spec, terv, feladatok és elfogadási kritériumok. | Az implementáció előtt ellenőrizhető a feladat jelentése és határa. |
+| **C4 — [RUG-loop](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak)** | Külön builder, friss kontextusú reviewer és visszaellenőrzött javítás. | A review-megállapítások sorsa és a javítás bizonyítéka visszakövethető. |
+| **C5 — Garanciák** | [Szabály, skill, hook és gépi gate](materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak), valamint projektmemória a megfelelő helyen. | A fontos elvárások nem csak promptként, hanem kikényszeríthető ellenőrzésként élnek. |
+| **C6 — Bizonyíték** | A teljes alkalmazási út rendszerpróbája. | A kitalált workload UI-, API-, adat- és preview-útja ellenőrzött. |
+| **C7 — Adaptáció** | Legacy-átvitel, csapatműködés és 30/60/90 napos bevezetés. | Saját környezetre szabott, mérhető következő lépések. |
+
+Az egyes checkpointok részletes artifact- és evidence-szerződése az
+[agent-ready repo térképen](materials/agent-ready-repo.md) olvasható.
+
+## A repó négy területe
+
+| Terület | Szerepe a tanulási ívben | Első hasznos belépő |
+|---|---|---|
+| `materials/` | Magyar tananyag, napirend, fogalomtár és önálló HTML-notebookok. | [B0 — Bevezető](materials/notebooks/00-bevezeto.html) |
+| [`toolkit/`](toolkit/) | Hazavihető szabályok, sablonok, review-folyamatok és mechanikus kapuk. | [Toolkit áttekintő](toolkit/README.md) |
+| [`participant-starter/`](participant-starter/) | Szándékosan minimális technikai alap, amely köré a résztvevő felépíti a saját agent-ready működését. | [Starter útmutató](participant-starter/README.md) |
+| [`reference-app/`](reference-app/) | Kitalált referencia-workload és követhető mintaút; a keretrendszer rendszerpróbája, nem a workshop elsődleges terméke. | [Referenciaalkalmazás áttekintő](reference-app/README.md) |
+
+### Munkatér a gyakorlatokhoz
+
+A workshop során három testvérmappát használunk. A forrásanyagot olvassuk, a saját
+munkát külön repóban végezzük, a nem publikus futási bizonyítékot pedig külön tartjuk:
+
+```text
+workshop-lab/
+├── workshop-source/    ← ez a workshop-repo; olvasási forrás
+├── participant-repo/   ← a saját, verziózott munka
+└── workshop-evidence/  ← helyi, privát futási bizonyítékok
 ```
 
-- **`materials/`** — everything a participant needs before and during the day.
-- **`toolkit/`** — the reusable kit you take home and drop into your own projects.
-- **`participant-starter/`** — the hands-on technical substrate: clone/copy it, then add the rules,
-  standards, specs, gates and RUG workflow that make the repository agent-ready.
-- **`reference-app/`** — the realistic validation workload and "golden path" reference implementation:
-  a Next.js (App Router) + shadcn/ui + Drizzle + tRPC/Zod app on Vercel + Neon, structured as a
-  modular monolith of vertical slices ("one bounded context = one subagent's working set").
+A pontos tulajdonosi és `cd`-szabályokat a
+[notebookok munkatér-szerződése](materials/notebooks/README.md#közös-munkatér-szerződés)
+rögzíti.
 
-## The day in one paragraph
+## Gyors tájékozódás
 
-Short theory intro, then hands-on: everyone turns an **operationally empty repository** into an
-agent-ready development system with explicit rules, canonical standards, spec gates, a Repeat-Until-Good
-review loop and deterministic validation. A realistic application slice then tests whether that system
-can actually deliver software through a real preview and e2e path — plus a dedicated block
-on applying all of this to **legacy .NET / MS-SQL / Azure DevOps** estates, and a team operating model
-with a 30/60/90 adoption plan.
+- A nap sorrendje és időkerete: [napirend](materials/agenda.md)
+- A workshop teljes logikája: [big picture](materials/big-picture.md)
+- Állomás → eredmény → bizonyíték térkép: [agent-ready repo](materials/agent-ready-repo.md)
+- Kifejezések és .NET-párhuzamok: [fogalomtár](materials/fogalomtar.md)
+- Modulok sorrendben: [tananyag-notebookok](materials/notebooks/README.md)
+- Hogyan készült az anyag: [építési napló — 1. nap](materials/epitesi-naplo/day-1.md)
 
-## Start here (participants) / Kezdd itt (résztvevők)
+## Közreműködőknek
 
-1. [`materials/agent-ready-repo.md`](materials/agent-ready-repo.md) — mit építünk, és milyen checkpointokon jutunk el az üres repótól a bizonyított operating modelig.
-2. [`materials/setup-guide.md`](materials/setup-guide.md) — fiókok + telepítés (~30–40 perc, minden ingyenes).
-3. Hozz egy **egyszerű alkalmazásötletet és üzleti szabályt** — ez lesz a saját fejlesztési rendszered validációs workloadja.
-4. Napirend: [`materials/agenda.md`](materials/agenda.md) · Szakszavak: [`materials/fogalomtar.md`](materials/fogalomtar.md).
-5. Tananyag-notebookok modulonként: [`materials/notebooks/`](materials/notebooks/).
+This public repository contains participant-shareable material and the invented reference
+workload only. Internal design, production, sales, and delivery run-of-show artifacts stay
+outside the repository. Work state lives in the
+[wshp-ai-dev-2026 Linear project](https://linear.app/wenova/project/wshp-ai-dev-2026-3eae5243953d)
+(workspace members only).
 
-## Scope & tracking
-
-This repo contains **only participant-shareable materials and the reference implementation** — presentations,
-internal prep notes, and client documents live elsewhere. Build progress is tracked in the Linear project of the
-same name: [wshp-ai-dev-2026 (Linear)](https://linear.app/wenova/project/wshp-ai-dev-2026-3eae5243953d)
-*(workspace members only)*.
-
-## Language policy
-
-Teaching materials (notebooks, guides, glossary) are **Hungarian** — the cohort is Hungarian — using
-English technical terms; anything non-obvious is defined in [`materials/fogalomtar.md`](materials/fogalomtar.md).
-All AI instructions, rules, code, and technical artifacts are **English** (models are most effective in
-English). Business-level specs during the workshop may be written in Hungarian.
+Before changing anything, follow [AGENTS.md](AGENTS.md) and [PARALLEL-WORK.md](PARALLEL-WORK.md):
+one Linear issue, one branch, one worktree, an independent RUG review, trace evidence, and
+human approval before any merge to `main`.
 
 ---
+
 © Wenova · Workshop delivery: 2026-07-14 · License: materials MIT unless noted otherwise.
