@@ -93,7 +93,8 @@
   figure { margin: 1.5rem 0; }
   svg { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
   figcaption { margin-top: .55rem; color: var(--muted); font-size: .9rem; }
-  .static-fallback { margin-top: 1rem; }
+  .static-fallback { min-width: 0; max-width: 100%; margin-top: 1rem; overflow-x: auto; overscroll-behavior-inline: contain; }
+  .static-fallback:focus-visible { outline-offset: .1rem; }
   .module-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .module-nav a { max-width: 45%; font-weight: 700; }
   footer { margin-top: 3rem; color: var(--muted); font-size: .88rem; }
@@ -127,6 +128,10 @@
     a[href]::after { content: " (" attr(href) ")"; font-size: .75em; overflow-wrap: anywhere; }
     a[href^="#"]::after { content: ""; }
     .card, .decision, .exercise-block, .visual, figure, table, .checkpoint-strip li, .transform-step { break-inside: avoid; page-break-inside: avoid; }
+    h2, h3 { break-after: avoid-page; page-break-after: avoid; }
+    h2 + *, h3 + * { break-before: avoid-page; page-break-before: avoid; }
+    .semantic-label { display: block; width: max-content; max-width: 100%; margin-bottom: .35rem; }
+    .static-fallback { overflow: visible; }
     .checkpoint-strip { overflow: visible; grid-template-columns: repeat(4, 1fr); }
   }
 </style>
@@ -212,7 +217,7 @@
           </g>
         </svg>
         <figcaption>A szín csak másodlagos jel: minden állapot szöveges címkét és sorrendi kapcsolatot kap.</figcaption>
-        <div class="static-fallback">
+        <div class="static-fallback" role="region" aria-label="Az SVG táblázatos megfelelője; keskeny képernyőn vízszintesen görgethető" tabindex="0">
           <table>
             <caption>Az SVG teljes szemantikai megfelelője</caption>
             <thead><tr><th>Sorrend</th><th>Szerep</th><th>Megfigyelhető állapot</th></tr></thead>
@@ -229,6 +234,7 @@
         <h3>Ezt készítsd el</h3>
         <p><strong>Cél:</strong> egyetlen mondatban a résztvevő megfigyelhető eredménye.</p>
         <p><strong>Előfeltétel és working directory:</strong> nevezd meg az inputot, a pontos gyökeret és az írható/olvasható határt.</p>
+        <p><strong>Várt output / artifact:</strong> nevezd meg a létrejövő fájlt, döntést vagy futási eredményt és annak pontos célhelyét.</p>
         <ol><li>Pontos, sorszámozott művelet.</li><li>Pontos parancs vagy döntés.</li><li>Az eredmény ellenőrzése.</li></ol>
         <div class="exercise-grid">
           <div class="done"><span class="semantic-label machine">Machine gate</span><strong>Kész, ha…</strong><p>Megfigyelhető done-kritérium és várt exit code.</p></div>
