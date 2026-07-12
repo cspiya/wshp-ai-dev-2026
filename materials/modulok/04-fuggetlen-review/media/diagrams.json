@@ -1,0 +1,74 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-m04-overview",
+      "visualQuestionId": "q-m04-overview",
+      "question": "Miért kell szétválasztani a készítést, a bírálatot és a javítást?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
+      "glossarySlugs": ["rug", "maker", "reviewer", "fixer", "trace", "review-finding", "review", "quality-gate"],
+      "figureSelector": "#fig-m04-overview",
+      "svgSelector": "#fig-m04-overview svg",
+      "textFallbackSelector": "#fig-m04-overview-text",
+      "inlineSvgHash": "8966ba0780e2d4cf193f4790d9249353fdff55b1265ac1067dd257a99654186f"
+    },
+    {
+      "visualQuestionId": "q-m04-cycle-1",
+      "question": "Hogyan zárul a készítés–review–javítás kör?",
+      "type": "cycle",
+      "disposition": "shared",
+      "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el.",
+      "glossarySlugs": ["rug", "maker", "reviewer", "fixer"],
+      "sharedDiagramId": "fig-review-loop",
+      "sharedHref": "../../modszertan/index.html#fig-review-loop"
+    },
+    {
+      "id": "fig-m04-hogyan-vandorol-a-munkadarab-a",
+      "visualQuestionId": "q-m04-process-2",
+      "question": "Hogyan vándorol a munkadarab a szerepek között?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "sequence-diagram",
+      "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
+      "glossarySlugs": ["trace"],
+      "figureSelector": "#fig-m04-hogyan-vandorol-a-munkadarab-a",
+      "svgSelector": "#fig-m04-hogyan-vandorol-a-munkadarab-a svg",
+      "textFallbackSelector": "#fig-m04-handoff-text",
+      "inlineSvgHash": "2857e84926e16a6620170af4035e8c83565ff3df384d08b417cbed9a9392996d"
+    },
+    {
+      "id": "fig-m04-milyen-eletuton-megy-vegig-egy",
+      "visualQuestionId": "q-m04-cycle-3",
+      "question": "Milyen életúton megy végig egy review-találat?",
+      "type": "cycle",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "state-diagram",
+      "takeaway": "A kör a visszacsatolással zárul; egyik lépés sem hagyható el.",
+      "glossarySlugs": ["review-finding"],
+      "figureSelector": "#fig-m04-milyen-eletuton-megy-vegig-egy",
+      "svgSelector": "#fig-m04-milyen-eletuton-megy-vegig-egy svg",
+      "textFallbackSelector": "#fig-m04-finding-text",
+      "inlineSvgHash": "a2b8bf3131e9007a5709b20928323f3df93d1267a395ab769ef3f783a775b665"
+    },
+    {
+      "id": "fig-m04-miben-mas-az-emberi-review",
+      "visualQuestionId": "q-m04-relationship-4",
+      "question": "Miben más az emberi review és a gépi ellenőrzés?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
+      "glossarySlugs": ["review", "quality-gate"],
+      "figureSelector": "#fig-m04-miben-mas-az-emberi-review",
+      "svgSelector": "#fig-m04-miben-mas-az-emberi-review svg",
+      "textFallbackSelector": "#fig-m04-human-machine-text",
+      "inlineSvgHash": "7622a0513738d85ca5a1783b7df48bcc64a019bfd8e0d92542987acb7b13d092"
+    }
+  ]
+}
