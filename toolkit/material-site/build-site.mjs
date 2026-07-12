@@ -5,7 +5,10 @@
 //
 // Contract (v3 spec sections 5, B, 12, 13, v3.3):
 // - `site-manifest.json` is the sole authoritative route table; the build
-//   copies ONLY allowlisted content into the (gitignored, transient) out dir.
+//   copies ONLY allowlisted content into the transient out dir. The out dir
+//   is never committed: builders delete it after validation. (The root
+//   .gitignore entry for `.site/` is coordinator-owned — flagged on the
+//   issue; do not rely on it existing.)
 // - The build generates the whole shell: skip link, global navigation,
 //   breadcrumbs, module 1-8 progress, prev/next, footer and the search
 //   index. Emitted href/src values are page-relative and target explicit
@@ -69,7 +72,7 @@ function loadManifest() {
     ids.add(r.id);
     if (outputs.has(r.output)) errors.push(`duplicate output ${r.output}`);
     outputs.add(r.output);
-    if (!r.id.startsWith("/") || !r.id.endsWith("/") && r.id !== "/") errors.push(`route id must start and end with /: ${r.id}`);
+    if (!r.id.startsWith("/") || !r.id.endsWith("/")) errors.push(`route id must start and end with /: ${r.id}`);
     const key = `${r.parent}::${r.order}`;
     if (orderKeys.has(key)) errors.push(`duplicate (parent, order): ${key}`);
     orderKeys.add(key);
@@ -273,16 +276,14 @@ function copyFile(src, dest) {
   fs.copyFileSync(src, dest);
 }
 
-function copyDirIfExists(srcDir, destDir, copied) {
+function copyDirIfExists(srcDir, destDir) {
   if (!fs.existsSync(srcDir) || !fs.statSync(srcDir).isDirectory()) return;
-  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+  // Codepoint sort: locale-independent, deterministic on every machine.
+  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
     const s = path.join(srcDir, entry.name);
     const d = path.join(destDir, entry.name);
-    if (entry.isDirectory()) copyDirIfExists(s, d, copied);
-    else {
-      copyFile(s, d);
-      copied.push(d);
-    }
+    if (entry.isDirectory()) copyDirIfExists(s, d);
+    else copyFile(s, d);
   }
 }
 
@@ -314,7 +315,7 @@ function main() {
     if (fs.existsSync(src)) copyFile(src, path.join(outRoot, rel));
   }
   for (const rel of manifest.mediaRoots ?? []) {
-    copyDirIfExists(path.join(REPO_ROOT, rel), path.join(outRoot, rel), []);
+    copyDirIfExists(path.join(REPO_ROOT, rel), path.join(outRoot, rel));
   }
 
   // 2. Routes.
@@ -337,6 +338,10 @@ function main() {
       continue;
     }
 
+    if (!/(<body)(\s[^>]*)?>/i.test(html) || !/<\/body>/i.test(html)) {
+      errors.push(`${route.id}: source has no <body>…</body> pair — shell cannot be injected`);
+      continue;
+    }
     html = ensureHeadingIds(html);
     // Content links reference routes by manifest ID (data-route="/materials/…/"
     // with optional #fragment); the build emits the page-relative href so
@@ -361,7 +366,7 @@ function main() {
     fs.writeFileSync(destPath, html.replace(/\r\n/g, "\n"));
 
     // Page-local media directory travels with its page.
-    copyDirIfExists(path.join(path.dirname(srcPath), "media"), path.join(path.dirname(destPath), "media"), []);
+    copyDirIfExists(path.join(path.dirname(srcPath), "media"), path.join(path.dirname(destPath), "media"));
 
     const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
     searchEntries.push({
