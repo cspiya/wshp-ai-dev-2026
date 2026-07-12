@@ -17,8 +17,9 @@
 //   content. The build injects the exact CSP meta, the shared stylesheet
 //   link, and body shell around the source's <body> content.
 // - `--phase foundation`: only the frozen foundation routes are canonical.
-//   `--phase incremental`: every canonical source present in this checked-out
-//   branch is rendered, while absent routes use checked-in neutral fixtures.
+//   `--phase incremental`: every complete canonical page unit (HTML plus its
+//   visual registry) present in this checked-out branch is rendered, while
+//   absent/incomplete routes use checked-in neutral fixtures.
 //   `--phase final` (WEN-274) requires every canonical source. Every phase
 //   reports its real and substituted route disposition deterministically.
 // - Search: the build writes classic `assets/search-index.js` assigning
@@ -190,8 +191,9 @@ function fixtureFor(route) {
 const FOUNDATION_CANONICAL_ROUTES = new Set(["/", "/materials/fogalomtar/"]);
 
 // Pure route policy used by the builder and its regression tests. "present"
-// means present in the checked-out branch being built; no worktree or Linear
-// state is consulted, so unmerged content can never become publishable.
+// means the complete page unit is present in the checked-out branch being
+// built; no worktree or Linear state is consulted, so unmerged content can
+// never become publishable.
 export function routeDisposition(phase, routeId, acceptedSourceExists) {
   if (phase === "foundation") {
     return FOUNDATION_CANONICAL_ROUTES.has(routeId) ? (acceptedSourceExists ? "real" : "missing") : "fixture";
@@ -481,7 +483,7 @@ function main() {
       html = fs.readFileSync(srcPath, "utf8");
       realRoutes.push(`${route.id} <- ${route.source}`);
     } else {
-      errors.push(`${route.id}: canonical source missing (${route.source}) — ${opts.phase} phase requires this route`);
+      errors.push(`${route.id}: accepted canonical page unit missing (${route.source} + media/diagrams.json) — ${opts.phase} phase requires this route`);
       continue;
     }
 

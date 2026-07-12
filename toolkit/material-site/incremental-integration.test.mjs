@@ -54,7 +54,7 @@ test('incremental preview rejects partial legacy pages and passes every site gat
 
     const final = spawn(['toolkit/material-site/build-site.mjs', '--clean', '--out', path.join(temp, 'final'), '--phase', 'final']);
     assert.equal(final.status, 1, `final mode unexpectedly accepted missing canonical page units\n${final.stdout}\n${final.stderr}`);
-    assert.match(final.stderr, /canonical source missing/);
+    assert.match(final.stderr, /accepted canonical page unit missing/);
   } finally {
     fs.rmSync(temp, { recursive: true, force: true });
   }
