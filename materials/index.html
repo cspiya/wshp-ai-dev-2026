@@ -67,7 +67,7 @@
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     @media (prefers-color-scheme: dark) {
-      :root { --bg: #0c1424; --surface: #14213a; --ink: #f1f5fb; --muted: #bdc8d8; --line: #40506a; --brand: #9bc1ff; --brand-soft: #21365b; --focus: #ffd166; --shadow: none; }
+      :root { --bg: #0c1424; --surface: #14213a; --ink: #f1f5fb; --muted: #bdc8d8; --line: #40506a; --brand: #9bc1ff; --brand-soft: #21365b; --human: #ffb68f; --agent: #d2b8ff; --gate: #7dd3c7; --evidence: #8bd6a3; --focus: #ffd166; --shadow: none; }
       header, footer { background: #07152c; }
       .button.primary { background: #f1f5fb; color: #102a56; }
     }
@@ -97,7 +97,7 @@
     <div class="wrap">
       <div class="eyebrow">Wenova · AI-Assisted Development Workshop · 2026.07.14.</div>
       <h1>Egy nap. Egy repo. Nyolc ellenőrizhető állapot.</h1>
-      <p class="lead">C0 üres repóból C7 hordozható agent-ready működési modellt építünk. Az alkalmazás nem a nap fő terméke: a rendszer valószerű, de kitalált validációs terhelése.</p>
+      <p class="lead">C0 üres repóból C7 hordozható <a href="fogalomtar.md">agent-ready működési modellt</a> építünk. Az alkalmazás nem a nap fő terméke: a rendszer valószerű, de kitalált <a href="fogalomtar.md">validációs terhelése</a>.</p>
       <div class="hero-actions">
         <a class="button primary" href="#utvonalak">Válassz útvonalat</a>
         <a class="button" href="#napi-terkep">Keresd meg, hol tartunk</a>
@@ -115,7 +115,7 @@
     </ul></div>
   </nav>
   <main id="tartalom" class="wrap">
-    <aside class="notice" aria-label="Első lépés"><strong>Először vagy itt?</strong> Résztvevőként a <a href="setup-guide.md">felkészüléssel</a> kezdj. A workshopon az aktuális idő alapján keresd ki a sort a <a href="#napi-terkep">napi térképen</a>; a checkpoint és a bizonyíték mondja meg, honnan folytasd.</aside>
+    <aside class="notice" aria-label="Első lépés"><strong>Először vagy itt?</strong> Résztvevőként a <a href="setup-guide.md">felkészüléssel</a> kezdj. A workshopon az aktuális idő alapján keresd ki a sort a <a href="#napi-terkep">napi térképen</a>; a <a href="fogalomtar.md">checkpoint és a bizonyíték</a> mondja meg, honnan folytasd.</aside>
 
     <section id="utvonalak" aria-labelledby="utvonalak-cim">
       <h2 id="utvonalak-cim">Válassz szerepet, majd kövesd a három lépést</h2>
@@ -132,7 +132,7 @@
           <h3>Tréner · publikus útvonal</h3>
           <ol>
             <li><strong>Előtte:</strong> <a href="agenda.md">időzítés</a> → <a href="setup-guide.md">Plan B</a> → <a href="notebooks/README.md">notebook-szerződés</a>.</li>
-            <li><strong>Közben:</strong> checkpoint, artifact és evidence szerint vezesd a blokkot; használd a notebook vágási pontját és Plan B-jét.</li>
+            <li><strong>Közben:</strong> <a href="fogalomtar.md">checkpoint, artifact és evidence</a> szerint vezesd a blokkot; használd a notebook vágási pontját és Plan B-jét.</li>
             <li><strong>Utána:</strong> a <a href="epitesi-naplo/">naplóban</a> válaszd szét a humán és agent-loop tanulságait.</li>
           </ol>
           <p><small>A belső run-of-show és hozzáférési adatok nem részei ennek a publikus repónak.</small></p>
@@ -141,8 +141,8 @@
           <h3>Contributor vagy agent</h3>
           <ol>
             <li><strong>Előtte:</strong> gyökér <code>AGENTS.md</code> + <a href="../toolkit/standards/material-standards.md">anyagstandard</a> + kiosztott Linear issue.</li>
-            <li><strong>Közben:</strong> egy issue = egy branch = egy worktree; az issue és a lease a státuszforrás.</li>
-            <li><strong>Utána:</strong> validátorok → friss review → fix → re-review → SHA és evidence az issue-ban.</li>
+            <li><strong>Közben:</strong> egy issue = egy branch = egy <a href="fogalomtar.md">worktree</a>; az issue és a <a href="fogalomtar.md">lease</a> a státuszforrás.</li>
+            <li><strong>Utána:</strong> validátorok → friss <a href="fogalomtar.md">Repeat-Until-Good review</a> → fix → re-review → SHA és evidence az issue-ban.</li>
           </ol>
         </article>
       </div>
@@ -151,17 +151,17 @@
         <svg viewBox="0 0 1040 250" role="img" aria-labelledby="route-title route-desc">
           <title id="route-title">A három olvasói útvonal közös tanulási íve</title>
           <desc id="route-desc">A résztvevő, a tréner és a contributor eltérő első lépésből ugyanahhoz a C0–C7 napi térképhez érkezik, majd bizonyítékkal zár.</desc>
-          <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#174ea6"/></marker></defs>
+          <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="var(--brand)"/></marker></defs>
           <g font-family="system-ui, sans-serif" font-size="17" text-anchor="middle">
-            <rect x="20" y="20" width="220" height="52" rx="12" fill="#e8f0fe" stroke="#174ea6" stroke-width="2"/><text x="130" y="52" fill="#14213d">Résztvevő · setup</text>
-            <rect x="20" y="99" width="220" height="52" rx="12" fill="#fff4e5" stroke="#8b3a13" stroke-width="2"/><text x="130" y="131" fill="#14213d">Tréner · delivery</text>
-            <rect x="20" y="178" width="220" height="52" rx="12" fill="#f0e9ff" stroke="#4b2e83" stroke-width="2"/><text x="130" y="210" fill="#14213d">Contributor · issue</text>
-            <path d="M240 46 C330 46 315 125 400 125" fill="none" stroke="#174ea6" stroke-width="3" marker-end="url(#arrow)"/>
-            <path d="M240 125 H400" fill="none" stroke="#174ea6" stroke-width="3" marker-end="url(#arrow)"/>
-            <path d="M240 204 C330 204 315 125 400 125" fill="none" stroke="#174ea6" stroke-width="3" marker-end="url(#arrow)"/>
-            <rect x="410" y="89" width="250" height="72" rx="14" fill="#174ea6"/><text x="535" y="119" fill="#fff" font-weight="700">Napi térkép · C0–C7</text><text x="535" y="143" fill="#fff">idő → artifact → evidence</text>
-            <path d="M660 125 H770" fill="none" stroke="#174ea6" stroke-width="3" marker-end="url(#arrow)"/>
-            <rect x="780" y="89" width="240" height="72" rx="14" fill="#e5f6ed" stroke="#14532d" stroke-width="2"/><text x="900" y="119" fill="#14213d" font-weight="700">Következő döntés</text><text x="900" y="143" fill="#14213d">bizonyíték alapján</text>
+            <rect x="20" y="20" width="220" height="52" rx="12" fill="#e8f0fe" stroke="var(--brand)" stroke-width="2"/><text x="130" y="52" fill="#14213d">Résztvevő · setup</text>
+            <rect x="20" y="99" width="220" height="52" rx="12" fill="#fff4e5" stroke="var(--human)" stroke-width="2"/><text x="130" y="131" fill="#14213d">Tréner · delivery</text>
+            <rect x="20" y="178" width="220" height="52" rx="12" fill="#f0e9ff" stroke="var(--agent)" stroke-width="2"/><text x="130" y="210" fill="#14213d">Contributor · issue</text>
+            <path d="M240 46 C330 46 315 125 400 125" fill="none" stroke="var(--brand)" stroke-width="3" marker-end="url(#arrow)"/>
+            <path d="M240 125 H400" fill="none" stroke="var(--brand)" stroke-width="3" marker-end="url(#arrow)"/>
+            <path d="M240 204 C330 204 315 125 400 125" fill="none" stroke="var(--brand)" stroke-width="3" marker-end="url(#arrow)"/>
+            <rect x="410" y="89" width="250" height="72" rx="14" fill="#174ea6" stroke="var(--brand)" stroke-width="2"/><text x="535" y="119" fill="#fff" font-weight="700">Napi térkép · C0–C7</text><text x="535" y="143" fill="#fff">idő → artifact → evidence</text>
+            <path d="M660 125 H770" fill="none" stroke="var(--brand)" stroke-width="3" marker-end="url(#arrow)"/>
+            <rect x="780" y="89" width="240" height="72" rx="14" fill="#e5f6ed" stroke="var(--evidence)" stroke-width="2"/><text x="900" y="119" fill="#14213d" font-weight="700">Következő döntés</text><text x="900" y="143" fill="#14213d">bizonyíték alapján</text>
           </g>
         </svg>
         <figcaption id="route-caption">Statikus útvonaltérkép. A jelentés szöveges megfelelője a fenti három számozott kártya.</figcaption>
@@ -192,7 +192,8 @@
           <tr><td>13:15–14:00</td><td>Mechanikus garanciák</td><td>C5</td><td>Szabály, skill, hook vagy gate</td><td>Pozitív futás + negatív fixture</td><td><a href="notebooks/04-rules-skills-hooks.html">G4</a></td></tr>
           <tr><td>14:00–14:45</td><td>Real-life rendszerpróba</td><td>C6</td><td>Reprezentatív validation workload</td><td>Unit/contract/E2E + preview/API/DB lánc</td><td><a href="notebooks/05-qa-e2e-token.html">G5</a></td></tr>
           <tr><td>15:00–16:15</td><td>Legacy-transzfer</td><td>C6 → C7</td><td>Karakterizációs háló és seam</td><td>Befagyasztott viselkedés + regresszió</td><td><a href="notebooks/06-legacy-dotnet.html">G6</a></td></tr>
-          <tr><td>16:15–17:00</td><td>Csapatmodell és audit</td><td>C7</td><td>Owner-, eval- és 30/60/90 terv</td><td>C0–C7 audit + következő jóváhagyott lépés</td><td><a href="notebooks/07-team-adoption.html">G7</a></td></tr>
+          <tr><td>16:15–16:50</td><td>Csapat operating model + modell-/eszközcsere + 30/60/90</td><td>C7</td><td>Owner-, eval- és bevezetési terv</td><td>Kijelölt owner, mérce és reprezentatív modell-/eszközcsere-eval</td><td><a href="notebooks/07-team-adoption.html">G7 · adoption</a></td></tr>
+          <tr><td>16:50–17:00</td><td>Agent-ready repo audit, zárás és Q&amp;A</td><td>C0–C7 audit</td><td>Kitöltött záró önellenőrzés és hiánylista</td><td>Checkpointonkénti evidence + következő jóváhagyott lépés</td><td><a href="notebooks/07-team-adoption.html">G7 · záró audit</a></td></tr>
         </tbody>
       </table></div>
     </section>
@@ -204,10 +205,10 @@
         <svg viewBox="0 0 1080 180" role="img" aria-labelledby="cp-title cp-desc">
           <title id="cp-title">C0–C7 checkpoint-folyam</title>
           <desc id="cp-desc">Nyolc egymásra épülő állapot az üres repótól a hordozható operating modelig.</desc>
-          <defs><marker id="cp-arrow" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#174ea6"/></marker></defs>
+          <defs><marker id="cp-arrow" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--brand)"/></marker></defs>
           <g font-family="system-ui, sans-serif" text-anchor="middle">
-            <path d="M90 86 H990" stroke="#174ea6" stroke-width="4" marker-end="url(#cp-arrow)"/>
-            <g fill="#fff" stroke="#174ea6" stroke-width="3">
+            <path d="M90 86 H990" stroke="var(--brand)" stroke-width="4" marker-end="url(#cp-arrow)"/>
+            <g fill="#fff" stroke="var(--brand)" stroke-width="3">
               <circle cx="70" cy="86" r="39"/><circle cx="205" cy="86" r="39"/><circle cx="340" cy="86" r="39"/><circle cx="475" cy="86" r="39"/>
               <circle cx="610" cy="86" r="39"/><circle cx="745" cy="86" r="39"/><circle cx="880" cy="86" r="39"/><circle cx="1015" cy="86" r="39"/>
             </g>

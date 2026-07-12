@@ -1,13 +1,13 @@
 # Tananyag-navigátor — innen indulj
 
 Ez a workshop egyetlen, végigvezetett építési ív: **C0 üres repóból C7 hordozható
-agent-ready működési modell** lesz. Az alkalmazás nem a nap fő terméke, hanem az a
-validációs terhelés, amely bizonyítja, hogy a felépített rendszer valószerű, de kitalált
+[agent-ready működési modell](fogalomtar.md)** lesz. Az alkalmazás nem a nap fő terméke, hanem az a
+[validációs terhelés](fogalomtar.md), amely bizonyítja, hogy a felépített rendszer valószerű, de kitalált
 helyzetben is működik.
 
 > **Első alkalommal vagy itt?** Résztvevőként kezdd a
 > [workshop előtti útvonallal](#resztvevo), majd a workshopon mindig a
-> [napi térképen](#napi-terkep) keresd meg az aktuális időt és checkpointot.
+> [napi térképen](#napi-terkep) keresd meg az aktuális időt és [checkpointot](fogalomtar.md).
 
 **Megjelenítési módok:** [webes tananyag](index.html) ·
 [publikált webes tananyag](https://cspiya.github.io/wshp-ai-dev-2026/materials/) ·
@@ -32,8 +32,8 @@ Ez a nyilvános útvonal nem tartalmaz belső run-of-show vagy hozzáférési ad
 
 1. **Előtte:** ellenőrizd a [napirendet](agenda.md), a [setup és Plan B lépéseket](setup-guide.md),
    valamint a [notebook-szerződést](notebooks/README.md).
-2. **Közben:** a [napi térképen](#napi-terkep) kövesd az időt, az elkészítendő artifactot és a
-   látható evidence-et; elakadásnál használd az adott notebook Plan B-jét.
+2. **Közben:** a [napi térképen](#napi-terkep) kövesd az időt, az elkészítendő
+   [artifactot és a látható evidence-et](fogalomtar.md); elakadásnál használd az adott notebook Plan B-jét.
 3. **Utána:** a C0–C7 audit és a [napló](epitesi-naplo/) alapján válaszd szét a humán és az
    agent-loop tanulságait. A belső szállítási forgatókönyv nem része ennek a publikus repónak.
 
@@ -42,9 +42,11 @@ Ez a nyilvános útvonal nem tartalmaz belső run-of-show vagy hozzáférési ad
 1. **Előtte:** olvasd el a gyökér `AGENTS.md`-et és a
    [kanonikus anyagstandardot](../toolkit/standards/material-standards.md); munkát csak kiosztott
    Linear issue-n kezdj.
-2. **Közben:** egy issue = egy branch = egy worktree; az issue-spec és a lease komment mutatja,
+2. **Közben:** egy issue = egy branch = egy [worktree](fogalomtar.md); az issue-spec és a
+   [lease komment](fogalomtar.md) mutatja,
    hol tart a munka. Ne hozz létre külön handoff-fájlt.
-3. **Utána:** futtasd a material-validátorokat, kérj friss kontextusú review-t, és az issue-ban
+3. **Utána:** futtasd a material-validátorokat, kérj friss kontextusú
+   [Repeat-Until-Good review-t](fogalomtar.md), és az issue-ban
    rögzítsd a commit SHA-t, a bizonyítékot és a maradék kockázatot.
 
 ## A három munkatér határa
@@ -74,7 +76,8 @@ az **Artifact** az elkészített munkadarab, az **Evidence** pedig az ellenőriz
 | 13:15–14:00 | Szabályok, skillek, hookok, memória | C5 | megfelelő rétegbe tett szabály és mechanikus guard | pozitív futás + negatív fixture exit code-ja | [G4 — Mechanikus garanciák](notebooks/04-rules-skills-hooks.html) |
 | 14:00–14:45 | Rendszerpróba: QA, preview, adat, E2E | C6 | reprezentatív validation workload | unit/contract/E2E + preview/API/DB bizonyítéklánc | [G5 — QA és E2E](notebooks/05-qa-e2e-token.html) |
 | 15:00–16:15 | Legacy-transzfer | C6 → C7 | karakterizációs háló és kijelölt seam | befagyasztott jelenlegi viselkedés, regressziós teszt | [G6 — Legacy](notebooks/06-legacy-dotnet.html) |
-| 16:15–17:00 | Csapatbevezetés és záró audit | C7 | owner-, eval- és 30/60/90 terv | teljes C0–C7 audit és következő jóváhagyott lépés | [G7 — Team adoption](notebooks/07-team-adoption.html) |
+| 16:15–16:50 | Csapat operating model + modell-/eszközcsere + 30/60/90 bevezetés | C7 | owner-, eval- és 30/60/90 bevezetési terv | kijelölt owner, mérce és reprezentatív modell-/eszközcsere-eval | [G7 — Team adoption](notebooks/07-team-adoption.html) |
+| 16:50–17:00 | Agent-ready repo audit, zárás és Q&A | C0–C7 audit | kitöltött záró önellenőrzés és hiánylista | checkpointonkénti evidence + következő jóváhagyott lépés | [G7 — Záró audit](notebooks/07-team-adoption.html) |
 
 A szünetekkel és tréneri vágási pontokkal együtt a [napirend](agenda.md) az időzítés kanonikus forrása.
 
