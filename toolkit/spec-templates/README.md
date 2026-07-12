@@ -3,7 +3,7 @@
 Ez a G2 labor a [spec-driven development](../../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak)
 egyetlen, ismételhető átadási láncát gyakoroltatja:
 
-`constitution → specify → plan → tasks → implement → verify`
+[`constitution`](../../materials/fogalomtar.md#repository-constitution) `→ specify → plan → tasks → implement → verify`
 
 A BA magyarul tisztázza a szándékot és a példákat. A repóba kerülő technikai
 szerződés, [acceptance criteria](../../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak),
@@ -44,7 +44,8 @@ A labor csak akkor indulhat, ha mind igaz:
 1. A G1 agent-ready checkpoint elkészült: a repó gyökerében olvasható agent-instrukció,
    kanonikus engineering standard és valóban futtatható ellenőrző parancsok vannak.
 2. Van ember által Todo/In Progress állapotba tett, kizárólag ehhez a gyakorlathoz tartozó
-   work item/issue, benne outcome, scope, korlátok és acceptance criteria.
+   work item/issue, benne outcome, [scope/hatókörhatár](../../materials/fogalomtar.md#scope-boundary),
+   korlátok és acceptance criteria.
 3. A résztvevők a repó gyökerében, egy tiszta, az issue-hoz tartozó task branchen/worktree-ben
    állnak. A `git status --short` kimenete üres.
 4. A `toolkit/spec-templates/` könyvtár elérhető, és a BA/product owner megnevezhető.
@@ -277,6 +278,87 @@ hiányokkal. A labor itt véget ér; az implementáció egy későbbi, külön e
 az eredeti check kiesésekor a fallback eredménye külön jelölendő, és az eredeti check nem
 állítható sikeresnek.
 
+## Kötelező dokumentációs commit-checkpoint
+
+A zárt kapu csak verziózott munkapéldányból adható át. A következő parancsokat a repó
+gyökerében, **a commit előtt** futtassátok. A fájlrendszer-alapú scan az untracked fájlokat is
+vizsgálja, ezért egy üres tracked diff nem tud hamis sikert adni.
+
+```powershell
+$packageFiles = @(Get-ChildItem docs/spec-package -Recurse -File)
+if ($packageFiles.Count -eq 0) { throw 'BLOCKED: docs/spec-package is empty.' }
+
+$worktreeStatus = @(git status --porcelain=v1 --untracked-files=all)
+$packageStatus = @($worktreeStatus | Where-Object { $_ -match '^.. docs/spec-package/' })
+$outsidePackage = @($worktreeStatus | Where-Object { $_ -notmatch '^.. docs/spec-package/' })
+if ($packageStatus.Count -eq 0) { throw 'BLOCKED: no generated package changes found.' }
+if ($outsidePackage.Count -gt 0) {
+  $outsidePackage
+  throw 'BLOCKED: changed file outside docs/spec-package.'
+}
+
+$decisionOrPlaceholder = @($packageFiles | Select-String -Pattern 'DECISION REQUIRED|<[^>]+>')
+if ($decisionOrPlaceholder.Count -gt 0) {
+  $decisionOrPlaceholder
+  throw 'BLOCKED: unresolved decision or placeholder.'
+}
+$unfinishedMarkers = 'T' + 'BD|T' + 'ODO|F' + 'IXME'
+$unfinished = @($packageFiles | Select-String -Pattern $unfinishedMarkers)
+if ($unfinished.Count -gt 0) {
+  $unfinished
+  throw 'BLOCKED: unfinished marker found.'
+}
+```
+
+Csak a sikeres untracked-aware scan után stage-eljetek. Ezután külön ellenőrizzétek a
+staged fájllistát és a staged diffet; üres vagy scope-on kívüli stage esetén nincs commit.
+
+```powershell
+git add -- docs/spec-package
+$stagedFiles = @(git diff --cached --name-only)
+$outsideStage = @($stagedFiles | Where-Object { $_ -notlike 'docs/spec-package/*' })
+if ($stagedFiles.Count -eq 0) { throw 'BLOCKED: staged package is empty.' }
+if ($outsideStage.Count -gt 0) {
+  $outsideStage
+  throw 'BLOCKED: staged file outside docs/spec-package.'
+}
+git diff --cached --check
+if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: staged diff check failed.' }
+git diff --cached --stat
+
+$issueId = Read-Host 'Work-item ID (for example WEN-210)'
+if ([string]::IsNullOrWhiteSpace($issueId)) { throw 'BLOCKED: work-item ID is required.' }
+git commit -m "docs(spec): close $issueId spec gate"
+if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: documentation commit failed.' }
+$env:G2_PACKAGE_SHA = git rev-parse HEAD
+git show --stat --oneline $env:G2_PACKAGE_SHA
+git diff --name-only "$env:G2_START_SHA...$env:G2_PACKAGE_SHA"
+$branch = git branch --show-current
+git push --set-upstream origin $branch
+if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: push failed; commit link is not yet verifiable.' }
+```
+
+A work item evidence-ébe másoljátok be a `G2_PACKAGE_SHA` teljes értékét, és linkeljétek a
+repo webes felületén megnyitott, immutable commit URL-t. GitHub HTTPS vagy SSH origin esetén
+a link közvetlenül előállítható és kiírható:
+
+```powershell
+$origin = git remote get-url origin
+if ($origin -match '^https://github\.com/(.+?)(?:\.git)?$' -or
+    $origin -match '^git@github\.com:(.+?)(?:\.git)?$') {
+  $commitLink = "https://github.com/$($Matches[1])/commit/$env:G2_PACKAGE_SHA"
+  Write-Output "Package commit: $env:G2_PACKAGE_SHA"
+  Write-Output "Commit link: $commitLink"
+} else {
+  throw 'BLOCKED: copy and verify the immutable commit URL from the repository UI.'
+}
+```
+
+**Evidence:** staged fájllista, `git diff --cached --check` exit code, commit SHA, ellenőrzött
+commit link és a `G2_START_SHA...G2_PACKAGE_SHA` fájllista. **Recovery / Plan B:** sikertelen
+scan esetén javítás és teljes újrafuttatás; nem GitHub remote esetén a repó UI-ból másolt
+immutable commit URL-t nyissátok meg, majd csak a sikeresen megnyitott linket rögzítsétek.
+
 ## `C3-CLOSED-SPEC-GATE` handoff packet
 
 A work itembe egyetlen visszakereshető kommentként kerüljön:
@@ -287,6 +369,7 @@ A work itembe egyetlen visszakereshető kommentként kerüljön:
 - minden AC → scenario → owned task → dependency/order → exact check → evidence location;
 - megoldott döntések és `N/A` mezők indoklása;
 - exact parancs, exit code és rövid eredmény minden mechanikus ellenőrzéshez;
+- a dokumentációs checkpoint staged fájllistája, commit SHA-ja és ellenőrzött commit linkje;
 - `git diff --name-only "$env:G2_START_SHA...HEAD"`, amely csak
   `docs/spec-package/**` fájlokat mutat;
 - kijelentés: `No feature implementation started; feature files are unchanged.`;
@@ -303,14 +386,14 @@ a constitution „Required check commands” részében név szerint rögzített
 ```powershell
 git diff --check "$env:G2_START_SHA...HEAD"
 git diff --name-only "$env:G2_START_SHA...HEAD"
-git grep -n -E 'DECISION REQUIRED|<[^>]+>' -- docs/spec-package
-$unfinishedMarkers = 'T' + 'BD|T' + 'ODO|F' + 'IXME'
-git grep -n -E $unfinishedMarkers -- docs/spec-package
+git status --porcelain=v1 --untracked-files=all
 ```
 
-A placeholder-scan elvárt eredménye üres. A sablonforrások szándékosan tartalmaznak kitöltési
-jeleket; a kapu a kitöltött `docs/spec-package/` példányt vizsgálja. A relatív linkeknek létező
-fájlra kell mutatniuk, a public-content guardnak és a smoke checknek sikeresnek kell lennie.
+A `git status` elvárt eredménye a commit után üres. A placeholder- és unfinished-marker scan
+a checkpointban, még stage/commit előtt, közvetlenül a fájlrendszeren fut, így az untracked
+fájlokat is ellenőrzi. A sablonforrások szándékosan tartalmaznak kitöltési jeleket; a kapu a
+kitöltött `docs/spec-package/` példányt vizsgálja. A relatív linkeknek létező fájlra kell
+mutatniuk, a public-content guardnak és a smoke checknek sikeresnek kell lennie.
 
 ## Kész, ha
 
