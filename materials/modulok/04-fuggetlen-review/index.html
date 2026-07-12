@@ -13,14 +13,14 @@
 <main>
   <header>
     <p class="eyebrow">4. modul · 45 perc</p>
-    <h1>Független review és javítási ciklus</h1>
-    <p class="lead">Ebben a modulban egy kész munkadarabot úgy vizsgáltok át és javítotok, hogy a készítő, a bíráló és a javító szerepe elkülönüljön, minden észrevétel sorsa pedig visszakövethető maradjon.</p>
-    <p class="takeaway"><strong>Lényeg:</strong> az észrevétel még nem tény. Előbb ellenőrizni kell, aztán elfogadni vagy indokoltan elvetni, végül a javítást újra ellenőrizni.</p>
+    <h1>Független <a data-route="/materials/fogalomtar/#review">review</a> és javítási ciklus</h1>
+    <p class="lead">Ebben a modulban egy kész munkadarabot úgy vizsgáltok át és javítotok, hogy a <a data-route="/materials/fogalomtar/#maker">készítő</a>, a <a data-route="/materials/fogalomtar/#reviewer">független ellenőrző</a> és a <a data-route="/materials/fogalomtar/#fixer">javító</a> szerepe elkülönüljön, minden <a data-route="/materials/fogalomtar/#review-finding">review-megállapítás</a> sorsa pedig visszakövethető maradjon.</p>
+    <p class="takeaway"><strong>Lényeg:</strong> a review-megállapítás még nem tény. Előbb ellenőrizni kell, aztán elfogadni vagy indokoltan elvetni, végül a javítást újra ellenőrizni.</p>
   </header>
 
   <section class="grid" aria-label="A modul keretei">
     <article class="card"><h2>Előfeltétel</h2><p>A 3. modulban ember által jóváhagyott specifikációs csomag és az abból készült, commitazonosítóval rögzített munkadarab. Ha a csomag nem APPROVED, térj vissza a <a data-route="/materials/modulok/03-specifikacio/">specifikációs modulhoz</a>.</p></article>
-    <article class="card"><h2>Kimenet</h2><p>Készítői commitazonosító, review-csomag, ellenőrzött észrevétellista, javítási commitazonosító, újraellenőrzési eredmények és teljes <a data-route="/materials/fogalomtar/#trace">trace</a>. Magas súlyosságú, ellenőrizetlen tétel nem maradhat.</p></article>
+    <article class="card"><h2>Kimenet</h2><p>Készítői <a data-route="/materials/fogalomtar/#commit">commit</a> azonosító, review-csomag, ellenőrzött megállapításlista, javítási commitazonosító, újraellenőrzési eredmények és teljes <a data-route="/materials/fogalomtar/#trace">visszakövetési napló</a>. Magas súlyosságú, ellenőrizetlen tétel nem maradhat.</p></article>
   </section>
 
   <figure id="fig-m04-overview">
@@ -33,15 +33,15 @@
   <section>
     <h2>Tanulási sorrend</h2>
     <ol class="sequence">
-      <li><span class="time">0–5 perc</span> Rögzítsd a készítői commitot, majd válaszd külön a <a data-route="/materials/fogalomtar/#maker">készítő</a>, <a data-route="/materials/fogalomtar/#reviewer">bíráló</a> és <a data-route="/materials/fogalomtar/#fixer">javító</a> szerepét.</li>
+      <li><span class="time">0–5 perc</span> Rögzítsd a készítői commitot, majd válaszd külön a készítő, független ellenőrző és javító szerepét. Az <a data-route="/materials/fogalomtar/#orchestrator">orchestrator agent</a> az átadásokat koordinálhatja, de nem veheti át az ellenőrző szerepét.</li>
       <li><span class="time">5–12 perc</span> Állíts össze review-csomagot: specifikáció, diff, futtatási parancsok, ismert korlátok és a pontos vizsgált commit.</li>
-      <li><span class="time">12–22 perc</span> A friss kontextusú bíráló több szempontból keres eltérést, majd egyesíti az átfedő észrevételeket.</li>
-      <li><span class="time">22–28 perc</span> Minden észrevételt ellenőrizz a kódon vagy futtatható eredménnyel; az alaptalant indoklással vesd el.</li>
+      <li><span class="time">12–22 perc</span> A friss kontextusú független ellenőrző több szempontból keres eltérést, majd egyesíti az átfedő review-megállapításokat.</li>
+      <li><span class="time">22–28 perc</span> Minden review-megállapítást ellenőrizz a kódon vagy futtatható eredménnyel; az alaptalant indoklással vesd el.</li>
       <li><span class="time">28–36 perc</span> A javító célzottan módosítja az elfogadott tételeket, majd rögzíti az új commitazonosítót.</li>
-      <li><span class="time">36–42 perc</span> Ugyanaz a független bíráló újraellenőrzi a javításokat és a lehetséges regressziókat.</li>
-      <li><span class="time">42–45 perc</span> Zárd le a trace-t; egy ellenőrzött észrevételt adj át az 5. modul automatikus védelméhez.</li>
+      <li><span class="time">36–42 perc</span> Ugyanaz a független ellenőrző újra megvizsgálja a javításokat és a lehetséges regressziókat.</li>
+      <li><span class="time">42–45 perc</span> Zárd le a visszakövetési naplót; egy ellenőrzött review-megállapítást adj át az 5. modul automatikus védelméhez.</li>
     </ol>
-    <p>A teljes <a data-route="/materials/fogalomtar/#rug">RUG</a> kör vizuális összefoglalója: <a data-route="/materials/modszertan/#fig-review-loop">készítés–review–javítás–újraellenőrzés</a>.</p>
+    <p>A teljes <a data-route="/materials/fogalomtar/#rug">RUG-ciklus</a> vizuális összefoglalója: <a data-route="/materials/modszertan/#fig-review-loop">készítés–review–javítás–újraellenőrzés</a>. Párhuzamos szerepekhez használj külön <a data-route="/materials/fogalomtar/#worktree">worktree-t</a>, hogy az ellenőrzés ne írja át a vizsgált változatot.</p>
   </section>
 
   <figure id="fig-m04-hogyan-vandorol-a-munkadarab-a">
@@ -52,39 +52,39 @@
   </figure>
 
   <figure id="fig-m04-milyen-eletuton-megy-vegig-egy">
-    <h2>Milyen életúton megy végig egy review-észrevétel?</h2>
+    <h2>Milyen életúton megy végig egy review-megállapítás?</h2>
     <svg viewBox="0 0 360 760" role="img" aria-labelledby="m04-finding-title m04-finding-desc"><title id="m04-finding-title">Egy review-észrevétel állapotai</title><desc id="m04-finding-desc">Az észrevétel javasolt állapotból ellenőrzésre kerül. Alaptalan esetben indoklással elvetik. Megalapozott esetben elfogadják, javítják és újraellenőrzik. Sikertelen újraellenőrzés visszavezet a javításhoz, sikeres eredmény lezárja a tételt.</desc><defs><marker id="m04-c" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#526078"/></marker></defs><g font-size="16" text-anchor="middle"><rect x="45" y="20" width="270" height="70" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="180" y="62" font-weight="700">JAVASOLT</text><rect x="45" y="125" width="270" height="70" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="167" font-weight="700">ELLENŐRZÖTT</text><rect x="45" y="235" width="270" height="85" rx="12" fill="#fff4e8" stroke="#a75a16"/><text x="180" y="270" font-weight="700">ELFOGADOTT</text><text x="180" y="297">vagy INDOKOLTAN ELVETETT</text><rect x="45" y="365" width="270" height="70" rx="12" fill="#eef2ff" stroke="#2949c7"/><text x="180" y="407" font-weight="700">JAVÍTVA</text><rect x="45" y="480" width="270" height="70" rx="12" fill="#fff" stroke="#2949c7"/><text x="180" y="522" font-weight="700">ÚJRAELLENŐRIZVE</text><rect x="45" y="610" width="270" height="85" rx="12" fill="#e9f8f1" stroke="#176346"/><text x="180" y="645" font-weight="700">LEZÁRVA</text><text x="180" y="673">bizonyítékkal</text></g><g stroke="#526078" stroke-width="3" fill="none" marker-end="url(#m04-c)"><line x1="180" y1="90" x2="180" y2="115"/><line x1="180" y1="195" x2="180" y2="225"/><line x1="180" y1="320" x2="180" y2="355"/><line x1="180" y1="435" x2="180" y2="470"/><line x1="180" y1="550" x2="180" y2="600"/><path d="M45 515C8 515 8 400 35 400"/></g></svg>
-    <figcaption><strong>Röviden:</strong> az észrevétel csak ellenőrzés után irányíthat javítást; a „javítva” állapot még nem azonos a „lezárva” állapottal.</figcaption>
+    <figcaption><strong>Röviden:</strong> a review-megállapítás csak ellenőrzés után irányíthat javítást; a „javítva” állapot még nem azonos a „lezárva” állapottal.</figcaption>
     <details class="text-equivalent static-fallback" id="fig-m04-finding-text"><summary>Az ábra teljes szöveges megfelelője</summary><ol><li>JAVASOLT: a bíráló leírta a lehetséges eltérést.</li><li>ELLENŐRZÖTT: a hely és a bizonyíték megismételhető.</li><li>ELFOGADOTT vagy INDOKOLTAN ELVETETT: döntés született.</li><li>JAVÍTVA: az elfogadott tételhez új commit tartozik.</li><li>ÚJRAELLENŐRIZVE: a bíráló a javítást és a regressziót is vizsgálta.</li><li>LEZÁRVA: eredmény és indoklás került a trace-be.</li></ol></details>
   </figure>
 
   <figure id="fig-m04-miben-mas-az-emberi-review">
     <h2>Miben más az emberi review és a gépi ellenőrzés?</h2>
     <svg viewBox="0 0 360 650" role="img" aria-labelledby="m04-human-machine-title m04-human-machine-desc"><title id="m04-human-machine-title">Az emberi review és a gépi ellenőrzés eltérő szerepe</title><desc id="m04-human-machine-desc">Az emberi review a szándékot, kockázatot, érthetőséget és hiányzó döntést vizsgálja. A gépi ellenőrzés determinisztikus szabályokat, típusokat, teszteket és buildet futtat. Középen a közös követelmény: mindkettő eredménye rögzített és visszakövethető.</desc><g font-size="16" text-anchor="middle"><rect x="25" y="20" width="310" height="245" rx="14" fill="#eef2ff" stroke="#2949c7" stroke-width="2"/><text x="180" y="58" font-weight="700">Emberi review</text><text x="180" y="95">szándék és scope</text><text x="180" y="128">kockázat és érthetőség</text><text x="180" y="161">hiányzó döntés</text><text x="180" y="194">súlyosság és mérlegelés</text><text x="180" y="232" font-weight="700">nem teljesen automatizálható</text><rect x="25" y="305" width="310" height="245" rx="14" fill="#fff" stroke="#2949c7" stroke-width="2"/><text x="180" y="343" font-weight="700">Gépi ellenőrzés</text><text x="180" y="380">formátum és típus</text><text x="180" y="413">teszt és build</text><text x="180" y="446">tiltott minta</text><text x="180" y="479">ismételhető parancs</text><text x="180" y="517" font-weight="700">gyors és determinisztikus</text><rect x="55" y="580" width="250" height="50" rx="12" fill="#e9f8f1" stroke="#176346"/><text x="180" y="612" font-weight="700">közös: rögzített eredmény</text></g></svg>
-    <figcaption><strong>Röviden:</strong> a gépi kapu az ismert, determinisztikus hibát fogja; az emberi review a szándékot és a helyzetfüggő kockázatot értékeli. Egyik sem helyettesíti a másikat.</figcaption>
+    <figcaption><strong>Röviden:</strong> a gépi <a data-route="/materials/fogalomtar/#quality-gate">kötelező ellenőrzési pont</a> az ismert, determinisztikus hibát fogja; az emberi review a szándékot és a helyzetfüggő kockázatot értékeli. Egyik sem helyettesíti a másikat.</figcaption>
     <details class="text-equivalent static-fallback" id="fig-m04-human-machine-text"><summary>Az ábra teljes szöveges megfelelője</summary><table><thead><tr><th>Emberi review</th><th>Gépi ellenőrzés</th><th>Közös követelmény</th></tr></thead><tbody><tr><td>Szándék, scope, kockázat, érthetőség, hiányzó döntés és súlyosság.</td><td>Formátum, típus, teszt, build, tiltott minta és más determinisztikus szabály.</td><td>A vizsgált commit, a parancs vagy indoklás és az eredmény legyen rögzített.</td></tr></tbody></table></details>
   </figure>
 
   <section class="exercise">
     <h2>Gyakorlat: futtass végig egy ellenőrizhető review-kört</h2>
-    <p><strong>Cél:</strong> minden észrevétel kapjon bizonyított sorsot, és ne maradjon újraellenőrizetlen magas súlyosságú tétel.</p>
+    <p><strong>Cél:</strong> minden review-megállapítás kapjon bizonyított sorsot, és ne maradjon újraellenőrizetlen magas súlyosságú tétel.</p>
     <ol>
       <li>A készítő rögzítse a vizsgált commitazonosítót: <code>MAKER_SHA</code>.</li>
       <li>Készítsetek review-csomagot a specifikáció, diff, pontos ellenőrzési parancsok és ismert korlátok linkjével.</li>
-      <li>A friss kontextusú bíráló minden észrevételhez adjon azonosítót, helyet, súlyosságot, állítást és ellenőrzési módot.</li>
+      <li>A friss kontextusú független ellenőrző minden review-megállapításhoz adjon azonosítót, helyet, súlyosságot, állítást és ellenőrzési módot.</li>
       <li>Az ellenőrző minden tételt jelöljön <code>ACCEPTED</code> vagy <code>REJECTED</code> állapottal, futtatási eredménnyel vagy konkrét indoklással.</li>
       <li>A javító csak az elfogadott tételeket módosítsa, majd rögzítse a <code>FIX_SHA</code> értéket és a lefuttatott ellenőrzéseket.</li>
-      <li>A bíráló vizsgálja újra az eredeti észrevételt és legalább egy kapcsolódó regressziós kockázatot.</li>
+      <li>A független ellenőrző vizsgálja újra az eredeti review-megállapítást és legalább egy kapcsolódó regressziós kockázatot.</li>
       <li>Zárjátok le a táblát; ha magas súlyosságú tétel nincs lezárva, az átadás állapota <code>BLOCKED</code>.</li>
     </ol>
     <h3>Kötelező kimenet</h3>
-    <table><thead><tr><th>Azonosító</th><th>Állítás és bizonyíték</th><th>Döntés</th><th>Javítás</th><th>Újraellenőrzés</th></tr></thead><tbody><tr><td>REV-01</td><td>Fájl:sor, parancs és eredmény</td><td>ACCEPTED / REJECTED + indok</td><td>FIX_SHA vagy nem szükséges</td><td>PASS / CHANGES + eredmény</td></tr></tbody></table>
+    <table><thead><tr><th>Azonosító</th><th>Súlyosság</th><th>Állítás és bizonyíték</th><th>Döntés</th><th>Javítás</th><th>Újraellenőrzés</th><th>Lezárás</th></tr></thead><tbody><tr><td>REV-01</td><td>HIGH / MEDIUM / LOW</td><td>Fájl:sor, parancs és eredmény</td><td>ACCEPTED / REJECTED + indok</td><td>FIX_SHA vagy nem szükséges</td><td>PASS / CHANGES + eredmény</td><td>CLOSED / OPEN + felelős</td></tr></tbody></table>
     <p class="takeaway"><strong>Kész, ha:</strong> a MAKER_SHA, a review-csomag, minden tétel döntése, a FIX_SHA és az újraellenőrzési eredmény egymásból visszakereshető; nincs nyitott magas súlyosságú tétel.</p>
   </section>
 
   <section class="grid">
     <article class="card warn"><h2>Megállási szabály és Plan B</h2><ul><li><strong>Nincs friss bíráló:</strong> ne nevezd függetlennek az önellenőrzést; használd a tréner előkészített, kitalált diffjét egy valóban friss kontextusú bírálóval.</li><li><strong>Nem ismételhető az észrevétel:</strong> ne javíts találomra; jelöld ellenőrizetlennek és kérj pontosítást.</li><li><strong>Változik a vizsgált commit:</strong> állítsd le a review-t és készíts új csomagot.</li><li><strong>Magas tétel nyitva marad:</strong> BLOCKED; nincs továbbadás.</li></ul></article>
-    <article class="card ok"><h2>Átadás az 5. modulnak</h2><p>Válassz egy ellenőrzött, ismétlődő hibát. Add át az észrevétel bizonyítékát és a kívánt tiltott/engedett viselkedést az <a data-route="/materials/modulok/05-szabalyok-es-kapuk/">5. modulnak</a>, ahol automatizált védelem készül belőle.</p><p>Segédlet: <a data-route="/toolkit/utmutatok/fuggetlen-review/">független review</a>.</p></article>
+    <article class="card ok"><h2>Átadás az 5. modulnak</h2><p>Válassz egy ellenőrzött, ismétlődő hibát. Add át a review-megállapítás bizonyítékát és a kívánt tiltott/engedett viselkedést az <a data-route="/materials/modulok/05-szabalyok-es-kapuk/">5. modulnak</a>, ahol automatizált védelem készül belőle.</p><p>Segédlet: <a data-route="/toolkit/utmutatok/fuggetlen-review/">független review</a>.</p></article>
   </section>
   <nav class="module-nav" aria-label="Modulok közötti navigáció"><a data-route="/materials/modulok/03-specifikacio/">← 3. Specifikáció</a><a data-route="/materials/modulok/05-szabalyok-es-kapuk/">5. Szabályok és kapuk →</a></nav>
 </main>
