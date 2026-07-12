@@ -62,6 +62,7 @@ test('incremental preview reports complete content and preserves the partial-rou
     run(['toolkit/material-site/check-boundary.mjs', '--source', '.', '--site', site, '--phase', 'foundation']);
     run(['toolkit/material-site/check-glossary.mjs', '--source', 'materials/fogalomtar/glossary.json', '--site', site, '--phase', 'foundation']);
     run(['toolkit/material-site/check-search.mjs', '--site', site, '--phase', 'foundation']);
+    run(['toolkit/material-site/check-diagrams.mjs', '--source', '.', '--site', site, '--phase', 'incremental']);
     // Regression for the former 35/36 failure: a registry-only partial merge
     // belongs to a substituted route and must not be checked against its
     // neutral fixture. Real foundation registries and generated-site safety
