@@ -113,7 +113,7 @@ it("uses the configured window in both the rule and the error message", async ()
     // window but OUTSIDE a 24h window, so cancellation must be allowed here.
     () => new Date("2027-01-09T04:00:00.000Z"),
     dayWindowMs,
-  ).createCaller({});
+  ).createCaller({ userId: "test-user" });
   const created = await api.create(input);
   await expect(api.cancel({ id: created.id })).resolves.toMatchObject({ status: "cancelled" });
 
@@ -123,7 +123,7 @@ it("uses the configured window in both the rule and the error message", async ()
     // 23h before start: inside the 24h window -> rejected, message names 24 hours.
     () => new Date("2027-01-09T11:00:00.000Z"),
     dayWindowMs,
-  ).createCaller({});
+  ).createCaller({ userId: "test-user" });
   const late = await lateApi.create(input);
   await expect(lateApi.cancel({ id: late.id })).rejects.toMatchObject({
     message: expect.stringContaining("24 hours"),
