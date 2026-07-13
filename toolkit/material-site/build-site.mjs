@@ -601,6 +601,7 @@ function shortTitle(route) {
 
 function renderShellBottom(route, nav) {
   const p = (r) => relHref(route.output, r);
+  const prefix = rootPrefix(route.output);
   const siblings =
     route.parent === null ? [] : (nav.children.get(route.parent) ?? []);
   const idx = siblings.findIndex((s) => s.id === route.id);
@@ -622,8 +623,23 @@ ${pager}
 </div>
 </div>
 <footer class="site-footer">
-  <p><a href="${p(nav.byId.get("/"))}">Kezdőlap</a> · <a href="${p(glossary)}">Fogalomtár</a> · <a href="${p(moduleIndexRoute)}">Modulok</a></p>
-  <p>AI-assisted fejlesztési workshop · offline is használható tananyag</p>
+  <div class="wenova-footer">
+    <div class="wenova-brand">
+      <a href="https://edu.wenova.io" aria-label="Wenova EDU">
+        <img class="wenova-wordmark" src="${prefix}materials/instruktor/entry/wenova-wordmark.png" alt="Wenova">
+      </a>
+      <p class="wenova-brand-copy">AI-assisted fejlesztési workshop · <a href="https://edu.wenova.io">edu.wenova.io</a></p>
+    </div>
+    <div class="creator-card">
+      <img class="creator-avatar" src="${prefix}materials/instruktor/entry/piya_csaba_center-bg-removed.png" alt="Csaba Piya">
+      <p><small>Oktató és alkotó</small><strong>Csaba Piya</strong><a href="mailto:cspiya@wenova.io">cspiya@wenova.io</a></p>
+    </div>
+  </div>
+  <div class="site-footer-meta">
+    <p><a href="${p(nav.byId.get("/"))}">Kezdőlap</a> · <a href="${p(glossary)}">Fogalomtár</a> · <a href="${p(moduleIndexRoute)}">Modulok</a> · <a href="${prefix}LICENSE">Licenc</a></p>
+    <p>offline is használható tananyag</p>
+    <p class="site-footer-legal">© 2026 Wenova · A Wenova™ név és a Wenova wordmark a Wenova védjegye; a márkaelemekre a tartalmi és kódlicenc nem terjed ki.</p>
+  </div>
 </footer>
 <noscript><p class="noscript-note">A keresés JavaScript nélkül nem érhető el — használd a <a href="${p(glossary)}">fogalomtárat</a> és a <a href="${p(moduleIndexRoute)}">modul-listát</a>.</p></noscript>
 <script defer src="${rootPrefix(route.output)}assets/search-index.js"></script>
@@ -644,16 +660,17 @@ function injectHead(html, route) {
   );
   const cspTag = `<meta http-equiv="Content-Security-Policy" content="${CSP}">`;
   const cssTag = `<link rel="stylesheet" href="${rootPrefix(route.output)}assets/site.css">`;
+  const brandCssTag = `<link rel="stylesheet" href="${rootPrefix(route.output)}assets/brand.css">`;
   const canonicalTag = `<link rel="canonical" href="index.html">`;
   if (/<meta charset=/i.test(out)) {
     out = out.replace(
       /(<meta charset=[^>]*>)/i,
-      `$1\n${cspTag}\n${canonicalTag}\n${cssTag}`,
+      `$1\n${cspTag}\n${canonicalTag}\n${cssTag}\n${brandCssTag}`,
     );
   } else {
     out = out.replace(
       /(<head[^>]*>)/i,
-      `$1\n${cspTag}\n${canonicalTag}\n${cssTag}`,
+      `$1\n${cspTag}\n${canonicalTag}\n${cssTag}\n${brandCssTag}`,
     );
   }
   return out;

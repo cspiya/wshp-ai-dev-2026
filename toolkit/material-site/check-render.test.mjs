@@ -46,6 +46,20 @@ test('real browser rejects a second local shell', async () => {
   assert.ok(failures.some((x) => x.includes('second local site shell')));
 });
 
+test('real browser enforces the generated Wenova attribution and license contract', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-wenova-footer-'));
+  const pixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+  const page = (footer) => `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Brand</title></head><body><a href="#main">Tartalom</a><header class="shell-header">AI-dev workshop</header><main id="main">Magyarázat</main>${footer}</body></html>`;
+  const goodFooter = `<footer class="site-footer"><div class="wenova-footer"><img class="wenova-wordmark" src="${pixel}" alt="Wenova"><div class="creator-card"><img class="creator-avatar" src="${pixel}" alt="Csaba Piya"><strong>Csaba Piya</strong></div></div><a href="LICENSE">Licenc</a></footer>`;
+  fs.writeFileSync(path.join(root, 'index.html'), page(goodFooter));
+  fs.writeFileSync(path.join(root, 'LICENSE'), 'Dual license fixture.\n');
+  assert.deepEqual(await validateRender({ site: root, modes: ['desktop', 'mobile', 'file'] }), []);
+  fs.writeFileSync(path.join(root, 'index.html'), page('<footer class="site-footer">Nincs brand</footer>'));
+  const failures = await validateRender({ site: root, modes: ['desktop'] });
+  assert.ok(failures.some((x) => x.includes('exactly one Wenova footer band')));
+  assert.ok(failures.some((x) => x.includes('repository license link')));
+});
+
 test('real browser enforces one dark block-code surface', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-code-surface-'));
   const shell = (style) => `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Kod</title><style>${style}</style></head><body><a href="#main">Tartalom</a><main id="main"><pre><code>npm run test</code></pre></main></body></html>`;

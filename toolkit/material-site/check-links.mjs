@@ -43,7 +43,7 @@ function targetFor(from, href, site) {
   const [rawPath, fragment = ''] = href.split('#', 2);
   let target = rawPath ? path.resolve(path.dirname(from), decodeURIComponent(rawPath)) : from;
   if (rawPath.endsWith('/')) target = path.join(target, 'index.html');
-  else if (rawPath && !path.extname(target)) target = path.join(target, 'index.html');
+  else if (rawPath && !path.extname(target) && (!fs.existsSync(target) || fs.statSync(target).isDirectory())) target = path.join(target, 'index.html');
   if (!rawPath) target = from;
   return { target, fragment: decodeURIComponent(fragment), inside: target === site || target.startsWith(`${site}${path.sep}`) };
 }

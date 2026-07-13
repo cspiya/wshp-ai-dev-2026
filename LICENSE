@@ -1,0 +1,62 @@
+Wenova AI-Assisted Development Workshop — License Notice
+
+Copyright (c) 2026 Wenova
+
+This repository uses a dual-license model because it contains both educational
+content and executable software.
+
+1. Educational content
+
+Unless a file states otherwise, the workshop prose, documentation, teaching
+HTML, diagrams, illustrations, exercises, and other educational content are
+licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+International license (CC BY-NC-SA 4.0):
+
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+You may share and adapt that content for noncommercial purposes if you give
+appropriate credit to Wenova and the named creator, Csaba Piya, link to the license,
+indicate whether changes were made, and distribute adaptations under the same
+or a compatible license.
+
+2. Software and executable technical artifacts
+
+Unless a file states otherwise, source code, executable scripts, software
+examples, configuration files, and workflow definitions are licensed under
+the MIT License below. For this notice, “Software” in the standard MIT text
+means only those technical artifacts; it does not include the educational
+content assigned to CC BY-NC-SA 4.0 in Section 1.
+
+MIT License
+
+Copyright (c) 2026 Wenova
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+3. Brand and other exclusions
+
+The Wenova name, Wenova wordmark, logos, trademarks, trade dress, and other
+brand assets are not licensed under CC BY-NC-SA 4.0 or the MIT License. No
+trademark rights or rights to imply Wenova endorsement are granted. The brand
+assets included in this repository may be displayed only as part of unmodified
+copies of these workshop materials unless Wenova grants separate permission.
+
+Third-party components and incorporated third-party materials remain subject
+to their own license terms. This notice applies only to material for which
+Wenova has authority to grant the stated rights.
