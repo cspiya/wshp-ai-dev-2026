@@ -68,7 +68,7 @@ status readout right (`.mod-stat`): a `.dotlamp` (+ `-ok`/`-amber`/`-bad`)
 **always paired with a text state** (PASS / NOW / QUOTED / PROTECTED / ERROR /
 n RECORDS). Lamp states must mirror real query/mutation state.
 
-### Calibration rail (`.rail` / `.station`, `src/app/shop/journey-rail.tsx`)
+### Calibration rail (`.rail` / `.station`, `src/modules/orders/ui/journey-rail.tsx`)
 Four stations under a ruler-tick strip (`.rail::before`, desktop only).
 States: `station-done` (green border, check icon, DONE/…), `station-now`
 (amber border + glow halo, pulsing lamp, `aria-current="step"`),
@@ -150,7 +150,51 @@ Footer: ink strip of mono `LABEL value` pairs (golden path, gates, review).
 - Reduced motion: the lamp pulse and skeleton pulse run only under
   `prefers-reduced-motion: no-preference` / `motion-safe:`.
 
-## 8. Rejected patterns (do not reintroduce)
+## 8. Webshop journey addendum (WEN-324)
+
+**Accepted mock:** [`docs/design/mock-webshop-journey.html`](docs/design/mock-webshop-journey.html)
+(5 screens: catalog → product detail → cart → checkout → confirmation).
+New patterns introduced by the shop rebuild — all in `src/app/globals.css`,
+components in `src/modules/orders/ui/`:
+
+### Price block (`.price` / `.price-net` / `.price-gross`)
+The ONE way a price appears: big mono net amount with a mono
+`NET [/ SEAT] + 27% VAT` micro-label inside, gross amount on a second line
+(`Gross <b>12,700 HUF</b> / seat`). Rendered only by `PriceBlock`
+(`ui/price-block.tsx`); the gross always comes from the orders domain's
+`grossFromNet` (half-up, same rounding as the totals) — never recomputed
+ad hoc.
+
+### Qty stepper (`.qty` / `.qty-val`)
+Minus / mono value / plus, clamped 1–5 (`MAX_SEATS_PER_WORKSHOP`). Buttons
+are 44px targets with inset amber-deep focus; the value is an `<output>`
+with an explicit aria-label ("seats for &lt;title&gt;"). Above the cap the
+UI never negotiates — the amber `.hintbox` points at the custom group offer.
+
+### Cart line (`.cartline` / `.cartline-t` / `.cartline-lp`)
+Grid row: title block (title + mono date · net/seat small line), qty
+stepper, right-aligned mono line-net with a small "net" suffix, and a red
+underlined Remove text button. Single column below `sm`, dashed row
+separators like the ledger.
+
+### Summary box (`.sumbox` / `.sumrow` + `-disc` / `-grand`)
+White plate with mono key/value rows (net subtotal, optional green coupon
+discount row, VAT, gross). The grand row sits on a 2px ink rule with a
+1.45rem mono gross. Values are ALWAYS the server's `orders.preview` answer —
+the client renders totals, it never adds numbers up.
+
+### Switch row (`.switch-row`) and boxes (`.hintbox` / `.okbox`)
+Labelled checkbox on a white plate (company mode toggle) with amber-deep
+accent-color; `.hintbox` is the amber dashed advisory (seat cap), `.okbox`
+the green reassurance (guest checkout / account optional).
+
+### Five-station rail (`.rail-5`)
+The shop rail adds a fifth station (Cart → Your details → Billing →
+Payment → Done). On the checkout screen stations 02 and 03 are BOTH
+current; `aria-current="step"` goes to the first of them only
+(`ui/journey-rail.tsx`).
+
+## 9. Rejected patterns (do not reintroduce)
 
 - **Generic shadcn default look** — neutral gray tokens, default cards, Geist
   everywhere with no visual voice.

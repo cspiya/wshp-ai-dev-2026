@@ -13,3 +13,8 @@ export function formatDate(value: string): string {
 export function formatHuf(value: number): string {
   return value.toLocaleString("en-US");
 }
+
+/** 12700 → "12,700 HUF" — the shop's standard amount rendering. */
+export function formatHufAmount(value: number): string {
+  return `${formatHuf(value)} HUF`;
+}

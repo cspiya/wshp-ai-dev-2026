@@ -706,6 +706,198 @@
     overflow-wrap: anywhere;
   }
 
+  /* ── webshop journey (WEN-324, accepted mock mock-webshop-journey.html) ── */
+  /* price block: big mono net + "NET + 27% VAT" micro-label, gross underneath */
+  .price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .price-net {
+    font-family: var(--font-console-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .price-net small {
+    font-family: var(--font-console-mono);
+    font-size: 0.72rem;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+  .price-gross {
+    font-family: var(--font-console-mono);
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+  }
+  .price-gross b {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+
+  /* qty stepper: − / value / +, capped in the component (44px targets) */
+  .qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--input);
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .qty button {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    background: #f4f1e7;
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--foreground);
+  }
+  .qty button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .qty button:focus-visible {
+    outline: 2px solid var(--console-amber-deep);
+    outline-offset: -2px;
+  }
+  .qty-val {
+    width: 2.6rem;
+    text-align: center;
+    font-family: var(--font-console-mono);
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* cart line: title block · stepper · line net · remove */
+  .cartline {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem 1rem;
+    align-items: center;
+    padding: 0.9rem 0;
+    border-bottom: 1px dashed #ddd7c6;
+  }
+  @media (min-width: 640px) {
+    .cartline {
+      grid-template-columns: 1fr auto auto auto;
+    }
+  }
+  .cartline-t {
+    font-weight: 650;
+  }
+  .cartline-t small {
+    display: block;
+    font-family: var(--font-console-mono);
+    font-size: 0.68rem;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    margin-top: 0.15rem;
+  }
+  .cartline-lp {
+    font-family: var(--font-console-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 640px) {
+    .cartline-lp {
+      text-align: right;
+    }
+  }
+  .cartline-lp small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  /* summary box: net / discount / VAT rows + grand gross total */
+  .sumbox {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 1rem 1.2rem;
+  }
+  .sumrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.32rem 0;
+    font-size: 0.93rem;
+  }
+  .sumrow-k {
+    font-family: var(--font-console-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    align-self: center;
+  }
+  .sumrow-v {
+    font-family: var(--font-console-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .sumrow-disc .sumrow-v {
+    color: var(--success);
+  }
+  .sumrow-grand {
+    border-top: 2px solid var(--foreground);
+    margin-top: 0.4rem;
+    padding-top: 0.6rem;
+  }
+  .sumrow-grand .sumrow-v {
+    font-size: 1.45rem;
+    font-weight: 700;
+  }
+
+  /* amber hint (seat cap → custom offer) and green reassurance boxes */
+  .hintbox {
+    border: 1px dashed var(--console-amber-deep);
+    background: #fff8ea;
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.86rem;
+    color: #6e4a00;
+  }
+  .okbox {
+    border: 1px solid #cfe4d6;
+    background: #eef7ef;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+    color: var(--success);
+  }
+
+  /* labelled checkbox row (company mode, create-account) */
+  .switch-row {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .switch-row input {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--console-amber-deep);
+  }
+  .switch-row input:focus-visible {
+    outline: 2px solid var(--console-amber-deep);
+    outline-offset: 2px;
+  }
+
+  /* the webshop rail has five stations (cart → details → billing → pay → done) */
+  @media (min-width: 768px) {
+    .rail-5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
   /* ── misc ─────────────────────────────────────────────────────── */
   .mini {
     font-family: var(--font-console-mono);

@@ -76,7 +76,7 @@ export function AuthPanel({
       <section aria-labelledby="account-heading" className="mod">
         <div className="mod-head">
           <span className="mod-tag" id="account-heading">
-            Step 02 · Account
+            Account — optional
           </span>
           <span className="mod-stat">
             <span className="dotlamp dotlamp-ok" aria-hidden="true" />
@@ -109,7 +109,7 @@ export function AuthPanel({
     <section aria-labelledby="account-heading" className="mod">
       <div className="mod-head">
         <span className="mod-tag" id="account-heading">
-          Step 02 · Account
+          Account — optional
         </span>
         <span className="mod-stat">
           <span className="dotlamp dotlamp-amber" aria-hidden="true" />

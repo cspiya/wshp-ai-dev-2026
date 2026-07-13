@@ -9,6 +9,10 @@ import {
   createCheckoutRouter,
   createFakePaymentAdapter,
 } from "@/modules/checkout/checkout.contract";
+import {
+  createInMemoryOrderRepo,
+  createOrdersRouter,
+} from "@/modules/orders/orders.contract";
 import { createPricingRouter } from "@/modules/pricing/pricing.contract";
 import {
   createDrizzleRegistrationRepo,
@@ -81,6 +85,16 @@ const workshopSchedule = {
     (await workshopRepo.getById(workshopId))?.date ?? null,
 };
 
+// Orders price every line from the catalog (same adapt-the-repo pattern as
+// the registrations schedule above): the client sends ids and quantities,
+// the server answers with the workshop's title and list price.
+const orderWorkshopSource = async (id: string) => {
+  const workshop = await workshopRepo.getById(id);
+  return workshop
+    ? { id: workshop.id, title: workshop.title, listPriceHuf: workshop.listPriceHuf }
+    : null;
+};
+
 /**
  * Cancellation window is deployment-configurable (WEN-118 ratified rule:
  * exclusive boundary). Env parsing lives HERE at the composition root — the
@@ -96,6 +110,16 @@ export const appRouter = router({
   workshops: createWorkshopsRouter(workshopRepo),
   pricing: createPricingRouter(),
   checkout: createCheckoutRouter(createFakePaymentAdapter()),
+  /**
+   * Orders (webshop journey, WEN-324) have ONLY the in-memory adapter for
+   * now: the order aggregate (buyer union + items array) needs a
+   * jsonb-backed table and migration, deferred as a documented follow-up
+   * (docs/build-journal/2026-07-13-wen-324-webshop.md). Orders therefore
+   * live in the server process and vanish on restart in EVERY environment —
+   * acceptable for the teaching journey, unacceptable for production, and
+   * said out loud here so nobody mistakes it for done.
+   */
+  orders: createOrdersRouter(createInMemoryOrderRepo(), orderWorkshopSource),
   registrations: createRegistrationsRouter(
     createRegistrationRepo(),
     workshopSchedule,
