@@ -19,7 +19,7 @@
   </header>
 
   <section class="grid" aria-label="A modul keretei">
-    <article class="card"><h2>Előfeltétel</h2><p>A 3. modulban ember által jóváhagyott specifikációs csomag és az abból készült, <a data-route="/materials/fogalomtar/#commit">commit</a> azonosítóval rögzített munkadarab. Ha a csomag nem APPROVED, térj vissza a <a data-route="/materials/modulok/03-specifikacio/">specifikációs modulhoz</a>.</p></article>
+    <article class="card"><h2>Előfeltétel</h2><p>A 3. modulban ember által jóváhagyott specifikációs csomag és az abból készült, <a data-route="/materials/fogalomtar/#commit">commit</a> azonosítóval rögzített munkadarab. A vizsgált commitazonosító (<code>MAKER_SHA</code>) a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">3. modul C4 készítő lépésének</a> kimenete — a review pontosan ezt a commitot vizsgálja. Ha a csomag nem APPROVED, térj vissza a <a data-route="/materials/modulok/03-specifikacio/">specifikációs modulhoz</a>.</p></article>
     <article class="card"><h2>Kimenet</h2><p>Készítői <a data-route="/materials/fogalomtar/#commit">commit</a> azonosító, review-csomag, ellenőrzött megállapításlista, javítási commitazonosító, újraellenőrzési eredmények és teljes <a data-route="/materials/fogalomtar/#trace">visszakövetési napló</a>. Magas súlyosságú, ellenőrizetlen tétel nem maradhat.</p></article>
   </section>
 
@@ -69,7 +69,7 @@
     <h2>Gyakorlat: futtass végig egy ellenőrizhető review-kört</h2>
     <p><strong>Cél:</strong> minden review-megállapítás kapjon bizonyított sorsot, és ne maradjon újraellenőrizetlen magas súlyosságú tétel.</p>
     <ol>
-      <li>A készítő rögzítse a vizsgált commitazonosítót: <code>MAKER_SHA</code>.</li>
+      <li>A készítő rögzítse a vizsgált commitazonosítót: <code>MAKER_SHA</code> (a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">3. modul C4 készítő lépésében</a> már létrejött — onnan hozod magaddal).</li>
       <li>Készítsetek review-csomagot a specifikáció, diff, pontos ellenőrzési parancsok és ismert korlátok linkjével.</li>
       <li>A friss kontextusú független ellenőrző minden review-megállapításhoz adjon azonosítót, helyet, súlyosságot, állítást és ellenőrzési módot.</li>
       <li>Az ellenőrző minden tételt jelöljön <code>ACCEPTED</code> vagy <code>REJECTED</code> állapottal, futtatási eredménnyel vagy konkrét indoklással.</li>
@@ -80,6 +80,36 @@
     <h3>Kötelező kimenet</h3>
     <table><thead><tr><th>Azonosító</th><th>Súlyosság</th><th>Állítás és bizonyíték</th><th>Döntés</th><th>Javítás</th><th>Újraellenőrzés</th><th>Lezárás</th></tr></thead><tbody><tr><td>REV-01</td><td>HIGH / MEDIUM / LOW</td><td>Fájl:sor, parancs és eredmény</td><td>ACCEPTED / REJECTED + indok</td><td>FIX_SHA vagy nem szükséges</td><td>PASS / CHANGES + eredmény</td><td>CLOSED / OPEN + felelős</td></tr></tbody></table>
     <p class="takeaway"><strong>Kész, ha:</strong> a MAKER_SHA, a review-csomag, minden tétel döntése, a FIX_SHA és az újraellenőrzési eredmény egymásból visszakereshető; nincs nyitott magas súlyosságú tétel.</p>
+  </section>
+
+  <section class="exercise" id="c5-vegrehajthato-ut">
+    <h2>Így futtasd le a review-kört a valódi munkadarabodon (C5)</h2>
+    <p><strong>Mi ez, és miért?</strong> A fenti gyakorlat szerepeit most valódi eszközökkel játsszátok el: a bemenet a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">3. modul C4 lépésében</a> rögzített <code>MAKER_SHA</code>, a kimenet egy bizonyítékokkal lezárt visszakövetési napló. Így a review nem vélemény, hanem megismételhető eljárás — és pontosan azt a commitot vizsgálja, amit a készítő átadott.</p>
+    <h3>1. Indíts friss kontextusú független ellenőrzőt</h3>
+    <ul>
+      <li><strong>Skill-aktiválással:</strong> Claude-ban a <code>toolkit/skills/rug-review/SKILL.md</code> skill, Codexben a <code>toolkit/skills/rug-review/agents/openai.yaml</code> adapter (<code>$rug-review</code>).</li>
+      <li><strong>Vagy kézzel:</strong> a <code>toolkit/orchestrator/README.md</code> hatlépéses kézi kontraktusa szerint (maker → friss reviewer-kontextusok → egyesítés és ellenőrzés → javító → kapuk → ismétlés).</li>
+    </ul>
+    <p>Mindkét úton kötelező szabály: az ellenőrző <strong>friss kontextusban</strong> fut — SOHA nem a készítő beszélgetésében. Ugyanabban a beszélgetésben szerepet váltani nem független review, hanem önellenőrzés.</p>
+    <h3>2. Add át a review-csomagot</h3>
+    <p>Az ellenőrző a <code>MAKER_SHA</code> diffjét (<code>git show MAKER_SHA</code>) és a jóváhagyott spec-csomagot kapja. A készítő gondolatmenetét, önértékelését vagy kívánt verdiktjét <strong>nem</strong> kapja meg — a friss kontextus éppen ettől ér valamit.</p>
+    <h3 id="false-positive-hunter">3. False-positive Hunter</h3>
+    <p><strong>Mi ez, és miért?</strong> A review-megállapítás nem tény, hanem ellenőrizendő állítás — ezt itt a saját bőrödön tapasztalod meg. A tréner kioszt egy előre elrontott, kitalált változatot a nap munkadarabjából (<code>toolkit/golden-thread/fixtures/snapshots/broken</code>, másolás a <code>toolkit/golden-thread/README.md</code> szerint), és a feladat kettős:</p>
+    <ol>
+      <li><strong>Találd meg a valódi hibát.</strong> Az AC-02 szerint a lemondási határ zárt: pontosan 48 órával a kezdés előtt már NEM lemondható a regisztráció. A broken változatban a viselkedés ennek ellentmond — miközben a függvény doc-kommentje továbbra is a zárt határt állítja, és minden kapu zöld, mert a pontos határeset-teszt hiányzik. A bizonyíték futtatható: írj egy egyszeri, pontosan 48 órás határeset-tesztet, és mutasd meg, hogy elbukik.</li>
+      <li><strong>Utasítsd el bizonyítékkal a hamis pozitívot.</strong> A fájl-adapter írás után „fölöslegesnek látszó” módon visszaolvassa a most kiírt fájlt. Ez nem hiba, hanem verify-before-swap guard: a csere előtt bizonyítja, hogy a lemezre került tartalom teljes, érvényes JSON, így sérült vagy félbeszakadt írás sosem kerülhet az ismerten jó tároló helyére. A helyes döntés: <code>REJECTED</code> + ez az indoklás.</li>
+    </ol>
+    <p class="takeaway"><strong>Pecsét (pont) csak evidence-szel jár:</strong> az elfogadott hibához futtatható bizonyíték, az elvetett tételhez írásban rögzített indoklás tartozik. Enélkül egyik döntés sem számít.</p>
+    <h3>4. Javítási kör: FIX_SHA és újraellenőrzés</h3>
+    <ol>
+      <li>A javító a valódi hibát javítja, ÉS visszaállítja a hiányzó határeset-tesztet, hogy a kapu a jövőben is fogja a regressziót.</li>
+      <li>Új commit készül: ennek azonosítója a <strong>FIX_SHA</strong>.</li>
+      <li>Friss ellenőrző újravizsgálja a javítást és legalább egy kapcsolódó regressziós kockázatot.</li>
+      <li>Írd meg az evidence-fájlt: <code>workshop-evidence/C5-review.md</code> — benne a MAKER_SHA, minden review-megállapítás és döntése, az elutasított hamis pozitív indoklással, a FIX_SHA és az újraellenőrzés eredménye.</li>
+    </ol>
+    <p class="takeaway"><strong>Kész, ha:</strong> a <code>workshop-evidence/C5-review.md</code> fájlból visszakereshető a MAKER_SHA, minden megállapítás bizonyítékkal alátámasztott döntése, a REJECTED hamis pozitív indoklása, a FIX_SHA és az újraellenőrzés eredménye; nincs nyitott magas súlyosságú tétel.</p>
+    <h3>Plan B</h3>
+    <p>Ha a teljes RUG-kör nem fér bele az időbe, a kört a <code>toolkit/orchestrator/trace/sample-run.md</code> valós futási trace-én mutasd be — ez tartalmaz egy review által elkapott, tévesen zöldet állító készítői összefoglalót és egy elutasított hamis pozitívot is. Az evidence-fájlban jelöld: <code>Execution mode: REPLAY</code>.</p>
   </section>
 
   <section class="grid">

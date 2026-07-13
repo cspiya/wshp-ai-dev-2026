@@ -65,6 +65,20 @@
 </dl>
 </section>
 
+<section><h2>A C0–C7 checkpoint-szerződés — parancs, bizonyíték, helyreállítás</h2>
+<p><strong>Miért:</strong> minden állomásnak rögzített bemenete, parancsa, bizonyítéka és tartalékútja van. Ha elakadsz, nem improvizálsz: megnézed itt, mi a helyreállítás.</p>
+<table><thead><tr><th>Checkpoint</th><th>Mit adsz át</th><th>Kulcsparancs</th><th>Evidence</th><th>Ha elakadsz</th></tr></thead><tbody>
+<tr><td><strong>C0</strong> környezet</td><td>futó workspace + zöld doctor</td><td><code>workshop-doctor.ps1</code> · <code>workshop-bootstrap.ps1</code></td><td><code>C0-setup.md</code></td><td>tréner setup-sáv; <code>BLOCKED</code>-del nem mész tovább</td></tr>
+<tr><td><strong>C1</strong> repo-identitás</td><td>küldetés + szabályok a repóban</td><td><code>AGENTS.md</code> szerkesztés + agent-visszamondatás</td><td><code>C1-identitas.md</code></td><td>tréner minta-AGENTS a 2. modul oldaláról</td></tr>
+<tr><td><strong>C2</strong> közös léc</td><td>működő kapu + negatív próba</td><td><code>npm run typecheck &amp;&amp; npm run lint &amp;&amp; npm run test</code></td><td><code>C2-lec.md</code></td><td>hook-fixture a 5. modul szerint; PASS→FAIL→PASS kötelező</td></tr>
+<tr><td><strong>C3</strong> jóváhagyott spec</td><td>5 fájlos APPROVED csomag</td><td>sablonok: <code>toolkit/spec-templates/</code></td><td>a csomag maga + döntés</td><td>tréner referencia-csomag: <code>toolkit/golden-thread/spec-package/</code></td></tr>
+<tr><td><strong>C4</strong> készítő</td><td>valódi commit</td><td><code>git rev-parse HEAD</code> → <strong>MAKER_SHA</strong></td><td><code>C4-maker.md</code></td><td>partial/known-good snapshot (tréner), <code>SNAPSHOT</code> jelöléssel</td></tr>
+<tr><td><strong>C5</strong> független review</td><td>ellenőrzött javítás</td><td>rug-review skill / kézi RUG-kontraktus</td><td><code>C5-review.md</code> (FIX_SHA)</td><td>minta-trace: <code>toolkit/orchestrator/trace/</code> — REPLAY jelöléssel</td></tr>
+<tr><td><strong>C6</strong> rendszerpróba</td><td>UI+API+adat bizonyíték</td><td>teszt + <code>Invoke-RestMethod</code> + böngésző + adatfájl</td><td><code>C6-rendszerellenorzes/</code></td><td>kézi út = <code>MANUAL</code>; élő adatbázis-út a tréner demója</td></tr>
+<tr><td><strong>C7</strong> átültetés</td><td>memória-próba + pilotcsomag</td><td>új session + visszamondatás</td><td><code>C7-memoria.md</code> + 30/60/90</td><td>a 8. modul mintái; a hiányt őszintén jelölöd</td></tr>
+</tbody></table>
+<p>A teljes, valódi alkalmazás felépítése — a módszer igazolása éles esetben — külön dokumentált út: a <a data-route="/reference-app/">referenciaalkalmazás</a> és az <a data-route="/materials/epitesi-naplo/">építési napló</a>.</p>
+</section>
 <section><h2>Most ezt tedd</h2>
 <ol><li>Ha még nincs kész a környezeted: <a data-route="/materials/felkeszules/">Felkészülés (C0)</a>.</li><li>Ha a C0 kész (<code>C0_STATUS=PASS</code>): kezdd az <a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. modullal</a>.</li><li>Ha bármikor elveszel: gyere vissza erre az oldalra, és nézd meg a C0–C7 sávon, hol tartasz.</li></ol>
 <p><a data-route="/materials/napirend/">A nap pontos időrendje →</a></p></section>

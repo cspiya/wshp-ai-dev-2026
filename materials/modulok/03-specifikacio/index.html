@@ -97,9 +97,26 @@
     <p class="takeaway"><strong>Kész, ha:</strong> egy másik ember meg tudja nevezni a scope-ot, minden elfogadási feltétel útját az ellenőrzésig, valamint azt, ki és milyen állapotban döntött. Ha ez nem teljesül, a csomag még nem APPROVED.</p>
   </section>
 
+  <section class="exercise" id="c4-keszito-lepes">
+    <h2>A készítő lépés (C4): a jóváhagyott csomagból commit lesz</h2>
+    <p><strong>Mi ez, és miért?</strong> Eddig a csomag csak dokumentum volt. Ebben a lépésben a <a data-route="/materials/fogalomtar/#maker">készítő</a> szerepű agent — a te felügyeleteddel — implementálja a jóváhagyott csomagot a saját workspace-edben, a nap kitalált munkadarabján (a „KK-Regisztráció” szeleten). A kimenet egy valódi, azonosítható <a data-route="/materials/fogalomtar/#commit">commit</a>: enélkül a 4. modul független review-jának nincs tárgya.</p>
+    <p><span class="time">~20 perc</span></p>
+    <ol>
+      <li>Nyisd meg a saját <strong>APPROVED</strong> csomagod. Ha nincs APPROVED csomagod, használd a tréner referencia-csomagját: <code>toolkit/golden-thread/spec-package/</code> (fejléce: <code>STATUS: C3-APPROVED-CONTRACT</code>).</li>
+      <li>Add az agentnek a csomagot és a repo szabályait, és kérd a <code>TASK-01</code>…<code>TASK-05</code> feladatok végrehajtását a saját workspace-edben. A készítő első lépésként mondja vissza az elfogadási feltételeket és a scope-ot, és csak utána módosítson fájlt.</li>
+      <li>Futtasd a kapukat: <code>npm run typecheck &amp;&amp; npm run lint &amp;&amp; npm run test</code>. Addig iterálj az agenttel, amíg mindhárom zöld.</li>
+      <li>Commitold az eredményt: <code>git add -A</code>, majd <code>git commit -m "feat: KK-Regisztracio slice (C4)"</code>.</li>
+      <li>Rögzítsd az azonosítót: <code>git rev-parse HEAD</code> — ez a <strong>MAKER_SHA</strong>; a 4. modul pontosan ezt a commitot fogja vizsgálni.</li>
+      <li>Írd meg az evidence-fájlt: <code>workshop-evidence/C4-maker.md</code> — benne a MAKER_SHA, a futtatott parancsok és eredményük, valamint a tervtől való eltérések.</li>
+    </ol>
+    <p class="takeaway"><strong>Kész, ha:</strong> mindhárom kapu zöld, létezik a MAKER_SHA, és a <code>workshop-evidence/C4-maker.md</code> mindezt rögzíti.</p>
+    <h3>Elakadás és Plan B</h3>
+    <p>Ha 10 perc után sincs zöld kapud, ne told tovább az időt: kérd a trénertől a <code>partial</code> snapshotot (catch-up alap: a domainréteg és a memória-adapter kész, a többi feladat becsülettel nyitott) vagy a <code>known-good</code> snapshotot (teljes tartalék). A másolás menete a <code>toolkit/golden-thread/README.md</code> leírását követi. Az evidence-fájlban jelöld, hogy snapshotból folytattad: <code>Execution mode: SNAPSHOT</code>.</p>
+  </section>
+
   <section class="grid">
     <article class="card warn"><h2>Tipikus hibák és Plan B</h2><ul><li><strong>Megoldásnak álcázott feltétel:</strong> írd át megfigyelhető viselkedésre.</li><li><strong>Kapcsolódás nélküli feladat:</strong> kösd elfogadási feltételhez vagy töröld.</li><li><strong>Hiányzó döntéshozó:</strong> DECISION REQUIRED; az agent nem hagyhatja jóvá.</li><li><strong>Nincs elérhető BA:</strong> használd a tréner kitalált kéréscsomagját, de a döntési pontot akkor is rögzítsd.</li></ul></article>
-    <article class="card ok"><h2>Átadás a következő modulnak</h2><p>Csak az APPROVED csomag kerülhet a <a data-route="/materials/modulok/04-fuggetlen-review/">4. modul készítő–reviewer–javító ciklusába</a>. A döntés és az öt fájl együtt az átadás.</p><p>Segédlet: <a data-route="/toolkit/utmutatok/specifikacio/">jóváhagyható specifikáció</a>; nagy kép: <a data-route="/materials/modszertan/#fig-evidence-chain">az ellenőrzési eredmény lánca</a>.</p></article>
+    <article class="card ok"><h2>Átadás a következő modulnak</h2><p>Az átadás mostantól három elem együtt: az <strong>APPROVED</strong> csomag, a <a href="#c4-keszito-lepes">C4 készítő lépés</a> <strong>MAKER_SHA</strong> commitazonosítója és a <code>workshop-evidence/C4-maker.md</code> evidence. Csak ez a hármas kerülhet a <a data-route="/materials/modulok/04-fuggetlen-review/">4. modul készítő–reviewer–javító ciklusába</a>.</p><p>Segédlet: <a data-route="/toolkit/utmutatok/specifikacio/">jóváhagyható specifikáció</a>; nagy kép: <a data-route="/materials/modszertan/#fig-evidence-chain">az ellenőrzési eredmény lánca</a>.</p></article>
   </section>
   <nav class="module-nav" aria-label="Modulok közötti navigáció"><a data-route="/materials/modulok/02-repo-felkeszitese/">← 2. A repo felkészítése</a><a data-route="/materials/modulok/04-fuggetlen-review/">4. Független review →</a></nav>
 </main>
