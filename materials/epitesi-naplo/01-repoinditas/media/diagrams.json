@@ -9,11 +9,13 @@
       "rendering": "inline-svg",
       "diagramType": "relationship-map",
       "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
-      "glossarySlugs": ["agent-ready-repo"],
+      "glossarySlugs": [
+        "agent-ready-repo"
+      ],
       "figureSelector": "#fig-j01-synthesis",
       "svgSelector": "#fig-j01-synthesis svg",
       "textFallbackSelector": "#fig-j01-synthesis-text",
-      "inlineSvgHash": "17174af8e35387a862f7e5768e35d1025f1d58579f76840ef90daf3e961b818e"
+      "inlineSvgHash": "3a2f21b8970d46f18395aaecbbd39bef010c3b79646c9b338d034f2407db7c2c"
     },
     {
       "visualQuestionId": "q-journal-01-relationship-1",
@@ -21,7 +23,9 @@
       "type": "relationship",
       "disposition": "shared",
       "takeaway": "A kapcsolatok megmutatják, mely elemek erősítik vagy korlátozzák egymást.",
-      "glossarySlugs": ["agent-ready-repo"],
+      "glossarySlugs": [
+        "agent-ready-repo"
+      ],
       "sharedDiagramId": "fig-product-reference",
       "sharedHref": "../../../index.html#fig-product-reference"
     }

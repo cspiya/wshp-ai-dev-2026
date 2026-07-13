@@ -9,11 +9,13 @@
       "rendering": "inline-svg",
       "diagramType": "relationship-map",
       "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
-      "glossarySlugs": ["quality-gate"],
+      "glossarySlugs": [
+        "quality-gate"
+      ],
       "figureSelector": "#fig-j04-synthesis",
       "svgSelector": "#fig-j04-synthesis svg",
       "textFallbackSelector": "#fig-j04-synthesis-text",
-      "inlineSvgHash": "96b85aa18c190f33c38ae1490e376cbb66e7c982e0c187afc6e125fd35ce7e59"
+      "inlineSvgHash": "2eb74d3a9ddab05c79bff85e2ca91b5497520c2a389ace564c0e5cf27c87b590"
     },
     {
       "visualQuestionId": "q-journal-04-process-1",
@@ -21,7 +23,9 @@
       "type": "process",
       "disposition": "shared",
       "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
-      "glossarySlugs": ["quality-gate"],
+      "glossarySlugs": [
+        "quality-gate"
+      ],
       "sharedDiagramId": "fig-finding-to-guard",
       "sharedHref": "../../minoseg/index.html#fig-finding-to-guard"
     }

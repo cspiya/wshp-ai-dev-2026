@@ -9,11 +9,14 @@
       "rendering": "inline-svg",
       "diagramType": "relationship-map",
       "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
-      "glossarySlugs": ["trace"],
+      "glossarySlugs": [
+        "trace"
+      ],
       "figureSelector": "#fig-naplo-overview",
       "svgSelector": "#fig-naplo-overview svg",
       "textFallbackSelector": "#fig-naplo-overview-text",
-      "inlineSvgHash": "852e23c9cb82687b1e3346d011f01d1b3a145339ca38f7c23f42207787d09ff6"
+      "inlineSvgHash": "0a3a13ef0eae98dcdba2340ab7df16f530e580d60150c08308e850d404070013",
+      "generatedInlineSvgHash": "2700e6716285e3aa3260f6a83b83e92b0012bcc94e8eb4584ce5cee45db9a1d1"
     },
     {
       "id": "fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat",
@@ -24,11 +27,13 @@
       "rendering": "inline-svg",
       "diagramType": "timeline",
       "takeaway": "A sorrend megmutatja, mi mire épül és hol adódik át az eredmény.",
-      "glossarySlugs": ["trace"],
+      "glossarySlugs": [
+        "trace"
+      ],
       "figureSelector": "#fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat",
       "svgSelector": "#fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat svg",
       "textFallbackSelector": "#fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat-text",
-      "inlineSvgHash": "f633c2c29c72306a4c293dc8ab6acb89c8fa3e11e0e8cca09580a335cf50bf3d"
+      "inlineSvgHash": "600e924d04dc0d0f670708f5ec1868c984982ed65d4b12d60221cd8511685feb"
     }
   ]
 }
