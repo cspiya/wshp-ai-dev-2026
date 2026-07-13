@@ -22,8 +22,10 @@ or a compatible license.
 2. Software and executable technical artifacts
 
 Unless a file states otherwise, source code, executable scripts, software
-examples, configuration examples, and workflow definitions are licensed under
-the MIT License below.
+examples, configuration files, and workflow definitions are licensed under
+the MIT License below. For this notice, “Software” in the standard MIT text
+means only those technical artifacts; it does not include the educational
+content assigned to CC BY-NC-SA 4.0 in Section 1.
 
 MIT License
 

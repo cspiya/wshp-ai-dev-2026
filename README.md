@@ -110,7 +110,7 @@ A repó kettős licencelésű:
 - a tananyag, dokumentáció, ábrák és résztvevői HTML a
   [Creative Commons Nevezd meg! – Ne add el! – Így add tovább! 4.0 Nemzetközi](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.hu)
   (`CC BY-NC-SA 4.0`) feltételei szerint használható;
-- a programkód, futtatható scriptek és konfigurációs példák az
+- a programkód, futtatható scriptek, konfigurációs fájlok és workflow-definíciók az
   [MIT licenc](LICENSE) szerint használhatók.
 
 A pontos hatókört, a harmadik féltől származó elemek kezelését és a márkakizárást a

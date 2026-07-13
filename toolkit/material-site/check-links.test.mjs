@@ -24,3 +24,10 @@ test('negative fixture rejects root links, missing anchors and orphans', () => {
   assert.ok(failures.some((x) => x.includes('breaks file://')));
   assert.ok(failures.some((x) => x.includes('orphan page')));
 });
+
+test('extensionless directories still require an index landing page', () => {
+  const root = site({ 'index.html': `${canonical}<a href="deep">Hiányzó landing</a>` });
+  fs.mkdirSync(path.join(root, 'deep'));
+  const failures = validateLinks({ site: root, fileProtocol: true, phase: 'foundation' });
+  assert.ok(failures.some((x) => x.includes('missing target: deep')));
+});
