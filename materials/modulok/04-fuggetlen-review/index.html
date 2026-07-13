@@ -18,6 +18,13 @@
     <p class="takeaway"><strong>Lényeg:</strong> a review-megállapítás még nem tény. Előbb ellenőrizni kell, aztán elfogadni vagy indokoltan elvetni, végül a javítást újra ellenőrizni.</p>
 </header>
 
+<aside class="zero-cli" role="note" aria-label="A workshop állandó szabálya: nulla begépelt parancs">
+  <p class="zero-cli-kicker">A workshop állandó szabálya</p>
+  <p class="zero-cli-title">Egyetlen parancsot sem gépelsz be — mindent az agenttől kérsz</p>
+  <p>A nap során egyetlen dolgot indítasz el: a Claude Code-ot vagy a Codexet. Minden más technikai lépést — telepítést, git-műveletet, tesztet, ellenőrzést — promptban kérsz az agenttől. A lapokon látható parancsblokkok az agent munkájának nyomai és bizonyítékai, nem begépelnivalók.</p>
+  <p>Nem kell tehát megtanulnod egyetlen eszköz szintaxisát sem. Ami tőled kell: érteni, hogy melyik eszköz mire való, mik az erősségei és a korlátai — mert a döntéseket végig te hozod, az agent végrehajt és bizonyít.</p>
+</aside>
+
   <section class="ai-companion" aria-labelledby="m04-ai"><h2 id="m04-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Te zárod le az ACCEPTED/REJECTED döntéseket és nem engedsz tovább nyitott magas súlyosságú tétellel.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Elkülönített agent-szerepek</h3><p>A maker rögzített SHA-t ad át; friss reviewer bizonyít; fixer csak elfogadott findingot javít.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>MAKER_SHA, deduplikált findingok, döntések, FIX_SHA, kapueredmény és re-review.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>A reviewer új kontextusban ellenőrzi a fixet és a kapcsolódó regressziós kockázatot.</p></article></div><p>Egy primary agent elég a kötelező úthoz, de a reviewernek friss kontextus kell; ugyanabban a beszélgetésben a szerepcsere nem független review.</p></section>
 
   <section class="grid" aria-label="A modul keretei">
@@ -69,6 +76,10 @@
 
   <section class="exercise">
     <h2>Gyakorlat: futtass végig egy ellenőrizhető review-kört</h2>
+    <div class="workspace-cue">
+      <p><strong>Hol dolgozol:</strong> a saját írható gyakorlórepódban, a <code>participant-repo</code> mappában — ezt a felkészülési bootstrap hozta létre a résztvevői starterből (lásd a <a data-route="/materials/repo-terkep/">repo-térképet</a>). A workshop-source repó végig csak olvasásra szolgál.</p>
+      <p><strong>Honnan olvas az agent:</strong> a RUG-review skillt és az orkesztrátor-kontraktust a workshop-source-ból: <code>toolkit/skills/rug-review/</code> és <code>toolkit/orchestrator/</code>; az elrontott pillanatkép a False-positive Hunterhez: <code>toolkit/golden-thread/fixtures/snapshots/broken</code>. Háttér: a <a data-route="/toolkit/utmutatok/fuggetlen-review/">független review útmutató</a>.</p>
+    </div>
     <p><strong>Cél:</strong> minden review-megállapítás kapjon bizonyított sorsot, és ne maradjon újraellenőrizetlen magas súlyosságú tétel.</p>
     <ol>
       <li>A készítő rögzítse a vizsgált commitazonosítót: <code>MAKER_SHA</code> (a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">3. modul C4 készítő lépésében</a> már létrejött — onnan hozod magaddal).</li>

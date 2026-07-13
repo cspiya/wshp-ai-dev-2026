@@ -75,6 +75,7 @@
 | <a id="browser-agent"></a>**Browser agent** | Böngészőt eszközként használó agent, amely oldalt nyit meg, interakciót végez, vizuális állapotot és hibát vizsgál, majd bizonyítékot ad vissza. Bejelentkezett Chrome-állapothoz külön engedélyezett bővítmény kell. [Hivatalos OpenAI leírás](https://learn.chatgpt.com/docs/chrome-extension) |
 | <a id="guardrail"></a>**Guardrail / védősáv** | Az agent mozgásterét előre korlátozó technikai vagy folyamati védelem, például engedélyprofil, védett útvonal vagy kötelező emberi kapu. Nem azonos a kész állapotot bizonyító quality gate-tel. |
 | <a id="ai-reinforced-human-learning-loop"></a>**AI-val megerősített emberi tanulási ciklus** | Workshop-saját pedagógiai mikro-ciklus: emberi előrejelzés vagy döntés → AI-magyarázat/végrehajtás → evidence-vizsgálat → korrekció → emberi összegzés. Nem modelltréning, nem RLHF, és nem nevezzük `RHEL`-nek. |
+| <a id="workshop-passport"></a>**Workshop passport** | C0–C7 pecsételhető állomáskártya: minden checkpoint a megnevezett evidence-fájl meglétével zárható le — a pecsét bizonyítékra jár, nem gyorsaságra. Forrása a toolkit `checklists/workshop-passport.md`; letölthető a repo-térkép oldaláról. |
 
 ---
 

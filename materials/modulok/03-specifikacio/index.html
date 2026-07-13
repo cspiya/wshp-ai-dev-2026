@@ -18,6 +18,13 @@
     <p class="takeaway"><strong>Lényeg:</strong> implementáció csak jóváhagyott, végigkövethető csomagból indulhat; a bizonytalanságot nem kódba, hanem <a data-route="/materials/fogalomtar/#decision-gate">döntési pontra</a> visszük.</p>
 </header>
 
+<aside class="zero-cli" role="note" aria-label="A workshop állandó szabálya: nulla begépelt parancs">
+  <p class="zero-cli-kicker">A workshop állandó szabálya</p>
+  <p class="zero-cli-title">Egyetlen parancsot sem gépelsz be — mindent az agenttől kérsz</p>
+  <p>A nap során egyetlen dolgot indítasz el: a Claude Code-ot vagy a Codexet. Minden más technikai lépést — telepítést, git-műveletet, tesztet, ellenőrzést — promptban kérsz az agenttől. A lapokon látható parancsblokkok az agent munkájának nyomai és bizonyítékai, nem begépelnivalók.</p>
+  <p>Nem kell tehát megtanulnod egyetlen eszköz szintaxisát sem. Ami tőled kell: érteni, hogy melyik eszköz mire való, mik az erősségei és a korlátai — mert a döntéseket végig te hozod, az agent végrehajt és bizonyít.</p>
+</aside>
+
   <section class="ai-companion" aria-labelledby="m03-ai"><h2 id="m03-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Te válaszolod meg az üzleti kérdéseket, zárod a <a data-route="/materials/fogalomtar/#scope">scope-ot</a>, és kizárólag te adsz APPROVED vagy BLOCKED verdiktet.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Agentfeladat</h3><p>Az agent kérdésekkel feltárja a hiányokat, majd megírja és visszaköti az ötfájlos spec-csomag tervezetét.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>Minden <a data-route="/materials/fogalomtar/#acceptance-criteria">elfogadási feltétel</a> útja a scenario, task és agent-run ellenőrzés felé; lezárt döntési napló.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>Rejtett termékdöntésnél vagy követhetetlen feltételnél a csomag visszamegy pontosításra.</p></article></div><p>Az agent szerzőtárs, nem jóváhagyó. A specifikáció az implementáló agent munkaszerződése.</p></section>
 
   <section class="meta" aria-label="A modul keretei">
@@ -84,6 +91,10 @@
 
   <section class="exercise">
     <h2>Gyakorlat: készíts jóváhagyható csomagot</h2>
+    <div class="workspace-cue">
+      <p><strong>Hol dolgozol:</strong> a saját írható gyakorlórepódban, a <code>participant-repo</code> mappában — ezt a felkészülési bootstrap hozta létre a résztvevői starterből (lásd a <a data-route="/materials/repo-terkep/">repo-térképet</a>). A workshop-source repó végig csak olvasásra szolgál.</p>
+      <p><strong>Honnan olvas az agent:</strong> a kitalált üzleti briefet és a referencia spec-csomagot a workshop-source <code>toolkit/golden-thread/</code> mappájából (a README és a <code>spec-package/</code>); az elkészülő ötfájlos csomag a saját repódba kerül.</p>
+    </div>
     <p><strong>Cél:</strong> a kapott kitalált üzleti kérésből olyan <a data-route="/materials/fogalomtar/#artifact">munkadarabot</a> készíteni, amelyben nincs elrejtett implementációs vagy üzleti döntés.</p>
     <ol>
       <li>Add át az agentnek a kitalált üzleti kérést, a repo szabályait és a döntési határt. Kérd, hogy előbb kérdezzen, és csak a hiányok tisztázása után készítsen fájlokat.</li>

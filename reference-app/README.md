@@ -17,6 +17,46 @@ Greenfield reference project of the **Wenova AI-Assisted Development Workshop**:
 TanStack Query** on **Vercel**, structured as a **modular monolith of vertical
 slices** — one bounded context = one module = one agent's working set.
 
+## Tech stack — and why (AI-native choices)
+
+The stack above was not picked by feature list — every piece had to be drivable by
+an agent end to end.
+
+| Layer | Choice | Why |
+|---|---|---|
+| App framework | Next.js App Router + TypeScript | Conventional, strongly represented in agent training corpora, machine-checkable end to end (typecheck/lint/test/build). |
+| UI | Tailwind + shadcn/ui (local source) | Components are editable source under `src/components/ui/` — agents read and edit them directly. |
+| API layer | tRPC + Zod + TanStack Query | End-to-end typed chain: a contract violation is a typecheck failure, not a runtime surprise. |
+| Database | Neon Postgres + Drizzle | DB branch per preview deployment + MCP; committed SQL migrations keep schema changes reviewable. |
+| Auth | Neon Auth | Users land in **our own Postgres** — no second user store to sync, and the data stays queryable through the same DB tooling. |
+| Payments | `PaymentPort` + fake adapter | The swappable-boundary lesson: the varying vendor is isolated behind a port, so a real adapter can replace the fake one without touching checkout code. |
+| Hosting + previews | Vercel | Preview per PR + MCP — every change gets a live URL agents can test against. |
+| Work state | Linear (issue = spec) | The issue IS the spec; via MCP the agent reads and updates work state itself. |
+| Source + gates | GitHub (gh CLI, PR checks) | Machine-drivable source control and merge gates. |
+| Design step | v0 / Claude Design | Agent-drivable design step. |
+| Agents | Claude Code CLI + Codex | Two independent agentic harnesses for maker/reviewer separation and model-swap evals. |
+
+### What makes a system AI-native?
+
+**AI-first / AI-native development** = the system is designed so an AI agent is a
+first-class co-worker in it, not a tool bolted on afterwards. Four criteria:
+
+1. **Fast, cheap cycles** — every change builds, tests and gets a preview in minutes
+   (CI + per-PR previews + branched database); infrastructure must never be the
+   bottleneck of the agent's iteration speed.
+2. **Per-feature separation** — one module = one agent workspace (vertical slice,
+   enforced boundaries): small context, small blast radius, each feature independently
+   DEVELOPABLE and VERIFIABLE, parallelizable agent work. In this repo that is the
+   architecture itself — the vertical slice ("one module, one agent workspace") is the
+   #1 AI-quality lever; see [Structure](#structure) below.
+3. **Full AI-integrability** — every tool has a machine interface (CLI / API / MCP);
+   wherever only a human can click, the agent chain breaks.
+4. **Contracts + verification** — spec, rules, gates, independent review
+   ([RUG](../materials/fogalomtar.md#rug)), evidence (the pillar the workshop already
+   teaches).
+
+Stack selection principle: **"AI-integrability > feature list."**
+
 ## Quick start
 
 ```bash
@@ -58,6 +98,11 @@ src/
       acceptance/           Gherkin acceptance criteria (map to tests)
       workshops.contract.ts the ONLY import surface for other modules
       AGENTS.md, README.md  module-scoped rules + docs
+    orders/                 webshop journey: catalog → cart → checkout → confirmation
+                            (guest/company buyer, qty limits, coupon, net+VAT pricing)
+    registrations/          workshop sign-up slice (in-memory + Drizzle adapters)
+    pricing/                pure pricing domain (calculation order, rounding)
+    checkout/               payment flow behind PaymentPort (fake adapter)
     identity/               minimal empty-module boundary demo (NOT the template)
   platform/                 cross-cutting: db client (Neon+Drizzle), env, tRPC init
   contracts/                zod schemas shared across module boundaries

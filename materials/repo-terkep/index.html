@@ -66,6 +66,30 @@
         </p>
       </header>
 
+      <aside
+        class="zero-cli"
+        role="note"
+        aria-label="A workshop állandó szabálya: nulla begépelt parancs"
+      >
+        <p class="zero-cli-kicker">A workshop állandó szabálya</p>
+        <p class="zero-cli-title">
+          Egyetlen parancsot sem gépelsz be — mindent az agenttől kérsz
+        </p>
+        <p>
+          A nap során egyetlen dolgot indítasz el: a Claude Code-ot vagy a
+          Codexet. Minden más technikai lépést — telepítést, git-műveletet,
+          tesztet, ellenőrzést — promptban kérsz az agenttől. A lapokon látható
+          parancsblokkok az agent munkájának nyomai és bizonyítékai, nem
+          begépelnivalók.
+        </p>
+        <p>
+          Nem kell tehát megtanulnod egyetlen eszköz szintaxisát sem. Ami tőled
+          kell: érteni, hogy melyik eszköz mire való, mik az erősségei és a
+          korlátai — mert a döntéseket végig te hozod, az agent végrehajt és
+          bizonyít.
+        </p>
+      </aside>
+
       <section>
         <h2>Miből áll a repo, és hol dolgozol te?</h2>
         <p>
@@ -521,7 +545,8 @@
           <dd>
             <strong>Mi ez:</strong> a workshopon két különböző coding agent
             használható; mindkettőhöz ugyanaz a szabályrendszer és ugyanazok a
-            kapuk tartoznak, csak az indító parancsok különböznek.
+            kapuk tartoznak. Te mindkettőt csak elindítod — minden mást
+            prompttal kérsz, szintaxist egyikhez sem tanulsz.
             <strong>Miért van kettő:</strong> pontosan azt bizonyítjuk vele,
             hogy a minőséget a <em>keretrendszer</em> tartja (repo-szabályok,
             spec, review, gépi kapuk), nem egyetlen eszköz. Ha holnap eszközt
@@ -540,20 +565,84 @@
       </section>
 
       <section>
+        <h2>Mit klónozol, mit veszel át, mit csak nézel?</h2>
+        <p>
+          <strong>Miért:</strong> gyakori félreértés, hogy a toolkitből kézzel
+          kell fájlokat másolgatni a saját repódba. Nem kell: az átvétel mindig
+          az agent dolga, és mindig egy checkpointhoz kötődik.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Terület</th>
+              <th>Mikor nyúlsz hozzá</th>
+              <th>Hogyan kerül hozzád</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong
+                  ><a data-route="/participant-starter/"
+                    >Résztvevői starter</a
+                  ></strong
+                >
+              </td>
+              <td>Egyszer, a nap elején (C0)</td>
+              <td>
+                A bootstrap — agent futtatja — ebből másolja ki a saját írható
+                <code>participant-repo</code> mappádat: appváz, CI-kapuk,
+                MCP-konfiguráció és házirend előre bekötve. Kézzel semmit sem
+                rakosgatsz össze.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><a data-route="/toolkit/">Toolkit</a></strong>
+              </td>
+              <td>Képességenként, állomásról állomásra</td>
+              <td>
+                Nem klónozod egyben. Az agent mindig az adott állomás csomagját
+                veszi át: C1 — mérnöki standard; C3 — spec-sablonok; C4–C5 —
+                RUG-orkesztráció és gépi kapuk; C6–C7 — projektmemória és
+                bevezetési sablonok. Hazafelé ugyanígy: a következő bevezetendő
+                képesség csomagját viszed a saját projektedbe, nem az egészet.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong
+                  ><a data-route="/reference-app/">Referencia-app</a></strong
+                >
+              </td>
+              <td>Soha nem másolod, csak olvasod</td>
+              <td>
+                Kész, tesztelt példa: mintát olvasol belőle (és az agent is),
+                de nem szerkeszted és nem klónozod — a saját megfelelődet a
+                starterből épült repódban építed.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
         <h2>
           A C0–C7 checkpoint-szerződés — parancs, bizonyíték, helyreállítás
         </h2>
         <p>
           <strong>Miért:</strong> minden állomásnak rögzített bemenete,
           parancsa, bizonyítéka és tartalékútja van. Ha elakadsz, nem
-          improvizálsz: megnézed itt, mi a helyreállítás.
+          improvizálsz: megnézed itt, mi a helyreállítás. A kulcsparancsokat
+          itt is az agent futtatja — te a checkpoint kérését promptolod, a
+          parancs a bizonyítékban jelenik meg.
         </p>
         <table>
           <thead>
             <tr>
               <th>Checkpoint</th>
               <th>Mit adsz át</th>
-              <th>Kulcsparancs</th>
+              <th>Kulcsparancs (az agent futtatja)</th>
               <th>Evidence</th>
               <th>Ha elakadsz</th>
             </tr>

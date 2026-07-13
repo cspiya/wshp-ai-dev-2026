@@ -58,6 +58,13 @@
   <p class="mobile-hint"><strong>Keskeny képernyőn:</strong> az ábrák oldalirányban görgethetők, így a feliratok olvasható méretűek maradnak. Minden ábra alatt teljes szöveges megfelelő is található.</p>
 </section>
 
+<aside class="zero-cli" role="note" aria-label="A workshop állandó szabálya: nulla begépelt parancs">
+  <p class="zero-cli-kicker">A workshop állandó szabálya</p>
+  <p class="zero-cli-title">Egyetlen parancsot sem gépelsz be — mindent az agenttől kérsz</p>
+  <p>A nap során egyetlen dolgot indítasz el: a Claude Code-ot vagy a Codexet. Minden más technikai lépést — telepítést, git-műveletet, tesztet, ellenőrzést — promptban kérsz az agenttől. A lapokon látható parancsblokkok az agent munkájának nyomai és bizonyítékai, nem begépelnivalók.</p>
+  <p>Nem kell tehát megtanulnod egyetlen eszköz szintaxisát sem. Ami tőled kell: érteni, hogy melyik eszköz mire való, mik az erősségei és a korlátai — mert a döntéseket végig te hozod, az agent végrehajt és bizonyít.</p>
+</aside>
+
 <section class="ai-companion" aria-labelledby="m01-ai"><h2 id="m01-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Megnevezed a repo feltételezett célját, az ismeretleneket és azt, miről nem dönthet az agent.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Agentfeladat</h3><p>Claude Code vagy Codex csak olvasva feltárja a repót, forrást idéz, és elkészíti a helyzetkép tervezetét.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>Három ismeretlen, fájlhivatkozások, szerephatárok és következő emberi döntés.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>Te ellenőrzöd az ismeretleneket és a döntési határt; feltételezésből nem lesz tény.</p></article></div><p><strong>Tanulási ciklus:</strong> előbb te jósolod meg, mit fog találni az agent; az evidence után saját szavaiddal összegzed, mi változott a mentális modelledben.</p></section>
 
 <section aria-labelledby="attekintes">
@@ -156,6 +163,10 @@
 
 <section aria-labelledby="gyakorlat">
 <h2 id="gyakorlat">Gyakorlat: készíts repo-helyzetképet</h2>
+<div class="workspace-cue">
+  <p><strong>Hol dolgozol:</strong> a saját írható gyakorlórepódban, a <code>participant-repo</code> mappában — ezt a felkészülési bootstrap hozta létre a résztvevői starterből (lásd a <a data-route="/materials/repo-terkep/">repo-térképet</a>). A tananyag-repó (<code>workshop-source</code>) végig csak olvasásra szolgál.</p>
+  <p><strong>Honnan olvas az agent:</strong> a saját repód fájljaiból — te csak a kérést és a döntéseket adod, megnyitnod semmit sem kötelező.</p>
+</div>
 <p><strong>Cél:</strong> ne javíts még semmit. Készíts olyan diagnózist, amelyből más megérti, mire van elég információ, hol kell megállni, és mi a következő döntés.</p>
 <ol class="steps">
   <li><strong>Mondd ki a saját előrejelzésedet.</strong> Mielőtt az agent vizsgálódik, nevezd meg a repo feltételezett célját és két várható ismeretlent.</li>
@@ -166,7 +177,8 @@
   <li><strong>Kérj legalább három ismeretlent.</strong> Mindegyikhez legyen forrás, jelentőség, válaszadó szerep és addig tiltott feltételezés.</li>
   <li><strong>Zárd emberi kapuval.</strong> Válaszd ki az egyetlen következő döntést; eltérésnél add vissza a diagnózist pontos korrekcióval.</li>
 </ol>
-<h3>A pontos kimenet</h3><p>Kérd meg az agentet, hogy hozza létre a <code>workshop-evidence/01-helyzetkep.md</code> fájlt az alábbi szerződés szerint. A sablon technikai artifact; nem parancslista a résztvevőnek.</p>
+<h3>A pontos kimenet</h3><p>Kérd meg az agentet, hogy hozza létre a <code>workshop-evidence/01-helyzetkep.md</code> fájlt az alábbi szerződés szerint.</p>
+<p class="agent-run">🤖 Agent készíti — technikai sablon, nem begépelnivaló</p>
 <pre><code># Repo-helyzetkép
 
 ## A repo célja
@@ -203,7 +215,7 @@
 ...</code></pre>
 <div class="grid">
   <aside class="check"><h3>Ellenőrzés: társ-visszamondás</h3><ol><li>Add át a fájlt egy társnak vagy friss agent-sessionnek.</li><li>Csak a fájlt olvashatja; ne magyarázd szóban.</li><li>Mondjon vissza két megengedett és két tiltott feltételezést, az agent-run ellenőrzést és a következő döntést.</li><li>Eltérésnél kérd az eredeti agentet a fájl pontosítására, majd ismételjétek meg.</li></ol><p><strong>Kész:</strong> a visszamondás egyezik a leírt határokkal; az ellenőrzés várt és tényleges eredménye elkülönül; mindhárom ismeretlenhez van válaszadó szerep.</p></aside>
-  <aside class="plan-b"><h3>Plan B: nincs használható repo</h3><p>Használd a tréner által adott, kitalált starter-pillanatképet. A helyzetkép első sora legyen: <strong>„PLAN B — kitalált starter-pillanatkép alapján.”</strong> Ugyanazt a hét lépést és társellenőrzést végezd el. Ne állítsd, hogy a saját rendszeredet vizsgáltad.</p><p><strong>Tipikus hiba:</strong> a hiányzó információt valószínű részlettel pótolni. Helyette írd le ismeretlenként és nevezd meg a döntési felelőst.</p></aside>
+  <aside class="plan-b"><h3>Plan B: nincs használható repo</h3><p>Kérd meg az agentet, hogy a tananyag-repó kitalált pillanatképéből dolgozzon: <code>toolkit/golden-thread/fixtures/snapshots/known-good</code> (ha ez sem elérhető, a tréner ad másolatot). A helyzetkép első sora legyen: <strong>„PLAN B — kitalált starter-pillanatkép alapján.”</strong> Ugyanazt a hét lépést és társellenőrzést végezd el. Ne állítsd, hogy a saját rendszeredet vizsgáltad.</p><p><strong>Tipikus hiba:</strong> a hiányzó információt valószínű részlettel pótolni. Helyette írd le ismeretlenként és nevezd meg a döntési felelőst.</p></aside>
 </div>
 </section>
 

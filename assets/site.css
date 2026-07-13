@@ -138,6 +138,76 @@ html main pre > code {
   overflow-wrap: normal;
 }
 
+/* Standing zero-CLI contract. The single strongest callout on the site:
+   the participant launches the agent once and prompts everything else —
+   no CLI syntax is ever typed by hand. Repeated at the top of the hub,
+   the repo map and every module so it cannot be missed. */
+.zero-cli {
+  margin: 1.6rem 0;
+  padding: clamp(1.05rem, 2.5vw, 1.5rem) clamp(1.05rem, 2.5vw, 1.6rem);
+  border: 2px solid var(--accent);
+  border-left-width: 0.5rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #ffffff 0%, var(--soft-accent) 85%);
+  box-shadow: var(--shadow);
+}
+.zero-cli-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+.zero-cli-title {
+  margin: 0 0 0.55rem;
+  font-size: 1.26rem;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.zero-cli > :last-child {
+  margin-bottom: 0;
+}
+
+/* Per-module orientation strip: which folder the participant works in and
+   which workshop assets the agent reads for them. */
+.workspace-cue {
+  margin: 1rem 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed var(--accent);
+  border-radius: 0.65rem;
+  background: var(--paper);
+}
+.workspace-cue > :first-child {
+  margin-top: 0;
+}
+.workspace-cue > :last-child {
+  margin-bottom: 0;
+}
+
+/* Standard annotation for command/transcript blocks: the agent runs these,
+   the participant never types them. One shared wording, one shared look. */
+.agent-run {
+  display: inline-block;
+  margin: 0.7rem 0 -0.35rem;
+  padding: 0.16rem 0.6rem;
+  border: 1px solid var(--agent);
+  border-radius: 999px;
+  background: var(--agent-soft);
+  color: var(--accent-deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@media print {
+  .zero-cli,
+  .workspace-cue {
+    break-inside: avoid-page;
+  }
+}
+
 /* Shared participant exercise contract. Pages introduce this progressively;
    the roles keep human judgment distinct from agent and machine work. */
 .ai-companion {

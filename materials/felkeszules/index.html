@@ -92,6 +92,32 @@
   </section>
 
   <section>
+    <h2>Accountok és MCP-összekapcsolás</h2>
+    <p>A workshopon külső szolgáltatásokat is használunk. Hozd létre (vagy ellenőrizd)
+    az accountjaidat ebben a sorrendben — a későbbiek az előzőkre épülnek:</p>
+    <ol>
+      <li><strong>GitHub</strong> — a saját e-mail-címeddel; ez lesz a repóid és a CI otthona.</li>
+      <li><strong>Vercel</strong> — GitHubbal lépj be (deploy és preview).</li>
+      <li><strong>Neon</strong> — GitHubbal lépj be (adatbázis).</li>
+      <li><strong>Linear</strong> — munkaállapot és issue-k.</li>
+      <li><strong>v0</strong> — opcionális, csak a design-generáló gyakorlathoz.</li>
+    </ol>
+    <p>Az account-létrehozásban a böngészőagent végigvezethet (5. lépés), de
+    bejelentkezést, jelszót és OAuth-jóváhagyást mindig te adsz meg — ez emberi kapu.</p>
+    <p><strong>MCP-összekapcsolás az agentből.</strong> A workshop-repók
+    <code>.mcp.json</code>-ja már tartalmazza a Linear, GitHub, Neon és Vercel
+    MCP-kapcsolatot, titok nélkül. Claude Code-ban a <code>/mcp</code> menüből
+    engedélyezed őket OAuth-tal: a <strong>Linear, a Neon és a Vercel</strong> így
+    azonnal működik.</p>
+    <p><strong>GitHub-kivétel.</strong> A GitHub MCP OAuth-ja jelenleg nem működik
+    Claude Code-ból (a szerver nem támogat dinamikus kliensregisztrációt). Nem akadály:
+    a GitHub-műveleteket az agent a <code>gh</code> CLI-n keresztül végzi. Ehhez
+    egyszer kell bejelentkezned — kérd meg az agentet, hogy indítsa el a GitHub CLI
+    böngészős bejelentkezését, és a megnyíló oldalon hagyd jóvá. A <code>github</code>
+    MCP-bejegyzés maradhat a konfigurációban; ha az agent kihagyja, az nem hiba.</p>
+  </section>
+
+  <section>
     <h2>Lépésről lépésre: három bootstrap-kivétel, aztán agent-run C0</h2>
     <h3 id="lepes-1">1. Scoop telepítése, ha szükséges</h3>
     <p>Töltsd le a <a href="../../downloads/toolkit/setup/scoop-telepito.cmd" download>scoop-telepito.cmd</a>
