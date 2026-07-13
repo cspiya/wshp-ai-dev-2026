@@ -19,11 +19,11 @@ Válassz egy sort, és először csak a **„Most ezt tedd”** lépést nyisd m
 
 | Útvonal | Neked szól, ha… | Most ezt tedd |
 |---|---|---|
-| **Résztvevő — a workshop előtt** | még a környezetedet készíted elő | Kövesd a telepítési útmutatót ([repo](materials/setup-guide.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/setup-guide.html)) elejétől a végén lévő ellenőrzésig. |
-| **Résztvevő — a workshop közben** | már a helyszínen dolgozol | Nyisd meg a B0 — Bevezető notebookot ([offline](materials/notebooks/00-bevezeto.html) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/notebooks/00-bevezeto.html)), és végezd el a C0-diagnózist. |
+| **Résztvevő — a workshop előtt** | még a környezetedet készíted elő | Kövesd a telepítési útmutatót ([repo](materials/setup-guide.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/felkeszules/)) elejétől a végén lévő ellenőrzésig. |
+| **Résztvevő — a workshop közben** | már a helyszínen dolgozol | Nyisd meg az 1. modult ([repo](materials/modulok/01-agentikus-fejlesztes/index.html) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/modulok/01-agentikus-fejlesztes/)), és végezd el a C0-diagnózist. |
 | **Résztvevő — a workshop után** | a saját projektedbe vinnéd át a módszert | Indulj a hazavihető toolkitből ([repo](toolkit/README.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/toolkit/)), és válaszd ki a következő bevezetendő képességet. |
-| **Tréner** | a nap menetét, kapuit és tartalék útvonalait készíted elő | Ellenőrizd a napirend ([repo](materials/agenda.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/agenda.html)) első blokkjának célját, idejét és kimenetét. |
-| **Közreműködő vagy agent** | ezen a repón dolgozol vagy review-t végzel | Olvasd el a gyökér működési szerződését ([repo](AGENTS.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/AGENTS.html)), mielőtt feladatot veszel fel. |
+| **Tréner** | a nap menetét, kapuit és tartalék útvonalait készíted elő | Ellenőrizd a napirend ([repo](materials/agenda.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/napirend/)) első blokkjának célját, idejét és kimenetét. |
+| **Közreműködő vagy agent** | ezen a repón dolgozol vagy review-t végzel | Olvasd el a gyökér működési szerződését ([repo](AGENTS.md)), mielőtt feladatot veszel fel. |
 
 A teljes modulválasztó a [tananyag-notebookok indexében](materials/notebooks/README.md), a
 nap központi gondolatmenete pedig a [big picture](materials/big-picture.md) dokumentumban található.

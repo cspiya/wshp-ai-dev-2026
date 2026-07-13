@@ -46,3 +46,10 @@ Each subproject has its own rules — read them before working there:
    picture shifts.
 10. **Review feedback is not gospel:** verify before implementing (see the shadcn case,
     day-1 journal) — and builders may deviate from spec IF they say so and document why.
+11. **Two content layers (2026-07-13 human decision):** the Markdown files under
+    `materials/`, `toolkit/README.md` and the app READMEs are the SOURCE/instructor/AI
+    layer — they explain what the material is, why it exists and how it is built, and
+    must stay readable on GitHub. The generated HTML site (`build-site.mjs` → Pages) is
+    the PARTICIPANT layer. Overlap is accepted; never reduce the Markdown layer to
+    redirect stubs again. `materials/notebooks/` is the exception: retired, redirects
+    only.
