@@ -11,3 +11,7 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+
+# Instructor-only sensitive projection assets (wifi/Discord QR) — live on the
+# internal Drive and are copied here by start-welcome.cmd at launch; never commit.
+materials/instruktor/entry/local/
