@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -61,70 +60,77 @@ export function WorkshopForm({
       )}
     >
       <div className="space-y-2">
-        <Label htmlFor="title">Title</Label>
-        <Input id="title" {...form.register("title")} />
-        {errors.title && <p className="text-sm text-destructive">{errors.title.message}</p>}
+        <Label htmlFor="title" className="micro-label">Title</Label>
+        <Input id="title" className="bg-white" {...form.register("title")} />
+        {errors.title && <p role="alert" className="text-sm text-destructive">{errors.title.message}</p>}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Textarea id="description" {...form.register("description")} />
+        <Label htmlFor="description" className="micro-label">Description</Label>
+        <Textarea id="description" className="bg-white" {...form.register("description")} />
         {errors.description && (
-          <p className="text-sm text-destructive">{errors.description.message}</p>
+          <p role="alert" className="text-sm text-destructive">{errors.description.message}</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="date">Date</Label>
-          <Input id="date" type="datetime-local" {...form.register("date")} />
-          {errors.date && <p className="text-sm text-destructive">{errors.date.message}</p>}
+          <Label htmlFor="date" className="micro-label">Date</Label>
+          <Input id="date" type="datetime-local" className="bg-white" {...form.register("date")} />
+          {errors.date && <p role="alert" className="text-sm text-destructive">{errors.date.message}</p>}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
-          <Input id="location" {...form.register("location")} />
+          <Label htmlFor="location" className="micro-label">Location</Label>
+          <Input id="location" className="bg-white" {...form.register("location")} />
           {errors.location && (
-            <p className="text-sm text-destructive">{errors.location.message}</p>
+            <p role="alert" className="text-sm text-destructive">{errors.location.message}</p>
           )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="listPriceHuf">List price (HUF)</Label>
+          <Label htmlFor="listPriceHuf" className="micro-label">List price (HUF)</Label>
           <Input
             id="listPriceHuf"
+            className="bg-white"
             type="number"
             min={0}
             {...form.register("listPriceHuf", { valueAsNumber: true })}
           />
           {errors.listPriceHuf && (
-            <p className="text-sm text-destructive">{errors.listPriceHuf.message}</p>
+            <p role="alert" className="text-sm text-destructive">{errors.listPriceHuf.message}</p>
           )}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="capacity">Capacity</Label>
+          <Label htmlFor="capacity" className="micro-label">Capacity</Label>
           <Input
             id="capacity"
+            className="bg-white"
             type="number"
             min={1}
             {...form.register("capacity", { valueAsNumber: true })}
           />
           {errors.capacity && (
-            <p className="text-sm text-destructive">{errors.capacity.message}</p>
+            <p role="alert" className="text-sm text-destructive">{errors.capacity.message}</p>
           )}
         </div>
       </div>
 
-      {submitError && <p className="text-sm text-destructive">{submitError}</p>}
+      {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
 
-      <div className="flex gap-2">
-        <Button type="submit" disabled={submitting}>
+      <div className="flex flex-wrap gap-3 border-t pt-4">
+        <button type="submit" className="keycap min-h-11" disabled={submitting}>
           {submitting ? "Saving…" : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={onCancel} disabled={submitting}>
+        </button>
+        <button
+          type="button"
+          className="btn-plate min-h-11"
+          onClick={onCancel}
+          disabled={submitting}
+        >
           Cancel
-        </Button>
+        </button>
       </div>
     </form>
   );
