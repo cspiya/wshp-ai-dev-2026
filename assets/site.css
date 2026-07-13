@@ -13,11 +13,17 @@
   --accent-deep: #1e3fae;
   --accent-ink: #ffffff;
   --human: #7c3aed;
+  --human-soft: #f3e8ff;
   --agent: #0b5fff;
+  --agent-soft: #e8f0ff;
   --machine: #047857;
+  --machine-soft: #e7f7f0;
   --artifact: #b45309;
+  --artifact-soft: #fff4e5;
   --evidence: #0e7490;
+  --evidence-soft: #e7f7fa;
   --risk: #b91c1c;
+  --risk-soft: #feecec;
   --canvas: #f6f8fc;
   --soft-accent: #edf3ff;
   --shadow: 0 10px 30px rgba(26, 35, 50, 0.07);
@@ -71,6 +77,61 @@ code {
   font-size: 0.92em;
   overflow-wrap: anywhere;
 }
+pre {
+  margin: 0.9rem 0;
+  padding: 1rem 1.1rem;
+  overflow: auto;
+  border: 1px solid #263550;
+  border-radius: 0.7rem;
+  background: #111a31;
+  color: #ffffff;
+  font-family: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  tab-size: 2;
+  white-space: pre;
+}
+html main pre > code {
+  display: inline;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  overflow-wrap: normal;
+}
+
+/* Shared participant exercise contract. Pages introduce this progressively;
+   the roles keep human judgment distinct from agent and machine work. */
+.ai-companion {
+  margin: 1.5rem 0;
+  padding: clamp(1rem, 2.5vw, 1.4rem);
+  border: 1px solid #cbd8f5;
+  border-left: 0.35rem solid var(--agent);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #ffffff 0%, var(--agent-soft) 140%);
+  box-shadow: var(--shadow-soft);
+}
+.ai-companion > :first-child { margin-top: 0; }
+.ai-companion > :last-child { margin-bottom: 0; }
+.ai-companion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+}
+.ai-role {
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: var(--paper);
+}
+.ai-role[data-role="human"] { border-color: var(--human); background: var(--human-soft); }
+.ai-role[data-role="agent"] { border-color: var(--agent); background: var(--agent-soft); }
+.ai-role[data-role="machine"] { border-color: var(--machine); background: var(--machine-soft); }
+.ai-role[data-role="evidence"] { border-color: var(--evidence); background: var(--evidence-soft); }
+.ai-role[data-role="risk"] { border-color: var(--risk); background: var(--risk-soft); }
 
 /* ---------- Two-column frame: sidebar + content ---------- */
 
@@ -421,6 +482,24 @@ figure svg {
   max-width: min(100%, calc(var(--svg-w, 56rem) * 1.15));
   margin-inline: auto;
 }
+/* Semantic diagram roles. Authors apply the role class to the node shape,
+   keeping text neutral and preserving meaning without color. */
+figure svg .node-human { fill: var(--human-soft); stroke: var(--human); }
+figure svg .node-agent { fill: var(--agent-soft); stroke: var(--agent); }
+figure svg .node-machine { fill: var(--machine-soft); stroke: var(--machine); }
+figure svg .node-artifact { fill: var(--artifact-soft); stroke: var(--artifact); }
+figure svg .node-evidence { fill: var(--evidence-soft); stroke: var(--evidence); }
+figure svg .node-risk { fill: var(--risk-soft); stroke: var(--risk); }
+figure svg .node-shape { stroke-width: 2; }
+figure svg a { color: inherit; cursor: pointer; text-decoration: none; }
+figure svg a .node-shape { transition: stroke-width 0.14s ease, filter 0.14s ease; }
+figure svg a:hover .node-shape,
+figure svg a:focus-visible .node-shape {
+  stroke-width: 4;
+  filter: drop-shadow(0 2px 3px rgba(26, 35, 50, 0.24));
+}
+figure svg a:focus { outline: none; }
+figure svg a:focus-visible text { text-decoration: underline; }
 figcaption { color: var(--muted); font-size: 0.95rem; margin-top: 0.6rem; }
 .static-fallback { border-collapse: collapse; width: 100%; margin-top: 0.5rem; }
 .static-fallback caption { text-align: left; color: var(--muted); font-size: 0.9rem; padding-bottom: 0.3rem; }

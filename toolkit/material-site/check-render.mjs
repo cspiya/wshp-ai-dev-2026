@@ -7,6 +7,20 @@ import { createRequire } from 'node:module';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const ALL_MODES = ['desktop', 'mobile', 'print', 'no-js', 'reduced-motion', 'file'];
+// Ratchet only: these exact pre-A0 pages are owned by the three remediation
+// packages and must be removed from the allowlist as those packages migrate them. New
+// occurrences fail immediately; adding an exception requires a recorded human
+// decision in the canonical remediation plan.
+const LEGACY_H1_LINKS = new Set([
+  'materials/agent-ready-repo/index.html',
+  'materials/eszkozok/index.html',
+  'materials/modulok/04-fuggetlen-review/index.html',
+  'materials/modulok/05-szabalyok-es-kapuk/index.html',
+  'materials/modulok/07-legacy-rendszer/index.html',
+  'toolkit/utmutatok/projektmemoria/index.html',
+]);
+const LEGACY_LOCAL_SHELLS = new Set(['materials/fogalomtar/index.html']);
+function normalizedLabel(label) { return label.replaceAll('\\', '/'); }
 export function parseArgs(argv) {
   const out = { site: '.site', phase: 'foundation', modes: ALL_MODES };
   for (let i = 0; i < argv.length; i++) {
@@ -23,10 +37,14 @@ function walk(dir) { return fs.existsSync(dir) ? fs.readdirSync(dir, { withFileT
 
 export function validateStaticPage(html, label = 'page') {
   const failures = [];
+  const normalized = normalizedLabel(label);
   if (!/<html\b[^>]*lang=["']hu["']/i.test(html)) failures.push(`${label}: html lang must be hu`);
   if (!/<meta\b[^>]*name=["']viewport["']/i.test(html)) failures.push(`${label}: viewport meta missing`);
   if (!/<title>\s*[^<]+\s*<\/title>/i.test(html)) failures.push(`${label}: non-empty title missing`);
   if (!/<main\b/i.test(html)) failures.push(`${label}: main landmark missing`);
+  if (/<h1\b[^>]*>[\s\S]*?<a\b[^>]*>[\s\S]*?<\/h1>/i.test(html) && !LEGACY_H1_LINKS.has(normalized)) {
+    failures.push(`${label}: page h1 must be plain text; link the first explanatory occurrence instead`);
+  }
   if (/<marquee\b|autoplay|animation\s*:\s*[^;]+\binfinite\b/i.test(html) && !/prefers-reduced-motion/i.test(html)) failures.push(`${label}: motion has no reduced-motion fallback`);
   if (/\bautoplay\b/i.test(html)) failures.push(`${label}: autoplay is forbidden`);
   const animations = [...html.matchAll(/<[^>]+\bdata-animation=["']([^"']+)["'][^>]*>/gi)];
@@ -75,6 +93,29 @@ async function browserChecks(page, label, mode, failures) {
   await page.keyboard.press('Tab');
   const focus = await page.evaluate(() => document.activeElement?.tagName ?? '');
   if (!focus || focus === 'BODY' || focus === 'HTML') failures.push(`${label} (${mode}): keyboard focus is not visible/reachable`);
+  const extraShellRegions = await page.evaluate(() => [...document.body.children].filter((el) =>
+    (el.tagName === 'HEADER' && !el.classList.contains('shell-header')) ||
+    (el.tagName === 'FOOTER' && !el.classList.contains('site-footer'))
+  ).map((el) => `${el.tagName.toLowerCase()}.${el.className || '(no-class)'}`));
+  if (extraShellRegions.length && !LEGACY_LOCAL_SHELLS.has(normalizedLabel(label))) {
+    failures.push(`${label} (${mode}): page contains a second local site shell (${extraShellRegions.join(', ')})`);
+  }
+  const brokenBlockCode = await page.locator('pre code').evaluateAll((els) => els.filter((el) => {
+    const code = getComputedStyle(el);
+    const pre = getComputedStyle(el.closest('pre'));
+    const rgba = (value) => value.match(/[\d.]+/g)?.map(Number) ?? [];
+    const [pr = 255, pg = 255, pb = 255, pa = 1] = rgba(pre.backgroundColor);
+    const [cr = 0, cg = 0, cb = 0, ca = 1] = rgba(pre.color);
+    const codeAlpha = rgba(code.backgroundColor)[3] ?? 1;
+    const preLuma = (0.2126 * pr + 0.7152 * pg + 0.0722 * pb) / 255;
+    const codeLuma = (0.2126 * cr + 0.7152 * cg + 0.0722 * cb) / 255;
+    const transparentCode = code.backgroundColor === 'transparent' || codeAlpha === 0;
+    const borderlessCode = ['Top', 'Right', 'Bottom', 'Left'].every((side) => Number.parseFloat(code[`border${side}Width`]) === 0);
+    const unpaddedCode = ['Top', 'Right', 'Bottom', 'Left'].every((side) => Number.parseFloat(code[`padding${side}`]) === 0);
+    const monospace = /mono|consolas|courier|cascadia/i.test(code.fontFamily);
+    return pa === 0 || preLuma > 0.35 || ca === 0 || codeLuma < 0.75 || !transparentCode || !borderlessCode || !unpaddedCode || !monospace;
+  }).length);
+  if (brokenBlockCode) failures.push(`${label} (${mode}): ${brokenBlockCode} block code surface(s) are not white monospace text on one uninterrupted dark background`);
   const animationIds = await page.locator('[data-animation]').evaluateAll((els) => els.map((el) => el.getAttribute('data-animation')).filter(Boolean));
   for (const id of animationIds) {
     const root = page.locator(`[data-animation="${id}"]`);

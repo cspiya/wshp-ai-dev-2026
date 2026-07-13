@@ -29,6 +29,47 @@ template, it does not replace it.
 - [ ] Each block states what it builds on and what capability it adds (a visible arc,
       not isolated topics).
 
+## AI-first participant execution
+
+- [ ] After the minimal bootstrap exception (Scoop when needed, first Claude Code or
+      Codex launch, and working-folder creation/selection), no participant step asks
+      the human to type or paste exact CLI, Git, package-manager, operating-system,
+      API or product syntax.
+- [ ] Every later technical operation names Claude Code or Codex as the executor.
+      Exact commands may remain in agent instructions, engineering contracts or
+      observed evidence, but participant pages label them `agent-run` or
+      `non-executable example` instead of saying "run/copy/type this".
+- [ ] Claude Code or Codex remains active for orientation, explanation, repository
+      inspection, specification, implementation, review, browser verification,
+      evidence collection, recovery and reflection -- not only for code generation.
+- [ ] Every exercise separates: human intent/decision -> natural-language agent
+      assignment -> agent execution -> returned evidence/risk -> human gate and
+      repeat-until-good.
+- [ ] One primary agent can complete the mandatory path. A second model/agent is an
+      optional portability or evaluation exercise, not a completion dependency.
+- [ ] Capacity and account-dependent live paths state a compliant Plan B. Never
+      promise unlimited plan capacity or require shared consumer-account credentials.
+
+## Explanatory visual and interaction contract
+
+- [ ] Each purposeful diagram answers a declared learner question, carries a
+      one-sentence takeaway and has a complete adjacent HTML text equivalent.
+- [ ] Use the shared semantic roles (human, agent, machine, artifact, evidence,
+      risk), with labels/shapes as well as color. Page-local hard-coded styling must
+      not create a conflicting visual language.
+- [ ] A diagram node becomes a link only when it represents a real canonical
+      destination. The link is internal, keyboard-operable, visibly focusable,
+      accessibly named and repeated with the same target in the HTML fallback.
+- [ ] Explanatory process/state nodes without a destination stay visually static;
+      do not create false click affordances.
+- [ ] Diagram typography remains readable at its rendered desktop and mobile size.
+      Prefer full-width/stacked presentation over shrinking dense visuals into a grid.
+- [ ] Page titles are plain text. Link non-obvious terms in the lead or at their
+      first explanatory occurrence, not inside `h1`.
+- [ ] Inline code uses the inline treatment. Multi-line commands, prompts and
+      transcripts use one dark surface with white monospace text; nested `pre code`
+      adds no light background, border or padding.
+
 ## Credibility
 
 - [ ] No hype: teach method before tools; capabilities are demonstrated, not promised.

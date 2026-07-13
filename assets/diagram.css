@@ -24,6 +24,25 @@ figure.diagram figcaption {
   margin-top: 0.5rem;
 }
 
+/* The source page may be opened without the generated site shell. Keep the
+   same semantic node and navigation contract in that mode as well. */
+figure.diagram svg .node-human { fill: var(--human-soft, #f3e8ff); stroke: var(--human, #7c3aed); }
+figure.diagram svg .node-agent { fill: var(--agent-soft, #e8f0ff); stroke: var(--agent, #0b5fff); }
+figure.diagram svg .node-machine { fill: var(--machine-soft, #e7f7f0); stroke: var(--machine, #047857); }
+figure.diagram svg .node-artifact { fill: var(--artifact-soft, #fff4e5); stroke: var(--artifact, #b45309); }
+figure.diagram svg .node-evidence { fill: var(--evidence-soft, #e7f7fa); stroke: var(--evidence, #0e7490); }
+figure.diagram svg .node-risk { fill: var(--risk-soft, #feecec); stroke: var(--risk, #b91c1c); }
+figure.diagram svg .node-shape { stroke-width: 2; }
+figure.diagram svg a { color: inherit; cursor: pointer; text-decoration: none; }
+figure.diagram svg a .node-shape { transition: stroke-width 0.14s ease, filter 0.14s ease; }
+figure.diagram svg a:hover .node-shape,
+figure.diagram svg a:focus-visible .node-shape {
+  stroke-width: 4;
+  filter: drop-shadow(0 2px 3px rgba(26, 35, 50, 0.24));
+}
+figure.diagram svg a:focus { outline: none; }
+figure.diagram svg a:focus-visible text { text-decoration: underline; }
+
 /* Full text equivalent that follows each diagram. */
 .diagram-fallback {
   border-collapse: collapse;

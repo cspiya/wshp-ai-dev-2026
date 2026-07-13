@@ -24,6 +24,30 @@ test('animation without controls/static fallback and autoplay fail preflight', (
   assert.ok(failures.some((x) => x.includes('missing static fallback')));
 });
 
+test('page titles are plain text while exact migration-debt pages remain temporarily green', () => {
+  const linkedTitle = '<html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Cim</title></head><body><main><h1>Plugin es <a href="#skill">skill</a></h1></main></body></html>';
+  assert.ok(validateStaticPage(linkedTitle, 'new-page/index.html').some((x) => x.includes('page h1 must be plain text')));
+  assert.deepEqual(validateStaticPage(linkedTitle, 'materials/eszkozok/index.html'), []);
+});
+
+test('real browser rejects a second local shell', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-double-shell-'));
+  const html = '<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Ket keret</title></head><body><a href="#main">Tartalom</a><header class="local-header">Masodik fejléc</header><main id="main">Magyarazat</main><footer class="local-footer">Masodik lablec</footer></body></html>';
+  fs.writeFileSync(path.join(root, 'index.html'), html);
+  const failures = await validateRender({ site: root, modes: ['desktop'] });
+  assert.ok(failures.some((x) => x.includes('second local site shell')));
+});
+
+test('real browser enforces one dark block-code surface', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-code-surface-'));
+  const shell = (style) => `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Kod</title><style>${style}</style></head><body><a href="#main">Tartalom</a><main id="main"><pre><code>npm run test</code></pre></main></body></html>`;
+  fs.writeFileSync(path.join(root, 'index.html'), shell('pre{background:#111a31;color:#fff;font-family:monospace}pre code{background:transparent;border:0;padding:0;color:inherit;font:inherit}'));
+  assert.deepEqual(await validateRender({ site: root, modes: ['desktop'] }), []);
+  fs.writeFileSync(path.join(root, 'index.html'), shell('pre{background:#111a31;color:#fff;font-family:monospace}code{background:#eceff5;border:1px solid #ddd;padding:2px;color:#fff}'));
+  const failures = await validateRender({ site: root, modes: ['desktop'] });
+  assert.ok(failures.some((x) => x.includes('block code surface')));
+});
+
 test('real browser covers the six-mode matrix and catches narrow overflow', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-render-'));
   const shell = (style = '') => `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Tananyag</title><style>${style}</style></head><body><a href="#main">Ugrás a tartalomra</a><main id="main">Magyarázat</main></body></html>`;
