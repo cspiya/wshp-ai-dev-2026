@@ -9,9 +9,10 @@
 **Canonical standard:**
 [`../../../toolkit/standards/engineering-standards.md`](../../../toolkit/standards/engineering-standards.md)
 
-This brief is the contract given to v0 and the human design gate. It describes the
-same working application in three visual directions. It does not authorize a new
-product, new behavior, or a new architecture.
+This legacy-named brief is the provider-neutral contract given to v0 or Claude Design
+and the human design gate. It contains a small direction catalog, but one execution
+handoff selects and produces exactly one version. It does not authorize a new product,
+new behavior, new architecture, or multiple speculative variants.
 
 ## 1. Product story
 
@@ -165,10 +166,22 @@ Decision for this package:
 - do not paste tokenized import URLs, private preview URLs or environment files into
   prompts, Git, screenshots or the journal.
 
-## 10. Three directions for v0
+## 10. Direction catalog and single-output rule
 
-All directions use the same content, routes, states and protected boundaries. They
-must differ in composition, rhythm and visual voice — not only in accent color.
+All catalog entries use the same content, routes, states and protected boundaries.
+They differ in composition, rhythm and visual voice — not only in accent color.
+
+Before a design tool runs, the human selects exactly one catalog entry (or replaces
+it with one explicit custom direction). The tool produces one version of that
+direction only.
+
+- Free v0: at most one complete direction. Do not generate alternatives; a full
+  reference-app prototype can exhaust the monthly free allowance.
+- Claude Design: use when v0 credits are unavailable or when Claude is the chosen
+  design surface. The handoff still requests one version only.
+- Paid v0: multiple directions require a separate human budget decision and a revised
+  issue spec. Payment does not silently expand this work package.
+- If no direction has been selected, stop at the human gate instead of guessing.
 
 ### Direction A — Precision Workshop Console
 
@@ -199,9 +212,10 @@ must differ in composition, rhythm and visual voice — not only in accent color
   overview explains the validation mission.
 - Avoid: gamification points, leaderboards, cartoon styling, color-only progress.
 
-## 11. Common v0 prompt
+## 11. Single-version handoff prompt
 
-Use this prompt once per direction, appending the direction-specific paragraph above:
+Use this prompt exactly once with the one human-selected direction. Do not ask the
+receiving tool to create alternatives:
 
 ```text
 Redesign the existing `reference-app` UI in this imported repository. This is a
@@ -221,12 +235,18 @@ Use existing shadcn primitives and Tailwind tokens, semantic HTML, visible focus
 AA contrast and reduced-motion-safe behavior. Mobile at 360px and projector-readable
 desktop are both acceptance targets. Return a reviewable branch/version; do not merge.
 
-Visual direction: <append exactly one direction from section 10>.
+Visual direction: <append exactly one human-selected direction from section 10>.
+
+Produce one design version only. Do not generate A/B alternatives or a second visual
+concept. If this direction cannot be completed in the available tool/budget, stop and
+return the partial evidence instead of silently switching scope.
 ```
 
 ## 12. Human design gate
 
-Compare the three rendered directions using the same route, content and viewport.
+Compare the single rendered direction with the captured baseline and this contract,
+using the same route, content and viewport. The gate is acceptance-based, not an
+invitation to generate more variants.
 
 | Criterion | Weight |
 |---|---:|
@@ -239,16 +259,17 @@ Compare the three rendered directions using the same route, content and viewport
 
 The human records:
 
-- selected direction and score;
-- rejected directions and one-sentence reasons;
-- any elements intentionally borrowed from a rejected direction;
+- direction name, provider and score;
+- verdict: `ACCEPT`, `REVISE` or `REJECT`, with one-sentence reason;
 - required corrections before integration.
 
-No generated direction enters the application branch before this gate closes.
+No generated direction enters the application branch before this gate closes. A
+`REJECT` verdict returns to a human scope/budget decision; it does not automatically
+authorize another v0 or Claude version.
 
-## 13. Evidence required from v0
+## 13. Evidence required from the selected design tool
 
-- direction name and sanitized v0 version/branch identifier;
+- direction name, provider and sanitized version/branch identifier;
 - screenshots of Overview, Workshops and three Shop checkpoints at desktop;
 - Overview, Workshops and active Shop step at 360 px;
 - visible loading/error/unauthorized example without fabricated backend changes;
