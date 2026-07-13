@@ -16,6 +16,40 @@ adapter. Így ugyanaz a repo szolgáltatáskiesés, költségváltozás vagy mod
 Adatbázis, API-réteg és a többi "nagyágyú" **szándékosan nincs benne** — azok
 a nap későbbi blokkjaiban kerülnek be, lépésről lépésre.
 
+## Tech stack — és hogy miért ez (AI-natív választások)
+
+Minden alábbi választás egyetlen elvet követ: **az agentnek a teljes kört magának
+kell tudnia végigvinni.**
+
+| Réteg | Választás | Miért |
+|---|---|---|
+| App-keretrendszer | Next.js App Router + TypeScript | Konvencionális, az agentek tanítókorpuszában erősen képviselt; végponttól végpontig gépileg ellenőrizhető (typecheck/lint/test/build). |
+| UI | Tailwind + shadcn/ui (lokális forrás) | A komponensek szerkeszthető forrásként élnek a `src/components/ui/`-ban — az agent közvetlenül olvassa és módosítja őket, nem egy fekete dobozzal küzd. |
+| Adatbázis | Neon Postgres | DB-branch preview-nként + MCP: minden változás percek alatt izolált adatbázist kap. |
+| Hoszting + preview-k | Vercel | Preview-deploy PR-onként + MCP: minden változás élő URL-t kap, emberi konzol-kattintgatás nélkül. |
+| Munkaállapot | Linear (issue = spec) | Az issue MAGA a spec; MCP-n át az agent maga olvassa és frissíti a munkaállapotot. |
+| Forrás + kapuk | GitHub (gh CLI, PR-check-ek) | Gépileg vezérelhető verziókezelés: `gh` CLI + PR-kapuk, amelyek zöld check-ekig blokkolják a merge-öt. |
+| Dizájnlépés | v0 / Claude Design | Agenttel vezérelhető dizájnlépés — lásd `DESIGN-GUIDELINE.md`. |
+| Agentek | Claude Code CLI + Codex | Két független agent harness a maker/reviewer szétválasztáshoz és a modellcsere-evalokhoz. |
+
+### Mitől AI-natív egy rendszer?
+
+**Az AI-first / AI-natív fejlesztés azt jelenti, hogy a rendszert úgy tervezzük, hogy az
+AI-agent elsőrangú munkatárs legyen benne — nem utólag rácsavarozott eszköz.** Négy ismérve van:
+
+1. **Gyors, olcsó ciklusok** — minden változás percek alatt buildel, tesztel és kap preview-t
+   (CI + PR-onkénti preview + branchelt adatbázis); az infrastruktúra soha nem lehet az agent
+   iterációs sebességének szűk keresztmetszete.
+2. **Feature-szintű szeparáció** — egy modul = egy agent munkaterülete (vertical slice,
+   kikényszerített boundary-k): kis kontextus, kis hibaterjedés, minden feature önállóan
+   FEJLESZTHETŐ és ELLENŐRIZHETŐ, párhuzamosítható agent-munka.
+3. **Teljes AI-integrálhatóság** — minden eszköznek van gépi interfésze (CLI / API / MCP);
+   ahol csak ember tud kattintani, ott megszakad az agent-lánc.
+4. **Szerződések + verifikáció** — spec, szabályok, kapuk, független review (RUG), evidence —
+   az a pillér, amit a workshop már tanít.
+
+Stack-választási elv: **„AI-integrálhatóság > feature-lista."**
+
 ## Hogyan használd
 
 1. A minimális bootstrap után indíts Claude Code-ot vagy Codexet abban a munkakönyvtárban, ahol a saját

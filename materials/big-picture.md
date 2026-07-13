@@ -30,6 +30,32 @@ a modell, provider és coding agent cserélhető végrehajtó. Kiesés, korláto
 vagy egy jobb modell megjelenése nem kényszerítheti ki a teljes fejlesztési működés újratervezését. A váltást
 reprezentatív evalon, változatlan acceptance criteria és evidence-léc mellett validáljuk.
 
+## Mitől AI-first / AI-natív egy fejlesztés?
+
+**Az AI-first / AI-natív fejlesztés azt jelenti, hogy a rendszert úgy tervezzük, hogy az AI-agent
+elsőrangú munkatárs legyen benne — nem utólag rácsavarozott eszköz.** Nem attól AI-natív egy fejlesztés,
+hogy sok AI-eszközt használ, hanem attól, hogy a teljes környezet az agent munkájára van méretezve.
+Négy ismérve van:
+
+1. **Gyors, olcsó ciklusok** — minden változás percek alatt buildel, tesztel és kap preview-t
+   (CI + PR-onkénti preview + branchelt adatbázis); az infrastruktúra soha nem lehet az agent
+   iterációs sebességének szűk keresztmetszete.
+2. **Feature-szintű szeparáció** — egy modul = egy agent munkaterülete (vertical slice,
+   kikényszerített boundary-k): kis kontextus, kis hibaterjedés, minden feature önállóan
+   FEJLESZTHETŐ és ELLENŐRIZHETŐ, párhuzamosítható agent-munka.
+3. **Teljes AI-integrálhatóság** — minden eszköznek van gépi interfésze (CLI / API / MCP);
+   ahol csak ember tud kattintani, ott megszakad az agent-lánc.
+4. **Szerződések + verifikáció** — spec, szabályok, kapuk, független review
+   ([RUG](fogalomtar.md#rug)), evidence — az a pillér, amit a workshop már tanít.
+
+**Stack-választási elv: „AI-integrálhatóság > feature-lista."** Ezért: Neon (DB-branch
+preview-nként + MCP) · Vercel (preview PR-onként + MCP) · Linear (issue = spec + MCP) ·
+GitHub (gh CLI + PR-kapuk) · v0 / Claude Design (agenttel vezérelhető dizájnlépés) ·
+Claude Code + Codex (két független [agent harness](fogalomtar.md#agent-harness) a maker/reviewer
+szétválasztáshoz és a modellcsere-evalokhoz). App-stack: Next.js App Router + TypeScript +
+Tailwind + shadcn/ui — konvencionális, az agentek tanítókorpuszában erősen képviselt,
+végponttól végpontig gépileg ellenőrizhető (typecheck/lint/test/build).
+
 ## Az AI nem vendégszereplő, hanem a teljes nap aktív végrehajtója
 
 A minimális bootstrap után a résztvevő nem Git-, npm-, PowerShell-, Linux-, API- vagy
@@ -134,7 +160,8 @@ wshp-ai-dev-2026/
   adapterrel épül (végigkattintható, tesztelhető), és később valódi adapterre cserélhető **a checkout-kód
   érintése nélkül** — ez maga a ports-and-adapters lecke. Az architektúra (vertical slice + kikényszerített
   boundary-k) maga a tananyag: **a jó architektúra az AI-minőség első számú karja** („egy modul = egy
-  agent munkaterülete" → kevesebb token, kisebb hibaterjedés, párhuzamosítható agent-munka).
+  agent munkaterülete" → kevesebb token, kisebb hibaterjedés, párhuzamosítható agent-munka; lásd a
+  2. ismérvet fent, a „Mitől AI-first / AI-natív egy fejlesztés?" szakaszban).
 - **`participant-starter`** — szándékosan minimális technikai hordozó. Nem agent-ready késztermék: a
   résztvevő a workshopon építi köré a működési rendszert, majd az alkalmazással validálja azt.
 - **`toolkit`** — a workshop elsődleges, maradandó termékének hordozható alkatrészkészlete: bármely
