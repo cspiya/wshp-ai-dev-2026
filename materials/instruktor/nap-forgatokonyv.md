@@ -198,7 +198,7 @@ párosítsd össze egy kész résztvevővel. Készítsd elő kivetítésre a 3. 
 
 ## 11:45–12:30 · Orchestrátor + Repeat-Until-Good (→ [4. modul: Független review és javítási ciklus](../modulok/04-fuggetlen-review/index.html))
 
-- **Időfelosztás:** 10 perc előadás + 27 perc gyakorlat + 8 perc közös ellenőrzés
+- **Időfelosztás:** 5 perc előadás + 32 perc gyakorlat + 8 perc közös ellenőrzés
 - **Amit elmondasz (beszédvázlat):**
   - „A szerző és a bíráló ne ugyanaz a kontextus legyen. Az önellenőrzés ugyanabból a
     gondolatmenetből indul, mint a készítés — a közös vakfolt megmarad. A független review a
