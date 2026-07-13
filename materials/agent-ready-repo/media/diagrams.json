@@ -17,7 +17,7 @@
       "figureSelector": "#fig-repo-layers",
       "svgSelector": "#fig-repo-layers svg",
       "textFallbackSelector": "#fig-repo-layers-text",
-      "inlineSvgHash": "eebfcc73f7e1124fb83e62f0e60e43e3ea5c9bd794389033793ba92607bbc970"
+      "inlineSvgHash": "df14319aebfbef6c9027d6ef8eea82110eba4940800f471f1b3074c92a3aab25"
     },
     {
       "id": "fig-agent-ready-hogyan-fugg-ossze-a-szabaly",
@@ -35,7 +35,7 @@
       "figureSelector": "#fig-agent-ready-hogyan-fugg-ossze-a-szabaly",
       "svgSelector": "#fig-agent-ready-hogyan-fugg-ossze-a-szabaly svg",
       "textFallbackSelector": "#fig-agent-ready-hogyan-fugg-ossze-a-szabaly-text",
-      "inlineSvgHash": "310cf9af3e15b96aba67307142a214137be208896250e063a4b2410d53e3da91"
+      "inlineSvgHash": "f0ddce23eeab261689847f08a11dfde722ab22a7844c7903b739f6a6987de9a5"
     },
     {
       "id": "fig-agent-ready-mi-a-legkisebb-biztonsagos-valtoztatas",
@@ -52,7 +52,7 @@
       "figureSelector": "#fig-agent-ready-mi-a-legkisebb-biztonsagos-valtoztatas",
       "svgSelector": "#fig-agent-ready-mi-a-legkisebb-biztonsagos-valtoztatas svg",
       "textFallbackSelector": "#fig-agent-ready-mi-a-legkisebb-biztonsagos-valtoztatas-text",
-      "inlineSvgHash": "3347703745094c35e4ba4b561d486e63b2e1306679e9cdd8ff374595979b926d"
+      "inlineSvgHash": "af1294bbcbada4e4024ef252863473ad8ce5b352c49fb68db3d2aaf01ab9fbd7"
     }
   ]
 }

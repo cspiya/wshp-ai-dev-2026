@@ -1,11 +1,11 @@
 # Építési napló — Day 2 (2026.07.09–10): a workshops golden-path slice + a RUG-2 kör
 
-*A nap terméke: az első valódi feature (workshops kurzus-CRUD) mint golden-path minta — és a második
+_A nap terméke: az első valódi feature (workshops kurzus-CRUD) mint golden-path minta — és a második
 Repeat-Until-Good kör, ami ezúttal egy **rendszerszintű hibaláncot** talált. Szakszavak:
-[fogalomtár](../fogalomtar.md) · a teljes ív: [big picture](../big-picture.md) · előzmény: [Day 1](day-1.md)*
+[fogalomtár](../fogalomtar.md) · a teljes ív: [big picture](../big-picture.md) · előzmény: [Day 1](day-1.md)_
 
-**Linear:** WEN-117 ✅ (D9-döntés: a referencia-app képzés-webshop lett; D10: fizetés PaymentPort + fake
-adapter, auth = Neon Auth — ezek a Day 3 anyagai)
+**Végrehajtási állapot:** a golden-path slice elkészült. D9-döntés: a referencia-app képzés-webshop
+lett; D10: fizetés PaymentPort + fake adapter, auth = Neon Auth — ezek a Day 3 anyagai.
 
 ---
 
@@ -60,7 +60,7 @@ flowchart TD
 A javítás ezért nem tüneteket foltozott: a kompozíció átkerült a **composition rootba** (platform-szint),
 az e2e-seam kemény guardot kapott (Vercelen beállítva az app **induláskor dob** — a komment nem guard),
 a dátum-normalizálás az adapterbe került, és született egy **közös contract-tesztsuite**, ami mindkét
-adaptert ugyanazzal a szerződéssel méri. *Egy mozdulat a gyökérnél = öt tünet eltűnik.*
+adaptert ugyanazzal a szerződéssel méri. _Egy mozdulat a gyökérnél = öt tünet eltűnik._
 
 **A tartós védelem négy eleme:** központi composition root; dependency injection jellegű bekötés; közös
 contract test a fake és a valódi adapteren; kemény környezeti guard és gépileg kikényszerített modulhatár.
@@ -69,8 +69,8 @@ contract test a fake és a valódi adapteren; kemény környezeti guard és gép
 
 A „zöld teszt" csak annyit ér, amennyire a double hasonlít a valóságra. Nálunk a double másképp rendezett,
 más dátumformátumot adott, és élő referenciákat szivárogtatott — a tesztpiramis egy **nem létező rendszert**
-igazolt. A tanítható szabály: *ha egy portnak double-je van, kell egy közös tesztsuite, ami MINDKÉT
-implementáción fut* — ez teszi becsületessé a portot.
+igazolt. A tanítható szabály: _ha egy portnak double-je van, kell egy közös tesztsuite, ami MINDKÉT
+implementáción fut_ — ez teszi becsületessé a portot.
 
 ## 3. A két tanulási hurok — szétválasztva
 
@@ -79,15 +79,15 @@ implementáción fut* — ez teszi becsületessé a portot.
 1. **Instrukció-szivárgás, 2. eset:** a seed-adatba és a teszt-fixture-be **nem publikálható konkrét
    adatok** kerültek együtt — mert **az orchestráló prompt kérte így** („legyen egy
    realisztikus példa"). A builder hibátlanul követte a rossz instrukciót; a review fogta meg.
-   *Tanulság: a „realisztikus példa" kérés publikus repóban veszélyes instrukció — a jó kérés:
-   „életszerű, de kitalált".* (Day 1-en a nyelvi szabály torzult a láncban, ma az adat-hygiene — a minta
+   _Tanulság: a „realisztikus példa" kérés publikus repóban veszélyes instrukció — a jó kérés:
+   „életszerű, de kitalált"._ (Day 1-en a nyelvi szabály torzult a láncban, ma az adat-hygiene — a minta
    ugyanaz: minél hosszabb az instrukció-lánc, annál több ponton torzulhat.)
 2. **A spec kérte a felesleget:** a `getById` végpontot (amit semmi nem használt) az eredeti issue-spec
    írta elő — „CRUD"-reflexből. A YAGNI-elv most a spec-írót javította, nem a buildert.
-   *Tanulság: a spec-be is beírandó, MIRE kell a végpont — ha nincs fogyasztója, nem kell.*
+   _Tanulság: a spec-be is beírandó, MIRE kell a végpont — ha nincs fogyasztója, nem kell._
 3. **Döntések aznap:** D9 (a referencia-app képzés-webshop — csak akkor éri meg, ha a Wenovának is
    hasznos) és D10 (fizetés = PaymentPort + fake adapter, Stripe utólagos adaptercsereként; auth = Neon
-   Auth). *Tanulság: a „mi épüljön" döntés üzleti döntés — az emberé; a „hogyan" a folyamaté.*
+   Auth). _Tanulság: a „mi épüljön" döntés üzleti döntés — az emberé; a „hogyan" a folyamaté._
 
 ### 🤖 Agent-hurok (a gép saját hibái — és a háló, ami megfogta)
 
@@ -97,11 +97,11 @@ bírálók találták meg, a javító pedig a gyökérnél javította. Két kül
 - **A bíráló árnyaltan ítélt a portról:** a `WorkshopRepo` interfész maradhatott (a perzisztencia
   tényleg variálódó határ), de az indoklása — „két valódi implementáció", a teszt-double-t számolva —
   **kiüresítette volna a szabályt** („kell egy interfész? írj egy double-t!"). A javítás a szöveg lett,
-  nem a kód: az indoklás cseréje + explicit mondat, hogy *a double sosem számít második implementációnak*.
+  nem a kód: az indoklás cseréje + explicit mondat, hogy _a double sosem számít második implementációnak_.
 - **A javító megint mert eltérni:** a specifikált guard (`NODE_ENV==='production'`-re is dobjon) megölte
   volna magát az e2e-t (a `next start` production-módban fut) — a javító ezt észrevette, Vercel-only
   guardot épített, és **dokumentálta az eltérést**. Ugyanaz a minta, mint a Day 1-es shadcn-eset:
-  *verifikálj, mielőtt implementálsz — a review-instrukció sem szentírás.*
+  _verifikálj, mielőtt implementálsz — a review-instrukció sem szentírás._
 
 ## 4. Esettár (részletek, összecsukva)
 
@@ -174,8 +174,8 @@ közös `formatDate`/`formatHuf` a `lib/format.ts`-ben.
 ## 5. Holnap (Day 3)
 
 1. **⚠️ KAPU — továbbra is nyitva:** a Vercel + Neon kézi bekötés (`reference-app/SETUP-STATUS.md`).
-   Ez már a kritikus út: nélküle nincs WEN-116 plumbing (PR→preview+DB-branch+e2e), nem fut a Drizzle
+   Ez már a kritikus út: nélküle nincs PR→preview+DB-branch+e2e plumbing, nem fut a Drizzle
    contract-teszt-ág, és nincs élő URL. **4 nap van a workshopig.**
-2. WEN-116 plumbing-validálás (a kattintások után azonnal).
-3. WEN-141: Neon Auth + registrations + pricing + checkout (PaymentPort + fake adapter).
-4. WEN-118: az orchestrátor/RUG toolkit-anyaggá desztillálása — a két lefutott RUG-kör a nyersanyag.
+2. A preview- és adatbázis-plumbing validálása (a kattintások után azonnal).
+3. Neon Auth + registrations + pricing + checkout (PaymentPort + fake adapter).
+4. Az orchestrátor/RUG toolkit-anyaggá desztillálása — a két lefutott RUG-kör a nyersanyag.

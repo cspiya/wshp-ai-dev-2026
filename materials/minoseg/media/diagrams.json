@@ -17,7 +17,7 @@
       "figureSelector": "#fig-quality-defense",
       "svgSelector": "#fig-quality-defense svg",
       "textFallbackSelector": "#fig-quality-defense-text",
-      "inlineSvgHash": "b791d2592badea6cea49110e1e0c4d574a9c16592688bf6a45cfdfc0d77a2288"
+      "inlineSvgHash": "901bb61cdba876d6726595880f382c6eaa0d0fea6f4ed855be039e28949d401a"
     },
     {
       "id": "fig-quality-hogyan-lesz-egy-megerositett-hibabol",
@@ -36,7 +36,7 @@
       "figureSelector": "#fig-quality-hogyan-lesz-egy-megerositett-hibabol",
       "svgSelector": "#fig-quality-hogyan-lesz-egy-megerositett-hibabol svg",
       "textFallbackSelector": "#fig-quality-hogyan-lesz-egy-megerositett-hibabol-text",
-      "inlineSvgHash": "b864b206761156a936f060d625f466dd45fc9f9978dd31292ba11f6e6296faf6"
+      "inlineSvgHash": "936a41e8ededcaca78e58f278258765e3cbe63d121906eedfe5224208c570b58"
     }
   ]
 }

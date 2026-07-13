@@ -9,11 +9,13 @@
       "rendering": "inline-svg",
       "diagramType": "relationship-map",
       "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható.",
-      "glossarySlugs": ["artifact"],
+      "glossarySlugs": [
+        "artifact"
+      ],
       "figureSelector": "#fig-j02-synthesis",
       "svgSelector": "#fig-j02-synthesis svg",
       "textFallbackSelector": "#fig-j02-synthesis-text",
-      "inlineSvgHash": "cebf8c438f7c856db178306926c2cd7556aaab2d4e1aef0b3fbdaebca697e840"
+      "inlineSvgHash": "776be37dc06afa878332ed6319a328bd2dfd57612769acbcfd99cc4de51e7a62"
     },
     {
       "visualQuestionId": "q-journal-02-process-1",
@@ -21,7 +23,9 @@
       "type": "process",
       "disposition": "shared",
       "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot.",
-      "glossarySlugs": ["artifact"],
+      "glossarySlugs": [
+        "artifact"
+      ],
       "sharedDiagramId": "fig-evidence-chain",
       "sharedHref": "../../modszertan/index.html#fig-evidence-chain"
     }

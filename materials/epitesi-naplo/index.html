@@ -1,52 +1,644 @@
 <!doctype html>
 <html lang="hu">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Építési napló: döntések és tanulságok</title>
-  <meta name="description" content="Négy tanulság arról, hogyan lett egy fejlesztési repóból ellenőrizhető, agentikus munkarendszer.">
-  <style>
-    .journal-hero{padding:2rem 0 1rem}.journal-hero p{max-width:70ch;font-size:1.15rem}.orientation{display:grid;grid-template-columns:1.2fr .8fr;gap:1rem}.panel,.lesson-card{border:1px solid var(--line);border-radius:.8rem;padding:1rem;background:var(--panel)}.lesson-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.lesson-card h3{margin-top:0}.lesson-card a{font-weight:700}.tag{display:inline-block;border-radius:2rem;padding:.15rem .6rem;background:#e8edff;color:#183083;font-size:.85rem;font-weight:700}.visual-box{border:1px solid var(--line);border-radius:.8rem;padding:1rem;background:#fff;overflow-x:auto}.visual-box svg{max-height:28rem}.visual-cue{display:none;margin:.3rem 0;color:var(--muted);font-size:.9rem}.takeaway{border-left:.3rem solid var(--evidence);padding:.6rem .8rem;background:#ecfeff}.static-fallback{margin-top:1rem}.module-links{display:flex;flex-wrap:wrap;gap:.5rem}.module-links a{border:1px solid var(--line);border-radius:.5rem;padding:.35rem .55rem;text-decoration:none}@media(max-width:700px){.orientation,.lesson-grid{grid-template-columns:1fr}.visual-box svg{min-width:760px}.visual-cue{display:block}.visual-box::before{content:"Az ábra teljes méretben, vízszintesen görgethető.";display:block;color:var(--muted);font-size:.9rem;margin-bottom:.4rem}}@media print{.lesson-grid{display:block}.lesson-card{margin-bottom:.8rem}.visual-cue{display:none}}
-  </style>
-</head>
-<body>
-<main>
-  <header class="journal-hero">
-    <p class="tag">A módszer építés közben tanult leckéi</p>
-    <h1>Építési napló: döntések és tanulságok</h1>
-    <p>Ez nem státuszlista. Négy rövid esettanulmány mutatja meg, milyen döntések tették a munkát egyre jobban átadhatóvá, ellenőrizhetővé és biztonságosan automatizálhatóvá.</p>
-  </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Építési napló: döntések és tanulságok</title>
+    <meta
+      name="description"
+      content="Négy tanulság arról, hogyan lett egy fejlesztési repóból ellenőrizhető, agentikus munkarendszer."
+    />
+    <style>
+      .journal-hero {
+        padding: 2rem 0 1rem;
+      }
+      .journal-hero p {
+        max-width: 70ch;
+        font-size: 1.15rem;
+      }
+      .orientation {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 1rem;
+      }
+      .panel,
+      .lesson-card {
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        padding: 1rem;
+        background: var(--panel);
+      }
+      .lesson-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .lesson-card h3 {
+        margin-top: 0;
+      }
+      .lesson-card a {
+        font-weight: 700;
+      }
+      .tag {
+        display: inline-block;
+        border-radius: 2rem;
+        padding: 0.15rem 0.6rem;
+        background: #e8edff;
+        color: #183083;
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+      .visual-box {
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        padding: 1rem;
+        background: #fff;
+        overflow-x: auto;
+      }
+      .visual-box svg {
+        max-height: 28rem;
+      }
+      .visual-cue {
+        display: none;
+        margin: 0.3rem 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .takeaway {
+        border-left: 0.3rem solid var(--evidence);
+        padding: 0.6rem 0.8rem;
+        background: #ecfeff;
+      }
+      .static-fallback {
+        margin-top: 1rem;
+      }
+      .module-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .module-links a {
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        padding: 0.35rem 0.55rem;
+        text-decoration: none;
+      }
+      @media (max-width: 700px) {
+        .orientation,
+        .lesson-grid {
+          grid-template-columns: 1fr;
+        }
+        .visual-box svg {
+          min-width: 760px;
+        }
+        .visual-cue {
+          display: block;
+        }
+        .visual-box::before {
+          content: "Az ábra teljes méretben, vízszintesen görgethető.";
+          display: block;
+          color: var(--muted);
+          font-size: 0.9rem;
+          margin-bottom: 0.4rem;
+        }
+      }
+      @media print {
+        .lesson-grid {
+          display: block;
+        }
+        .lesson-card {
+          margin-bottom: 0.8rem;
+        }
+        .visual-cue {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="journal-hero">
+        <p class="tag">A módszer építés közben tanult leckéi</p>
+        <h1>Építési napló: döntések és tanulságok</h1>
+        <p>
+          Ez nem státuszlista. Négy rövid esettanulmány mutatja meg, milyen
+          döntések tették a munkát egyre jobban átadhatóvá, ellenőrizhetővé és
+          biztonságosan automatizálhatóvá.
+        </p>
+      </header>
 
-  <section class="orientation" aria-labelledby="hogyan-olvasd">
-    <div><h2 id="hogyan-olvasd">Hogyan olvasd?</h2><p>Kezdd az első fejezettel, majd haladj sorrendben. Minden oldal ugyanazzal a négy nézőponttal dolgozik: egy összefoglaló ábra, a döntés tanulsága, külön az ember és az agent visszacsatolása, végül egy lenyitható, kitalált eset. A döntések és ellenőrzések kapcsolatát <a data-route="/materials/fogalomtar/#trace">visszakövetési naplóként</a> olvashatod.</p></div>
-    <aside class="panel"><h2>Mit kapsz a végére?</h2><p>Egy rövid döntési ellenőrzőlistát: hol kell szabály, hol kell független <a data-route="/materials/fogalomtar/#review">review</a>, és mikor érdemes a tanulságot gépi ellenőrzéssé alakítani.</p></aside>
-  </section>
+      <section class="orientation" aria-labelledby="hogyan-olvasd">
+        <div>
+          <h2 id="hogyan-olvasd">Hogyan olvasd?</h2>
+          <p>
+            Kezdd az első fejezettel, majd haladj sorrendben. Minden oldal
+            ugyanazzal a négy nézőponttal dolgozik: egy összefoglaló ábra, a
+            döntés tanulsága, külön az ember és az agent visszacsatolása, végül
+            egy lenyitható, kitalált eset. A döntések és ellenőrzések
+            kapcsolatát
+            <a data-route="/materials/fogalomtar/#trace"
+              >visszakövetési naplóként</a
+            >
+            olvashatod.
+          </p>
+        </div>
+        <aside class="panel">
+          <h2>Mit kapsz a végére?</h2>
+          <p>
+            Egy rövid döntési ellenőrzőlistát: hol kell szabály, hol kell
+            független <a data-route="/materials/fogalomtar/#review">review</a>,
+            és mikor érdemes a tanulságot gépi ellenőrzéssé alakítani.
+          </p>
+        </aside>
+      </section>
 
-  <section aria-labelledby="attekintes">
-    <figure id="fig-naplo-overview" class="visual-box">
-      <h2 id="attekintes">A négy fejezet egyetlen képen</h2>
-      <svg viewBox="0 0 920 300" role="img" aria-labelledby="naplo-title naplo-desc">
-        <title id="naplo-title">A repoindítástól a gépi ellenőrzésig vezető tanulási út</title>
-        <desc id="naplo-desc">Négy egymásra épülő állomás: közös keret, végigfutó kis szelet, független review és preview, majd gépi ellenőrzés. Az egyes állomások eredménye a következő bemenete.</desc>
-        <defs><marker id="arrow-overview" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#5a6675"/></marker></defs>
-        <g fill="none" stroke="#5a6675" stroke-width="3" marker-end="url(#arrow-overview)"><path d="M210 116H250"/><path d="M440 116H480"/><path d="M670 116H710"/></g>
-        <g font-family="system-ui" text-anchor="middle"><g><rect x="20" y="55" width="190" height="122" rx="16" fill="#eef2ff" stroke="#0b5fff"/><text x="115" y="88" font-size="18" font-weight="700">1. Repoindítás</text><text x="115" y="118" font-size="14">cél · határok · szabályok</text><text x="115" y="145" font-size="14" fill="#0e7490">eredmény: közös keret</text></g><g><rect x="250" y="55" width="190" height="122" rx="16" fill="#fff7ed" stroke="#b45309"/><text x="345" y="88" font-size="18" font-weight="700">2. Vertical slice</text><text x="345" y="118" font-size="14">egy út elejétől a végéig</text><text x="345" y="145" font-size="14" fill="#0e7490">eredmény: ellenőrizhető lánc</text></g><g><rect x="480" y="55" width="190" height="122" rx="16" fill="#f5f3ff" stroke="#7c3aed"/><text x="575" y="88" font-size="18" font-weight="700">3. Review és preview</text><text x="575" y="118" font-size="14">független nézőpont</text><text x="575" y="145" font-size="14" fill="#0e7490">eredmény: igazolt állapot</text></g><g><rect x="710" y="55" width="190" height="122" rx="16" fill="#ecfdf5" stroke="#047857"/><text x="805" y="88" font-size="18" font-weight="700">4. Gépi ellenőrzés</text><text x="805" y="118" font-size="14">tanulságból védelem</text><text x="805" y="145" font-size="14" fill="#0e7490">eredmény: tartós kapu</text></g></g>
-        <path d="M805 190C805 260 115 260 115 190" fill="none" stroke="#0e7490" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow-overview)"/><text x="460" y="255" text-anchor="middle" font-size="14" fill="#0e7490">a gépi tapasztalat visszajavítja a közös keretet</text>
-      </svg>
-      <figcaption><strong>Lényeg:</strong> az út nem ér véget az automatizálásnál; amit a kapukból megtanulunk, visszaépül a repo szabályaiba.</figcaption>
-      <table id="fig-naplo-overview-text" class="static-fallback"><caption>Az ábra szöveges megfelelője</caption><thead><tr><th>Fejezet</th><th>Döntés</th><th>Továbbadott eredmény</th></tr></thead><tbody><tr><td>Repoindítás</td><td>Cél, határok és szabályok rögzítése.</td><td>Közös keret.</td></tr><tr><td>Vertical slice</td><td>Egy kis működés végigvitele.</td><td>Ellenőrizhető lánc.</td></tr><tr><td>Review és preview</td><td>Független ellenőrzés a leszállított állapoton.</td><td>Igazolt állapot.</td></tr><tr><td>Gépi ellenőrzés</td><td>Az ismétlődő hibákból automatikus védelem.</td><td>Tartós kapu, amely a szabályokat is javítja.</td></tr></tbody></table>
-    </figure>
-    <p class="takeaway"><strong>Röviden:</strong> előbb tedd érthetővé a munkát, utána járasd végig, ellenőriztesd függetlenül, végül automatizáld azt, amit már pontosan értesz.</p>
-  </section>
+      <section aria-labelledby="attekintes">
+        <figure id="fig-naplo-overview" class="visual-box">
+          <h2 id="attekintes">A négy fejezet egyetlen képen</h2>
+          <svg
+            viewBox="0 0 920 300"
+            role="img"
+            aria-labelledby="naplo-title naplo-desc"
+          >
+            <title id="naplo-title">
+              A repoindítástól a gépi ellenőrzésig vezető tanulási út
+            </title>
+            <desc id="naplo-desc">
+              Négy egymásra épülő állomás: közös keret, végigfutó kis szelet,
+              független review és preview, majd gépi ellenőrzés. Az egyes
+              állomások eredménye a következő bemenete.
+            </desc>
+            <defs>
+              <marker
+                id="arrow-overview"
+                markerWidth="8"
+                markerHeight="8"
+                refX="7"
+                refY="4"
+                orient="auto"
+              >
+                <path d="M0 0L8 4L0 8Z" fill="#5a6675" />
+              </marker>
+            </defs>
+            <g
+              fill="none"
+              stroke="#5a6675"
+              stroke-width="3"
+              marker-end="url(#arrow-overview)"
+            >
+              <path d="M210 116H250" />
+              <path d="M440 116H480" />
+              <path d="M670 116H710" />
+            </g>
+            <g font-family="system-ui" text-anchor="middle">
+              <a
+                data-route="/materials/epitesi-naplo/01-repoinditas/"
+                aria-label="1. tanulság: Repoindítás"
+              >
+                <rect
+                  x="20"
+                  y="55"
+                  width="190"
+                  height="122"
+                  rx="16"
+                  class="node-shape node-agent"
+                />
+                <text x="115" y="88" font-size="18" font-weight="700">
+                  1. Repoindítás
+                </text>
+                <text x="115" y="118" font-size="14">
+                  cél · határok · szabályok
+                </text>
+                <text x="115" y="145" font-size="14" fill="#0e7490">
+                  eredmény: közös keret
+                </text>
+              </a>
+              <a
+                data-route="/materials/epitesi-naplo/02-elso-vertical-slice/"
+                aria-label="2. tanulság: Az első vertical slice"
+              >
+                <rect
+                  x="250"
+                  y="55"
+                  width="190"
+                  height="122"
+                  rx="16"
+                  class="node-shape node-artifact"
+                />
+                <text x="345" y="88" font-size="18" font-weight="700">
+                  2. Vertical slice
+                </text>
+                <text x="345" y="118" font-size="14">
+                  egy út elejétől a végéig
+                </text>
+                <text x="345" y="145" font-size="14" fill="#0e7490">
+                  eredmény: ellenőrizhető lánc
+                </text>
+              </a>
+              <a
+                data-route="/materials/epitesi-naplo/03-rug-es-preview/"
+                aria-label="3. tanulság: RUG és preview"
+              >
+                <rect
+                  x="480"
+                  y="55"
+                  width="190"
+                  height="122"
+                  rx="16"
+                  class="node-shape node-evidence"
+                />
+                <text x="575" y="88" font-size="18" font-weight="700">
+                  3. Review és preview
+                </text>
+                <text x="575" y="118" font-size="14">független nézőpont</text>
+                <text x="575" y="145" font-size="14" fill="#0e7490">
+                  eredmény: igazolt állapot
+                </text>
+              </a>
+              <a
+                data-route="/materials/epitesi-naplo/04-gepi-ellenorzes/"
+                aria-label="4. tanulság: Gépi ellenőrzések"
+              >
+                <rect
+                  x="710"
+                  y="55"
+                  width="190"
+                  height="122"
+                  rx="16"
+                  class="node-shape node-machine"
+                />
+                <text x="805" y="88" font-size="18" font-weight="700">
+                  4. Gépi ellenőrzés
+                </text>
+                <text x="805" y="118" font-size="14">tanulságból védelem</text>
+                <text x="805" y="145" font-size="14" fill="#0e7490">
+                  eredmény: tartós kapu
+                </text>
+              </a>
+            </g>
+            <path
+              d="M805 190C805 260 115 260 115 190"
+              fill="none"
+              stroke="#0e7490"
+              stroke-width="2"
+              stroke-dasharray="7 5"
+              marker-end="url(#arrow-overview)"
+            />
+            <text
+              x="460"
+              y="255"
+              text-anchor="middle"
+              font-size="14"
+              fill="#0e7490"
+            >
+              a gépi tapasztalat visszajavítja a közös keretet
+            </text>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> az út nem ér véget az automatizálásnál;
+            amit a kapukból megtanulunk, visszaépül a repo szabályaiba.
+          </figcaption>
+          <table id="fig-naplo-overview-text" class="static-fallback">
+            <caption>
+              Az ábra szöveges megfelelője
+            </caption>
+            <thead>
+              <tr>
+                <th>Fejezet</th>
+                <th>Döntés</th>
+                <th>Továbbadott eredmény</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a data-route="/materials/epitesi-naplo/01-repoinditas/"
+                    >Repoindítás</a
+                  >
+                </td>
+                <td>Cél, határok és szabályok rögzítése.</td>
+                <td>Közös keret.</td>
+              </tr>
+              <tr>
+                <td>
+                  <a
+                    data-route="/materials/epitesi-naplo/02-elso-vertical-slice/"
+                    >Vertical slice</a
+                  >
+                </td>
+                <td>Egy kis működés végigvitele.</td>
+                <td>Ellenőrizhető lánc.</td>
+              </tr>
+              <tr>
+                <td>
+                  <a data-route="/materials/epitesi-naplo/03-rug-es-preview/"
+                    >Review és preview</a
+                  >
+                </td>
+                <td>Független ellenőrzés a leszállított állapoton.</td>
+                <td>Igazolt állapot.</td>
+              </tr>
+              <tr>
+                <td>
+                  <a data-route="/materials/epitesi-naplo/04-gepi-ellenorzes/"
+                    >Gépi ellenőrzés</a
+                  >
+                </td>
+                <td>Az ismétlődő hibákból automatikus védelem.</td>
+                <td>Tartós kapu, amely a szabályokat is javítja.</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p class="takeaway">
+          <strong>Röviden:</strong> előbb tedd érthetővé a munkát, utána járasd
+          végig, ellenőriztesd függetlenül, végül automatizáld azt, amit már
+          pontosan értesz.
+        </p>
+      </section>
 
-  <section aria-labelledby="fejezetek"><h2 id="fejezetek">A négy fejezet</h2><div class="lesson-grid">
-    <article class="lesson-card"><p class="tag">Keret</p><h3><a data-route="/materials/epitesi-naplo/01-repoinditas/">1. Repoindítás</a></h3><p>Miért a repo célja, határai és ellenőrzési módja az első munkadarab?</p><p class="module-links"><a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. modul</a><a data-route="/materials/modulok/02-repo-felkeszitese/">2. modul</a></p></article>
-    <article class="lesson-card"><p class="tag">Első ellenőrzött működés</p><h3><a data-route="/materials/epitesi-naplo/02-elso-vertical-slice/">2. Az első vertical slice</a></h3><p>Miért tanít többet egy kicsi, végig ellenőrzött út, mint sok félkész réteg?</p><p class="module-links"><a data-route="/materials/modulok/02-repo-felkeszitese/">2. modul</a><a data-route="/materials/modulok/03-specifikacio/">3. modul</a><a data-route="/materials/modulok/06-rendszerellenorzes/">6. modul</a></p></article>
-    <article class="lesson-card"><p class="tag">Független nézőpont</p><h3><a data-route="/materials/epitesi-naplo/03-rug-es-preview/">3. RUG és preview</a></h3><p>Miért nem bizonyíték sem a készítő beszámolója, sem önmagában egy zöld CI?</p><p class="module-links"><a data-route="/materials/modulok/04-fuggetlen-review/">4. modul</a><a data-route="/materials/modulok/06-rendszerellenorzes/">6. modul</a></p></article>
-    <article class="lesson-card"><p class="tag">Tartós védelem</p><h3><a data-route="/materials/epitesi-naplo/04-gepi-ellenorzes/">4. Gépi ellenőrzések</a></h3><p>Hogyan lesz egy review-megállapításból olyan kapu, amely a hibás utat ténylegesen blokkolja?</p><p class="module-links"><a data-route="/materials/modulok/05-szabalyok-es-kapuk/">5. modul</a><a data-route="/materials/modulok/07-legacy-rendszer/">7. modul</a><a data-route="/materials/modulok/08-csapatbevezetes/">8. modul</a></p></article>
-  </div></section>
+      <section aria-labelledby="fejezetek">
+        <h2 id="fejezetek">A négy fejezet</h2>
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <p class="tag">Keret</p>
+            <h3>
+              <a data-route="/materials/epitesi-naplo/01-repoinditas/"
+                >1. Repoindítás</a
+              >
+            </h3>
+            <p>
+              Miért a repo célja, határai és ellenőrzési módja az első
+              munkadarab?
+            </p>
+            <p class="module-links">
+              <a data-route="/materials/modulok/01-agentikus-fejlesztes/"
+                >1. modul</a
+              ><a data-route="/materials/modulok/02-repo-felkeszitese/"
+                >2. modul</a
+              >
+            </p>
+          </article>
+          <article class="lesson-card">
+            <p class="tag">Első ellenőrzött működés</p>
+            <h3>
+              <a data-route="/materials/epitesi-naplo/02-elso-vertical-slice/"
+                >2. Az első vertical slice</a
+              >
+            </h3>
+            <p>
+              Miért tanít többet egy kicsi, végig ellenőrzött út, mint sok
+              félkész réteg?
+            </p>
+            <p class="module-links">
+              <a data-route="/materials/modulok/02-repo-felkeszitese/"
+                >2. modul</a
+              ><a data-route="/materials/modulok/03-specifikacio/">3. modul</a
+              ><a data-route="/materials/modulok/06-rendszerellenorzes/"
+                >6. modul</a
+              >
+            </p>
+          </article>
+          <article class="lesson-card">
+            <p class="tag">Független nézőpont</p>
+            <h3>
+              <a data-route="/materials/epitesi-naplo/03-rug-es-preview/"
+                >3. RUG és preview</a
+              >
+            </h3>
+            <p>
+              Miért nem bizonyíték sem a készítő beszámolója, sem önmagában egy
+              zöld CI?
+            </p>
+            <p class="module-links">
+              <a data-route="/materials/modulok/04-fuggetlen-review/"
+                >4. modul</a
+              ><a data-route="/materials/modulok/06-rendszerellenorzes/"
+                >6. modul</a
+              >
+            </p>
+          </article>
+          <article class="lesson-card">
+            <p class="tag">Tartós védelem</p>
+            <h3>
+              <a data-route="/materials/epitesi-naplo/04-gepi-ellenorzes/"
+                >4. Gépi ellenőrzések</a
+              >
+            </h3>
+            <p>
+              Hogyan lesz egy review-megállapításból olyan kapu, amely a hibás
+              utat ténylegesen blokkolja?
+            </p>
+            <p class="module-links">
+              <a data-route="/materials/modulok/05-szabalyok-es-kapuk/"
+                >5. modul</a
+              ><a data-route="/materials/modulok/07-legacy-rendszer/"
+                >7. modul</a
+              ><a data-route="/materials/modulok/08-csapatbevezetes/"
+                >8. modul</a
+              >
+            </p>
+          </article>
+        </div>
+      </section>
 
-  <section aria-labelledby="kapcsolat"><figure id="fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat" class="visual-box"><h2 id="kapcsolat">Melyik tanulság hol folytatódik?</h2><svg viewBox="0 0 920 280" role="img" aria-labelledby="map-title map-desc"><title id="map-title">A négy naplófejezet kapcsolata a nyolc tananyagmodullal</title><desc id="map-desc">A repoindítás az első és második modulhoz, a vertical slice a második, harmadik és hatodik modulhoz, a RUG és preview a negyedik és hatodik modulhoz, a gépi ellenőrzés az ötödik, hetedik és nyolcadik modulhoz kapcsolódik.</desc><g font-family="system-ui" font-size="14"><g fill="#eef2ff" stroke="#0b5fff"><rect x="20" y="20" width="190" height="45" rx="10"/><rect x="20" y="82" width="190" height="45" rx="10"/><rect x="20" y="144" width="190" height="45" rx="10"/><rect x="20" y="206" width="190" height="45" rx="10"/></g><g text-anchor="middle"><text x="115" y="48">1. Repoindítás</text><text x="115" y="110">2. Vertical slice</text><text x="115" y="172">3. RUG és preview</text><text x="115" y="234">4. Gépi ellenőrzés</text></g><g fill="#fff7ed" stroke="#b45309"><rect x="650" y="12" width="250" height="55" rx="10"/><rect x="650" y="78" width="250" height="55" rx="10"/><rect x="650" y="144" width="250" height="55" rx="10"/><rect x="650" y="210" width="250" height="55" rx="10"/></g><g text-anchor="middle"><text x="775" y="35">1–2. modul</text><text x="775" y="54" font-size="12">szerepek · repo felkészítése</text><text x="775" y="101">2–3–6. modul</text><text x="775" y="120" font-size="12">repo · spec · rendszerellenőrzés</text><text x="775" y="167">4–6. modul</text><text x="775" y="186" font-size="12">review · rendszerellenőrzés</text><text x="775" y="233">5–7–8. modul</text><text x="775" y="252" font-size="12">kapuk · legacy · bevezetés</text></g><g stroke="#5a6675" stroke-width="2"><line x1="210" y1="43" x2="650" y2="40"/><line x1="210" y1="105" x2="650" y2="106"/><line x1="210" y1="167" x2="650" y2="172"/><line x1="210" y1="229" x2="650" y2="238"/></g></g></svg><figcaption><strong>Lényeg:</strong> a napló nem külön történetfolyam; minden fejezete egy vagy több tananyagmodul döntési hátterét teszi kézzelfoghatóvá.</figcaption><table id="fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat-text" class="static-fallback"><caption>Fejezetek és kapcsolódó modulok</caption><tr><th>Fejezet</th><th>Modulok</th></tr><tr><td>Repoindítás</td><td>1–2.</td></tr><tr><td>Vertical slice</td><td>2–3–6.</td></tr><tr><td>RUG és preview</td><td>4–6.</td></tr><tr><td>Gépi ellenőrzés</td><td>5–7–8.</td></tr></table></figure></section>
-</main>
-</body>
+      <section aria-labelledby="kapcsolat">
+        <figure
+          id="fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat"
+          class="visual-box"
+        >
+          <h2 id="kapcsolat">Melyik tanulság hol folytatódik?</h2>
+          <svg
+            viewBox="0 0 920 280"
+            role="img"
+            aria-labelledby="map-title map-desc"
+          >
+            <title id="map-title">
+              A négy naplófejezet kapcsolata a nyolc tananyagmodullal
+            </title>
+            <desc id="map-desc">
+              A repoindítás az első és második modulhoz, a vertical slice a
+              második, harmadik és hatodik modulhoz, a RUG és preview a negyedik
+              és hatodik modulhoz, a gépi ellenőrzés az ötödik, hetedik és
+              nyolcadik modulhoz kapcsolódik.
+            </desc>
+            <g font-family="system-ui" font-size="14">
+              <g>
+                <rect
+                  class="node-artifact"
+                  x="20"
+                  y="20"
+                  width="190"
+                  height="45"
+                  rx="10"
+                />
+                <rect
+                  class="node-artifact"
+                  x="20"
+                  y="82"
+                  width="190"
+                  height="45"
+                  rx="10"
+                />
+                <rect
+                  class="node-artifact"
+                  x="20"
+                  y="144"
+                  width="190"
+                  height="45"
+                  rx="10"
+                />
+                <rect
+                  class="node-artifact"
+                  x="20"
+                  y="206"
+                  width="190"
+                  height="45"
+                  rx="10"
+                />
+              </g>
+              <g text-anchor="middle">
+                <text x="115" y="48">1. Repoindítás</text>
+                <text x="115" y="110">2. Vertical slice</text>
+                <text x="115" y="172">3. RUG és preview</text>
+                <text x="115" y="234">4. Gépi ellenőrzés</text>
+              </g>
+              <g>
+                <rect
+                  class="node-evidence"
+                  x="650"
+                  y="12"
+                  width="250"
+                  height="55"
+                  rx="10"
+                />
+                <rect
+                  class="node-evidence"
+                  x="650"
+                  y="78"
+                  width="250"
+                  height="55"
+                  rx="10"
+                />
+                <rect
+                  class="node-evidence"
+                  x="650"
+                  y="144"
+                  width="250"
+                  height="55"
+                  rx="10"
+                />
+                <rect
+                  class="node-evidence"
+                  x="650"
+                  y="210"
+                  width="250"
+                  height="55"
+                  rx="10"
+                />
+              </g>
+              <g text-anchor="middle">
+                <text x="775" y="35">1–2. modul</text>
+                <text x="775" y="54" font-size="12">
+                  szerepek · repo felkészítése
+                </text>
+                <text x="775" y="101">2–3–6. modul</text>
+                <text x="775" y="120" font-size="12">
+                  repo · spec · rendszerellenőrzés
+                </text>
+                <text x="775" y="167">4–6. modul</text>
+                <text x="775" y="186" font-size="12">
+                  review · rendszerellenőrzés
+                </text>
+                <text x="775" y="233">5–7–8. modul</text>
+                <text x="775" y="252" font-size="12">
+                  kapuk · legacy · bevezetés
+                </text>
+              </g>
+              <g stroke="#5a6675" stroke-width="2">
+                <line x1="210" y1="43" x2="650" y2="40" />
+                <line x1="210" y1="105" x2="650" y2="106" />
+                <line x1="210" y1="167" x2="650" y2="172" />
+                <line x1="210" y1="229" x2="650" y2="238" />
+              </g>
+            </g>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> a napló nem külön történetfolyam; minden
+            fejezete egy vagy több tananyagmodul döntési hátterét teszi
+            kézzelfoghatóvá.
+          </figcaption>
+          <table
+            id="fig-journal-melyik-naplofejezet-melyik-modul-tanulsagat-text"
+            class="static-fallback"
+          >
+            <caption>
+              Fejezetek és kapcsolódó modulok
+            </caption>
+            <tr>
+              <th>Fejezet</th>
+              <th>Modulok</th>
+            </tr>
+            <tr>
+              <td>Repoindítás</td>
+              <td>1–2.</td>
+            </tr>
+            <tr>
+              <td>Vertical slice</td>
+              <td>2–3–6.</td>
+            </tr>
+            <tr>
+              <td>RUG és preview</td>
+              <td>4–6.</td>
+            </tr>
+            <tr>
+              <td>Gépi ellenőrzés</td>
+              <td>5–7–8.</td>
+            </tr>
+          </table>
+        </figure>
+      </section>
+      <section class="ai-companion" aria-labelledby="ai-companion-journal">
+        <h2 id="ai-companion-journal">
+          Olvasd a naplót az AI-val, ne helyette
+        </h2>
+        <div class="ai-companion-grid">
+          <article class="ai-role agent">
+            <h3>Mit kérsz?</h3>
+            <p>
+              „A kiválasztott tanulságból kérdezz vissza: melyik döntést hozta
+              az ember, mit bizonyított az agent, és mit ültetek át a saját
+              repómba?”
+            </p>
+          </article>
+          <article class="ai-role machine">
+            <h3>Mit végez az agent?</h3>
+            <p>
+              Összeköti a történetet a kapcsolódó modullal, és segít megtalálni
+              az állítást alátámasztó bizonyítékot.
+            </p>
+          </article>
+          <article class="ai-role human">
+            <h3>Mit döntesz te?</h3>
+            <p>
+              Saját szavaiddal megfogalmazod, mi változott a mentális
+              modelledben, és melyik döntés marad emberi.
+            </p>
+          </article>
+          <article class="ai-role evidence">
+            <h3>Mi enged tovább?</h3>
+            <p>
+              Egy alkalmazható saját példa és olyan ellenőrzési terv, amelyet
+              más is meg tud ismételni.
+            </p>
+          </article>
+        </div>
+        <p>
+          <strong>AI-val megerősített emberi tanulási ciklus:</strong> előbb
+          jósolj vagy dönts, utána kérj magyarázatot és végrehajtást, vizsgáld
+          meg a bizonyítékot, javíts, végül fogalmazd meg te a tanulságot.
+        </p>
+      </section>
+    </main>
+  </body>
 </html>

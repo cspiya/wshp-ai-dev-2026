@@ -1,11 +1,11 @@
 # Építési napló — Day 5 (2026.07.13): a termék és a tananyag visszakapta a saját térképét
 
-*A nap terméke: a reference app kanonikus, repóban verziózott befejezési terve és a résztvevői
+_A nap terméke: a reference app kanonikus, repóban verziózott befejezési terve és a résztvevői
 tananyag AI-first, vizuális helyreállítási terve. Az első szétválasztja a kész kódot a még nem
 bizonyított élő integrációtól; a második három nagy munkacsomagba rendezi az egynapos tanulási ív,
 az eszközkészlet és a közös vizuális rendszer javítását. Szakszavak: [fogalomtár](../fogalomtar.md) · teljes ív:
 [big picture](../big-picture.md) · kanonikus terv: [Reference App Plan](../../reference-app/PLAN.md) ·
-előzmény: [Day 4](day-4.md)*
+előzmény: [Day 4](day-4.md)_
 
 **Végrehajtási állapot:** Linear · a tartós döntések és szabályok a repóban · nagy, integrálható munkacsomagok
 
@@ -126,11 +126,33 @@ hibákat azonnal megállítják, miközben a három nagy csomag fokozatosan fels
 régi eltéréseket.
 </details>
 
+<details>
+<summary>🤖 <b>A4 · A vizuális szerződés használat közben</b> (szerepek, valódi linkek, AI-társ)</summary>
+
+A koordinátor tulajdonában álló tizenkét résztvevői útvonal ugyanazt a szemantikus nyelvet kapta:
+emberi döntés, agentmunka, gépi kapu, munkadarab, bizonyíték és kockázat. A meglévő hasznos ábrákat
+nem rajzoltuk újra csak az újdonság kedvéért; a régi monokróm csomópontokat szerep szerint színeztük,
+és csak a valódi tananyag- vagy naplóútvonalat jelölő elemek lettek billentyűzettel is elérhető linkek.
+Minden ilyen célpont az ábra melletti HTML-változatban is elérhető.
+
+Az oldalak önmagukban is bemutatják a munkaszerződést: mit kér a résztvevő természetes nyelven, mit
+végez a Claude Code vagy a Codex, mely döntés marad az embernél, milyen bizonyíték enged tovább, és
+hol kell a RUG-kört újraindítani. A napló egyik örökölt feladata még pontos futtatási parancs
+megfogalmazását kérte a résztvevőtől; ezt agent által végzett mechanizmusválasztásra és
+pozitív–negatív bizonyításra cseréltük.
+
+A fogalomtár áttekintő ábrájánál a teljes sluglista másolata helyett dinamikus „minden kanonikus
+fogalom” szerződés lett a manifestben. Így a diagramelvárás mindig a checkoutban lévő fogalomtárból
+származik: az ellenőrzés 57 és 70 fogalmas registryvel is átment, egy szándékosan hiányos registryt
+pedig megállított. Ez bizonyítja, hogy a kapu a szerződést védi, nem egy tegnapi elemszámot.
+</details>
+
 ## 5. Következő bizonyítás
 
 A referenciaappnál a kiválasztott vizuális irány emberi ACCEPT után integrálva; a következő
 bizonyítás ugyanazon elfogadott SHA-n az élő Neon Auth, a Preview browser/API/DB evidencia és a
 nulláról újrajátszható runbook lezárása. A tananyagnál az AI-first vizuális alap korai integrációját
-kell bizonyítani, utána erre épülhet párhuzamosan a C0–C7 tanulási ív, valamint az
-eszköz–fogalomtár–starter csomag. Végül mindkét szálat elfogadott SHA-n, böngészőben és
-reprodukálható evidenciával kell lezárni.
+követte a koordinátori oldalak szemantikus migrációja. Erre épülhet párhuzamosan a C0–C7 tanulási
+ív, valamint az eszköz–fogalomtár–starter csomag. A három csomag elfogadott merge-e után egyetlen
+összeállított main-ellenőrzés bizonyítja majd a teljes link-, diagram-, publikus tartalom- és
+böngészőmátrixot; addig egyik részcsomag eredménye sem helyettesíti a végső integrációs bizonyítékot.

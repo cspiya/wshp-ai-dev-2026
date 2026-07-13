@@ -1,199 +1,728 @@
 <!doctype html>
 <html lang="hu">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI-assisted fejlesztési workshop</title>
-<style>
-  .hero { background: linear-gradient(135deg, #ffffff 0%, var(--soft-accent) 100%); border: 1px solid #d9e5fb; border-radius: 1rem; box-shadow: var(--shadow); margin: 0 0 2rem; padding: clamp(1.25rem, 4vw, 2.5rem); }
-  .hero h1 { margin: 0 0 0.5rem; font-size: 1.9rem; }
-  .hero .lead { color: var(--muted); font-size: 1.1rem; max-width: 46rem; }
-  .route-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; padding: 0; margin: 1.5rem 0; list-style: none; }
-  .route-cards li { background: var(--panel); border: 1px solid var(--line); border-radius: 0.6rem; padding: 1rem; }
-  .route-cards h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
-  .route-cards p { margin: 0 0 0.6rem; color: var(--muted); font-size: 0.95rem; }
-  .route-cards a.action { font-weight: 600; text-decoration: none; color: var(--accent); }
-  .route-cards a.action:hover, .route-cards a.action:focus-visible { text-decoration: underline; }
-  .area-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; padding: 0; margin: 1.25rem 0; list-style: none; }
-  .area-card { height: 100%; background: var(--paper); border: 1px solid var(--line); border-top: 0.3rem solid var(--accent); border-radius: 0.8rem; box-shadow: var(--shadow); padding: 1.25rem; }
-  .area-card h3 { margin: 0 0 0.75rem; font-size: 1.3rem; }
-  .area-card p { margin: 0.45rem 0; color: var(--muted); }
-  .area-card strong { color: var(--ink); }
-  .area-card .action { display: inline-block; margin-top: 0.65rem; font-weight: 750; text-decoration: none; }
-  .area-card .action:hover, .area-card .action:focus-visible { text-decoration: underline; }
-  .area-card code { color: var(--ink); }
-  section { margin-bottom: 2.5rem; }
-  @media (max-width: 640px) { .area-grid { grid-template-columns: 1fr; } }
-</style>
-</head>
-<body>
-<main>
-  <section class="hero">
-    <h1>AI-assisted fejlesztési workshop</h1>
-    <p class="lead">Egy nap alatt felépítünk egy olyan fejlesztési rendszert, amelyben egy coding agent
-    megbízhatóan dolgozik: közös szabályok, jóváhagyott specifikáció, független review és automatikus
-    ellenőrzési pontok. A módszert egy kitalált adatokkal működő referenciaalkalmazáson próbáljuk ki.</p>
-  </section>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI-assisted fejlesztési workshop</title>
+    <style>
+      .hero {
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          var(--soft-accent) 100%
+        );
+        border: 1px solid #d9e5fb;
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+        margin: 0 0 2rem;
+        padding: clamp(1.25rem, 4vw, 2.5rem);
+      }
+      .hero h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.9rem;
+      }
+      .hero .lead {
+        color: var(--muted);
+        font-size: 1.1rem;
+        max-width: 46rem;
+      }
+      .route-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: 1rem;
+        padding: 0;
+        margin: 1.5rem 0;
+        list-style: none;
+      }
+      .route-cards li {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 0.6rem;
+        padding: 1rem;
+      }
+      .route-cards h3 {
+        margin: 0 0 0.4rem;
+        font-size: 1.05rem;
+      }
+      .route-cards p {
+        margin: 0 0 0.6rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .route-cards a.action {
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--accent);
+      }
+      .route-cards a.action:hover,
+      .route-cards a.action:focus-visible {
+        text-decoration: underline;
+      }
+      .area-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        padding: 0;
+        margin: 1.25rem 0;
+        list-style: none;
+      }
+      .area-card {
+        height: 100%;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-top: 0.3rem solid var(--accent);
+        border-radius: 0.8rem;
+        box-shadow: var(--shadow);
+        padding: 1.25rem;
+      }
+      .area-card h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.3rem;
+      }
+      .area-card p {
+        margin: 0.45rem 0;
+        color: var(--muted);
+      }
+      .area-card strong {
+        color: var(--ink);
+      }
+      .area-card .action {
+        display: inline-block;
+        margin-top: 0.65rem;
+        font-weight: 750;
+        text-decoration: none;
+      }
+      .area-card .action:hover,
+      .area-card .action:focus-visible {
+        text-decoration: underline;
+      }
+      .area-card code {
+        color: var(--ink);
+      }
+      section {
+        margin-bottom: 2.5rem;
+      }
+      @media (max-width: 640px) {
+        .area-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <h1>AI-assisted fejlesztési workshop</h1>
+        <p class="lead">
+          Egy nap alatt felépítünk egy olyan fejlesztési rendszert, amelyben egy
+          coding agent megbízhatóan dolgozik: közös szabályok, jóváhagyott
+          specifikáció, független review és automatikus ellenőrzési pontok. A
+          módszert egy kitalált adatokkal működő referenciaalkalmazáson
+          próbáljuk ki.
+        </p>
+      </section>
 
-  <section aria-labelledby="merre">
-    <h2 id="merre">Merre indulj?</h2><p><strong>Ha most vagy itt először:</strong> kezdd <a data-route="/materials/repo-terkep/">a repo és a nap térképével</a> — öt percben átlátod, mi hol van, és honnan hová jutsz el ma.</p>
-    <ul class="route-cards">
-      <li>
-        <h3>A workshop előtt</h3>
-        <p>Fiókok, eszközök és a saját gyakorlórepó előkészítése, hogy a nap az építésről szóljon.</p>
-        <a class="action" data-route="/materials/felkeszules/">Felkészülés →</a>
-      </li>
-      <li>
-        <h3>A workshop napján</h3>
-        <p>A nap menete időpontokkal, és a nyolc modul, amelyeken végighaladunk.</p>
-        <a class="action" data-route="/materials/napirend/">A workshop menete →</a>
-      </li>
-      <li>
-        <h3>A workshop után</h3>
-        <p>Hazavihető sablonok, ellenőrzőlisták és útmutatók a módszer bevezetéséhez a saját csapatodban.</p>
-        <a class="action" data-route="/toolkit/">Toolkit →</a>
-      </li>
-    </ul>
-  </section>
+      <section aria-labelledby="merre">
+        <h2 id="merre">Merre indulj?</h2>
+        <p>
+          <strong>Ha most vagy itt először:</strong> kezdd
+          <a data-route="/materials/repo-terkep/">a repo és a nap térképével</a>
+          — öt percben átlátod, mi hol van, és honnan hová jutsz el ma.
+        </p>
+        <ul class="route-cards">
+          <li>
+            <h3>A workshop előtt</h3>
+            <p>
+              Fiókok, eszközök és a saját gyakorlórepó előkészítése, hogy a nap
+              az építésről szóljon.
+            </p>
+            <a class="action" data-route="/materials/felkeszules/"
+              >Felkészülés →</a
+            >
+          </li>
+          <li>
+            <h3>A workshop napján</h3>
+            <p>
+              A nap menete időpontokkal, és a nyolc modul, amelyeken
+              végighaladunk.
+            </p>
+            <a class="action" data-route="/materials/napirend/"
+              >A workshop menete →</a
+            >
+          </li>
+          <li>
+            <h3>A workshop után</h3>
+            <p>
+              Hazavihető sablonok, ellenőrzőlisták és útmutatók a módszer
+              bevezetéséhez a saját csapatodban.
+            </p>
+            <a class="action" data-route="/toolkit/">Toolkit →</a>
+          </li>
+        </ul>
+      </section>
 
-  <section aria-labelledby="mit-epitunk">
-    <h2 id="mit-epitunk">Mit építünk — és min próbáljuk ki?</h2>
-    <figure id="fig-product-reference">
-      <svg viewBox="0 0 860 300" role="img" aria-labelledby="fig-pr-title fig-pr-desc">
-        <title id="fig-pr-title">A fejlesztési rendszer a termék, a referenciaalkalmazás a próbapad</title>
-        <desc id="fig-pr-desc">Két sáv. A felső sáv a fejlesztési rendszer öt lépése: közös szabályok,
-        jóváhagyott specifikáció, elkészített változtatás, független review, automatikus ellenőrzési
-        pontok. A lépések balról jobbra nyilakkal kapcsolódnak. Az alsó sáv a referenciaalkalmazás,
-        amely kitalált adatokkal működik; felfelé mutató nyíl jelzi, hogy valós feladaton igazolja a
-        felső sáv működését.</desc>
-        <rect x="10" y="20" width="840" height="130" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
-        <text x="30" y="48" font-size="17" font-weight="bold" fill="#1f2733">A fejlesztési rendszer — ezt viszed haza</text>
-        <g font-size="14" fill="#1f2733">
-          <rect x="30" y="66" width="140" height="58" rx="8" fill="#ffffff" stroke="#7c3aed"/>
-          <text x="100" y="90" text-anchor="middle">Közös</text>
-          <text x="100" y="108" text-anchor="middle">szabályok</text>
-          <rect x="196" y="66" width="140" height="58" rx="8" fill="#ffffff" stroke="#7c3aed"/>
-          <text x="266" y="90" text-anchor="middle">Jóváhagyott</text>
-          <text x="266" y="108" text-anchor="middle">specifikáció</text>
-          <rect x="362" y="66" width="140" height="58" rx="8" fill="#ffffff" stroke="#0b5fff"/>
-          <text x="432" y="90" text-anchor="middle">Elkészített</text>
-          <text x="432" y="108" text-anchor="middle">változtatás</text>
-          <rect x="528" y="66" width="140" height="58" rx="8" fill="#ffffff" stroke="#7c3aed"/>
-          <text x="598" y="90" text-anchor="middle">Független</text>
-          <text x="598" y="108" text-anchor="middle">review</text>
-          <rect x="694" y="66" width="140" height="58" rx="8" fill="#ffffff" stroke="#047857"/>
-          <text x="764" y="90" text-anchor="middle">Automatikus</text>
-          <text x="764" y="108" text-anchor="middle">ellenőrzés</text>
-        </g>
-        <g stroke="#5a6675" stroke-width="2" fill="#5a6675">
-          <line x1="170" y1="95" x2="192" y2="95"/><polygon points="196,95 188,91 188,99"/>
-          <line x1="336" y1="95" x2="358" y2="95"/><polygon points="362,95 354,91 354,99"/>
-          <line x1="502" y1="95" x2="524" y2="95"/><polygon points="528,95 520,91 520,99"/>
-          <line x1="668" y1="95" x2="690" y2="95"/><polygon points="694,95 686,91 686,99"/>
-        </g>
-        <rect x="10" y="210" width="840" height="70" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
-        <text x="30" y="238" font-size="17" font-weight="bold" fill="#1f2733">Referenciaalkalmazás — a próbapad</text>
-        <text x="30" y="262" font-size="14" fill="#1f2733">Kitalált adatokkal működő webalkalmazás: regisztráció, fizetés, lemondás, éles preview.</text>
-        <g stroke="#0e7490" stroke-width="2" fill="#0e7490">
-          <line x1="430" y1="206" x2="430" y2="160"/><polygon points="430,156 426,164 434,164"/>
-        </g>
-        <text x="444" y="186" font-size="13" fill="#0e7490">valós feladaton igazolja</text>
-      </svg>
-      <figcaption>A nap végén nem egy alkalmazást viszel haza, hanem egy működő fejlesztési rendszert —
-      az alkalmazás csak bizonyítja, hogy a rendszer valódi munkán is megállja a helyét.</figcaption>
-      <table class="static-fallback" id="fig-product-reference-text">
-        <caption>A diagram szöveges megfelelője</caption>
-        <tr><th>Sáv</th><th>Tartalom</th></tr>
-        <tr><td>A fejlesztési rendszer (a termék)</td><td>Közös szabályok → jóváhagyott specifikáció → elkészített változtatás → független review → automatikus ellenőrzési pontok.</td></tr>
-        <tr><td>Referenciaalkalmazás (a próbapad)</td><td>Kitalált adatokkal működő webalkalmazás, amely valós feladaton igazolja a rendszer működését.</td></tr>
-      </table>
-    </figure>
-  </section>
+      <section aria-labelledby="mit-epitunk">
+        <h2 id="mit-epitunk">Mit építünk — és min próbáljuk ki?</h2>
+        <figure id="fig-product-reference">
+          <svg
+            viewBox="0 0 860 300"
+            role="img"
+            aria-labelledby="fig-pr-title fig-pr-desc"
+          >
+            <title id="fig-pr-title">
+              A fejlesztési rendszer a termék, a referenciaalkalmazás a próbapad
+            </title>
+            <desc id="fig-pr-desc">
+              Két sáv. A felső sáv a fejlesztési rendszer öt lépése: közös
+              szabályok, jóváhagyott specifikáció, elkészített változtatás,
+              független review, automatikus ellenőrzési pontok. A lépések balról
+              jobbra nyilakkal kapcsolódnak. Az alsó sáv a referenciaalkalmazás,
+              amely kitalált adatokkal működik; felfelé mutató nyíl jelzi, hogy
+              valós feladaton igazolja a felső sáv működését.
+            </desc>
+            <rect
+              x="10"
+              y="20"
+              width="840"
+              height="130"
+              rx="10"
+              fill="#eef2ff"
+              stroke="#c7d2fe"
+            />
+            <text
+              x="30"
+              y="48"
+              font-size="17"
+              font-weight="bold"
+              fill="#1f2733"
+            >
+              A fejlesztési rendszer — ezt viszed haza
+            </text>
+            <g font-size="14" fill="#1f2733">
+              <rect
+                x="30"
+                y="66"
+                width="140"
+                height="58"
+                rx="8"
+                fill="#ffffff"
+                stroke="#7c3aed"
+              />
+              <text x="100" y="90" text-anchor="middle">Közös</text>
+              <text x="100" y="108" text-anchor="middle">szabályok</text>
+              <rect
+                x="196"
+                y="66"
+                width="140"
+                height="58"
+                rx="8"
+                fill="#ffffff"
+                stroke="#7c3aed"
+              />
+              <text x="266" y="90" text-anchor="middle">Jóváhagyott</text>
+              <text x="266" y="108" text-anchor="middle">specifikáció</text>
+              <rect
+                x="362"
+                y="66"
+                width="140"
+                height="58"
+                rx="8"
+                fill="#ffffff"
+                stroke="#0b5fff"
+              />
+              <text x="432" y="90" text-anchor="middle">Elkészített</text>
+              <text x="432" y="108" text-anchor="middle">változtatás</text>
+              <rect
+                x="528"
+                y="66"
+                width="140"
+                height="58"
+                rx="8"
+                fill="#ffffff"
+                stroke="#7c3aed"
+              />
+              <text x="598" y="90" text-anchor="middle">Független</text>
+              <text x="598" y="108" text-anchor="middle">review</text>
+              <rect
+                x="694"
+                y="66"
+                width="140"
+                height="58"
+                rx="8"
+                fill="#ffffff"
+                stroke="#047857"
+              />
+              <text x="764" y="90" text-anchor="middle">Automatikus</text>
+              <text x="764" y="108" text-anchor="middle">ellenőrzés</text>
+            </g>
+            <g stroke="#5a6675" stroke-width="2" fill="#5a6675">
+              <line x1="170" y1="95" x2="192" y2="95" />
+              <polygon points="196,95 188,91 188,99" />
+              <line x1="336" y1="95" x2="358" y2="95" />
+              <polygon points="362,95 354,91 354,99" />
+              <line x1="502" y1="95" x2="524" y2="95" />
+              <polygon points="528,95 520,91 520,99" />
+              <line x1="668" y1="95" x2="690" y2="95" />
+              <polygon points="694,95 686,91 686,99" />
+            </g>
+            <rect
+              x="10"
+              y="210"
+              width="840"
+              height="70"
+              rx="10"
+              fill="#ecfdf5"
+              stroke="#a7f3d0"
+            />
+            <text
+              x="30"
+              y="238"
+              font-size="17"
+              font-weight="bold"
+              fill="#1f2733"
+            >
+              Referenciaalkalmazás — a próbapad
+            </text>
+            <text x="30" y="262" font-size="14" fill="#1f2733">
+              Kitalált adatokkal működő webalkalmazás: regisztráció, fizetés,
+              lemondás, éles preview.
+            </text>
+            <g stroke="#0e7490" stroke-width="2" fill="#0e7490">
+              <line x1="430" y1="206" x2="430" y2="160" />
+              <polygon points="430,156 426,164 434,164" />
+            </g>
+            <text x="444" y="186" font-size="13" fill="#0e7490">
+              valós feladaton igazolja
+            </text>
+          </svg>
+          <figcaption>
+            A nap végén nem egy alkalmazást viszel haza, hanem egy működő
+            fejlesztési rendszert — az alkalmazás csak bizonyítja, hogy a
+            rendszer valódi munkán is megállja a helyét.
+          </figcaption>
+          <table class="static-fallback" id="fig-product-reference-text">
+            <caption>
+              A diagram szöveges megfelelője
+            </caption>
+            <tr>
+              <th>Sáv</th>
+              <th>Tartalom</th>
+            </tr>
+            <tr>
+              <td>A fejlesztési rendszer (a termék)</td>
+              <td>
+                Közös szabályok → jóváhagyott specifikáció → elkészített
+                változtatás → független review → automatikus ellenőrzési pontok.
+              </td>
+            </tr>
+            <tr>
+              <td>Referenciaalkalmazás (a próbapad)</td>
+              <td>
+                Kitalált adatokkal működő webalkalmazás, amely valós feladaton
+                igazolja a rendszer működését.
+              </td>
+            </tr>
+          </table>
+        </figure>
+      </section>
 
-  <section aria-labelledby="teruletek">
-    <h2 id="teruletek">A workshop négy területe</h2>
-    <p>Ezek nem ugyanazt a célt szolgálják. Válaszd azt a területet, amelyik az aktuális munkádhoz kell.</p>
-    <ul class="area-grid">
-      <li><article class="area-card">
-        <h3><a data-route="/materials/">Tananyag</a></h3>
-        <p><strong>Mi ez?</strong> A workshop vezetett, magyar nyelvű tanulási útvonala.</p>
-        <p><strong>Mikor használd?</strong> Felkészüléskor és a workshop teljes ideje alatt, modulról modulra.</p>
-        <p><strong>Mit tartalmaz?</strong> Napirendet, nyolc kidolgozott modult, fogalomtárat, módszertani oldalakat és építési naplót.</p>
-        <p><strong>Helye:</strong> <code>materials/</code></p>
-        <a class="action" data-route="/materials/">Tananyag megnyitása →</a>
-      </article></li>
-      <li><article class="area-card">
-        <h3><a data-route="/toolkit/">Toolkit</a></h3>
-        <p><strong>Mi ez?</strong> A workshop után is használható fejlesztési eszköztár.</p>
-        <p><strong>Mikor használd?</strong> Amikor a módszert a saját repódba vagy csapatodba ülteted át.</p>
-        <p><strong>Mit tartalmaz?</strong> Specifikációs sablonokat, ellenőrzőlistákat, agent-promptokat, minőségi kapukat és útmutatókat.</p>
-        <p><strong>Helye:</strong> <code>toolkit/</code></p>
-        <a class="action" data-route="/toolkit/">Toolkit megnyitása →</a>
-      </article></li>
-      <li><article class="area-card">
-        <h3><a data-route="/participant-starter/">Résztvevői starter</a></h3>
-        <p><strong>Mi ez?</strong> A saját gyakorlórepód kiinduló állapota.</p>
-        <p><strong>Mikor használd?</strong> A workshop gyakorlatai során: ide írod a specifikációt és itt készíted el a változtatást.</p>
-        <p><strong>Mit tartalmaz?</strong> Előkészített projektvázat, konfigurációs mintákat és szándékosan befejezetlen gyakorlófeladatot.</p>
-        <p><strong>Helye:</strong> <code>participant-starter/</code></p>
-        <a class="action" data-route="/participant-starter/">Starter megnyitása →</a>
-      </article></li>
-      <li><article class="area-card">
-        <h3><a data-route="/reference-app/">Referencia-alkalmazás</a></h3>
-        <p><strong>Mi ez?</strong> A módszer kész, kitalált adatokkal működő próbapadja.</p>
-        <p><strong>Mikor használd?</strong> Amikor összehasonlítási alap vagy teljes ellenőrzési példa kell.</p>
-        <p><strong>Mit tartalmaz?</strong> A workshop-feladat megoldását, teszteket és a böngészőtől az adatig követhető bizonyítékláncot.</p>
-        <p><strong>Helye:</strong> <code>reference-app/</code></p>
-        <a class="action" data-route="/reference-app/">Referencia megnyitása →</a>
-      </article></li>
-    </ul>
-  </section>
+      <section aria-labelledby="teruletek">
+        <h2 id="teruletek">A workshop négy területe</h2>
+        <p>
+          Ezek nem ugyanazt a célt szolgálják. Válaszd azt a területet, amelyik
+          az aktuális munkádhoz kell.
+        </p>
+        <ul class="area-grid">
+          <li>
+            <article class="area-card">
+              <h3><a data-route="/materials/">Tananyag</a></h3>
+              <p>
+                <strong>Mi ez?</strong> A workshop vezetett, magyar nyelvű
+                tanulási útvonala.
+              </p>
+              <p>
+                <strong>Mikor használd?</strong> Felkészüléskor és a workshop
+                teljes ideje alatt, modulról modulra.
+              </p>
+              <p>
+                <strong>Mit tartalmaz?</strong> Napirendet, nyolc kidolgozott
+                modult, fogalomtárat, módszertani oldalakat és építési naplót.
+              </p>
+              <p><strong>Helye:</strong> <code>materials/</code></p>
+              <a class="action" data-route="/materials/"
+                >Tananyag megnyitása →</a
+              >
+            </article>
+          </li>
+          <li>
+            <article class="area-card">
+              <h3><a data-route="/toolkit/">Toolkit</a></h3>
+              <p>
+                <strong>Mi ez?</strong> A workshop után is használható
+                fejlesztési eszköztár.
+              </p>
+              <p>
+                <strong>Mikor használd?</strong> Amikor a módszert a saját
+                repódba vagy csapatodba ülteted át.
+              </p>
+              <p>
+                <strong>Mit tartalmaz?</strong> Specifikációs sablonokat,
+                ellenőrzőlistákat, agent-promptokat, minőségi kapukat és
+                útmutatókat.
+              </p>
+              <p><strong>Helye:</strong> <code>toolkit/</code></p>
+              <a class="action" data-route="/toolkit/">Toolkit megnyitása →</a>
+            </article>
+          </li>
+          <li>
+            <article class="area-card">
+              <h3>
+                <a data-route="/participant-starter/">Résztvevői starter</a>
+              </h3>
+              <p>
+                <strong>Mi ez?</strong> A saját gyakorlórepód kiinduló állapota.
+              </p>
+              <p>
+                <strong>Mikor használd?</strong> A workshop gyakorlatai során:
+                ide írod a specifikációt és itt készíted el a változtatást.
+              </p>
+              <p>
+                <strong>Mit tartalmaz?</strong> Előkészített projektvázat,
+                konfigurációs mintákat és szándékosan befejezetlen
+                gyakorlófeladatot.
+              </p>
+              <p><strong>Helye:</strong> <code>participant-starter/</code></p>
+              <a class="action" data-route="/participant-starter/"
+                >Starter megnyitása →</a
+              >
+            </article>
+          </li>
+          <li>
+            <article class="area-card">
+              <h3><a data-route="/reference-app/">Referencia-alkalmazás</a></h3>
+              <p>
+                <strong>Mi ez?</strong> A módszer kész, kitalált adatokkal
+                működő próbapadja.
+              </p>
+              <p>
+                <strong>Mikor használd?</strong> Amikor összehasonlítási alap
+                vagy teljes ellenőrzési példa kell.
+              </p>
+              <p>
+                <strong>Mit tartalmaz?</strong> A workshop-feladat megoldását,
+                teszteket és a böngészőtől az adatig követhető bizonyítékláncot.
+              </p>
+              <p><strong>Helye:</strong> <code>reference-app/</code></p>
+              <a class="action" data-route="/reference-app/"
+                >Referencia megnyitása →</a
+              >
+            </article>
+          </li>
+        </ul>
+      </section>
 
-  <section aria-labelledby="utvonal">
-    <h2 id="utvonal">A nap nyolc modulja</h2>
-    <figure id="fig-learning-roadmap">
-      <svg viewBox="0 0 860 340" role="img" aria-labelledby="fig-lr-title fig-lr-desc">
-        <title id="fig-lr-title">Tanulási útvonal: nyolc modul egymásra épülve</title>
-        <desc id="fig-lr-desc">Nyolc számozott állomás két sorban, balról jobbra haladva: 1. agentikus
-        fejlesztés, 2. a repo felkészítése, 3. specifikáció, 4. független review, 5. szabályok és kapuk,
-        6. rendszerellenőrzés, 7. legacy rendszer, 8. csapatszintű bevezetés. Minden állomás a
-        következőre mutat; mindegyik a saját moduloldalára vezet.</desc>
-        <g font-size="13" fill="#1f2733">
-          <a data-route="/materials/modulok/01-agentikus-fejlesztes/"><rect x="20" y="30" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="115" y="56" text-anchor="middle" font-weight="bold">1. modul</text><text x="115" y="76" text-anchor="middle">Agentikus fejlesztés</text></a>
-          <a data-route="/materials/modulok/02-repo-felkeszitese/"><rect x="230" y="30" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="325" y="56" text-anchor="middle" font-weight="bold">2. modul</text><text x="325" y="76" text-anchor="middle">A repo felkészítése</text></a>
-          <a data-route="/materials/modulok/03-specifikacio/"><rect x="440" y="30" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="535" y="56" text-anchor="middle" font-weight="bold">3. modul</text><text x="535" y="76" text-anchor="middle">Specifikáció és terv</text></a>
-          <a data-route="/materials/modulok/04-fuggetlen-review/"><rect x="650" y="30" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="745" y="56" text-anchor="middle" font-weight="bold">4. modul</text><text x="745" y="76" text-anchor="middle">Független review</text></a>
-          <a data-route="/materials/modulok/05-szabalyok-es-kapuk/"><rect x="20" y="180" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="115" y="206" text-anchor="middle" font-weight="bold">5. modul</text><text x="115" y="226" text-anchor="middle">Szabályok és kapuk</text></a>
-          <a data-route="/materials/modulok/06-rendszerellenorzes/"><rect x="230" y="180" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="325" y="206" text-anchor="middle" font-weight="bold">6. modul</text><text x="325" y="226" text-anchor="middle">Rendszerellenőrzés</text></a>
-          <a data-route="/materials/modulok/07-legacy-rendszer/"><rect x="440" y="180" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="535" y="206" text-anchor="middle" font-weight="bold">7. modul</text><text x="535" y="226" text-anchor="middle">Legacy rendszer</text></a>
-          <a data-route="/materials/modulok/08-csapatbevezetes/"><rect x="650" y="180" width="190" height="64" rx="8" fill="#eef2ff" stroke="#0b5fff"/><text x="745" y="206" text-anchor="middle" font-weight="bold">8. modul</text><text x="745" y="226" text-anchor="middle">Csapatszintű bevezetés</text></a>
-        </g>
-        <g stroke="#5a6675" stroke-width="2" fill="#5a6675">
-          <line x1="210" y1="62" x2="226" y2="62"/><polygon points="230,62 222,58 222,66"/>
-          <line x1="420" y1="62" x2="436" y2="62"/><polygon points="440,62 432,58 432,66"/>
-          <line x1="630" y1="62" x2="646" y2="62"/><polygon points="650,62 642,58 642,66"/>
-          <path d="M 745 94 C 745 140, 115 134, 115 176" fill="none"/><polygon points="115,180 111,172 119,172"/>
-          <line x1="210" y1="212" x2="226" y2="212"/><polygon points="230,212 222,208 222,216"/>
-          <line x1="420" y1="212" x2="436" y2="212"/><polygon points="440,212 432,208 432,216"/>
-          <line x1="630" y1="212" x2="646" y2="212"/><polygon points="650,212 642,208 642,216"/>
-        </g>
-        <text x="20" y="300" font-size="13" fill="#5a6675">Minden modul a megelőzőek eredményére épít — a sorrend nem felcserélhető.</text>
-      </svg>
-      <figcaption><strong>Röviden:</strong> a modulok sorrendje a közös nyelvtől és szabályoktól a mérhető rendszerellenőrzésen át a csapatszintű bevezetésig visz; minden lépés a következő bemenetét készíti el. A teljes útvonal a <a data-route="/materials/modulok/">modul-áttekintőben</a>, időbeosztással a <a data-route="/materials/napirend/">napirendben</a>.</figcaption>
-      <table class="static-fallback" id="fig-learning-roadmap-text">
-        <caption>A diagram szöveges megfelelője — a nyolc modul sorrendben</caption>
-        <tr><th>Modul</th><th>Cím</th></tr>
-        <tr><td>1.</td><td><a data-route="/materials/modulok/01-agentikus-fejlesztes/">Agentikus fejlesztés: szerepek és korlátok</a></td></tr>
-        <tr><td>2.</td><td><a data-route="/materials/modulok/02-repo-felkeszitese/">A repo felkészítése AI-agentekkel végzett fejlesztésre</a></td></tr>
-        <tr><td>3.</td><td><a data-route="/materials/modulok/03-specifikacio/">Specifikációból végrehajtható terv</a></td></tr>
-        <tr><td>4.</td><td><a data-route="/materials/modulok/04-fuggetlen-review/">Független review és javítási ciklus</a></td></tr>
-        <tr><td>5.</td><td><a data-route="/materials/modulok/05-szabalyok-es-kapuk/">Szabályok, skillek és automatizált kapuk</a></td></tr>
-        <tr><td>6.</td><td><a data-route="/materials/modulok/06-rendszerellenorzes/">Ellenőrzés a böngészőtől az adatbázisig</a></td></tr>
-        <tr><td>7.</td><td><a data-route="/materials/modulok/07-legacy-rendszer/">Legacy rendszer biztonságos változtatása</a></td></tr>
-        <tr><td>8.</td><td><a data-route="/materials/modulok/08-csapatbevezetes/">Csapatszintű bevezetés</a></td></tr>
-      </table>
-    </figure>
-  </section>
-</main>
-</body>
+      <section aria-labelledby="utvonal">
+        <h2 id="utvonal">A nap nyolc modulja</h2>
+        <figure id="fig-learning-roadmap">
+          <svg
+            viewBox="0 0 860 340"
+            role="img"
+            aria-labelledby="fig-lr-title fig-lr-desc"
+          >
+            <title id="fig-lr-title">
+              Tanulási útvonal: nyolc modul egymásra épülve
+            </title>
+            <desc id="fig-lr-desc">
+              Nyolc számozott állomás két sorban, balról jobbra haladva: 1.
+              agentikus fejlesztés, 2. a repo felkészítése, 3. specifikáció, 4.
+              független review, 5. szabályok és kapuk, 6. rendszerellenőrzés, 7.
+              legacy rendszer, 8. csapatszintű bevezetés. Minden állomás a
+              következőre mutat; mindegyik a saját moduloldalára vezet.
+            </desc>
+            <g font-size="13" fill="#1f2733">
+              <a data-route="/materials/modulok/01-agentikus-fejlesztes/">
+                <rect
+                  x="20"
+                  y="30"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="115" y="56" text-anchor="middle" font-weight="bold">
+                  1. modul
+                </text>
+                <text x="115" y="76" text-anchor="middle">
+                  Agentikus fejlesztés
+                </text>
+              </a>
+              <a data-route="/materials/modulok/02-repo-felkeszitese/">
+                <rect
+                  x="230"
+                  y="30"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="325" y="56" text-anchor="middle" font-weight="bold">
+                  2. modul
+                </text>
+                <text x="325" y="76" text-anchor="middle">
+                  A repo felkészítése
+                </text>
+              </a>
+              <a data-route="/materials/modulok/03-specifikacio/">
+                <rect
+                  x="440"
+                  y="30"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="535" y="56" text-anchor="middle" font-weight="bold">
+                  3. modul
+                </text>
+                <text x="535" y="76" text-anchor="middle">
+                  Specifikáció és terv
+                </text>
+              </a>
+              <a data-route="/materials/modulok/04-fuggetlen-review/">
+                <rect
+                  x="650"
+                  y="30"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="745" y="56" text-anchor="middle" font-weight="bold">
+                  4. modul
+                </text>
+                <text x="745" y="76" text-anchor="middle">
+                  Független review
+                </text>
+              </a>
+              <a data-route="/materials/modulok/05-szabalyok-es-kapuk/">
+                <rect
+                  x="20"
+                  y="180"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="115" y="206" text-anchor="middle" font-weight="bold">
+                  5. modul
+                </text>
+                <text x="115" y="226" text-anchor="middle">
+                  Szabályok és kapuk
+                </text>
+              </a>
+              <a data-route="/materials/modulok/06-rendszerellenorzes/">
+                <rect
+                  x="230"
+                  y="180"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="325" y="206" text-anchor="middle" font-weight="bold">
+                  6. modul
+                </text>
+                <text x="325" y="226" text-anchor="middle">
+                  Rendszerellenőrzés
+                </text>
+              </a>
+              <a data-route="/materials/modulok/07-legacy-rendszer/">
+                <rect
+                  x="440"
+                  y="180"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="535" y="206" text-anchor="middle" font-weight="bold">
+                  7. modul
+                </text>
+                <text x="535" y="226" text-anchor="middle">
+                  Legacy rendszer
+                </text>
+              </a>
+              <a data-route="/materials/modulok/08-csapatbevezetes/">
+                <rect
+                  x="650"
+                  y="180"
+                  width="190"
+                  height="64"
+                  rx="8"
+                  fill="#eef2ff"
+                  stroke="#0b5fff"
+                />
+                <text x="745" y="206" text-anchor="middle" font-weight="bold">
+                  8. modul
+                </text>
+                <text x="745" y="226" text-anchor="middle">
+                  Csapatszintű bevezetés
+                </text>
+              </a>
+            </g>
+            <g stroke="#5a6675" stroke-width="2" fill="#5a6675">
+              <line x1="210" y1="62" x2="226" y2="62" />
+              <polygon points="230,62 222,58 222,66" />
+              <line x1="420" y1="62" x2="436" y2="62" />
+              <polygon points="440,62 432,58 432,66" />
+              <line x1="630" y1="62" x2="646" y2="62" />
+              <polygon points="650,62 642,58 642,66" />
+              <path d="M 745 94 C 745 140, 115 134, 115 176" fill="none" />
+              <polygon points="115,180 111,172 119,172" />
+              <line x1="210" y1="212" x2="226" y2="212" />
+              <polygon points="230,212 222,208 222,216" />
+              <line x1="420" y1="212" x2="436" y2="212" />
+              <polygon points="440,212 432,208 432,216" />
+              <line x1="630" y1="212" x2="646" y2="212" />
+              <polygon points="650,212 642,208 642,216" />
+            </g>
+            <text x="20" y="300" font-size="13" fill="#5a6675">
+              Minden modul a megelőzőek eredményére épít — a sorrend nem
+              felcserélhető.
+            </text>
+          </svg>
+          <figcaption>
+            <strong>Röviden:</strong> a modulok sorrendje a közös nyelvtől és
+            szabályoktól a mérhető rendszerellenőrzésen át a csapatszintű
+            bevezetésig visz; minden lépés a következő bemenetét készíti el. A
+            teljes útvonal a
+            <a data-route="/materials/modulok/">modul-áttekintőben</a>,
+            időbeosztással a
+            <a data-route="/materials/napirend/">napirendben</a>.
+          </figcaption>
+          <table class="static-fallback" id="fig-learning-roadmap-text">
+            <caption>
+              A diagram szöveges megfelelője — a nyolc modul sorrendben
+            </caption>
+            <tr>
+              <th>Modul</th>
+              <th>Cím</th>
+            </tr>
+            <tr>
+              <td>1.</td>
+              <td>
+                <a data-route="/materials/modulok/01-agentikus-fejlesztes/"
+                  >Agentikus fejlesztés: szerepek és korlátok</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>2.</td>
+              <td>
+                <a data-route="/materials/modulok/02-repo-felkeszitese/"
+                  >A repo felkészítése AI-agentekkel végzett fejlesztésre</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>3.</td>
+              <td>
+                <a data-route="/materials/modulok/03-specifikacio/"
+                  >Specifikációból végrehajtható terv</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>4.</td>
+              <td>
+                <a data-route="/materials/modulok/04-fuggetlen-review/"
+                  >Független review és javítási ciklus</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>5.</td>
+              <td>
+                <a data-route="/materials/modulok/05-szabalyok-es-kapuk/"
+                  >Szabályok, skillek és automatizált kapuk</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>6.</td>
+              <td>
+                <a data-route="/materials/modulok/06-rendszerellenorzes/"
+                  >Ellenőrzés a böngészőtől az adatbázisig</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>7.</td>
+              <td>
+                <a data-route="/materials/modulok/07-legacy-rendszer/"
+                  >Legacy rendszer biztonságos változtatása</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>8.</td>
+              <td>
+                <a data-route="/materials/modulok/08-csapatbevezetes/"
+                  >Csapatszintű bevezetés</a
+                >
+              </td>
+            </tr>
+          </table>
+        </figure>
+      </section>
+      <section class="ai-companion" aria-labelledby="ai-companion-root">
+        <h2 id="ai-companion-root">Egy nap, végig aktív AI-társsal</h2>
+        <p>
+          A Claude Code vagy a Codex nem különálló demóeszköz: a nap elejétől a
+          megértésben, a kivitelezésben és a bizonyításban is veled dolgozik.
+        </p>
+        <div class="ai-companion-grid">
+          <article class="ai-role agent">
+            <h3>Mit kérsz?</h3>
+            <p>
+              „Tájékozódj ebben a repóban, mondd el a mai tanulási ívet, és
+              mutasd meg az első döntést, amelyet nekem kell meghoznom.”
+            </p>
+          </article>
+          <article class="ai-role machine">
+            <h3>Mit végez az agent?</h3>
+            <p>
+              Feltárja a környezetet, végrehajtja a technikai lépéseket, és
+              visszaadja a tényleges ellenőrzési eredményeket.
+            </p>
+          </article>
+          <article class="ai-role human">
+            <h3>Mit döntesz te?</h3>
+            <p>
+              Te adod a célt és a határokat, értelmezed a bizonyítékot, és
+              jóváhagyod vagy visszaküldöd az eredményt.
+            </p>
+          </article>
+          <article class="ai-role evidence">
+            <h3>Mi enged tovább?</h3>
+            <p>
+              Minden modulban megnevezett munkadarab, megismételhető ellenőrzés
+              és lezárt kockázat.
+            </p>
+          </article>
+        </div>
+        <p>
+          <strong>Ismételd jóig:</strong> kérés → agentmunka → bizonyíték →
+          emberi döntés → szükség esetén javítás és újraellenőrzés.
+        </p>
+      </section>
+    </main>
+  </body>
 </html>

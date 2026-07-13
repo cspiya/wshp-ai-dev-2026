@@ -19,7 +19,7 @@
       "figureSelector": "#fig-method-components",
       "svgSelector": "#fig-method-components svg",
       "textFallbackSelector": "#fig-method-components-text",
-      "inlineSvgHash": "c8109dc2211411b99827c739887c37e40bd1416b96ae81d8a3b01c05d96a8f57"
+      "inlineSvgHash": "74da1f6e34d103bb2467395379c9eac168f4a738fbe8e3276af600691ddd8ec8"
     },
     {
       "id": "fig-method-hogyan-zajlik-a-dontes-review",
@@ -38,7 +38,7 @@
       "figureSelector": "#fig-method-hogyan-zajlik-a-dontes-review",
       "svgSelector": "#fig-method-hogyan-zajlik-a-dontes-review svg",
       "textFallbackSelector": "#fig-method-hogyan-zajlik-a-dontes-review-text",
-      "inlineSvgHash": "02f5b8eff11415395b6ec863bee6b367604afb91c61fd53660fd3c814c85cc54"
+      "inlineSvgHash": "60034dba008f3aec9651b0deeba5c7e26cb6d37c77b72d5f7eaf9865d4db3e8e"
     },
     {
       "id": "fig-method-hogyan-all-ossze-az-ellenorzesi",
@@ -56,7 +56,7 @@
       "figureSelector": "#fig-method-hogyan-all-ossze-az-ellenorzesi",
       "svgSelector": "#fig-method-hogyan-all-ossze-az-ellenorzesi svg",
       "textFallbackSelector": "#fig-method-hogyan-all-ossze-az-ellenorzesi-text",
-      "inlineSvgHash": "ec95e254c9ca32a182dd8fbae5eb766e6f086b4fecfc78ebc3ef1c319ad7f196"
+      "inlineSvgHash": "d9de6d4019124d6456204fff52efb0f5c4ef2e4a1f83c10041a59a8982dfa831"
     }
   ]
 }

@@ -1,7 +1,454 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mit építünk, és hogyan ellenőrizzük?</title><style>main{max-width:62rem;margin:auto;padding:1rem}figure{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}figure svg{display:block;width:44rem;max-width:none;height:auto}.diagram-scroll-hint{display:none;margin:.25rem 0;font-weight:700}table{display:block;max-width:100%;overflow-x:auto}a,li,code{overflow-wrap:anywhere;word-break:break-word}@media(max-width:700px){.diagram-scroll-hint{display:block}}</style></head><body><main>
-<header><p><a data-route="/materials/">Tananyag</a></p><h1>Mit építünk, és hogyan ellenőrizzük?</h1><p>A workshop elsődleges eredménye nem a referenciaalkalmazás. Egy ismételhető fejlesztési rendszer készül; a referenciaalkalmazás az a <a data-route="/materials/fogalomtar/#artifact">munkadarab</a>, amelyen a módszert kipróbáljuk. A rendszer egy egyértelműen kitalált referenciafeladaton, visszakereshető <a data-route="/materials/fogalomtar/#evidence">ellenőrzési eredményekkel</a> mutatja meg a működését.</p></header>
-<section><h2>A fejlesztési rendszer összetevői</h2><figure id="fig-method-components" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 330" role="img" aria-labelledby="fmc-t fmc-d"><title id="fmc-t">A fejlesztési rendszer öt összetevője és próbapadja</title><desc id="fmc-d">Az emberi döntési pontok, a repo szabályai, a specifikáció, a készítő-review-javító ciklus és az automatikus ellenőrzések együtt alkotják a rendszert. A referenciaalkalmazás ezen elemek működését teszteli.</desc><g fill="none" stroke="currentColor" stroke-width="3"><rect x="30" y="30" width="840" height="180" rx="18"/><rect x="70" y="75" width="130" height="80" rx="10"/><rect x="230" y="75" width="130" height="80" rx="10"/><rect x="390" y="75" width="130" height="80" rx="10"/><rect x="550" y="75" width="130" height="80" rx="10"/><rect x="710" y="75" width="130" height="80" rx="10"/><rect x="250" y="245" width="400" height="60" rx="12"/><path d="M450 210V240"/></g><g text-anchor="middle" font-size="15"><text x="450" y="58">Fejlesztési rendszer · ezt visszük tovább</text><text x="135" y="108">Emberi</text><text x="135" y="130">döntések</text><text x="295" y="108">Repo-</text><text x="295" y="130">szabályok</text><text x="455" y="118">Spec</text><text x="615" y="108">Készítés és</text><text x="615" y="130">review</text><text x="775" y="108">Automatikus</text><text x="775" y="130">ellenőrzés</text><text x="450" y="282">Referenciaalkalmazás · a módszer próbapadja</text></g></svg><figcaption><strong>Lényeg:</strong> az alkalmazás elkészülte önmagában kevés; annak kell ismételhetőnek lennie, ahogyan a változtatást meghatározzuk, elkészítjük és ellenőrizzük.</figcaption><table class="static-fallback" id="fig-method-components-text"><caption>Szöveges megfelelő</caption><tr><th>Rendszerelem</th><th>Kérdés</th></tr><tr><td>Emberi döntések</td><td>Mit bízhatunk az agentre, és hol kell jóváhagyás?</td></tr><tr><td>Repo-szabályok</td><td>Milyen tartós korlátokat kell minden munkánál betartani?</td></tr><tr><td>Spec</td><td>Mi a kívánt eredmény és hogyan ellenőrizzük?</td></tr><tr><td>Készítés és review</td><td>Ki készít, ki ellenőriz, ki javít?</td></tr><tr><td>Automatikus ellenőrzés</td><td>Mely hibákat állítjuk meg géppel?</td></tr></table></figure></section>
-<section id="fig-review-loop"><h2>A review- és javítási ciklus</h2><figure id="fig-method-hogyan-zajlik-a-dontes-review" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 300" role="img" aria-labelledby="frl-t frl-d"><title id="frl-t">A döntés, készítés, független review és javítás ciklusa</title><desc id="frl-d">Az ember jóváhagyja a specifikációt. A készítő elkészíti a változtatást, a független ellenőrző megállapításokat tesz, a javító csak a megerősített hibákat javítja, majd új review következik.</desc><g fill="none" stroke="currentColor" stroke-width="3"><circle cx="450" cy="150" r="115"/><rect x="365" y="10" width="170" height="60" rx="10"/><rect x="690" y="120" width="170" height="60" rx="10"/><rect x="365" y="230" width="170" height="60" rx="10"/><rect x="40" y="120" width="170" height="60" rx="10"/><path d="M535 40C650 40 720 70 760 115M760 185C720 230 650 260 540 260M360 260C250 260 180 230 140 185M140 115C180 70 250 40 360 40"/></g><g text-anchor="middle" font-size="16"><text x="450" y="35">Döntés</text><text x="450" y="57">jóváhagyott spec</text><text x="775" y="155">Készítés</text><text x="450" y="255">Független review</text><text x="450" y="277">ellenőrzött megállapítás</text><text x="125" y="155">Javítás</text><text x="450" y="145">Csak ellenőrzött</text><text x="450" y="168">eredmény alapján</text><text x="450" y="190">lépünk tovább.</text></g></svg><figcaption><strong>Lényeg:</strong> a <a data-route="/materials/fogalomtar/#rug">RUG-ciklus</a> addig tart, amíg a független ellenőrzés nem talál megerősített hibát; a review nem azonos a készítő önellenőrzésével.</figcaption><ol class="static-fallback" id="fig-method-hogyan-zajlik-a-dontes-review-text"><li>Emberi <a data-route="/materials/fogalomtar/#decision-gate">döntési pont</a>: jóváhagyott spec.</li><li>Készítés és saját ellenőrzés.</li><li>Friss kontextusú, független <a data-route="/materials/fogalomtar/#review">review</a>.</li><li>Megerősített hiba javítása, majd új review.</li></ol></figure></section>
-<section id="fig-evidence-chain"><h2>Az ellenőrzési eredmények lánca</h2><figure id="fig-method-hogyan-all-ossze-az-ellenorzesi" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 260" role="img" aria-labelledby="fec-t fec-d"><title id="fec-t">A specifikációtól a visszakövethető eredményig</title><desc id="fec-d">Az elfogadási feltételekhez ellenőrzési parancsok tartoznak. Ezek futási eredményeit a review értelmezi, a jóváhagyás pedig egy visszakövethető változathoz köti.</desc><g fill="none" stroke="currentColor" stroke-width="3"><rect x="30" y="80" width="170" height="90" rx="12"/><rect x="250" y="80" width="170" height="90" rx="12"/><rect x="470" y="80" width="170" height="90" rx="12"/><rect x="690" y="80" width="180" height="90" rx="12"/><path d="M200 125H245M420 125H465M640 125H685"/></g><g text-anchor="middle" font-size="15"><text x="115" y="115">Elfogadási</text><text x="115" y="138">feltétel</text><text x="335" y="115">Ellenőrzési</text><text x="335" y="138">parancs</text><text x="555" y="115">Futási eredmény</text><text x="555" y="138">+ review</text><text x="780" y="115">Jóváhagyott</text><text x="780" y="138">verzió és nyomvonal</text></g></svg><figcaption><strong>Lényeg:</strong> állítás helyett visszakereshető ellenőrzési eredményt kapcsolunk a specifikációhoz és a pontos verzióhoz.</figcaption><table class="static-fallback" id="fig-method-hogyan-all-ossze-az-ellenorzesi-text"><caption>Szöveges megfelelő</caption><tr><th>Lépés</th><th>Kimenet</th></tr><tr><td>Elfogadási feltétel</td><td>Megnevezi, mi számít késznek.</td></tr><tr><td><a data-route="/materials/fogalomtar/#quality-gate">Kötelező ellenőrzési pont</a></td><td>Megismételhető parancs vagy vizsgálat.</td></tr><tr><td>Futás és review</td><td>Tényleges eredmény, nem ígéret.</td></tr><tr><td><a data-route="/materials/fogalomtar/#trace">Visszakövetési napló</a></td><td>Összeköti a döntést, verziót és ellenőrzést.</td></tr></table></figure></section>
-<section><h2>Miből tudod, hogy a módszer működik?</h2><ul><li>Egy új feladatnál is ugyanaz a folyamat használható.</li><li>A készítő és a független ellenőrző ugyanazokat a feltételeket látja.</li><li>A hibából, ha ismétlődhet, automatikus védelem lesz.</li><li>A referenciaalkalmazás cserélhető; a működési rendszer megmarad.</li></ul><p><a data-route="/materials/agent-ready-repo/">Tovább: az agent-ready repo felépítése →</a></p></section>
-</main></body></html>
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mit építünk, és hogyan ellenőrizzük?</title>
+    <style>
+      main {
+        max-width: 62rem;
+        margin: auto;
+        padding: 1rem;
+      }
+      figure {
+        max-width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+      }
+      figure svg {
+        display: block;
+        width: 44rem;
+        max-width: none;
+        height: auto;
+      }
+      .diagram-scroll-hint {
+        display: none;
+        margin: 0.25rem 0;
+        font-weight: 700;
+      }
+      table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+      }
+      a,
+      li,
+      code {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+      @media (max-width: 700px) {
+        .diagram-scroll-hint {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p><a data-route="/materials/">Tananyag</a></p>
+        <h1>Mit építünk, és hogyan ellenőrizzük?</h1>
+        <p>
+          A workshop elsődleges eredménye nem a referenciaalkalmazás. Egy
+          ismételhető fejlesztési rendszer készül; a referenciaalkalmazás az a
+          <a data-route="/materials/fogalomtar/#artifact">munkadarab</a>,
+          amelyen a módszert kipróbáljuk. A rendszer egy egyértelműen kitalált
+          referenciafeladaton, visszakereshető
+          <a data-route="/materials/fogalomtar/#evidence"
+            >ellenőrzési eredményekkel</a
+          >
+          mutatja meg a működését.
+        </p>
+      </header>
+      <section>
+        <h2>A fejlesztési rendszer összetevői</h2>
+        <figure
+          id="fig-method-components"
+          tabindex="0"
+          aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."
+        >
+          <p class="diagram-scroll-hint">
+            Az ábra keskeny képernyőn vízszintesen görgethető.
+          </p>
+          <svg viewBox="0 0 900 330" role="img" aria-labelledby="fmc-t fmc-d">
+            <title id="fmc-t">
+              A fejlesztési rendszer öt összetevője és próbapadja
+            </title>
+            <desc id="fmc-d">
+              Az emberi döntési pontok, a repo szabályai, a specifikáció, a
+              készítő-review-javító ciklus és az automatikus ellenőrzések együtt
+              alkotják a rendszert. A referenciaalkalmazás ezen elemek működését
+              teszteli.
+            </desc>
+            <g fill="none" stroke="currentColor" stroke-width="3">
+              <rect x="30" y="30" width="840" height="180" rx="18" />
+              <rect
+                class="node-shape node-human"
+                x="70"
+                y="75"
+                width="130"
+                height="80"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-artifact"
+                x="230"
+                y="75"
+                width="130"
+                height="80"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-artifact"
+                x="390"
+                y="75"
+                width="130"
+                height="80"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-agent"
+                x="550"
+                y="75"
+                width="130"
+                height="80"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-machine"
+                x="710"
+                y="75"
+                width="130"
+                height="80"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-evidence"
+                x="250"
+                y="245"
+                width="400"
+                height="60"
+                rx="12"
+              />
+              <path d="M450 210V240" />
+            </g>
+            <g text-anchor="middle" font-size="15">
+              <text x="450" y="58">
+                Fejlesztési rendszer · ezt visszük tovább
+              </text>
+              <text x="135" y="108">Emberi</text>
+              <text x="135" y="130">döntések</text>
+              <text x="295" y="108">Repo-</text>
+              <text x="295" y="130">szabályok</text>
+              <text x="455" y="118">Spec</text>
+              <text x="615" y="108">Készítés és</text>
+              <text x="615" y="130">review</text>
+              <text x="775" y="108">Automatikus</text>
+              <text x="775" y="130">ellenőrzés</text>
+              <text x="450" y="282">
+                Referenciaalkalmazás · a módszer próbapadja
+              </text>
+            </g>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> az alkalmazás elkészülte önmagában kevés;
+            annak kell ismételhetőnek lennie, ahogyan a változtatást
+            meghatározzuk, elkészítjük és ellenőrizzük.
+          </figcaption>
+          <table class="static-fallback" id="fig-method-components-text">
+            <caption>
+              Szöveges megfelelő
+            </caption>
+            <tr>
+              <th>Rendszerelem</th>
+              <th>Kérdés</th>
+            </tr>
+            <tr>
+              <td>Emberi döntések</td>
+              <td>Mit bízhatunk az agentre, és hol kell jóváhagyás?</td>
+            </tr>
+            <tr>
+              <td>Repo-szabályok</td>
+              <td>Milyen tartós korlátokat kell minden munkánál betartani?</td>
+            </tr>
+            <tr>
+              <td>Spec</td>
+              <td>Mi a kívánt eredmény és hogyan ellenőrizzük?</td>
+            </tr>
+            <tr>
+              <td>Készítés és review</td>
+              <td>Ki készít, ki ellenőriz, ki javít?</td>
+            </tr>
+            <tr>
+              <td>Automatikus ellenőrzés</td>
+              <td>Mely hibákat állítjuk meg géppel?</td>
+            </tr>
+          </table>
+        </figure>
+      </section>
+      <section id="fig-review-loop">
+        <h2>A review- és javítási ciklus</h2>
+        <figure
+          id="fig-method-hogyan-zajlik-a-dontes-review"
+          tabindex="0"
+          aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."
+        >
+          <p class="diagram-scroll-hint">
+            Az ábra keskeny képernyőn vízszintesen görgethető.
+          </p>
+          <svg viewBox="0 0 900 300" role="img" aria-labelledby="frl-t frl-d">
+            <title id="frl-t">
+              A döntés, készítés, független review és javítás ciklusa
+            </title>
+            <desc id="frl-d">
+              Az ember jóváhagyja a specifikációt. A készítő elkészíti a
+              változtatást, a független ellenőrző megállapításokat tesz, a
+              javító csak a megerősített hibákat javítja, majd új review
+              következik.
+            </desc>
+            <g fill="none" stroke="currentColor" stroke-width="3">
+              <circle
+                class="node-shape node-evidence"
+                cx="450"
+                cy="150"
+                r="115"
+              />
+              <rect
+                class="node-shape node-human"
+                x="365"
+                y="10"
+                width="170"
+                height="60"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-agent"
+                x="690"
+                y="120"
+                width="170"
+                height="60"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-evidence"
+                x="365"
+                y="230"
+                width="170"
+                height="60"
+                rx="10"
+              />
+              <rect
+                class="node-shape node-agent"
+                x="40"
+                y="120"
+                width="170"
+                height="60"
+                rx="10"
+              />
+              <path
+                d="M535 40C650 40 720 70 760 115M760 185C720 230 650 260 540 260M360 260C250 260 180 230 140 185M140 115C180 70 250 40 360 40"
+              />
+            </g>
+            <g text-anchor="middle" font-size="16">
+              <text x="450" y="35">Döntés</text>
+              <text x="450" y="57">jóváhagyott spec</text>
+              <text x="775" y="155">Készítés</text>
+              <text x="450" y="255">Független review</text>
+              <text x="450" y="277">ellenőrzött megállapítás</text>
+              <text x="125" y="155">Javítás</text>
+              <text x="450" y="145">Csak ellenőrzött</text>
+              <text x="450" y="168">eredmény alapján</text>
+              <text x="450" y="190">lépünk tovább.</text>
+            </g>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> a
+            <a data-route="/materials/fogalomtar/#rug">RUG-ciklus</a> addig
+            tart, amíg a független ellenőrzés nem talál megerősített hibát; a
+            review nem azonos a készítő önellenőrzésével.
+          </figcaption>
+          <ol
+            class="static-fallback"
+            id="fig-method-hogyan-zajlik-a-dontes-review-text"
+          >
+            <li>
+              Emberi
+              <a data-route="/materials/fogalomtar/#decision-gate"
+                >döntési pont</a
+              >: jóváhagyott spec.
+            </li>
+            <li>Készítés és saját ellenőrzés.</li>
+            <li>
+              Friss kontextusú, független
+              <a data-route="/materials/fogalomtar/#review">review</a>.
+            </li>
+            <li>Megerősített hiba javítása, majd új review.</li>
+          </ol>
+        </figure>
+      </section>
+      <section id="fig-evidence-chain">
+        <h2>Az ellenőrzési eredmények lánca</h2>
+        <figure
+          id="fig-method-hogyan-all-ossze-az-ellenorzesi"
+          tabindex="0"
+          aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."
+        >
+          <p class="diagram-scroll-hint">
+            Az ábra keskeny képernyőn vízszintesen görgethető.
+          </p>
+          <svg viewBox="0 0 900 260" role="img" aria-labelledby="fec-t fec-d">
+            <title id="fec-t">
+              A specifikációtól a visszakövethető eredményig
+            </title>
+            <desc id="fec-d">
+              Az elfogadási feltételekhez ellenőrzési parancsok tartoznak. Ezek
+              futási eredményeit a review értelmezi, a jóváhagyás pedig egy
+              visszakövethető változathoz köti.
+            </desc>
+            <g fill="none" stroke="currentColor" stroke-width="3">
+              <rect
+                class="node-shape node-artifact"
+                x="30"
+                y="80"
+                width="170"
+                height="90"
+                rx="12"
+              />
+              <rect
+                class="node-shape node-machine"
+                x="250"
+                y="80"
+                width="170"
+                height="90"
+                rx="12"
+              />
+              <rect
+                class="node-shape node-evidence"
+                x="470"
+                y="80"
+                width="170"
+                height="90"
+                rx="12"
+              />
+              <rect
+                class="node-shape node-evidence"
+                x="690"
+                y="80"
+                width="180"
+                height="90"
+                rx="12"
+              />
+              <path d="M200 125H245M420 125H465M640 125H685" />
+            </g>
+            <g text-anchor="middle" font-size="15">
+              <text x="115" y="115">Elfogadási</text>
+              <text x="115" y="138">feltétel</text>
+              <text x="335" y="115">Ellenőrzési</text>
+              <text x="335" y="138">parancs</text>
+              <text x="555" y="115">Futási eredmény</text>
+              <text x="555" y="138">+ review</text>
+              <text x="780" y="115">Jóváhagyott</text>
+              <text x="780" y="138">verzió és nyomvonal</text>
+            </g>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> állítás helyett visszakereshető ellenőrzési
+            eredményt kapcsolunk a specifikációhoz és a pontos verzióhoz.
+          </figcaption>
+          <table
+            class="static-fallback"
+            id="fig-method-hogyan-all-ossze-az-ellenorzesi-text"
+          >
+            <caption>
+              Szöveges megfelelő
+            </caption>
+            <tr>
+              <th>Lépés</th>
+              <th>Kimenet</th>
+            </tr>
+            <tr>
+              <td>Elfogadási feltétel</td>
+              <td>Megnevezi, mi számít késznek.</td>
+            </tr>
+            <tr>
+              <td>
+                <a data-route="/materials/fogalomtar/#quality-gate"
+                  >Kötelező ellenőrzési pont</a
+                >
+              </td>
+              <td>Megismételhető parancs vagy vizsgálat.</td>
+            </tr>
+            <tr>
+              <td>Futás és review</td>
+              <td>Tényleges eredmény, nem ígéret.</td>
+            </tr>
+            <tr>
+              <td>
+                <a data-route="/materials/fogalomtar/#trace"
+                  >Visszakövetési napló</a
+                >
+              </td>
+              <td>Összeköti a döntést, verziót és ellenőrzést.</td>
+            </tr>
+          </table>
+        </figure>
+      </section>
+      <section>
+        <h2>Miből tudod, hogy a módszer működik?</h2>
+        <ul>
+          <li>Egy új feladatnál is ugyanaz a folyamat használható.</li>
+          <li>
+            A készítő és a független ellenőrző ugyanazokat a feltételeket látja.
+          </li>
+          <li>A hibából, ha ismétlődhet, automatikus védelem lesz.</li>
+          <li>
+            A referenciaalkalmazás cserélhető; a működési rendszer megmarad.
+          </li>
+        </ul>
+        <p>
+          <a data-route="/materials/agent-ready-repo/"
+            >Tovább: az agent-ready repo felépítése →</a
+          >
+        </p>
+      </section>
+      <section class="ai-companion" aria-labelledby="ai-companion-method">
+        <h2 id="ai-companion-method">Próbáld ki a módszert az AI-val</h2>
+        <div class="ai-companion-grid">
+          <article class="ai-role agent">
+            <h3>Mit kérsz?</h3>
+            <p>
+              „Térképezd fel ehhez a feladathoz a specifikációtól a jóváhagyásig
+              vezető bizonyítékláncot.”
+            </p>
+          </article>
+          <article class="ai-role machine">
+            <h3>Mit végez az agent?</h3>
+            <p>
+              Összeköti a szabályokat, a munkadarabot, a kapukat és a review-t,
+              majd jelzi a hiányokat.
+            </p>
+          </article>
+          <article class="ai-role human">
+            <h3>Mit döntesz te?</h3>
+            <p>
+              Te hagyod jóvá a kívánt viselkedést, a kockázati határt és a végső
+              továbbhaladást.
+            </p>
+          </article>
+          <article class="ai-role evidence">
+            <h3>Mi enged tovább?</h3>
+            <p>
+              A pontos verzióhoz kötött, megismételhető eredmény és a
+              megerősített megállapítások lezárt sorsa.
+            </p>
+          </article>
+        </div>
+        <p>
+          <strong>RUG:</strong> ha a független review igazolt hibát talál, az
+          agent javít, majd ugyanazokkal a feltételekkel újra ellenőriz.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

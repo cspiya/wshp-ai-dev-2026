@@ -1,13 +1,450 @@
 <!doctype html>
-<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>1. Repoindítás</title><meta name="description" content="Tanulságok a repo céljának, határainak és ellenőrzési módjának rögzítéséről."><style>
-.lesson-hero{padding:2rem 0 1rem}.lesson-hero p{max-width:72ch}.tag{display:inline-block;border-radius:2rem;padding:.15rem .6rem;background:#e8edff;color:#183083;font-size:.85rem;font-weight:700}.orientation,.loops{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.panel,.loop,.apply{border:1px solid var(--line);border-radius:.8rem;padding:1rem;background:var(--panel)}.loop.human{border-top:.35rem solid var(--human)}.loop.agent{border-top:.35rem solid var(--agent)}.visual-box{border:1px solid var(--line);border-radius:.8rem;padding:1rem;overflow-x:auto}.visual-box svg{max-height:28rem}.takeaway{border-left:.3rem solid var(--evidence);padding:.6rem .8rem;background:#ecfeff}.decision-list li{margin:.6rem 0}.module-links{display:flex;flex-wrap:wrap;gap:.6rem}.module-links a{border:1px solid var(--line);border-radius:.5rem;padding:.4rem .6rem;text-decoration:none}details{border:1px solid var(--line);border-radius:.6rem;padding:.7rem 1rem;margin:1rem 0}summary{cursor:pointer;font-weight:700}@media(max-width:700px){.orientation,.loops{grid-template-columns:1fr}.visual-box svg{min-width:760px}.visual-box::before{content:"Az ábra teljes méretben, vízszintesen görgethető.";display:block;color:var(--muted);font-size:.9rem;margin-bottom:.4rem}}@media print{details:not([open])>*:not(summary){display:block}.loops{display:block}.loop{margin-bottom:.8rem}.visual-box::before{display:none}}
-</style></head><body><main>
-<header class="lesson-hero"><p class="tag">1. tanulság · közös keret</p><h1>Repoindítás: előbb a munkarendszer, utána a kód</h1><p>Egy <a data-route="/materials/fogalomtar/#coding-agent">coding agent</a> gyorsan tud fájlokat készíteni, de a repo célját, a megengedett változtatások határát és a kész állapot feltételeit nem találhatja ki helyetted. A jó repoindítás ezeket teszi visszakereshetővé.</p></header>
-<section class="orientation" aria-labelledby="tajekozodas"><div><h2 id="tajekozodas">Mire keress választ?</h2><ol class="decision-list"><li>Mi a repo célja, és mi nem tartozik bele?</li><li>Mely döntések emberiek, és mit végezhet önállóan az agent?</li><li>Milyen parancs vagy megfigyelés igazolja, hogy a változtatás rendben van?</li></ol></div><aside class="panel"><h2>Kapcsolódó fogalom</h2><p>Az <a data-route="/materials/fogalomtar/#agent-ready-repo">agent-ready repo</a> nem „AI-os projektet” jelent, hanem olyan munkateret, amelyből egy új agent külön szóbeli háttér nélkül is megérti a célt, a korlátokat és az ellenőrzés módját.</p></aside></section>
-<section aria-labelledby="abra"><figure id="fig-j01-synthesis" class="visual-box"><h2 id="abra">Mitől lesz elindítható a közös munka?</h2><svg viewBox="0 0 900 330" role="img" aria-labelledby="j1-title j1-desc"><title id="j1-title">A kérésből ellenőrizhető munkakeret lesz</title><desc id="j1-desc">A homályos kérés először célra és feladathatárokra bomlik. Ezekhez szerepek és repo szabályok, majd futtatható ellenőrzések kapcsolódnak. Az eredmény egy új résztvevő számára is elindítható feladat.</desc><defs><marker id="j1-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#5a6675"/></marker></defs><g fill="none" stroke="#5a6675" stroke-width="3" marker-end="url(#j1-arrow)"><path d="M190 150H250"/><path d="M430 150H490"/><path d="M670 150H730"/></g><g font-family="system-ui" text-anchor="middle"><rect x="20" y="95" width="170" height="110" rx="14" fill="#fff7ed" stroke="#b45309"/><text x="105" y="133" font-size="18" font-weight="700">Homályos kérés</text><text x="105" y="162" font-size="14">„készítsd el”</text><text x="105" y="184" font-size="14">ismeretlen határokkal</text><rect x="250" y="70" width="180" height="160" rx="14" fill="#eef2ff" stroke="#0b5fff"/><text x="340" y="107" font-size="18" font-weight="700">Cél és határok</text><text x="340" y="138" font-size="14">mit változtatunk?</text><text x="340" y="164" font-size="14">mit nem?</text><text x="340" y="190" font-size="14">ki dönt?</text><rect x="490" y="70" width="180" height="160" rx="14" fill="#f5f3ff" stroke="#7c3aed"/><text x="580" y="107" font-size="18" font-weight="700">Repo szabályai</text><text x="580" y="138" font-size="14">szerepek</text><text x="580" y="164" font-size="14">munkafolyamat</text><text x="580" y="190" font-size="14">ellenőrző parancsok</text><rect x="730" y="95" width="150" height="110" rx="14" fill="#ecfdf5" stroke="#047857"/><text x="805" y="132" font-size="18" font-weight="700">Elindítható</text><text x="805" y="160" font-size="14">egy új agent</text><text x="805" y="183" font-size="14">számára is</text></g><path d="M580 244C580 300 340 300 340 244" fill="none" stroke="#0e7490" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#j1-arrow)"/><text x="460" y="294" text-anchor="middle" font-size="14" fill="#0e7490">a futtatás tapasztalata visszajavítja a szabályokat</text></svg><figcaption><strong>Lényeg:</strong> a jó repoindítás nem hosszú dokumentáció, hanem a bizonytalanságok tudatos felszámolása addig, amíg egy új agent is biztonságosan el tud indulni.</figcaption><table id="fig-j01-synthesis-text" class="static-fallback"><caption>Az ábra szöveges megfelelője</caption><tr><th>Lépés</th><th>Kérdés</th><th>Eredmény</th></tr><tr><td>1. Cél és határok</td><td>Mit változtatunk, mit nem, ki dönt?</td><td>Megszűnik a rejtett scope.</td></tr><tr><td>2. Repo szabályai</td><td>Hogyan dolgozunk és ellenőrzünk?</td><td>Az új agent ugyanazt a keretet kapja.</td></tr><tr><td>3. Futtatás</td><td>A szabály működik a gyakorlatban?</td><td>A tapasztalat visszajavítja a keretet.</td></tr></table></figure><p class="takeaway"><strong>Egy mondatban:</strong> amit minden új résztvevőnek újra el kell mondani, azt a repo még nem hordozza elég jól.</p></section>
-<section aria-labelledby="dontes"><h2 id="dontes">A döntés és amit bizonyított</h2><p>Először a repo célját, változtatási határait és kötelező ellenőrzéseit rögzítettük, és csak utána indítottunk párhuzamos munkát. Ez azt bizonyította, hogy a leírt keret nem adminisztráció: csökkenti a félreértést, kijelöli az emberi döntési pontokat, és lehetővé teszi a munka biztonságos felosztását.</p><p>A legerősebb próba egy friss résztvevő: chatelőzmény nélkül meg tudja-e mondani, hol dolgozhat, mit kell leadnia és hogyan ellenőrizze?</p></section>
-<section aria-labelledby="hurkok"><h2 id="hurkok">Két külön visszacsatolási kör</h2><div class="loops"><article class="loop human"><h3>Emberi kör: a keretet javítja</h3><ul><li>Az ember nevezi meg a célt és a nem delegálható döntéseket.</li><li>Ha a szabály ütközik a valós munkával, a csapat pontosítja.</li><li>A fontos döntés tartós helyre kerül, nem marad a beszélgetésben.</li></ul></article><article class="loop agent"><h3>Agent-kör: a végrehajtást javítja</h3><ul><li>Az agent a rögzített keret szerint készít munkadarabot.</li><li>A futtatás vagy független <a data-route="/materials/fogalomtar/#review">review</a> konkrét hibát mutat.</li><li>A javítás mellé olyan ellenőrzés kerül, amely megfogja a visszatérést.</li></ul></article></div></section>
-<section aria-labelledby="eset"><h2 id="eset">Kitalált eset</h2><details><summary>Egy „apró” fizetési módosítás három rejtett döntése</summary><p><strong>Kitalált példa.</strong> A kérés csak ennyi: „tegyél be kuponkódot”. A repoindítás során kiderül, hogy a kedvezmény számítási helye, a jogosultság forrása és a kerekítés szabálya üzleti döntés. Ezeket az ember rögzíti; az agent ezután már egyértelmű határok között készíthet kódot és tesztet.</p></details></section>
-<section class="apply" aria-labelledby="alkalmazd"><h2 id="alkalmazd">Alkalmazd a saját repódra</h2><p><strong>Kimenet:</strong> <code>workshop-evidence/naplo-01-keret.md</code>.</p><ol><li>Írj le egy mondatot, amelyet egy új résztvevőnek rendszeresen szóban kell elmondanotok.</li><li>Nevezd meg, hol kellene ennek tartósan szerepelnie a repóban, és ki dönthet a tartalmáról.</li><li>Adj hozzá egy pontos ellenőrzést: milyen fájlból vagy parancseredményből látszik, hogy az állítás igaz?</li></ol><p><strong>Kész, ha:</strong> egy társad chatelőzmény nélkül megtalálja a forrást, megnevezi a döntési felelőst és ugyanazt az ellenőrzést választja.</p><p><strong>Állj meg, ha:</strong> a cél vagy a döntési felelős nem ismert; ne egészítsd ki feltételezéssel. <strong>Plan B:</strong> használd a kitalált starter-pillanatképet, és a fájl elején jelöld, hogy nem a saját repódat vizsgáltad.</p></section>
-<section aria-labelledby="folytatas"><h2 id="folytatas">Folytasd a tananyagban</h2><p class="module-links"><a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. Agentikus fejlesztés: szerepek és korlátok</a><a data-route="/materials/modulok/02-repo-felkeszitese/">2. A repo felkészítése</a><a data-route="/#fig-product-reference">Közös módszer és referenciafeladat</a></p></section>
-</main></body></html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>1. Repoindítás</title>
+    <meta
+      name="description"
+      content="Tanulságok a repo céljának, határainak és ellenőrzési módjának rögzítéséről."
+    />
+    <style>
+      .lesson-hero {
+        padding: 2rem 0 1rem;
+      }
+      .lesson-hero p {
+        max-width: 72ch;
+      }
+      .tag {
+        display: inline-block;
+        border-radius: 2rem;
+        padding: 0.15rem 0.6rem;
+        background: #e8edff;
+        color: #183083;
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+      .orientation,
+      .loops {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .panel,
+      .loop,
+      .apply {
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        padding: 1rem;
+        background: var(--panel);
+      }
+      .loop.human {
+        border-top: 0.35rem solid var(--human);
+      }
+      .loop.agent {
+        border-top: 0.35rem solid var(--agent);
+      }
+      .visual-box {
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        padding: 1rem;
+        overflow-x: auto;
+      }
+      .visual-box svg {
+        max-height: 28rem;
+      }
+      .takeaway {
+        border-left: 0.3rem solid var(--evidence);
+        padding: 0.6rem 0.8rem;
+        background: #ecfeff;
+      }
+      .decision-list li {
+        margin: 0.6rem 0;
+      }
+      .module-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .module-links a {
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        text-decoration: none;
+      }
+      details {
+        border: 1px solid var(--line);
+        border-radius: 0.6rem;
+        padding: 0.7rem 1rem;
+        margin: 1rem 0;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 700;
+      }
+      @media (max-width: 700px) {
+        .orientation,
+        .loops {
+          grid-template-columns: 1fr;
+        }
+        .visual-box svg {
+          min-width: 760px;
+        }
+        .visual-box::before {
+          content: "Az ábra teljes méretben, vízszintesen görgethető.";
+          display: block;
+          color: var(--muted);
+          font-size: 0.9rem;
+          margin-bottom: 0.4rem;
+        }
+      }
+      @media print {
+        details:not([open]) > *:not(summary) {
+          display: block;
+        }
+        .loops {
+          display: block;
+        }
+        .loop {
+          margin-bottom: 0.8rem;
+        }
+        .visual-box::before {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="lesson-hero">
+        <p class="tag">1. tanulság · közös keret</p>
+        <h1>Repoindítás: előbb a munkarendszer, utána a kód</h1>
+        <p>
+          Egy
+          <a data-route="/materials/fogalomtar/#coding-agent">coding agent</a>
+          gyorsan tud fájlokat készíteni, de a repo célját, a megengedett
+          változtatások határát és a kész állapot feltételeit nem találhatja ki
+          helyetted. A jó repoindítás ezeket teszi visszakereshetővé.
+        </p>
+      </header>
+      <section class="orientation" aria-labelledby="tajekozodas">
+        <div>
+          <h2 id="tajekozodas">Mire keress választ?</h2>
+          <ol class="decision-list">
+            <li>Mi a repo célja, és mi nem tartozik bele?</li>
+            <li>Mely döntések emberiek, és mit végezhet önállóan az agent?</li>
+            <li>
+              Milyen parancs vagy megfigyelés igazolja, hogy a változtatás
+              rendben van?
+            </li>
+          </ol>
+        </div>
+        <aside class="panel">
+          <h2>Kapcsolódó fogalom</h2>
+          <p>
+            Az
+            <a data-route="/materials/fogalomtar/#agent-ready-repo"
+              >agent-ready repo</a
+            >
+            nem „AI-os projektet” jelent, hanem olyan munkateret, amelyből egy
+            új agent külön szóbeli háttér nélkül is megérti a célt, a korlátokat
+            és az ellenőrzés módját.
+          </p>
+        </aside>
+      </section>
+      <section aria-labelledby="abra">
+        <figure id="fig-j01-synthesis" class="visual-box">
+          <h2 id="abra">Mitől lesz elindítható a közös munka?</h2>
+          <svg
+            viewBox="0 0 900 330"
+            role="img"
+            aria-labelledby="j1-title j1-desc"
+          >
+            <title id="j1-title">
+              A kérésből ellenőrizhető munkakeret lesz
+            </title>
+            <desc id="j1-desc">
+              A homályos kérés először célra és feladathatárokra bomlik. Ezekhez
+              szerepek és repo szabályok, majd futtatható ellenőrzések
+              kapcsolódnak. Az eredmény egy új résztvevő számára is elindítható
+              feladat.
+            </desc>
+            <defs>
+              <marker
+                id="j1-arrow"
+                markerWidth="8"
+                markerHeight="8"
+                refX="7"
+                refY="4"
+                orient="auto"
+              >
+                <path d="M0 0L8 4L0 8Z" fill="#5a6675" />
+              </marker>
+            </defs>
+            <g
+              fill="none"
+              stroke="#5a6675"
+              stroke-width="3"
+              marker-end="url(#j1-arrow)"
+            >
+              <path d="M190 150H250" />
+              <path d="M430 150H490" />
+              <path d="M670 150H730" />
+            </g>
+            <g font-family="system-ui" text-anchor="middle">
+              <rect
+                x="20"
+                y="95"
+                width="170"
+                height="110"
+                rx="14"
+                class="node-shape node-risk"
+              />
+              <text x="105" y="133" font-size="18" font-weight="700">
+                Homályos kérés
+              </text>
+              <text x="105" y="162" font-size="14">„készítsd el”</text>
+              <text x="105" y="184" font-size="14">ismeretlen határokkal</text>
+              <rect
+                x="250"
+                y="70"
+                width="180"
+                height="160"
+                rx="14"
+                class="node-shape node-human"
+              />
+              <text x="340" y="107" font-size="18" font-weight="700">
+                Cél és határok
+              </text>
+              <text x="340" y="138" font-size="14">mit változtatunk?</text>
+              <text x="340" y="164" font-size="14">mit nem?</text>
+              <text x="340" y="190" font-size="14">ki dönt?</text>
+              <rect
+                x="490"
+                y="70"
+                width="180"
+                height="160"
+                rx="14"
+                class="node-shape node-artifact"
+              />
+              <text x="580" y="107" font-size="18" font-weight="700">
+                Repo szabályai
+              </text>
+              <text x="580" y="138" font-size="14">szerepek</text>
+              <text x="580" y="164" font-size="14">munkafolyamat</text>
+              <text x="580" y="190" font-size="14">ellenőrző parancsok</text>
+              <rect
+                x="730"
+                y="95"
+                width="150"
+                height="110"
+                rx="14"
+                class="node-shape node-evidence"
+              />
+              <text x="805" y="132" font-size="18" font-weight="700">
+                Elindítható
+              </text>
+              <text x="805" y="160" font-size="14">egy új agent</text>
+              <text x="805" y="183" font-size="14">számára is</text>
+            </g>
+            <path
+              d="M580 244C580 300 340 300 340 244"
+              fill="none"
+              stroke="#0e7490"
+              stroke-width="2"
+              stroke-dasharray="7 5"
+              marker-end="url(#j1-arrow)"
+            />
+            <text
+              x="460"
+              y="294"
+              text-anchor="middle"
+              font-size="14"
+              fill="#0e7490"
+            >
+              a futtatás tapasztalata visszajavítja a szabályokat
+            </text>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> a jó repoindítás nem hosszú dokumentáció,
+            hanem a bizonytalanságok tudatos felszámolása addig, amíg egy új
+            agent is biztonságosan el tud indulni.
+          </figcaption>
+          <table id="fig-j01-synthesis-text" class="static-fallback">
+            <caption>
+              Az ábra szöveges megfelelője
+            </caption>
+            <tr>
+              <th>Lépés</th>
+              <th>Kérdés</th>
+              <th>Eredmény</th>
+            </tr>
+            <tr>
+              <td>1. Cél és határok</td>
+              <td>Mit változtatunk, mit nem, ki dönt?</td>
+              <td>Megszűnik a rejtett scope.</td>
+            </tr>
+            <tr>
+              <td>2. Repo szabályai</td>
+              <td>Hogyan dolgozunk és ellenőrzünk?</td>
+              <td>Az új agent ugyanazt a keretet kapja.</td>
+            </tr>
+            <tr>
+              <td>3. Futtatás</td>
+              <td>A szabály működik a gyakorlatban?</td>
+              <td>A tapasztalat visszajavítja a keretet.</td>
+            </tr>
+          </table>
+        </figure>
+        <p class="takeaway">
+          <strong>Egy mondatban:</strong> amit minden új résztvevőnek újra el
+          kell mondani, azt a repo még nem hordozza elég jól.
+        </p>
+      </section>
+      <section aria-labelledby="dontes">
+        <h2 id="dontes">A döntés és amit bizonyított</h2>
+        <p>
+          Először a repo célját, változtatási határait és kötelező ellenőrzéseit
+          rögzítettük, és csak utána indítottunk párhuzamos munkát. Ez azt
+          bizonyította, hogy a leírt keret nem adminisztráció: csökkenti a
+          félreértést, kijelöli az emberi döntési pontokat, és lehetővé teszi a
+          munka biztonságos felosztását.
+        </p>
+        <p>
+          A legerősebb próba egy friss résztvevő: chatelőzmény nélkül meg
+          tudja-e mondani, hol dolgozhat, mit kell leadnia és hogyan
+          ellenőrizze?
+        </p>
+      </section>
+      <section aria-labelledby="hurkok">
+        <h2 id="hurkok">Két külön visszacsatolási kör</h2>
+        <div class="loops">
+          <article class="loop human">
+            <h3>Emberi kör: a keretet javítja</h3>
+            <ul>
+              <li>
+                Az ember nevezi meg a célt és a nem delegálható döntéseket.
+              </li>
+              <li>
+                Ha a szabály ütközik a valós munkával, a csapat pontosítja.
+              </li>
+              <li>
+                A fontos döntés tartós helyre kerül, nem marad a beszélgetésben.
+              </li>
+            </ul>
+          </article>
+          <article class="loop agent">
+            <h3>Agent-kör: a végrehajtást javítja</h3>
+            <ul>
+              <li>Az agent a rögzített keret szerint készít munkadarabot.</li>
+              <li>
+                A futtatás vagy független
+                <a data-route="/materials/fogalomtar/#review">review</a> konkrét
+                hibát mutat.
+              </li>
+              <li>
+                A javítás mellé olyan ellenőrzés kerül, amely megfogja a
+                visszatérést.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+      <section aria-labelledby="eset">
+        <h2 id="eset">Kitalált eset</h2>
+        <details>
+          <summary>Egy „apró” fizetési módosítás három rejtett döntése</summary>
+          <p>
+            <strong>Kitalált példa.</strong> A kérés csak ennyi: „tegyél be
+            kuponkódot”. A repoindítás során kiderül, hogy a kedvezmény
+            számítási helye, a jogosultság forrása és a kerekítés szabálya
+            üzleti döntés. Ezeket az ember rögzíti; az agent ezután már
+            egyértelmű határok között készíthet kódot és tesztet.
+          </p>
+        </details>
+      </section>
+      <section class="apply" aria-labelledby="alkalmazd">
+        <h2 id="alkalmazd">Alkalmazd a saját repódra</h2>
+        <p>
+          <strong>Kimenet:</strong>
+          <code>workshop-evidence/naplo-01-keret.md</code>.
+        </p>
+        <ol>
+          <li>
+            Írj le egy mondatot, amelyet egy új résztvevőnek rendszeresen szóban
+            kell elmondanotok.
+          </li>
+          <li>
+            Nevezd meg, hol kellene ennek tartósan szerepelnie a repóban, és ki
+            dönthet a tartalmáról.
+          </li>
+          <li>
+            Kérd meg az agentet, hogy nevezze meg és végezze el a pontos
+            ellenőrzést; milyen fájlból vagy futási eredményből látszik, hogy az
+            állítás igaz?
+          </li>
+        </ol>
+        <p>
+          <strong>Kész, ha:</strong> egy társad chatelőzmény nélkül megtalálja a
+          forrást, megnevezi a döntési felelőst és ugyanazt az ellenőrzést
+          választja.
+        </p>
+        <p>
+          <strong>Állj meg, ha:</strong> a cél vagy a döntési felelős nem
+          ismert; ne egészítsd ki feltételezéssel.
+          <strong>Plan B:</strong> használd a kitalált starter-pillanatképet, és
+          a fájl elején jelöld, hogy nem a saját repódat vizsgáltad.
+        </p>
+      </section>
+      <section class="ai-companion" aria-labelledby="ai-companion-j01">
+        <h2 id="ai-companion-j01">Játsszd újra egy friss agenttel</h2>
+        <div class="ai-companion-grid">
+          <article class="ai-role agent">
+            <h3>Mit kérsz?</h3>
+            <p>
+              „Találd meg a repo célját, határait, emberi döntési pontjait és az
+              ellenőrzés módját.”
+            </p>
+          </article>
+          <article class="ai-role machine">
+            <h3>Mit végez az agent?</h3>
+            <p>
+              Feltárja a tartós szabályokat, elvégzi a repóban rögzített
+              ellenőrzést és megmutatja az eredményt.
+            </p>
+          </article>
+          <article class="ai-role human">
+            <h3>Mit döntesz te?</h3>
+            <p>
+              Pontosítod a célt, a scope-ot és azt, mely döntést nem hozhatja
+              meg az agent.
+            </p>
+          </article>
+          <article class="ai-role evidence">
+            <h3>Mi enged tovább?</h3>
+            <p>
+              Egy új agent chatelőzmény nélkül is ugyanazt a keretet találja meg
+              és ugyanazt az ellenőrzést választja.
+            </p>
+          </article>
+        </div>
+        <p>
+          <strong>RUG:</strong> ha félreérti a keretet, a repo tartós szabályát
+          javítsd, majd friss kontextusból próbáld újra.
+        </p>
+      </section>
+      <section aria-labelledby="folytatas">
+        <h2 id="folytatas">Folytasd a tananyagban</h2>
+        <p class="module-links">
+          <a data-route="/materials/modulok/01-agentikus-fejlesztes/"
+            >1. Agentikus fejlesztés: szerepek és korlátok</a
+          ><a data-route="/materials/modulok/02-repo-felkeszitese/"
+            >2. A repo felkészítése</a
+          ><a data-route="/#fig-product-reference"
+            >Közös módszer és referenciafeladat</a
+          >
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

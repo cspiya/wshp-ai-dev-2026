@@ -9,11 +9,17 @@
       "rendering": "inline-svg",
       "diagramType": "relationship-map",
       "takeaway": "A fejlesztési rendszer a hazavihető termék; a referenciaalkalmazás annak próbapadja.",
-      "glossarySlugs": ["repository-rules", "spec", "review", "quality-gate", "reference-task"],
+      "glossarySlugs": [
+        "repository-rules",
+        "spec",
+        "review",
+        "quality-gate",
+        "reference-task"
+      ],
       "figureSelector": "#fig-product-reference",
       "svgSelector": "#fig-product-reference svg",
       "textFallbackSelector": "#fig-product-reference-text",
-      "inlineSvgHash": "103e4685bdc71335ce2339d7bebc9bfca78eff74117cb3b5a2d7a0019a826f9a"
+      "inlineSvgHash": "5c04015fdaa65f075f2f2079ee55516fbe0d8be888c56f600484a6e440bb0e32"
     },
     {
       "id": "fig-learning-roadmap",
@@ -24,12 +30,21 @@
       "rendering": "inline-svg",
       "diagramType": "timeline",
       "takeaway": "Minden modul a következő bemenetét készíti el, a közös nyelvtől a csapatszintű bevezetésig.",
-      "glossarySlugs": ["coding-agent", "repository-rules", "spec", "review", "quality-gate", "e2e", "legacy-system", "operating-model"],
+      "glossarySlugs": [
+        "coding-agent",
+        "repository-rules",
+        "spec",
+        "review",
+        "quality-gate",
+        "e2e",
+        "legacy-system",
+        "operating-model"
+      ],
       "figureSelector": "#fig-learning-roadmap",
       "svgSelector": "#fig-learning-roadmap svg",
       "textFallbackSelector": "#fig-learning-roadmap-text",
-      "inlineSvgHash": "e00169c89557ba75b1b81a9849ea7a84aa40d9007f3c485e4f05de4091784ada",
-      "generatedInlineSvgHash": "bef4d10a0acda7446a0e8f37ad3aea8b26dccdeb8d8f1a5d0013e5a2e94ec8b5"
+      "inlineSvgHash": "9e30f434165241317dae5159ea123dd80480ac70ad757e32736f038ed00af21c",
+      "generatedInlineSvgHash": "a4aec1f8fd225c1a7fd2717afc28c813c1dd5516d5aa17602916559babd55f38"
     }
   ]
 }
