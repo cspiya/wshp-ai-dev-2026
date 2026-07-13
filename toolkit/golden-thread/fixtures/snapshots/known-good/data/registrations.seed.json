@@ -1,0 +1,47 @@
+{
+  "invented": true,
+  "workshops": [
+    {
+      "id": "ws-2026-08-alap",
+      "title": "AI-alapú fejlesztés — alapozó műhely",
+      "startsAt": "2026-08-25T09:00:00.000Z"
+    },
+    {
+      "id": "ws-2027-03-halado",
+      "title": "Agentikus csapatmunka — haladó műhely",
+      "startsAt": "2027-03-10T09:00:00.000Z"
+    }
+  ],
+  "registrations": [
+    {
+      "id": "reg-seed-0001",
+      "workshopId": "ws-2026-08-alap",
+      "workshopStartsAt": "2026-08-25T09:00:00.000Z",
+      "name": "Példa Panna",
+      "email": "panna.pelda@example.invalid",
+      "status": "active",
+      "registeredAt": "2026-07-01T08:30:00.000Z",
+      "cancelledAt": null
+    },
+    {
+      "id": "reg-seed-0002",
+      "workshopId": "ws-2027-03-halado",
+      "workshopStartsAt": "2027-03-10T09:00:00.000Z",
+      "name": "Minta Márk",
+      "email": "mark.minta@example.invalid",
+      "status": "active",
+      "registeredAt": "2026-07-02T10:15:00.000Z",
+      "cancelledAt": null
+    },
+    {
+      "id": "reg-seed-0003",
+      "workshopId": "ws-2026-08-alap",
+      "workshopStartsAt": "2026-08-25T09:00:00.000Z",
+      "name": "Teszt Tímea",
+      "email": "timea.teszt@example.invalid",
+      "status": "cancelled",
+      "registeredAt": "2026-06-20T09:00:00.000Z",
+      "cancelledAt": "2026-06-25T12:00:00.000Z"
+    }
+  ]
+}

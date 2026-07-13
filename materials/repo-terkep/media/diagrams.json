@@ -1,0 +1,40 @@
+{
+  "diagrams": [
+    {
+      "id": "fig-repo-map",
+      "visualQuestionId": "q-repomap-overview",
+      "question": "Miből áll a workshop-repo, és hol a te helyed benne?",
+      "type": "structure",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "component-diagram",
+      "takeaway": "Öt terület, egy írható workspace: tudod, mit hol találsz és hol dolgozol.",
+      "glossarySlugs": [
+        "repository-rules"
+      ],
+      "figureSelector": "#fig-repo-map",
+      "svgSelector": "#fig-repo-map svg",
+      "textFallbackSelector": "#fig-repo-map-text",
+      "inlineSvgHash": "ec2feab6287177882de900f3283d37a845e500032b84a45354d2c0b9c640951f",
+      "generatedInlineSvgHash": "dfa6e88d74c70600fd50b261bfc1783d4ddc4c03e76ecc0474b4c4a67ced7a32"
+    },
+    {
+      "id": "fig-golden-thread",
+      "visualQuestionId": "q-repomap-process-1",
+      "question": "Honnan hová jutsz el ma a C0–C7 úton?",
+      "type": "process",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "flowchart",
+      "takeaway": "Minden állomás egy ellenőrizhető kimenetet ad át a következőnek.",
+      "glossarySlugs": [
+        "checkpoint"
+      ],
+      "figureSelector": "#fig-golden-thread",
+      "svgSelector": "#fig-golden-thread svg",
+      "textFallbackSelector": "#fig-golden-thread-text",
+      "inlineSvgHash": "90af1646d9b9d3432e3b44574f6ffb380d18d1d7e7432ade10ce060e975c166f",
+      "generatedInlineSvgHash": "f68740a3ea67de00afa2976a17e5aa35a2ea9099d91ae1e99d81b87936dbd6bf"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# KK-Regisztracio slice — append the line below to the workspace .gitignore.
+# data/registrations.json is the RUNTIME store (created on first use from
+# data/registrations.seed.json); it must never be committed.
+data/registrations.json
