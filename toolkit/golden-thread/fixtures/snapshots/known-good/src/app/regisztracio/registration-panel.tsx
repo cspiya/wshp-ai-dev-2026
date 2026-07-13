@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -36,22 +36,26 @@ function formatStartsAt(iso: string): string {
 const inputClassName =
   "h-8 rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
 
-export function RegistrationPanel({ workshops }: { workshops: Workshop[] }) {
-  const [registrations, setRegistrations] = useState<Registration[]>([]);
+export function RegistrationPanel({
+  workshops,
+  initialRegistrations,
+}: {
+  workshops: Workshop[];
+  initialRegistrations: Registration[];
+}) {
+  // The server page provides the initial list; after each mutation the panel
+  // re-fetches from the API, so no on-mount effect is needed.
+  const [registrations, setRegistrations] = useState<Registration[]>(initialRegistrations);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [workshopId, setWorkshopId] = useState(workshops[0]?.id ?? "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const refresh = useCallback(async () => {
+  async function refresh() {
     const res = await fetch("/api/registrations");
     if (res.ok) setRegistrations((await res.json()) as Registration[]);
-  }, []);
-
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
+  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

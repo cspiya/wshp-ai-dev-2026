@@ -19,20 +19,23 @@ export async function readWorkshops(): Promise<Workshop[]> {
   throw new Error(NOT_IMPLEMENTED);
 }
 
+// Implementing methods may declare fewer parameters than the port — these
+// stubs take none, so the skeleton lints clean while still satisfying the
+// RegistrationRepo contract at the type level.
 export class FileRegistrationRepo implements RegistrationRepo {
   async list(): Promise<Registration[]> {
     throw new Error(NOT_IMPLEMENTED);
   }
 
-  async create(_registration: Registration): Promise<void> {
+  async create(): Promise<void> {
     throw new Error(NOT_IMPLEMENTED);
   }
 
-  async findActiveByEmail(_email: string, _workshopId: string): Promise<Registration | null> {
+  async findActiveByEmail(): Promise<Registration | null> {
     throw new Error(NOT_IMPLEMENTED);
   }
 
-  async cancel(_id: string, _cancelledAt: string): Promise<Registration | null> {
+  async cancel(): Promise<Registration | null> {
     throw new Error(NOT_IMPLEMENTED);
   }
 }

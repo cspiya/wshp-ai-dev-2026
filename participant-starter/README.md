@@ -72,3 +72,14 @@ Abszolút linkek, hogy a saját repódba másolás után is működjenek:
 - Felkészülés / telepítés: [C0 setup](https://cspiya.github.io/wshp-ai-dev-2026/materials/felkeszules/)
 - Napirend: [a nap térképe](https://cspiya.github.io/wshp-ai-dev-2026/materials/napirend/)
 - Első modul: [Szerepek és korlátok](https://cspiya.github.io/wshp-ai-dev-2026/materials/modulok/01-agentikus-fejlesztes/)
+
+## A nap munkadarabja
+
+A nap egyetlen, végigvitt munkadarabja a **KK-Regisztráció** nevű, kitalált üzleti
+kérés: jelentkezés műhelyre névvel és e-mail-címmel, 48 órás — kizáró határú —
+lemondási ablakkal és duplikátum-védelemmel. A 3. modulban erre a briefre írod meg a
+saját öt fájlos spec-csomagodat, a C4 maker-blokkban pedig a jóváhagyott szerződést a
+saját repódban implementálod az agenteddel. A tréner ugyanehhez a munkadarabhoz kész
+pillanatképeket (known-good, partial, broken) tart karban tartalék-útvonalként, így a
+nap akkor sem áll meg, ha egy korábbi lépés elakadt. A brief, a referencia
+spec-csomag és a snapshotok leírása: [a golden-thread csomag](../toolkit/golden-thread/README.md).
