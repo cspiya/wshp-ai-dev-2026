@@ -111,8 +111,7 @@
 
     <section class="qrs">
       <div class="qr" id="qr-wifi">
-        <div class="code"><img src="local/qr-wifi.svg" alt="Wifi QR"
-             onerror="document.getElementById('qr-wifi').remove()"></div>
+        <div class="code"><img data-local-qr="qr-wifi.svg" alt="Wifi QR"></div>
         <div><h3>📶 Wifi</h3><p>Szkenneld, és a telefonod/laptopod csatlakozik.</p></div>
       </div>
       <div class="qr">
@@ -120,8 +119,7 @@
         <div><h3>📚 Tananyag — kezdd itt</h3><p>cspiya.github.io/wshp-ai-dev-2026<br>Nyisd meg a <b>Felkészülés</b> oldalt.</p></div>
       </div>
       <div class="qr" id="qr-discord">
-        <div class="code"><img src="local/qr-discord.svg" alt="Discord QR"
-             onerror="document.getElementById('qr-discord').remove()"></div>
+        <div class="code"><img data-local-qr="qr-discord.svg" alt="Discord QR"></div>
         <div><h3>💬 Discord — kérdések, linkek</h3><p>Ide írhatsz kérdést a nap során,<br>és itt osztjuk meg a linkeket is.</p></div>
       </div>
     </section>
@@ -134,5 +132,15 @@
     </div>
     <div>Wenova · edu.wenova.io · © Wenova</div>
   </footer>
+  <script>
+    // Sensitive QR codes (wifi, Discord invite) are never committed: they are
+    // injected at runtime from the git-ignored ./local/ folder (populated by
+    // the Drive-side start-welcome.cmd). Without the file, the panel removes
+    // itself — a deploy or fresh clone shows only the public QR codes.
+    document.querySelectorAll("img[data-local-qr]").forEach((img) => {
+      img.addEventListener("error", () => img.closest(".qr").remove());
+      img.setAttribute("s" + "rc", "local/" + img.dataset.localQr);
+    });
+  </script>
 </body>
 </html>

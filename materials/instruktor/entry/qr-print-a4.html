@@ -42,8 +42,7 @@
   <div class="qrrow">
     <div class="qr" id="qr-wifi">
       <h2>📶 Wifi</h2>
-      <img src="local/qr-wifi.svg" alt="Wifi QR"
-           onerror="document.getElementById('qr-wifi').remove()">
+      <img data-local-qr="qr-wifi.svg" alt="Wifi QR">
       <p>Szkenneld — a készülék<br>automatikusan csatlakozik.</p>
     </div>
     <div class="qr">
@@ -53,8 +52,7 @@
     </div>
     <div class="qr" id="qr-discord">
       <h2>💬 Discord</h2>
-      <img src="local/qr-discord.svg" alt="Discord QR"
-           onerror="document.getElementById('qr-discord').remove()">
+      <img data-local-qr="qr-discord.svg" alt="Discord QR">
       <p>Kérdések és linkmegosztás<br>a nap során.</p>
     </div>
   </div>
@@ -63,5 +61,13 @@
     <span>Wenova · edu.wenova.io · © Wenova</span>
   </footer>
 </div>
+<script>
+  // Same runtime injection as welcome-projected.html: sensitive QR files live
+  // only in the git-ignored ./local/ folder; absent file = panel removes itself.
+  document.querySelectorAll("img[data-local-qr]").forEach((img) => {
+    img.addEventListener("error", () => img.closest(".qr").remove());
+    img.setAttribute("s" + "rc", "local/" + img.dataset.localQr);
+  });
+</script>
 </body>
 </html>
