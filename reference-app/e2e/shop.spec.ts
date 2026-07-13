@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * WEN-324 webshop journey — the approved feature spec as a browser test:
+ * Webshop journey — the approved feature spec as a browser test:
  * a GUEST buys seats in two different workshops (2 + 1), checks out in
  * company mode with the WELCOME10 coupon, pays through the fake payment
  * boundary and receives an order-summary certificate.

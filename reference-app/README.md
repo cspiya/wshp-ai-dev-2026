@@ -79,7 +79,7 @@ Vercel + Neon with a DB branch per preview deployment — manual one-time setup
 steps in [`SETUP-STATUS.md`](SETUP-STATUS.md). MCP servers for Linear / GitHub /
 Neon / Vercel: copy `.mcp.json.example` to `.mcp.json`.
 
-## WEN-141 vertical slices
+## Implemented vertical slices
 
 - `npm run test:e2e` runs `/shop` database-free through the guarded local
   in-memory seam: integer pricing → fake payment authorization → pending

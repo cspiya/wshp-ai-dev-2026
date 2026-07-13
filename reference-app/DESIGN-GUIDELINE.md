@@ -1,6 +1,6 @@
 # Design guideline — Precision Workshop Console
 
-**Status:** accepted visual system (Direction A v3, human ACCEPT under WEN-311)
+**Status:** accepted visual system (Direction A v3, human-approved)
 
 **Source of truth for look & feel:** [`docs/design/mock-direction-a.html`](docs/design/mock-direction-a.html)
 **Binding behavior/scope contract:** [`docs/design/v0-design-brief.md`](docs/design/v0-design-brief.md) §8
@@ -150,7 +150,7 @@ Footer: ink strip of mono `LABEL value` pairs (golden path, gates, review).
 - Reduced motion: the lamp pulse and skeleton pulse run only under
   `prefers-reduced-motion: no-preference` / `motion-safe:`.
 
-## 8. Webshop journey addendum (WEN-324)
+## 8. Webshop journey addendum
 
 **Accepted mock:** [`docs/design/mock-webshop-journey.html`](docs/design/mock-webshop-journey.html)
 (5 screens: catalog → product detail → cart → checkout → confirmation).

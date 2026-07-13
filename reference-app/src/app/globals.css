@@ -706,7 +706,7 @@
     overflow-wrap: anywhere;
   }
 
-  /* ── webshop journey (WEN-324, accepted mock mock-webshop-journey.html) ── */
+  /* ── webshop journey (accepted mock mock-webshop-journey.html) ── */
   /* price block: big mono net + "NET + 27% VAT" micro-label, gross underneath */
   .price {
     display: flex;

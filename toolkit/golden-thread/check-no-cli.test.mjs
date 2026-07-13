@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { checkFiles, checkText } from "./check-no-cli.mjs";
+import {
+  checkFiles,
+  checkNegativeFixtures,
+  checkText,
+} from "./check-no-cli.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
@@ -29,15 +34,45 @@ test("rejects participant-directed exact syntax", () => {
   assert.ok(failures.some((failure) => failure.includes("command block is not labeled")));
 });
 
+test("rejects participant-directed Node commands with flags", () => {
+  const markdown = "Futtasd: `node --test toolkit/example.test.mjs`.";
+  const failures = checkText("materials/example.md", markdown);
+  assert.ok(
+    failures.some((failure) =>
+      failure.includes("participant-directed exact command syntax"),
+    ),
+    failures.join(" | "),
+  );
+});
+
 test("negative fixture remains intentionally violating", () => {
   const fixture = fs.readFileSync(path.join(HERE, "fixtures/no-cli-negative/materials/bad.html"), "utf8");
   assert.match(fixture, /Futtasd/);
   assert.match(fixture, /npm run test/);
 });
 
+test("negative fixture evaluation reports every accepted file", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "no-cli-fixtures-"));
+  const rejected = path.join(dir, "rejected.md");
+  const accepted = path.join(dir, "accepted.md");
+  try {
+    fs.writeFileSync(rejected, "Futtasd: `node --test toolkit/example.test.mjs`.\n");
+    fs.writeFileSync(accepted, "Ask the agent to choose and run the right check.\n");
+    const results = checkNegativeFixtures([rejected, accepted]);
+    assert.ok(results.find((result) => result.file === rejected)?.failures.length);
+    assert.deepEqual(
+      results.filter((result) => !result.failures.length).map((result) => result.file),
+      [accepted],
+    );
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("rejects curl, npx, HTML div and Markdown prose/table bypass fixtures", () => {
   const cases = [
     ["curl-div.html", /participant-directed exact command syntax/],
+    ["node-flags.md", /participant-directed exact command syntax/],
     ["npx-inline.md", /participant-directed exact command syntax/],
     ["plain-prose.md", /participant-directed exact command syntax/],
     ["table.md", /participant-directed exact command syntax/],
