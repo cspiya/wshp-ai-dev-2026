@@ -8,11 +8,15 @@ import { QtyStepper } from "./qty-stepper";
 import { JourneyRail, type JourneyStep } from "./journey-rail";
 import { useCart, type CartLine } from "./shop-journey";
 
+/**
+ * What the server gets to hear about the cart: ids and quantities ONLY.
+ * The cart keeps the full workshop object for DISPLAY (title, date, list
+ * price), but pricing is the server's — it resolves title and unit price
+ * from the catalog itself.
+ */
 export function cartItemsInput(lines: CartLine[]) {
   return lines.map((line) => ({
     workshopId: line.workshop.id,
-    title: line.workshop.title,
-    unitNetHuf: line.workshop.listPriceHuf,
     quantity: line.quantity,
   }));
 }

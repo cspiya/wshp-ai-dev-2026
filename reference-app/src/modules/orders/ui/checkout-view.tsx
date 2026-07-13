@@ -488,6 +488,7 @@ function FormField({
         type={type}
         className="bg-white"
         value={value}
+        aria-required="true"
         aria-invalid={error ? true : undefined}
         onChange={(event) => onChange(event.target.value)}
       />

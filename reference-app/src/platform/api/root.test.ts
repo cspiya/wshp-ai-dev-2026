@@ -22,27 +22,49 @@ describe("health.ping", () => {
 });
 
 describe("orders wiring", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.resetModules();
+  });
+
   // GUEST context on purpose: the webshop procedures must work without a
   // session — this pins the composition root's wiring AND the public access.
-  const guest = appRouter.createCaller({ userId: null });
+  // The local-e2e seam supplies the seeded in-memory catalog, because the
+  // preview now PRICES every line through the injected workshop source: the
+  // client sends only id + quantity, the totals below derive from the
+  // seeded 10 000 HUF list price.
+  it("serves a guest order preview priced from the catalog", async () => {
+    vi.stubEnv("E2E_IN_MEMORY_DB", "1");
+    vi.resetModules();
+    const { appRouter: seededRouter } = await import("@/platform/api/root");
+    const guest = seededRouter.createCaller({ userId: null });
 
-  it("serves a guest order preview through the composition root", async () => {
     const totals = await guest.orders.preview({
-      items: [
-        {
-          workshopId: "3f8a2c1e-0000-4000-8000-000000000001",
-          title: "Sample Workshop: Checkout Flow",
-          unitNetHuf: 38_500,
-          quantity: 1,
-        },
-      ],
+      items: [{ workshopId: "3f8a2c1e-0000-4000-8000-000000000001", quantity: 2 }],
       couponCode: "WELCOME10",
     });
+    // 2 × 10 000 = 20 000 net → −2 000 → 18 000 → VAT 4 860 → gross 22 860.
     expect(totals).toMatchObject({
-      netSubtotalHuf: 38_500,
-      discountHuf: 3_850,
-      vatHuf: 9_356,
-      grossHuf: 44_006,
+      netSubtotalHuf: 20_000,
+      discountHuf: 2_000,
+      vatHuf: 4_860,
+      grossHuf: 22_860,
+    });
+  });
+
+  it("rejects a workshop id the catalog does not know", async () => {
+    vi.stubEnv("E2E_IN_MEMORY_DB", "1");
+    vi.resetModules();
+    const { appRouter: seededRouter } = await import("@/platform/api/root");
+    const guest = seededRouter.createCaller({ userId: null });
+
+    await expect(
+      guest.orders.preview({
+        items: [{ workshopId: "3f8a2c1e-0000-4000-8000-00000000dead", quantity: 1 }],
+      }),
+    ).rejects.toMatchObject({
+      code: "BAD_REQUEST",
+      message: expect.stringContaining("3f8a2c1e-0000-4000-8000-00000000dead"),
     });
   });
 });

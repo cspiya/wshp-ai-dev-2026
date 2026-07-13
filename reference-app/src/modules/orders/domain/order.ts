@@ -54,14 +54,31 @@ export const billingAddressSchema = z.object({
 
 export type BillingAddress = z.infer<typeof billingAddressSchema>;
 
-export const orderItemSchema = z.object({
+/** Guard against unbounded carts: a request may carry at most this many lines. */
+export const MAX_ORDER_LINES = 20;
+
+/**
+ * What a CLIENT may say about an order line: which workshop, how many seats.
+ * Price and title are deliberately absent — the server resolves both from
+ * the catalog, so a client cannot influence what it pays.
+ */
+export const orderItemInputSchema = z.object({
   workshopId: z.uuid(),
-  title: z.string().min(1).max(200),
-  unitNetHuf: z.int().positive(),
   quantity: z
     .int()
     .min(1, "At least 1 seat is required")
     .max(MAX_SEATS_PER_WORKSHOP, CUSTOM_OFFER_MESSAGE),
+});
+
+export type OrderItemInput = z.infer<typeof orderItemInputSchema>;
+
+/**
+ * The PERSISTED order line: the client's input plus the SERVER-authored
+ * snapshot of the catalog title and list price at purchase time.
+ */
+export const orderItemSchema = orderItemInputSchema.extend({
+  title: z.string().min(1).max(200),
+  unitNetHuf: z.int().positive(),
 });
 
 export type OrderItem = z.infer<typeof orderItemSchema>;
@@ -131,23 +148,32 @@ export function grossFromNet(netHuf: number): number {
   return netHuf + Math.floor((netHuf * VAT_RATE_PERCENT + 50) / 100);
 }
 
-/** What a buyer submits: everything except server-assigned fields. */
+/**
+ * What a buyer submits: everything except server-assigned fields. Items are
+ * the INPUT shape (id + quantity only) — prices come from the catalog.
+ */
 export const orderDraftSchema = z.object({
   buyer: buyerSchema,
   contact: contactSchema,
   billing: billingAddressSchema,
-  items: z.array(orderItemSchema).min(1, "The cart is empty"),
+  items: z
+    .array(orderItemInputSchema)
+    .min(1, "The cart is empty")
+    .max(MAX_ORDER_LINES, `A single order can hold at most ${MAX_ORDER_LINES} lines`),
   couponCode: z.string().trim().min(1).max(50).optional(),
 });
 
 export type OrderDraft = z.infer<typeof orderDraftSchema>;
 
 /**
- * What a repo persists: the draft plus the payment authorization id (from
- * the checkout module's PaymentPort, passed through by the client) and the
- * server-computed totals. The repo assigns id, orderNumber and placedAt.
+ * What a repo persists: the draft with the items replaced by the
+ * SERVER-authored lines (catalog title + list price), plus the payment
+ * authorization id (from the checkout module's PaymentPort, passed through
+ * by the client) and the server-computed totals. The repo assigns id,
+ * orderNumber and placedAt.
  */
 export const orderRecordInputSchema = orderDraftSchema.extend({
+  items: z.array(orderItemSchema).min(1),
   paymentAuthorizationId: z.string().min(1).max(100),
   totals: orderTotalsSchema,
 });

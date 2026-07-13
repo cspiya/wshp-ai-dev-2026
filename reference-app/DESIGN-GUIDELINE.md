@@ -68,7 +68,7 @@ status readout right (`.mod-stat`): a `.dotlamp` (+ `-ok`/`-amber`/`-bad`)
 **always paired with a text state** (PASS / NOW / QUOTED / PROTECTED / ERROR /
 n RECORDS). Lamp states must mirror real query/mutation state.
 
-### Calibration rail (`.rail` / `.station`, `src/app/shop/journey-rail.tsx`)
+### Calibration rail (`.rail` / `.station`, `src/modules/orders/ui/journey-rail.tsx`)
 Four stations under a ruler-tick strip (`.rail::before`, desktop only).
 States: `station-done` (green border, check icon, DONE/…), `station-now`
 (amber border + glow halo, pulsing lamp, `aria-current="step"`),

@@ -85,6 +85,16 @@ const workshopSchedule = {
     (await workshopRepo.getById(workshopId))?.date ?? null,
 };
 
+// Orders price every line from the catalog (same adapt-the-repo pattern as
+// the registrations schedule above): the client sends ids and quantities,
+// the server answers with the workshop's title and list price.
+const orderWorkshopSource = async (id: string) => {
+  const workshop = await workshopRepo.getById(id);
+  return workshop
+    ? { id: workshop.id, title: workshop.title, listPriceHuf: workshop.listPriceHuf }
+    : null;
+};
+
 /**
  * Cancellation window is deployment-configurable (WEN-118 ratified rule:
  * exclusive boundary). Env parsing lives HERE at the composition root — the
@@ -109,7 +119,7 @@ export const appRouter = router({
    * acceptable for the teaching journey, unacceptable for production, and
    * said out loud here so nobody mistakes it for done.
    */
-  orders: createOrdersRouter(createInMemoryOrderRepo()),
+  orders: createOrdersRouter(createInMemoryOrderRepo(), orderWorkshopSource),
   registrations: createRegistrationsRouter(
     createRegistrationRepo(),
     workshopSchedule,
