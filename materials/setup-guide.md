@@ -42,7 +42,7 @@ végrehajtható alapút a repó szabályaira, a skillre és a Repeat-Until-Good 
 ## 3. Accountok és MCP-összekapcsolás
 
 A workshopon külső szolgáltatásokat is használunk. Hozd létre (vagy ellenőrizd) az
-accountjaidat ebben a sorrendben — a későbbiek az előzőkre épülnek:
+accountjaidat ebben a sorrendben — a Vercel és a Neon a GitHub-fiókodra épül, a v0 a Vercelre:
 
 1. **GitHub** — a saját e-mail-címeddel; ez lesz a repóid és a CI otthona.
 2. **Vercel** — GitHubbal lépj be (deploy és preview).
@@ -50,7 +50,7 @@ accountjaidat ebben a sorrendben — a későbbiek az előzőkre épülnek:
 4. **Linear** — munkaállapot és issue-k.
 5. **v0** — opcionális, csak a design-generáló gyakorlathoz.
 
-Az account-létrehozásban a böngészőagent végigvezethet (6. szakasz), de bejelentkezést,
+Az account-létrehozáson a böngészőagent végigvezethet (6. szakasz), de bejelentkezést,
 jelszót és OAuth-jóváhagyást mindig te adsz meg — ez emberi kapu.
 
 **MCP-összekapcsolás az agentből.** A workshop-repók `.mcp.json`-ja már tartalmazza a
