@@ -152,8 +152,12 @@ Footer: ink strip of mono `LABEL value` pairs (golden path, gates, review).
 
 ## 8. Webshop journey addendum
 
-**Accepted mock:** [`docs/design/mock-webshop-journey.html`](docs/design/mock-webshop-journey.html)
-(5 screens: catalog → product detail → cart → checkout → confirmation).
+**Historical accepted visual mock:**
+[`docs/design/mock-webshop-journey.html`](docs/design/mock-webshop-journey.html)
+(5 screens: catalog → product detail → cart → checkout → confirmation). Its
+checkout account controls are superseded by the 2026-07-14 WEN-324 remediation:
+the current reference app is guest-only until Auth has live runtime proof. Keep
+the mock as a visual/layout reference, not as the current authentication contract.
 New patterns introduced by the shop rebuild — all in `src/app/globals.css`,
 components in `src/modules/orders/ui/`:
 

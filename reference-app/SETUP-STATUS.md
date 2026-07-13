@@ -64,8 +64,9 @@ observed; code being present is not proof that an external integration works.
       configured; protected write procedures reject anonymous callers.
 - [x] `/shop` states and enforces guest checkout: account creation and sign-in are
       not required while the live Auth integration remains unaccepted.
-- [x] Local and deployed E2E use the same signed-out guest path; the local-only
-      in-memory seam remains guarded from Vercel.
+- [ ] Confirm on a fresh Preview that local and deployed E2E use the same
+      signed-out guest path; the implementation no longer signs up and the
+      local-only in-memory seam remains guarded from Vercel.
 
 ### External/runtime proof still required
 
