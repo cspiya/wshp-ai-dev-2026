@@ -13,6 +13,21 @@
 > M7 Azure DevOps kiegészítés 15p · M8 eval-mélyítés 7p). Csúszásnál ezek esnek ki —
 > a checkpoint és a készítő-blokk (C4) soha nem vágható.
 
+## A nap végrehajtási szerződése
+
+Claude Code vagy Codex a teljes nap során aktív tanuló- és fejlesztőtárs. A minimális
+bootstrap után minden technikai műveletet az agent végez: repót vizsgál, fájlt készít,
+kaput futtat, Git-állapotot rögzít, böngészőt vezérel és evidence-et gyűjt. A résztvevő
+feladata a cél, a scope, az üzleti döntés, a jóváhagyás és a Repeat-Until-Good kapu.
+
+Egy elsődleges agent elég a kötelező útvonalhoz. A Claude–Codex összehasonlítás csak
+opcionális eval: hiánya nem blokkolhatja C7-et. A 6. modulban az agent által vezérelt
+böngésző az alapút; a kézi végrehajtás őszintén jelölt Plan B.
+
+Minden blokk ugyanazt az öt lépést ismétli:
+`emberi cél → agentfeladat → agent-végrehajtás → evidence és kockázat → emberi kapu/RUG`.
+Ez adja az AI-val megerősített emberi tanulási ciklus napi ritmusát is.
+
 | Idő | Blokk | Vidd haza |
 |---|---|---|
 | 09:00–09:45 | **Bevezető** — az agentikus fejlesztés alapfogalmai, eszközök és költségek, hogyan működik a Claude Code, setup-ellenőrzés | **Az AI-t gyors junior kollégaként kell vezetni, nem varázslatként kezelni.** |

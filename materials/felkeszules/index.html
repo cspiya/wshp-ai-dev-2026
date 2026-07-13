@@ -1,53 +1,162 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Felkészülés a workshopra</title><style>main{max-width:62rem;margin:auto;padding:1rem}figure{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}figure svg{display:block;width:44rem;max-width:none;height:auto}.diagram-scroll-hint{display:none;margin:.25rem 0;font-weight:700}table,pre{display:block;max-width:100%;overflow-x:auto}a,li,code{overflow-wrap:anywhere;word-break:break-word}@media(max-width:700px){.diagram-scroll-hint{display:block}}</style></head><body><main>
-<header><p><a data-route="/materials/">Tananyag</a></p><h1>Felkészülés a workshopra</h1><p>Cél: a workshop kezdetére legyen működő fejlesztői környezeted, saját gyakorlórepód és egy egyszer már végigfuttatott ellenőrzési útvonalad. A repóba csak <a data-route="/materials/fogalomtar/#public-safe">nyilvánosan megosztható</a>, kitalált adat kerülhet; minden hálózati függőséghez legyen előre rögzített <a data-route="/materials/fogalomtar/#plan-b">Plan B</a>. Ha előbb a nagy képet néznéd meg: <a data-route="/materials/repo-terkep/">a repo és a nap térképe</a>.</p></header>
-<section><h2>Az előkészület öt lépése — kattints, és ugorj a részletekhez</h2><figure id="fig-preparation-milyen-sorrendben-epulnek-egymasra-az" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 220" role="img" aria-labelledby="fso-t fso-d"><title id="fso-t">Az előkészület öt lépése</title><desc id="fso-d">Telepítő, doctor-ellenőrzés, írható workspace és evidence, agent-indítás, majd böngészőagent vagy kézi tartalékút következik. Minden lépés a részletes leírására hivatkozik.</desc><g fill="none" stroke="currentColor" stroke-width="3"><path d="M70 110H830"/></g><g text-anchor="middle" font-size="15"><a href="#lepes-1"><circle cx="90" cy="110" r="46" fill="#e9f8f1" stroke="currentColor"/><text x="90" y="105">1.</text><text x="90" y="125">Telepítő</text></a><a href="#lepes-2"><circle cx="270" cy="110" r="46" fill="white" stroke="currentColor"/><text x="270" y="105">2. Doctor-</text><text x="270" y="125">ellenőrzés</text></a><a href="#lepes-3"><circle cx="450" cy="110" r="46" fill="white" stroke="currentColor"/><text x="450" y="105">3. Workspace</text><text x="450" y="125">és evidence</text></a><a href="#lepes-4"><circle cx="630" cy="110" r="46" fill="white" stroke="currentColor"/><text x="630" y="105">4. Agent</text><text x="630" y="125">indítása</text></a><a href="#lepes-5"><circle cx="810" cy="110" r="46" fill="white" stroke="currentColor"/><text x="810" y="105">5. Böngésző</text><text x="810" y="125">vagy kézi út</text></a></g></svg><figcaption><strong>Lényeg:</strong> ha egy lépés hibás, ne ugord át; az utána következő eredmények már nem lennének megbízhatók. Kattints a lépésekre a részletekért.</figcaption><ol class="static-fallback" id="fig-preparation-milyen-sorrendben-epulnek-egymasra-az-text"><li><a href="#lepes-1">Telepítő futtatása</a></li><li><a href="#lepes-2">Doctor-ellenőrzés</a></li><li><a href="#lepes-3">Írható workspace és evidence</a></li><li><a href="#lepes-4">Agent indítása</a></li><li><a href="#lepes-5">Böngészőagent vagy kézi tartalékút</a></li></ol></figure></section>
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Felkészülés a workshopra</title>
+</head>
+<body>
+<main>
+  <header>
+    <p><a data-route="/materials/">Tananyag</a></p>
+    <h1>Felkészülés a workshopra</h1>
+    <p>Cél: 09:00-kor már fusson melletted Claude Code vagy Codex, legyen saját
+    gyakorlórepód, és az agent által végrehajtott előzetes ellenőrzésből őszinte
+    <code>C0_STATUS</code> szülessen. A repóba csak <a data-route="/materials/fogalomtar/#public-safe">nyilvánosan megosztható</a>, KITALÁLT
+    adat kerülhet; minden hálózati függőséghez legyen előre rögzített <a data-route="/materials/fogalomtar/#plan-b">Plan B</a>.</p>
+  </header>
 
-<section><h2>Mi függ mitől?</h2><figure id="fig-setup-flow" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 300" role="img" aria-labelledby="fs-t fs-d"><title id="fs-t">Az előkészület függőségi térképe</title><desc id="fs-d">A hozzáférések és a helyi eszközök párhuzamosan készíthetők elő. Mindkettő szükséges a saját repo klónozásához, majd az első ellenőrzéshez és preview-hoz.</desc><g fill="none" stroke="currentColor" stroke-width="3"><rect x="40" y="35" width="220" height="70" rx="12"/><rect x="40" y="175" width="220" height="70" rx="12"/><rect x="355" y="105" width="220" height="70" rx="12"/><rect x="670" y="105" width="190" height="70" rx="12"/><path d="M260 70L350 130M260 210L350 150M575 140H665"/></g><g text-anchor="middle" font-size="17"><text x="150" y="77">Hozzáférések</text><text x="150" y="217">Helyi eszközök</text><text x="465" y="135">Saját gyakorlórepo</text><text x="465" y="157">klónozva</text><text x="765" y="135">Ellenőrzés</text><text x="765" y="157">és preview</text></g></svg><figcaption><strong>Lényeg:</strong> ne a workshopon derüljön ki, hogy egy fiók, futtatókörnyezet vagy jogosultság hiányzik.</figcaption><table class="static-fallback" id="fig-setup-flow-text"><caption>Szöveges megfelelő</caption><tr><th>Előfeltétel</th><th>Eredmény</th></tr><tr><td>Hozzáférések + helyi eszközök</td><td>Klónozható és futtatható gyakorlórepo.</td></tr><tr><td>Gyakorlórepo</td><td>Lefuttatható ellenőrzés és megnyitható preview.</td></tr></table></figure></section>
-<section><h2>Lépésről lépésre: telepítés → doctor → C0</h2>
-<h3 id="lepes-1">1. Helyi eszközök egyetlen telepítővel (Windows)</h3>
-<ol>
-<li>Töltsd le a telepítőt: <a href="../../downloads/toolkit/setup/scoop-telepito.cmd" download>scoop-telepito.cmd</a>.</li>
-<li>Indítsd el <strong>dupla kattintással</strong> — <strong>ne</strong> rendszergazdaként. A telepítő felteszi a Git, GitHub CLI, Node.js LTS, Claude Code és Codex parancsokat.</li>
-<li>Ha <code>BLOKKOLT</code> eredményt kapsz, javítsd a megnevezett eszközt és futtasd újra. A végén nyiss <strong>új</strong> terminált.</li>
-</ol>
-<p>Az automatizált telepítő és doctor út Windowsra van próbálva. macOS/Linux alatt használd a szolgáltatók hivatalos telepítőit, majd kézzel futtasd a kért verzió- és projektparancsokat.</p>
+  <section class="ai-companion" aria-labelledby="setup-ai">
+    <h2 id="setup-ai">Az aktív AI-társ már a felkészüléskor belép</h2>
+    <div class="ai-companion-grid">
+      <article class="ai-role" data-role="human"><h3>🧑 Ember</h3><p>Kiválasztja a
+      munkamappát és az accountot; jóváhagyja a telepítést, OAuth-ot, jogosultságot és
+      minden érzékeny döntést.</p></article>
+      <article class="ai-role" data-role="agent"><h3>🤖 Claude Code vagy Codex</h3><p>A
+      belépés után felépíti a workspace-et, futtatja a doctor/bootstrap útját, beállítja
+      a böngészőagentet és összegyűjti a bizonyítékot.</p></article>
+      <article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>Mappák,
+      futtatott ellenőrzések, kilépési kódok, browser mód és a végső C0 státusz.</p></article>
+      <article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>Az ember az
+      evidence alapján elfogad, pontosít vagy leállít. <code>BLOCKED</code> állapotból
+      nem találgatunk tovább.</p></article>
+    </div>
+    <p><strong>Egy agent elég:</strong> a második agent opcionális összehasonlítás, nem
+    belépési feltétel. A technikai műveletek után az agent marad aktív a teljes napra.</p>
+  </section>
 
-<h3 id="lepes-2">2. A forrásrepo és a doctor</h3>
-<p><strong>Mi ez, és miért?</strong> A workshop doctor egy determinisztikus ellenőrző script: megnézi, hogy minden eszköz és a workspace rendben van-e, és egyetlen őszinte státuszt ad (<code>PASS</code> / <code>REPLAY</code> / <code>BLOCKED</code>). Azért van, hogy a hibák itt derüljenek ki, ne a nap közepén. Részletes magyarázat: <a data-route="/materials/repo-terkep/">a repo és a nap térképe</a>.</p>
-<pre><code>git clone https://github.com/cspiya/wshp-ai-dev-2026.git workshop-source
-cd workshop-source
-powershell -NoProfile -ExecutionPolicy Bypass -File toolkit/setup/workshop-doctor.ps1 `
-  -Agent Both -WorkspacePath participant-starter</code></pre>
-<p><code>Both</code> helyett választhatsz <code>Claude</code>, <code>Codex</code> vagy <code>Auto</code> értéket. A doctor nem olvas titkot. A végén egyetlen állapotot ad:</p>
-<table><thead><tr><th>Státusz</th><th>Jelentés</th><th>Következő lépés</th></tr></thead><tbody>
-<tr><td><code>PASS</code></td><td>A kért lokális út készen áll.</td><td>Bootstrap.</td></tr>
-<tr><td><code>REPLAY</code></td><td>A kért opcionális lane-hez ellenőrzött replay manifest és minden felsorolt fájl rendelkezésre áll.</td><td>Használd a validált csomagot.</td></tr>
-<tr><td><code>BLOCKED</code></td><td>Core előfeltétel hiányzik.</td><td>Javítsd a kiírt hibát; ne vidd tovább.</td></tr>
-</tbody></table>
+  <section>
+    <h2>Az előkészület öt lépése</h2>
+    <figure id="fig-preparation-milyen-sorrendben-epulnek-egymasra-az">
+      <svg viewBox="0 0 900 250" role="img" aria-labelledby="prep-t prep-d">
+        <title id="prep-t">Az AI-first előkészület öt lépése</title>
+        <desc id="prep-d">Scoop telepítés, munkamappa kiválasztása, egy agent első
+        indítása, az agent által végzett doctor és workspace bootstrap, végül az
+        agent által próbált böngészőút következik.</desc>
+        <path d="M90 125H810" fill="none" stroke="#5b6779" stroke-width="4"/>
+        <g text-anchor="middle" font-size="15">
+          <a href="#lepes-1" aria-label="1. Scoop telepítése"><circle class="node-shape node-machine" cx="90" cy="125" r="55"/><text x="90" y="120">1. Scoop</text><text x="90" y="142">ha kell</text></a>
+          <a href="#lepes-2" aria-label="2. Munkamappa kiválasztása"><circle class="node-shape node-human" cx="270" cy="125" r="55"/><text x="270" y="120">2. Munka-</text><text x="270" y="142">mappa</text></a>
+          <a href="#lepes-3" aria-label="3. Egy agent első indítása"><circle class="node-shape node-agent" cx="450" cy="125" r="55"/><text x="450" y="120">3. Agent</text><text x="450" y="142">indítása</text></a>
+          <a href="#lepes-4" aria-label="4. Agent által végzett C0 bootstrap"><circle class="node-shape node-machine" cx="630" cy="125" r="55"/><text x="630" y="120">4. Agent-run</text><text x="630" y="142">C0</text></a>
+          <a href="#lepes-5" aria-label="5. Böngészőagent vagy kézi Plan B"><circle class="node-shape node-evidence" cx="810" cy="125" r="55"/><text x="810" y="120">5. Browser</text><text x="810" y="142">evidence</text></a>
+        </g>
+      </svg>
+      <figcaption><strong>Lényeg:</strong> a három bootstrap-kivétel után az agent végzi
+      a technikai munkát; az ember a jogosultságokról és az elfogadásról dönt.</figcaption>
+      <ol class="static-fallback" id="fig-preparation-milyen-sorrendben-epulnek-egymasra-az-text">
+        <li><a href="#lepes-1">Scoop telepítése, ha szükséges.</a></li>
+        <li><a href="#lepes-2">Munkamappa kiválasztása.</a></li>
+        <li><a href="#lepes-3">Egy agent első indítása.</a></li>
+        <li><a href="#lepes-4">Doctor, workspace és evidence agent általi felépítése.</a></li>
+        <li><a href="#lepes-5">Böngészőagent próbája vagy őszinte kézi Plan B.</a></li>
+      </ol>
+    </figure>
+  </section>
 
-<h3 id="lepes-3">3. Írható résztvevő-workspace és evidence</h3>
-<p><strong>Mi ez, és miért?</strong> A forrásrepót csak olvasod; a bootstrap készít belőle egy saját, írható repót (<code>participant-repo</code>) — egész nap ebben dolgozol, így semmi közöset nem tudsz elrontani. Mellette létrejön a <code>workshop-evidence</code> könyvtár: ide kerül minden állomás bizonyítéka, mert a nap terméke a <em>bizonyíthatóan</em> működő fejlesztési rendszer.</p>
-<pre><code>powershell -NoProfile -ExecutionPolicy Bypass -File toolkit/setup/workshop-bootstrap.ps1 `
-  -Destination ..\participant-repo -Agent Both -InstallDependencies</code></pre>
-<p>Az <code>-InstallDependencies</code> a dependency install explicit engedélye. A script kizárólag Gitben követett starterfájlokat másol, nem ír felül ismeretlen, nem üres mappát, nem resetel munkát, és létrehozza a sibling <code>workshop-evidence/C0-setup.md</code> fájlt. Az első futás végén a C0 még <code>PENDING</code>, amíg az agent és a browser mód nincs igazolva.</p>
+  <section>
+    <h2>Mi függ mitől?</h2>
+    <figure id="fig-setup-flow">
+      <svg viewBox="0 0 900 300" role="img" aria-labelledby="flow-t flow-d">
+        <title id="flow-t">Az AI-first C0 függőségi térképe</title>
+        <desc id="flow-d">Az emberi hozzáférések és a helyi agent együtt teszi
+        lehetővé az agent-run workspace-et. Az agent ellenőrzést és browser próbát
+        végez, majd evidence-et ad vissza az emberi C0 kapuhoz.</desc>
+        <g text-anchor="middle" font-size="17">
+          <rect class="node-shape node-human" x="35" y="35" width="220" height="70" rx="12"/><text x="145" y="78">Emberi hozzáférések</text>
+          <rect class="node-shape node-agent" x="35" y="185" width="220" height="70" rx="12"/><text x="145" y="228">Futó coding agent</text>
+          <rect class="node-shape node-machine" x="340" y="105" width="220" height="85" rx="12"/><text x="450" y="140">Agent-run workspace</text><text x="450" y="165">doctor + bootstrap</text>
+          <rect class="node-shape node-evidence" x="645" y="105" width="220" height="85" rx="12"/><text x="755" y="140">Ellenőrzés + browser</text><text x="755" y="165">C0 evidence</text>
+        </g>
+        <g fill="none" stroke="#5b6779" stroke-width="3"><path d="M255 70L335 130M255 220L335 165M560 147H640"/></g>
+      </svg>
+      <figcaption><strong>Lényeg:</strong> az agent nem veheti át az account- és
+      jogosultsági döntéseket, az ember pedig nem kénytelen pontos technikai
+      szintaxist reprodukálni.</figcaption>
+      <table class="static-fallback" id="fig-setup-flow-text"><caption>Szöveges megfelelő</caption>
+        <tr><th>Bemenet</th><th>Agent-végrehajtás</th><th>Emberi kapu</th></tr>
+        <tr><td>Jóváhagyott hozzáférések + futó agent</td><td>Workspace, doctor,
+        bootstrap és browser próba.</td><td>C0 evidence elfogadása vagy visszaküldése.</td></tr>
+      </table>
+    </figure>
+  </section>
 
-<h3 id="lepes-4">4. Legalább egy agent induljon el</h3>
-<p><strong>Miért két agent?</strong> A workshopon Claude és Codex egyaránt használható — ugyanazok a szabályok és kapuk tartoznak mindkettőhöz, csak az indító parancsok különböznek. Ezzel bizonyítjuk, hogy a minőséget a keretrendszer tartja, nem egyetlen eszköz. Neked <em>egy</em> működő agent elég az induláshoz.</p>
-<ul>
-<li><strong>Claude:</strong> <code>claude --version</code>, <code>claude doctor</code>, majd a résztvevő-workspace-ben <code>claude</code>. Az MCP-ket <code>/mcp</code> alatt csak szükség szerint, emberi OAuth-jóváhagyással kapcsold be.</li>
-<li><strong>Codex:</strong> <code>codex --version</code>, <code>codex doctor</code>, <code>codex login</code>, majd a résztvevő-workspace-ben <code>codex</code>.</li>
-</ul>
+  <section>
+    <h2>Lépésről lépésre: három bootstrap-kivétel, aztán agent-run C0</h2>
+    <h3 id="lepes-1">1. Scoop telepítése, ha szükséges</h3>
+    <p>Töltsd le a <a href="../../downloads/toolkit/setup/scoop-telepito.cmd" download>scoop-telepito.cmd</a>
+    fájlt, és indítsd el dupla kattintással, nem rendszergazdaként. A végén nyiss új
+    terminált. Ez az egyetlen, agent előtti telepítési kivétel.</p>
 
-<h3 id="lepes-5">5. Böngészőagent vagy pontos kézi fallback</h3>
-<ul>
-<li><strong>Claude Code:</strong> a <a href="https://code.claude.com/docs/en/chrome">hivatalos Chrome-integráció</a> Chrome-ot és Edge-et támogat. Indítás: <code>claude --chrome</code>, meglévő sessionben <code>/chrome</code>.</li>
-<li><strong>Codex:</strong> a ChatGPT desktop app Plugins részében a <a href="https://learn.chatgpt.com/docs/browser">Browser</a> (<code>@Browser</code>) külön profilt, a <a href="https://learn.chatgpt.com/docs/chrome-extension#set-up-chrome-from-plugins">Chrome plugin</a> (<code>@Chrome</code>) a meglévő Chrome-profilt használja.</li>
-<li><strong>Ötperces stop-szabály:</strong> ha nem csatlakozik, nyisd meg kézzel az URL-t, hajtsd végre ugyanazt az utat, ments URL-t + screenshotot, és jelöld <code>Execution mode: MANUAL</code>. Az automatizálási bizonyíték <code>PENDING</code>; a kézi út nem replay.</li>
-</ul>
-<p>A Codex Chrome extensionhöz itt nem ígérünk Edge-támogatást. Accountot, OAuth-ot, repoláthatóságot, régiót és más érzékeny döntést mindig ember hagy jóvá.</p>
-<p>Ezután futtasd újra a bootstrapot ugyanazzal a céllal, <code>-AgentConfirmed</code> és a valós <code>-BrowserMode Connected</code> vagy <code>-BrowserMode Manual</code> kapcsolóval. A script a létrehozott résztvevő-repón is futtat doctort; csak ekkor lehet <code>C0_STATUS=PASS</code>.</p>
-</section>
-<section><h2>C0 készdefiníció</h2><ol><li>A post-bootstrap doctor <code>PASS</code>, vagy manifesttel validált opcionális replay esetén <code>REPLAY</code>.</li><li>A <code>participant-repo</code> saját Git-repó; typecheck és teszt zöld.</li><li>A sibling <code>workshop-evidence/C0-setup.md</code> létezik.</li><li>Claude vagy Codex válaszol a résztvevő-workspace (participant-repo) kontextusában.</li><li>A browser státusza <code>Connected</code> vagy <code>Manual</code> — nem ismeretlen.</li><li>A záró sor <code>C0_STATUS=PASS</code> (vagy valóban validált <code>REPLAY</code>).</li></ol><p><strong>Következő lépés:</strong> nyisd meg az <a data-route="/materials/">anyagközpontot</a>, majd az <a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. modult</a>. Ha <code>BLOCKED</code> vagy <code>PENDING</code> maradt, menj a tréner setup lane-jébe; ne állítsd késznek.</p></section>
+    <h3 id="lepes-2">2. Munkamappa kiválasztása</h3>
+    <p>A fájlkezelőben hozz létre vagy válassz ki egy üres <code>workshop-lab</code>
+    mappát, és nyiss benne terminált. A teljes nap három sibling mappája itt fog élni.</p>
 
-<section><h2>Gyakori hibák és Plan B</h2><p>A <a data-route="/materials/fogalomtar/#plan-b">Plan B</a> a tanulási célt megőrző, előre rögzített tartalékút.</p><dl><dt>Nincs megfelelő jogosultság</dt><dd>Dolgozz a helyi repóban; a hálózati műveletet jelöld függőben lévőnek, és jelezd a trénernek.</dd><dt>Nem indul a projekt</dt><dd>Mentsd a pontos hibaüzenetet, ellenőrizd a verziót, majd használd a tréner által adott előre elkészített helyi csomagot.</dd><dt>Nem érhető el a preview</dt><dd>A helyi futtatás és a teszteredmény megőrzi a tanulási célt; a preview-t később pótolhatod.</dd></dl><p><a data-route="/materials/napirend/">Tovább: a workshop menete →</a></p></section>
-</main></body></html>
+    <h3 id="lepes-3">3. Egy agent első indítása</h3>
+    <p>Indítsd el a Claude Code-ot a <code>claude</code>, vagy a Codexet a
+    <code>codex</code> paranccsal. Ez az utolsó ember által begépelt technikai parancs.
+    Egy agent elég. Ajánlott a Claude Code Claude Opus 4.8 modellel; a Pro-kapacitás
+    nem garantált egész napra, ezért a Codex az azonnali tartalék.</p>
+
+    <h3 id="lepes-4">4. Doctor, workspace és evidence — az agent feladata</h3>
+    <p>Add az aktív agentnek ezt a természetes nyelvű megbízást:</p>
+    <pre><code>Prepare my workshop workspace in this selected folder.
+
+Use https://github.com/cspiya/wshp-ai-dev-2026 as the read-only workshop source.
+Create sibling workshop-source, participant-repo and workshop-evidence directories.
+Read the repository setup guide and agent rules, then run the repository's own doctor
+and idempotent bootstrap path. Do not overwrite unknown work, reset files or expose
+secrets. Return every command you ran, exit codes, C0 status, remaining risks and
+required human approvals. Stop on BLOCKED.</code></pre>
+    <p>A pontos Git-, PowerShell-, npm- és projektparancsokat az agent olvassa ki a
+    repóból és futtatja. Te azt ellenőrzöd, hogy jó mappában dolgozik, nem ír felül
+    ismeretlen állapotot, és a visszaadott evidence alátámasztja a státuszt.</p>
+    <table><thead><tr><th>Státusz</th><th>Jelentés</th><th>Emberi döntés</th></tr></thead><tbody>
+      <tr><td><code>PASS</code></td><td>A core lokális út valóban futott.</td><td>Elfogadható C0-nak.</td></tr>
+      <tr><td><code>REPLAY</code></td><td>Az opcionális lane ellenőrzött manifestből reprodukálható.</td><td>Csak a bizonyított rész fogadható el.</td></tr>
+      <tr><td><code>PENDING</code></td><td>Külső vagy emberi lépés hiányzik.</td><td>Owner és következő pont szükséges.</td></tr>
+      <tr><td><code>BLOCKED</code></td><td>Core előfeltétel hiányzik.</td><td>Állj meg; ne vidd tovább.</td></tr>
+    </tbody></table>
+
+    <h3 id="lepes-5">5. Böngészőagent az alapút</h3>
+    <p>Kérd meg ugyanazt az agentet, hogy hivatalos útmutató alapján állítsa be és
+    próbálja ki az elérhető böngésző-integrációt. Claude Code Chrome-ot vagy Edge-et,
+    Codex a Browser vagy Chrome plugint használhat. Bejelentkezést, CAPTCHA-t, OAuth-ot
+    és engedélyt mindig te végzel.</p>
+    <pre><code>Set up the supported browser-agent path available here. Ask me to perform every login,
+CAPTCHA, OAuth or permission choice. Open the participant material and report its
+visible title. Mark Connected only after real browser control. After five minutes,
+stop and prepare an honest MANUAL fallback instead of claiming automation.</code></pre>
+    <p>Az ötperces Plan B-ben az ember hajtja végre ugyanazt az utat, az agent pedig
+    segít rögzíteni az URL-t, a látható eredményt és a screenshotot. A jelölés
+    <code>Execution mode: MANUAL</code>; az automatizálási evidence <code>PENDING</code>.</p>
+  </section>
+
+  <section>
+    <h2>C0 készdefiníció és RUG</h2>
+    <ol>
+      <li>Az agent a participant repón futtatta a post-bootstrap doctort.</li>
+      <li>A saját Git-repó baseline ellenőrzései valóban zöldek.</li>
+      <li>A <code>workshop-evidence/C0-setup.md</code> felsorolja a futtatott ellenőrzéseket és kilépési kódokat.</li>
+      <li>Claude Code vagy Codex válaszol a participant repo kontextusában.</li>
+      <li>A browser mód <code>Connected</code> vagy őszintén jelölt <code>Manual</code>.</li>
+      <li>Nincs elhallgatott <code>PENDING</code> vagy <code>BLOCKED</code> alapfeltétel.</li>
+    </ol>
+    <p>Vizsgáld meg az agent állításait az evidence alapján. Eltérésnél add vissza
+    pontos korrekcióval és kérj új bizonyítékot. Ez az első AI-val megerősített emberi
+    tanulási ciklus és az első Repeat-Until-Good kapu.</p>
+    <p><a data-route="/materials/napirend/">Tovább: a workshop menete →</a></p>
+  </section>
+</main>
+</body>
+</html>

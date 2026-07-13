@@ -1,5 +1,9 @@
 # Project constitution — KK-Regisztráció (trainer reference)
 
+> **Agent-run technical contract:** exact commands below are selected and executed by
+> Claude Code or Codex. The human approves behavior, scope and evidence; the participant
+> is never required to reproduce the syntax.
+
 `STATUS: C3-APPROVED-CONTRACT (trainer reference — a résztvevő saját csomagja ezt helyettesíti, ha APPROVED)`
 
 Ez a csomag a workshop KITALÁLT munkadarabjához készült referencia. Minden név,
@@ -42,7 +46,8 @@ szerződés (ID-k, parancsok, kritériumok) angolul szerepel.
   - Format/lint: `npm run lint`
   - Type/build: `npm run typecheck` (release-készültséghez: `npm run build`)
   - Unit/contract/integration: `npm run test`
-  - End-to-end/manual: `npm run dev` + böngészős ellenőrzés a `/regisztracio` oldalon
+  - End-to-end: the agent starts the app and uses the browser agent on `/regisztracio`;
+    manual browser execution is an honestly labeled Plan B, never an automation PASS
   - Security/public-content: invented-only sample data review a diffben
 - Evidence location: a work item (Linear issue) kommentje — parancs, exit code, kimenet-vég.
 

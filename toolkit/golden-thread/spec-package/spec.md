@@ -1,5 +1,9 @@
 # Feature specification — KK-Regisztráció
 
+> **Agent-run technical contract:** exact commands and API probes below are executed by
+> Claude Code or Codex and returned with exit codes/results. The human owns the product
+> decisions, APPROVED/BLOCKED gate and evidence review.
+
 `STATUS: C3-APPROVED-CONTRACT (trainer reference — a résztvevő saját csomagja ezt helyettesíti, ha APPROVED)`
 
 Contract ID/version: KK-REG C3 v1.0
@@ -39,7 +43,7 @@ Use observable language and link detailed scenarios from [given-when-then.md](gi
 
 | ID | Observable behavior | Scenario | Required evidence |
 |---|---|---|---|
-| AC-01 | A valid registration (name + valid email + existing workshop) is created as `active` and appears in the list; invalid input is rejected with HTTP 400 and a visible error. | SC-01A, SC-01B | `npm run test -- domain` + manual UI check |
+| AC-01 | A valid registration (name + valid email + existing workshop) is created as `active` and appears in the list; invalid input is rejected with HTTP 400 and a visible error. | SC-01A, SC-01B | Agent-run domain check plus browser-agent happy/failure paths; manual UI execution is a labeled Plan B only |
 | AC-02 | Cancellation succeeds strictly earlier than 48 hours before the workshop start; at EXACTLY 48 hours before start (exclusive boundary) and inside the window it is rejected with HTTP 409 `cancellation window closed`, and the stored registration stays `active`. | SC-02A, SC-02B | `npm run test -- domain` (exact-boundary case included) |
 | AC-03 | A second ACTIVE registration for the same email + workshop is rejected with HTTP 409 `duplicate-registration`; a cancelled registration does not block re-registration. | SC-03A | `npm run test -- repo-contract` + `npm run test -- domain` |
 
@@ -59,10 +63,11 @@ Use observable language and link detailed scenarios from [given-when-then.md](gi
 
 ## Evidence required for done
 
-- Automated tests and exact commands: `npm run test -- domain`,
+- Automated tests and agent-run commands: `npm run test -- domain`,
   `npm run test -- repo-contract`, teljes kapu: `npm run typecheck && npm run lint && npm run test`.
-- Manual verification: `npm run dev` → `/regisztracio`: sikeres regisztráció,
-  duplikátum-hiba felülete, lemondás.
+- Browser-agent verification: the agent starts the app and proves successful
+  registration, duplicate-error surface and cancellation on `/regisztracio`.
+  Manual execution is an honestly labeled Plan B.
 - Documentation/decision record: this spec package; deviations a work item kommentben.
 - Required independent reviewer roles: friss kontextusú független reviewer (module 4).
 - Evidence location: work item (Linear issue) comment — command, exit code, output tail,

@@ -1,5 +1,9 @@
 # Given–When–Then scenarios — KK-Regisztráció
 
+> **Agent-run technical contract:** the exact checks in this executable specification
+> are run by Claude Code or Codex and returned as evidence. They are not participant
+> command-entry instructions.
+
 `STATUS: C3-APPROVED-CONTRACT (trainer reference — a résztvevő saját csomagja ezt helyettesíti, ha APPROVED)`
 
 **Magyar szándék (KITALÁLT):** a résztvevő névvel és e-mail-címmel regisztrálhat egy
@@ -50,7 +54,7 @@ scenario is deterministic.
 
 ## Test mapping
 
-| Scenario | AC | Test level/file | Exact command | Boundary values | Unchanged state on failure |
+| Scenario | AC | Test level/file | Agent-run check | Boundary values | Unchanged state on failure |
 |---|---|---|---|---|---|
 | SC-01A | AC-01 | unit — `src/lib/registrations/domain.test.ts` | `npm run test -- domain` | trimmed name, lowercased email | n/a |
 | SC-01B | AC-01 | unit — `src/lib/registrations/domain.test.ts` | `npm run test -- domain` | blank name, malformed email | store unchanged |
@@ -60,5 +64,6 @@ scenario is deterministic.
 
 - Required fake/real adapter contract: `MemoryRegistrationRepo` and
   `FileRegistrationRepo` run the SAME shared contract suite (contract equality).
-- Manual observation: `/regisztracio` page shows the created row, the duplicate error
-  message, and the cancel flow (`npm run dev`).
+- Browser-agent observation: the agent starts the app, opens `/regisztracio`, and
+  records the created row, duplicate error and cancel flow. Manual execution is an
+  honestly labeled Plan B, never an automation PASS.

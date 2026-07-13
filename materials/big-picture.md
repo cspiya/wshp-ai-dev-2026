@@ -30,6 +30,37 @@ a modell, provider és coding agent cserélhető végrehajtó. Kiesés, korláto
 vagy egy jobb modell megjelenése nem kényszerítheti ki a teljes fejlesztési működés újratervezését. A váltást
 reprezentatív evalon, változatlan acceptance criteria és evidence-léc mellett validáljuk.
 
+## Az AI nem vendégszereplő, hanem a teljes nap aktív végrehajtója
+
+A minimális bootstrap után a résztvevő nem Git-, npm-, PowerShell-, Linux-, API- vagy
+termékparancsokat tanul meg pontosan begépelni. Claude Code vagy Codex végzi a
+technikai műveleteket; az ember a célt, a korlátot, az üzleti döntést és az elfogadást
+birtokolja. Ugyanaz az agent segít a tananyag értelmezésében, a repo feltárásában, a
+specifikációban, az implementációban, a review-ban, a böngészős rendszerpróbában és a
+nap végi szintézisben.
+
+```text
+emberi szándék vagy döntés
+        ↓
+természetes nyelvű agentfeladat
+        ↓
+agent vizsgál / módosít / futtat / böngészőt vezérel
+        ↓
+evidence + kockázat + nyitott döntés
+        ↓
+emberi kapu → elfogadás vagy Repeat-Until-Good
+```
+
+Ez egyben az **AI-val megerősített emberi tanulási ciklus**:
+`emberi előrejelzés → AI-magyarázat vagy végrehajtás → evidence-vizsgálat → korrekció → emberi összegzés`.
+Nem modelltréning és nem RLHF; a résztvevő munkadarabja és mentális modellje javul.
+
+Egy elsődleges agent elég a teljes kötelező úthoz. A második agent opcionális
+portabilitási vagy eval-gyakorlat. Az ajánlott út Claude Code Claude Opus 4.8 modellel,
+de a Pro-kapacitás nem ígérhető egész napra; az azonnali szolgáltatófüggetlen tartalék
+a Codex, a végső szállítási tartalék pedig a tréner által ellenőrzött replay. Megosztott
+személyes account-jelszó egyik útvonalon sem elfogadható.
+
 ---
 
 ## 1. Honnan indulunk — az alapprobléma
