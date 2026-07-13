@@ -16,7 +16,7 @@ const DEFAULT_FILES = [
   "materials/napirend/index.html",
 ];
 
-const COMMAND = /(?:^|[\s>`])(?:git\s+(?:clone|add|commit|push|switch|checkout|rev-parse)|npm\s+(?:run|ci|install)|node\s+[^\s<]+\.mjs|powershell\b|invoke-restmethod\b|dotnet\s+(?:test|build|run)|new-item\b|set-content\b|remove-item\b|claude\s+--|codex\s+--)/i;
+const COMMAND = /(?:^|[\s>`])(?:git\s+(?:clone|add|commit|push|switch|checkout|rev-parse)|npm\s+(?:run|ci|install)|npx\s+(?:--yes\s+)?[\w@./-]+|curl(?:\.exe)?\s+(?:-[A-Za-z]+|https?:\/\/|["']https?:\/\/|\$[A-Za-z_])|node\s+[^\s<]+\.mjs|powershell\b|invoke-restmethod\b|dotnet\s+(?:test|build|run)|new-item\b|set-content\b|remove-item\b|claude\s+--|codex\s+--)/i;
 const HUMAN_DIRECTIVE = /\b(?:futtasd|futtassátok|másold|másoljátok|gépeld|gépeljétek|írd\s+be|írjátok\s+be|add\s+ki|commitold)\b/i;
 const AGENT_OWNED = /(?:agent-run|agent által|az agent|agentet|agentnek|claude code vagy codex|technical contract|technikai kontraktus|technikai trace|recorded evidence|non-executable|nem résztvevői|nem gépeli be|nem parancslista|replay transcript|sablon)/i;
 
@@ -50,12 +50,33 @@ function bootstrapException(file, fragment) {
 
 export function checkText(file, text) {
   const failures = [];
+  const seen = new Set();
 
-  for (const match of text.matchAll(/<(?:li|p)[^>]*>[\s\S]*?<\/(?:li|p)>/gi)) {
-    const fragment = match[0];
-    if (!COMMAND.test(fragment) || !HUMAN_DIRECTIVE.test(fragment)) continue;
-    if (AGENT_OWNED.test(fragment) || bootstrapException(file, fragment)) continue;
-    failures.push(`${file}:${lineAt(text, match.index)} participant-directed exact command syntax`);
+  function addFailure(index, reason) {
+    const failure = `${file}:${lineAt(text, index)} ${reason}`;
+    if (seen.has(failure)) return;
+    seen.add(failure);
+    failures.push(failure);
+  }
+
+  function checkDirectiveFragment(fragment, index) {
+    if (!COMMAND.test(fragment) || !HUMAN_DIRECTIVE.test(fragment)) return;
+    if (AGENT_OWNED.test(fragment) || bootstrapException(file, fragment)) return;
+    addFailure(index, "participant-directed exact command syntax");
+  }
+
+  if (/\.html?$/i.test(file)) {
+    const teachingTags = ["p", "li", "div", "td", "th", "dd", "dt", "blockquote", "figcaption", "summary", "h1", "h2", "h3", "h4", "h5", "h6"];
+    for (const tag of teachingTags) {
+      const pattern = new RegExp(`<${tag}\\b[^>]*>[\\s\\S]*?<\\/${tag}>`, "gi");
+      for (const match of text.matchAll(pattern)) checkDirectiveFragment(match[0], match.index);
+    }
+  }
+
+  if (/\.md$/i.test(file)) {
+    const prose = text.replace(/```(?:powershell|bash|sh|shell|console)?[\s\S]*?```/gi, (fence) => fence.replace(/[^\r\n]/g, " "));
+    for (const match of prose.matchAll(/[^\r\n]+/g)) checkDirectiveFragment(match[0], match.index);
+    for (const match of prose.matchAll(/[^\s][\s\S]*?(?=\r?\n\s*\r?\n|$)/g)) checkDirectiveFragment(match[0], match.index);
   }
 
   for (const match of text.matchAll(/<pre[^>]*>[\s\S]*?<\/pre>/gi)) {
@@ -63,17 +84,17 @@ export function checkText(file, text) {
     const lead = text.slice(Math.max(0, match.index - 250), match.index);
     const context = text.slice(Math.max(0, match.index - 450), match.index + match[0].length);
     if (HUMAN_DIRECTIVE.test(lead) && !AGENT_OWNED.test(lead) && !bootstrapException(file, lead + match[0])) {
-      failures.push(`${file}:${lineAt(text, match.index)} participant-directed exact command syntax`);
+      addFailure(match.index, "participant-directed exact command syntax");
     }
     if (AGENT_OWNED.test(context)) continue;
-    failures.push(`${file}:${lineAt(text, match.index)} command block is not labeled agent-run or non-executable`);
+    addFailure(match.index, "command block is not labeled agent-run or non-executable");
   }
 
   for (const match of text.matchAll(/```(?:powershell|bash|sh|shell|console)?[\s\S]*?```/gi)) {
     if (!COMMAND.test(match[0])) continue;
     const hasFileContract = /(?:execution ownership|agent-run technical contract)/i.test(text);
     if (!hasFileContract && !/materials[\\/]setup-guide\.md$/i.test(file)) {
-      failures.push(`${file}:${lineAt(text, match.index)} command fence lacks a file-level agent-run contract`);
+      addFailure(match.index, "command fence lacks a file-level agent-run contract");
     }
   }
 
@@ -103,7 +124,7 @@ function parseArgs(argv) {
 function main() {
   const { selfTest, files } = parseArgs(process.argv.slice(2));
   const targets = selfTest
-    ? [path.join(SCRIPT_DIR, "fixtures/no-cli-negative/materials/bad.html")]
+    ? walk(path.join(SCRIPT_DIR, "fixtures/no-cli-negative")).filter((file) => /\.(?:html?|md)$/i.test(file))
     : files.length ? files : defaultTargets(REPO_ROOT);
   const failures = checkFiles(targets);
 

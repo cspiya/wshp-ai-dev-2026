@@ -43,7 +43,7 @@ Use observable language and link detailed scenarios from [given-when-then.md](gi
 
 | ID | Observable behavior | Scenario | Required evidence |
 |---|---|---|---|
-| AC-01 | A valid registration (name + valid email + existing workshop) is created as `active` and appears in the list; invalid input is rejected with HTTP 400 and a visible error. | SC-01A, SC-01B | `npm run test -- domain` + manual UI check |
+| AC-01 | A valid registration (name + valid email + existing workshop) is created as `active` and appears in the list; invalid input is rejected with HTTP 400 and a visible error. | SC-01A, SC-01B | Agent-run domain check plus browser-agent happy/failure paths; manual UI execution is a labeled Plan B only |
 | AC-02 | Cancellation succeeds strictly earlier than 48 hours before the workshop start; at EXACTLY 48 hours before start (exclusive boundary) and inside the window it is rejected with HTTP 409 `cancellation window closed`, and the stored registration stays `active`. | SC-02A, SC-02B | `npm run test -- domain` (exact-boundary case included) |
 | AC-03 | A second ACTIVE registration for the same email + workshop is rejected with HTTP 409 `duplicate-registration`; a cancelled registration does not block re-registration. | SC-03A | `npm run test -- repo-contract` + `npm run test -- domain` |
 

@@ -16,6 +16,9 @@
 
 ## Ordered tasks
 
+The accountable owner column names the human acceptance gate. Claude Code or Codex is
+the technical executor for implementation, checks, API/browser operations and fixes.
+
 | ID | Task/outcome | Exclusive scope | Accountable owner | Depends on/order | AC IDs | Agent-run verification | Evidence location | Status |
 |---|---|---|---|---|---|---|---|---|
 | TASK-01 | Pure domain: `Registration` types, `canCancel` with EXCLUSIVE 48h boundary, `createRegistration` validation + duplicate callback; unit tests incl. the exact-boundary case | `src/lib/registrations/domain.ts`, `domain.test.ts` | résztvevő | — (first) | AC-01, AC-02, AC-03 | `npm run test -- domain` | work item comment | ready |
@@ -43,7 +46,7 @@ Visszakövetési lánc a 3. modul mintája szerint (AC → scenario → task →
 
 | AC ID | Scenario(s) | Owned task(s) | Dependencies/order | Agent-run check | Evidence location | Verdict |
 |---|---|---|---|---|---|---|
-| AC-01 | SC-01A, SC-01B | TASK-01, TASK-04, TASK-05 | TASK-01 → TASK-04 → TASK-05 | `npm run test -- domain` | work item comment | covered |
+| AC-01 | SC-01A, SC-01B | TASK-01, TASK-04, TASK-05 | TASK-01 → TASK-04 → TASK-05 | Agent runs the domain check, HTTP probe and browser-agent happy/failure paths | work item comment | covered |
 | AC-02 | SC-02A, SC-02B | TASK-01, TASK-04 | TASK-01 → TASK-04 | `npm run test -- domain` (exact 48h boundary case) | work item comment | covered |
 | AC-03 | SC-03A | TASK-02, TASK-03, TASK-04 | TASK-02 → TASK-03 → TASK-04 | `npm run test -- repo-contract` | work item comment | covered |
 
@@ -53,7 +56,8 @@ Visszakövetési lánc a 3. modul mintája szerint (AC → scenario → task →
   visszamondja az AC-kat és a scope-ot, mielőtt fájlt módosít.
 - Independent fresh-context reviewer task: module 4 — friss kontextusú reviewer a
   MAKER_SHA ellen (lásd [toolkit/golden-thread/README.md](../README.md)).
-- Accepted-finding bounce-back owner/task: a résztvevő javít, FIX_SHA-t rögzít.
+- Accepted-finding bounce-back: Claude Code or Codex performs the technical fix and
+  records FIX_SHA; the participant verifies the evidence and owns the acceptance gate.
 - Re-verification command and evidence location: `npm run typecheck && npm run lint &&
   npm run test` — work item comment.
 - Closed-spec-gate packet location: this spec-package directory + work item comment.

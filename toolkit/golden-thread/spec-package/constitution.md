@@ -46,7 +46,8 @@ szerződés (ID-k, parancsok, kritériumok) angolul szerepel.
   - Format/lint: `npm run lint`
   - Type/build: `npm run typecheck` (release-készültséghez: `npm run build`)
   - Unit/contract/integration: `npm run test`
-  - End-to-end/manual: `npm run dev` + böngészős ellenőrzés a `/regisztracio` oldalon
+  - End-to-end: the agent starts the app and uses the browser agent on `/regisztracio`;
+    manual browser execution is an honestly labeled Plan B, never an automation PASS
   - Security/public-content: invented-only sample data review a diffben
 - Evidence location: a work item (Linear issue) kommentje — parancs, exit code, kimenet-vég.
 
