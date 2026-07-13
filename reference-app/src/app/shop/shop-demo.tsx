@@ -44,6 +44,7 @@ export function ShopDemo() {
     vatBps: Number(vatPercent) * 100,
   };
   const quote = trpc.pricing.quote.useQuery(pricingInput, { enabled: false, retry: false });
+  const utils = trpc.useUtils();
   const workshops = trpc.workshops.list.useQuery();
   const checkout = trpc.checkout.authorize.useMutation();
   const registration = trpc.registrations.create.useMutation({
@@ -61,23 +62,32 @@ export function ShopDemo() {
     setRegistrationId(null);
   };
 
-  const selectedWorkshop = workshops.data?.find(
-    (workshop) => workshop.id === selectedWorkshopId,
-  );
+  type CatalogWorkshop = NonNullable<typeof workshops.data>[number];
+  // Snapshot at selection time: a background catalog refetch (or a deleted
+  // workshop) must not collapse an in-progress journey back to step 1.
+  const [selectedWorkshop, setSelectedWorkshop] = useState<CatalogWorkshop | null>(null);
 
-  const selectWorkshop = (id: string, listPriceHuf: number) => {
+  const selectWorkshop = (workshop: CatalogWorkshop) => {
     resetDownstream();
+    // A quote made for a previously selected workshop must not survive the
+    // switch — clear it so the rail and the total stay honest.
+    void utils.pricing.quote.reset();
     // Prefill the quote with the selected workshop's price as list price.
-    setListPrice(String(listPriceHuf));
-    setSelectedWorkshopId(id);
+    setListPrice(String(workshop.listPriceHuf));
+    setSelectedWorkshopId(workshop.id);
+    setSelectedWorkshop(workshop);
   };
   const changeWorkshop = () => {
     resetDownstream();
+    void utils.pricing.quote.reset();
     setSelectedWorkshopId("");
+    setSelectedWorkshop(null);
   };
   const restartJourney = () => {
     resetDownstream();
+    void utils.pricing.quote.reset();
     setSelectedWorkshopId("");
+    setSelectedWorkshop(null);
     setAccountAcked(false);
   };
 
@@ -311,7 +321,7 @@ export function ShopDemo() {
                     <button
                       type="button"
                       className="keycap mt-2 min-h-11"
-                      onClick={() => selectWorkshop(workshop.id, workshop.listPriceHuf)}
+                      onClick={() => selectWorkshop(workshop)}
                     >
                       Select &amp; continue
                     </button>
@@ -417,7 +427,7 @@ export function ShopDemo() {
               <span className="mod-tag" id="payment-heading">
                 Step 03 · Fake payment
               </span>
-              <span className="mod-stat text-primary-text">
+              <span className="mod-stat">
                 <span className="dotlamp dotlamp-amber" aria-hidden="true" />
                 Protected
               </span>
@@ -638,13 +648,14 @@ function Field({
   onChange: (value: string) => void;
   hint?: string;
 }) {
+  const fieldId = label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   return (
     <div className="space-y-2">
-      <Label htmlFor={label} className="micro-label">
+      <Label htmlFor={fieldId} className="micro-label">
         {label}
       </Label>
       <Input
-        id={label}
+        id={fieldId}
         type="number"
         min="0"
         value={value}
