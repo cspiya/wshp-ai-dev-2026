@@ -21,19 +21,19 @@ offline: klónozd a repót, majd nyisd meg a `materials/index.html` fájlt.
 
 1. **Előtte:** végezd el a [felkészülési útmutatót](setup-guide.md), majd olvasd el a
    [napirendet](agenda.md) és a [nagy képet](big-picture.md).
-2. **Közben:** nyisd meg az aktuális notebookot a [napi térképből](#napi-terkep), és csak a
+2. **Közben:** nyisd meg az aktuális modult a [napi térképből](#napi-terkep), és csak a
    `participant-repo/` mappában végezz résztvevői feature-munkát.
 3. **Utána:** fejezd be az utolsó hiányzó checkpoint bizonyítékát, majd a
-   [G7 önellenőrzésével](notebooks/07-team-adoption.html) készíts 30/60/90 napos tervet.
+   [8. modul önellenőrzésével](modulok/08-csapatbevezetes/index.html) készíts 30/60/90 napos tervet.
 
 ### Tréner
 
 Ez a nyilvános útvonal nem tartalmaz belső run-of-show vagy hozzáférési adatot.
 
 1. **Előtte:** ellenőrizd a [napirendet](agenda.md), a [setup és Plan B lépéseket](setup-guide.md),
-   valamint a [notebook-szerződést](notebooks/README.md).
+   valamint a [kanonikus anyagstandardot](../toolkit/standards/material-standards.md).
 2. **Közben:** a [napi térképen](#napi-terkep) kövesd az időt, az elkészítendő
-   [artifactot és a látható evidence-et](fogalomtar.md); elakadásnál használd az adott notebook Plan B-jét.
+   [artifactot és a látható evidence-et](fogalomtar.md); elakadásnál használd az adott modul Plan B-jét.
 3. **Utána:** a C0–C7 audit és a [napló](epitesi-naplo/) alapján válaszd szét a humán és az
    agent-loop tanulságait. A belső szállítási forgatókönyv nem része ennek a publikus repónak.
 
@@ -59,7 +59,7 @@ Mindhárom mappa ugyanabban a választott `workshop-lab/` könyvtárban legyen:
 | `participant-repo/` | résztvevő | Itt épül a saját agent-ready repo, a spec, a kód és a verziózott bizonyíték. | Workshop-forrás módosítása, titok vagy személyes adat. |
 | `workshop-evidence/` | résztvevő, lokálisan | Nem publikus képernyőkép és helyi ellenőrzési nyom. | Titok, ügyféladat és automatikusan publikálandó artifact. |
 
-Minden parancs előtt ellenőrizd a munkakönyvtárat. A notebook `cd` lépése mondja meg, ha váltani kell.
+Minden parancs előtt ellenőrizd a munkakönyvtárat. A modul `cd` lépése mondja meg, ha váltani kell.
 
 <a id="napi-terkep"></a>
 ## A nap térképe: idő → checkpoint → bizonyíték
@@ -67,17 +67,17 @@ Minden parancs előtt ellenőrizd a munkakönyvtárat. A notebook `cd` lépése 
 A sorok sorrendje a követendő tananyag-sorrend. A **Checkpoint** oszlop mutatja, meddig jutottál;
 az **Artifact** az elkészített munkadarab, az **Evidence** pedig az ellenőrizhető bizonyíték.
 
-| Idő | Blokk | Checkpoint | Artifact | Látható evidence | Notebook |
+| Idő | Blokk | Checkpoint | Artifact | Látható evidence | Modul |
 |---|---|---|---|---|---|
-| 09:00–09:45 | Bevezető, C0-diagnózis | C0 | saját kiinduló állapot és kockázattérkép | kitöltött diagnózis, kimondott emberi kapuk | [B0 — Bevezető](notebooks/00-bevezeto.html) |
-| 09:45–10:45 | Agent-ready alap és szállítópálya | C1–C2 | repoalkotmány, `AGENTS.md`, standard és első kapuk | futó parancsok, zöld és szándékosan bukó gate | [G1 — Greenfield setup](notebooks/01-greenfield-setup.html) |
-| 11:00–11:45 | Spec-vezérelt SDLC + BA-kapu | C3 | jóváhagyott spec-package | Given–When–Then kritériumok és BA-döntés | [G2 — Spec-driven](notebooks/02-spec-driven.html) |
-| 11:45–12:30 | Orchestrátor + Repeat-Until-Good | C4 | builder/reviewer/fixer futásnyom | deduplikált finding, verifikált fix, re-review | [G3 — RUG](notebooks/03-orchestrator-rug.html) |
-| 13:15–14:00 | Szabályok, skillek, hookok, memória | C5 | megfelelő rétegbe tett szabály és mechanikus guard | pozitív futás + negatív fixture exit code-ja | [G4 — Mechanikus garanciák](notebooks/04-rules-skills-hooks.html) |
-| 14:00–14:45 | Rendszerpróba: QA, preview, adat, E2E | C6 | reprezentatív validation workload | unit/contract/E2E + preview/API/DB bizonyítéklánc | [G5 — QA és E2E](notebooks/05-qa-e2e-token.html) |
-| 15:00–16:15 | Legacy-transzfer | C6 → C7 | karakterizációs háló és kijelölt seam | befagyasztott jelenlegi viselkedés, regressziós teszt | [G6 — Legacy](notebooks/06-legacy-dotnet.html) |
-| 16:15–16:50 | Csapat operating model + modell-/eszközcsere + 30/60/90 bevezetés | C7 | owner-, eval- és 30/60/90 bevezetési terv | kijelölt owner, mérce és reprezentatív modell-/eszközcsere-eval | [G7 — Team adoption](notebooks/07-team-adoption.html) |
-| 16:50–17:00 | Agent-ready repo audit, zárás és Q&A | C0–C7 audit | kitöltött záró önellenőrzés és hiánylista | checkpointonkénti evidence + következő jóváhagyott lépés | [G7 — Záró audit](notebooks/07-team-adoption.html) |
+| 09:00–09:45 | Bevezető, C0-diagnózis | C0 | saját kiinduló állapot és kockázattérkép | kitöltött diagnózis, kimondott emberi kapuk | [1. Szerepek és korlátok](modulok/01-agentikus-fejlesztes/index.html) |
+| 09:45–10:45 | Agent-ready alap és szállítópálya | C1–C2 | repoalkotmány, `AGENTS.md`, standard és első kapuk | futó parancsok, zöld és szándékosan bukó gate | [2. Repo felkészítése](modulok/02-repo-felkeszitese/index.html) |
+| 11:00–11:45 | Spec-vezérelt SDLC + BA-kapu | C3 | jóváhagyott spec-package | Given–When–Then kritériumok és BA-döntés | [3. Specifikáció](modulok/03-specifikacio/index.html) |
+| 11:45–12:30 | Orchestrátor + Repeat-Until-Good | C4 | builder/reviewer/fixer futásnyom | deduplikált finding, verifikált fix, re-review | [4. Független review](modulok/04-fuggetlen-review/index.html) |
+| 13:15–14:00 | Szabályok, skillek, hookok, memória | C5 | megfelelő rétegbe tett szabály és mechanikus guard | pozitív futás + negatív fixture exit code-ja | [5. Szabályok és kapuk](modulok/05-szabalyok-es-kapuk/index.html) |
+| 14:00–14:45 | Rendszerpróba: QA, preview, adat, E2E | C6 | reprezentatív validation workload | unit/contract/E2E + preview/API/DB bizonyítéklánc | [6. Rendszerellenőrzés](modulok/06-rendszerellenorzes/index.html) |
+| 15:00–16:15 | Legacy-transzfer | C6 → C7 | karakterizációs háló és kijelölt seam | befagyasztott jelenlegi viselkedés, regressziós teszt | [7. Legacy rendszer](modulok/07-legacy-rendszer/index.html) |
+| 16:15–16:50 | Csapat operating model + modell-/eszközcsere + 30/60/90 bevezetés | C7 | owner-, eval- és 30/60/90 bevezetési terv | kijelölt owner, mérce és reprezentatív modell-/eszközcsere-eval | [8. Csapatbevezetés](modulok/08-csapatbevezetes/index.html) |
+| 16:50–17:00 | Agent-ready repo audit, zárás és Q&A | C0–C7 audit | kitöltött záró önellenőrzés és hiánylista | checkpointonkénti evidence + következő jóváhagyott lépés | [8. Záró audit](modulok/08-csapatbevezetes/index.html) |
 
 A szünetekkel és tréneri vágási pontokkal együtt a [napirend](agenda.md) az időzítés kanonikus forrása.
 
@@ -105,5 +105,5 @@ A checkpointok részletes definíciója: [Az agent-ready repo](agent-ready-repo.
 - [Fogalomtár](fogalomtar.md) — szakszavak magyar magyarázattal és .NET-párhuzamokkal.
 - [Mérnöki standardok](mernoki-standardok.md) — hogyan kap ugyanazt a lécet a maker és a reviewer.
 - [Pluginek és skillek](plugins-es-skillek.md) — eszközök, döntések és korlátok.
-- [Notebook author/reviewer szerződés](notebooks/README.md) — tananyag-készítési és review-szabályok.
+- [Kanonikus anyagstandard](../toolkit/standards/material-standards.md) — tananyag-készítési és review-szabályok.
 - [Építési napló](epitesi-naplo/) — hogyan épült a workshop ugyanazzal a módszerrel, amelyet tanít.

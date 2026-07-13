@@ -1,37 +1,48 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Felkészülés a workshopra</title><style>main{max-width:62rem;margin:auto;padding:1rem}figure{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}figure svg{display:block;width:44rem;max-width:none;height:auto}.diagram-scroll-hint{display:none;margin:.25rem 0;font-weight:700}table{display:block;max-width:100%;overflow-x:auto}a,li,code{overflow-wrap:anywhere;word-break:break-word}@media(max-width:700px){.diagram-scroll-hint{display:block}}</style></head><body><main>
+<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Felkészülés a workshopra</title><style>main{max-width:62rem;margin:auto;padding:1rem}figure{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}figure svg{display:block;width:44rem;max-width:none;height:auto}.diagram-scroll-hint{display:none;margin:.25rem 0;font-weight:700}table,pre{display:block;max-width:100%;overflow-x:auto}a,li,code{overflow-wrap:anywhere;word-break:break-word}@media(max-width:700px){.diagram-scroll-hint{display:block}}</style></head><body><main>
 <header><p><a data-route="/materials/">Tananyag</a></p><h1>Felkészülés a workshopra</h1><p>Cél: a workshop kezdetére legyen működő fejlesztői környezeted, saját gyakorlórepód és egy egyszer már végigfuttatott ellenőrzési útvonalad. A repóba csak <a data-route="/materials/fogalomtar/#public-safe">nyilvánosan megosztható</a>, kitalált adat kerülhet; minden hálózati függőséghez legyen előre rögzített <a data-route="/materials/fogalomtar/#plan-b">Plan B</a>.</p></header>
 <section><h2>Mi függ mitől?</h2><figure id="fig-setup-flow" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 300" role="img" aria-labelledby="fs-t fs-d"><title id="fs-t">Az előkészület függőségi térképe</title><desc id="fs-d">A hozzáférések és a helyi eszközök párhuzamosan készíthetők elő. Mindkettő szükséges a saját repo klónozásához, majd az első ellenőrzéshez és preview-hoz.</desc><g fill="none" stroke="currentColor" stroke-width="3"><rect x="40" y="35" width="220" height="70" rx="12"/><rect x="40" y="175" width="220" height="70" rx="12"/><rect x="355" y="105" width="220" height="70" rx="12"/><rect x="670" y="105" width="190" height="70" rx="12"/><path d="M260 70L350 130M260 210L350 150M575 140H665"/></g><g text-anchor="middle" font-size="17"><text x="150" y="77">Hozzáférések</text><text x="150" y="217">Helyi eszközök</text><text x="465" y="135">Saját gyakorlórepo</text><text x="465" y="157">klónozva</text><text x="765" y="135">Ellenőrzés</text><text x="765" y="157">és preview</text></g></svg><figcaption><strong>Lényeg:</strong> ne a workshopon derüljön ki, hogy egy fiók, futtatókörnyezet vagy jogosultság hiányzik.</figcaption><table class="static-fallback" id="fig-setup-flow-text"><caption>Szöveges megfelelő</caption><tr><th>Előfeltétel</th><th>Eredmény</th></tr><tr><td>Hozzáférések + helyi eszközök</td><td>Klónozható és futtatható gyakorlórepo.</td></tr><tr><td>Gyakorlórepo</td><td>Lefuttatható ellenőrzés és megnyitható preview.</td></tr></table></figure></section>
-<section><h2>Lépésről lépésre: telepítés, fiókok, összekötés</h2>
+<section><h2>Lépésről lépésre: telepítés → doctor → C0</h2>
 <h3>1. Helyi eszközök egyetlen telepítővel (Windows)</h3>
 <ol>
 <li>Töltsd le a telepítőt: <a href="../../downloads/toolkit/setup/scoop-telepito.cmd" download>scoop-telepito.cmd</a>.</li>
-<li>Indítsd el <strong>dupla kattintással</strong> — <strong>ne</strong> rendszergazdaként. A telepítő a Scoop csomagkezelővel felteszi: <code>git</code>, <code>7zip</code>, <code>gh</code> (GitHub CLI), <code>nodejs-lts</code>, <code>claude-code</code>.</li>
-<li>A végén nyiss <strong>új</strong> terminált, és ellenőrizd: <code>git --version</code>, <code>gh --version</code>, <code>node --version</code>, <code>claude --version</code> — mindegyik fusson le hiba nélkül.</li>
+<li>Indítsd el <strong>dupla kattintással</strong> — <strong>ne</strong> rendszergazdaként. A telepítő felteszi a Git, GitHub CLI, Node.js LTS, Claude Code és Codex parancsokat.</li>
+<li>Ha <code>BLOKKOLT</code> eredményt kapsz, javítsd a megnevezett eszközt és futtasd újra. A végén nyiss <strong>új</strong> terminált.</li>
 </ol>
-<p>Ha nem Windowst használsz, vagy kézzel telepítenél: Git (git-scm.com), Node.js LTS (nodejs.org), GitHub CLI (cli.github.com), Claude Code (a claude.ai/code útmutatója szerint).</p>
-<h3>2. Fiókok a saját e-mail-címeddel — ebben a sorrendben</h3>
-<ol>
-<li><strong>GitHub</strong> — github.com: regisztrálj a saját e-mail-címeddel, és erősítsd meg az e-mailt. Minden további fiók erre épül.</li>
-<li><strong>Vercel</strong> — vercel.com: a <strong>„Continue with GitHub”</strong> gombbal lépj be — így a GitHub–Vercel kapcsolat azonnal létrejön. A Hobby csomag elég.</li>
-<li><strong>Neon</strong> — neon.com: itt is a GitHub-belépést válaszd.</li>
-<li><strong>Linear</strong> — linear.app: regisztrálj, és hozz létre egy saját gyakorló workspace-t.</li>
-<li><strong>v0</strong> — v0.app: a Vercel-fiókoddal lépj be.</li>
-<li><strong>Claude</strong> — claude.ai: aktív Claude Code-hozzáférés kell; ellenőrizd az aktuális csomagfeltételeket.</li>
-</ol>
-<h3>3. A böngésző-bővítmény és az összekötések</h3>
-<ol>
-<li>Telepítsd a <strong>Claude böngésző-bővítményt</strong> Chrome-ba vagy Edge-be (a Chrome Web Store Edge alatt is működik), és jelentkezz be a claude.ai-fiókoddal.</li>
-<li>A szolgáltatások összekötését (Neon–Vercel integráció, GitHub-repo importja a Vercelbe, Linear-workspace bekötése) a workshopon <strong>a bővítményen keresztül Claude kattintja végig veled</strong> — neked csak jóvá kell hagynod a lépéseket. Előre elég annyi, hogy mindenhová be tudj lépni.</li>
-</ol>
-<h3>4. Claude Code és az MCP-kapcsolatok</h3>
-<ol>
-<li>Klónozd a gyakorlórepót egy rövid, szóköz nélküli útvonalra, és a mappájában indítsd el a <code>claude</code> parancsot.</li>
-<li>A repo előre tartalmazza a négy MCP-kapcsolat (Linear, GitHub, Neon, Vercel) beállítását — telepíteni semmit nem kell.</li>
-<li>Írd be: <code>/mcp</code>, és hitelesítsd sorban mind a négy szolgáltatást — mindegyik a böngészőben, OAuth-tal jelentkezik be; kulcsot, tokent sehová nem kell másolnod.</li>
-</ol>
-<p><strong>Kész, ha</strong> mind a négy MCP-kapcsolat zöld, és az első <a data-route="/materials/fogalomtar/#preview">preview</a> is megnyitható. Titok, jelszó vagy token soha nem kerül a repóba.</p>
+<p>Az automatizált telepítő és doctor út Windowsra van próbálva. macOS/Linux alatt használd a szolgáltatók hivatalos telepítőit, majd kézzel futtasd a kért verzió- és projektparancsokat.</p>
+
+<h3>2. A forrásrepo és a doctor</h3>
+<pre><code>git clone https://github.com/cspiya/wshp-ai-dev-2026.git workshop-source
+cd workshop-source
+powershell -NoProfile -ExecutionPolicy Bypass -File toolkit/setup/workshop-doctor.ps1 `
+  -Agent Both -WorkspacePath participant-starter</code></pre>
+<p><code>Both</code> helyett választhatsz <code>Claude</code>, <code>Codex</code> vagy <code>Auto</code> értéket. A doctor nem olvas titkot. A végén egyetlen állapotot ad:</p>
+<table><thead><tr><th>Státusz</th><th>Jelentés</th><th>Következő lépés</th></tr></thead><tbody>
+<tr><td><code>PASS</code></td><td>A kért lokális út készen áll.</td><td>Bootstrap.</td></tr>
+<tr><td><code>REPLAY</code></td><td>A kért opcionális lane-hez ellenőrzött replay manifest és minden felsorolt fájl rendelkezésre áll.</td><td>Használd a validált csomagot.</td></tr>
+<tr><td><code>BLOCKED</code></td><td>Core előfeltétel hiányzik.</td><td>Javítsd a kiírt hibát; ne vidd tovább.</td></tr>
+</tbody></table>
+
+<h3>3. Írható participant workspace és evidence</h3>
+<pre><code>powershell -NoProfile -ExecutionPolicy Bypass -File toolkit/setup/workshop-bootstrap.ps1 `
+  -Destination ..\participant-repo -Agent Both -InstallDependencies</code></pre>
+<p>Az <code>-InstallDependencies</code> a dependency install explicit engedélye. A script kizárólag Gitben követett starterfájlokat másol, nem ír felül ismeretlen, nem üres mappát, nem resetel munkát, és létrehozza a sibling <code>workshop-evidence/C0-setup.md</code> fájlt. Az első futás végén a C0 még <code>PENDING</code>, amíg az agent és a browser mód nincs igazolva.</p>
+
+<h3>4. Legalább egy agent induljon el</h3>
+<ul>
+<li><strong>Claude:</strong> <code>claude --version</code>, <code>claude doctor</code>, majd a participant workspace-ben <code>claude</code>. Az MCP-ket <code>/mcp</code> alatt csak szükség szerint, emberi OAuth-jóváhagyással kapcsold be.</li>
+<li><strong>Codex:</strong> <code>codex --version</code>, <code>codex doctor</code>, <code>codex login</code>, majd a participant workspace-ben <code>codex</code>.</li>
+</ul>
+
+<h3>5. Böngészőagent vagy pontos kézi fallback</h3>
+<ul>
+<li><strong>Claude Code:</strong> a <a href="https://code.claude.com/docs/en/chrome">hivatalos Chrome-integráció</a> Chrome-ot és Edge-et támogat. Indítás: <code>claude --chrome</code>, meglévő sessionben <code>/chrome</code>.</li>
+<li><strong>Codex:</strong> a ChatGPT desktop app Plugins részében a <a href="https://learn.chatgpt.com/docs/browser">Browser</a> (<code>@Browser</code>) külön profilt, a <a href="https://learn.chatgpt.com/docs/chrome-extension#set-up-chrome-from-plugins">Chrome plugin</a> (<code>@Chrome</code>) a meglévő Chrome-profilt használja.</li>
+<li><strong>Ötperces stop-szabály:</strong> ha nem csatlakozik, nyisd meg kézzel az URL-t, hajtsd végre ugyanazt az utat, ments URL-t + screenshotot, és jelöld <code>Execution mode: MANUAL</code>. Az automatizálási bizonyíték <code>PENDING</code>; a kézi út nem replay.</li>
+</ul>
+<p>A Codex Chrome extensionhöz itt nem ígérünk Edge-támogatást. Accountot, OAuth-ot, repoláthatóságot, régiót és más érzékeny döntést mindig ember hagy jóvá.</p>
+<p>Ezután futtasd újra a bootstrapot ugyanazzal a céllal, <code>-AgentConfirmed</code> és a valós <code>-BrowserMode Connected</code> vagy <code>-BrowserMode Manual</code> kapcsolóval. A script a létrehozott participant repón is futtat doctort; csak ekkor lehet <code>C0_STATUS=PASS</code>.</p>
 </section>
-<section><h2>Végrehajtható ellenőrzőlista</h2><ol><li>Jelentkezz be a workshopon használt Git-szolgáltatásba és az AI-fejlesztői eszközödbe.</li><li>Ellenőrizd, hogy a Git és a projekt futtatókörnyezete parancssorból elérhető.</li><li>Klónozd a saját gyakorlórepódat egy rövid, szóköz nélküli útvonalra.</li><li>Futtasd a repo README-jében megadott telepítési és ellenőrzési parancsokat.</li><li>Nyisd meg a helyi alkalmazást, majd az első <a data-route="/materials/fogalomtar/#preview">preview</a> környezetet.</li><li>Jegyezd fel: melyik parancs futott le, melyik URL nyílt meg, és van-e még blokkoló hiba.</li></ol><h3>Kész, ha</h3><p>A repo tiszta állapotú, az alapellenőrzés zöld, a helyi oldal és a preview megnyílik, és nem kell titkot vagy személyes adatot a repóba írnod.</p></section>
+<section><h2>C0 készdefiníció</h2><ol><li>A post-bootstrap doctor <code>PASS</code>, vagy manifesttel validált opcionális replay esetén <code>REPLAY</code>.</li><li>A <code>participant-repo</code> saját Git-repó; typecheck és teszt zöld.</li><li>A sibling <code>workshop-evidence/C0-setup.md</code> létezik.</li><li>Claude vagy Codex válaszol a participant repo kontextusában.</li><li>A browser státusza <code>Connected</code> vagy <code>Manual</code> — nem ismeretlen.</li><li>A záró sor <code>C0_STATUS=PASS</code> (vagy valóban validált <code>REPLAY</code>).</li></ol><p><strong>Következő lépés:</strong> nyisd meg az <a data-route="/materials/">anyagközpontot</a>, majd az <a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. modult</a>. Ha <code>BLOCKED</code> vagy <code>PENDING</code> maradt, menj a tréner setup lane-jébe; ne állítsd késznek.</p></section>
 <section><h2>Az előkészületi sorrend</h2><figure id="fig-preparation-milyen-sorrendben-epulnek-egymasra-az" tabindex="0" aria-label="Magyarázó ábra; keskeny képernyőn vízszintesen görgethető."><p class="diagram-scroll-hint">Az ábra keskeny képernyőn vízszintesen görgethető.</p><svg viewBox="0 0 900 220" role="img" aria-labelledby="fso-t fso-d"><title id="fso-t">Az előkészület öt lépése</title><desc id="fso-d">Belépés, eszközellenőrzés, klónozás, helyi futtatás, majd CI és preview ellenőrzés következik.</desc><g fill="none" stroke="currentColor" stroke-width="3"><path d="M70 110H830"/></g><g text-anchor="middle" font-size="15"><circle cx="90" cy="110" r="46" fill="white" stroke="currentColor"/><text x="90" y="115">Belépés</text><circle cx="270" cy="110" r="46" fill="white" stroke="currentColor"/><text x="270" y="105">Eszközök</text><text x="270" y="125">ellenőrzése</text><circle cx="450" cy="110" r="46" fill="white" stroke="currentColor"/><text x="450" y="115">Klónozás</text><circle cx="630" cy="110" r="46" fill="white" stroke="currentColor"/><text x="630" y="105">Helyi</text><text x="630" y="125">futtatás</text><circle cx="810" cy="110" r="46" fill="white" stroke="currentColor"/><text x="810" y="105">CI és</text><text x="810" y="125">preview</text></g></svg><figcaption><strong>Lényeg:</strong> ha egy lépés hibás, ne ugord át; az utána következő eredmények már nem lennének megbízhatók.</figcaption><ol class="static-fallback" id="fig-preparation-milyen-sorrendben-epulnek-egymasra-az-text"><li>Belépés</li><li>Eszközök ellenőrzése</li><li>Klónozás</li><li>Helyi futtatás</li><li><a data-route="/materials/fogalomtar/#ci">CI</a> és preview</li></ol></figure></section>
 <section><h2>Gyakori hibák és Plan B</h2><p>A <a data-route="/materials/fogalomtar/#plan-b">Plan B</a> a tanulási célt megőrző, előre rögzített tartalékút.</p><dl><dt>Nincs megfelelő jogosultság</dt><dd>Dolgozz a helyi repóban; a hálózati műveletet jelöld függőben lévőnek, és jelezd a trénernek.</dd><dt>Nem indul a projekt</dt><dd>Mentsd a pontos hibaüzenetet, ellenőrizd a verziót, majd használd a tréner által adott előre elkészített helyi csomagot.</dd><dt>Nem érhető el a preview</dt><dd>A helyi futtatás és a teszteredmény megőrzi a tanulási célt; a preview-t később pótolhatod.</dd></dl><p><a data-route="/materials/napirend/">Tovább: a workshop menete →</a></p></section>
 </main></body></html>

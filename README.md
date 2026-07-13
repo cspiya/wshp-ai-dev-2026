@@ -25,7 +25,7 @@ Válassz egy sort, és először csak a **„Most ezt tedd”** lépést nyisd m
 | **Tréner** | a nap menetét, kapuit és tartalék útvonalait készíted elő | Ellenőrizd a napirend ([repo](materials/agenda.md) · [web](https://cspiya.github.io/wshp-ai-dev-2026/materials/napirend/)) első blokkjának célját, idejét és kimenetét. |
 | **Közreműködő vagy agent** | ezen a repón dolgozol vagy review-t végzel | Olvasd el a gyökér működési szerződését ([repo](AGENTS.md)), mielőtt feladatot veszel fel. |
 
-A teljes modulválasztó a [tananyag-notebookok indexében](materials/notebooks/README.md), a
+A teljes modulválasztó a [tananyagközpontban](materials/README.md#napi-terkep), a
 nap központi gondolatmenete pedig a [big picture](materials/big-picture.md) dokumentumban található.
 
 ## Mit építünk, és mivel bizonyítjuk?
@@ -64,7 +64,7 @@ Az egyes checkpointok részletes artifact- és evidence-szerződése az
 
 | Terület | Szerepe a tanulási ívben | Első hasznos belépő |
 |---|---|---|
-| `materials/` | Magyar tananyag, napirend, fogalomtár és önálló HTML-notebookok. | [B0 — Bevezető](materials/notebooks/00-bevezeto.html) |
+| `materials/` | Magyar tananyag, napirend, fogalomtár és önálló HTML-modulok. | [1. modul — Szerepek és korlátok](materials/modulok/01-agentikus-fejlesztes/index.html) |
 | [`toolkit/`](toolkit/) | Hazavihető szabályok, sablonok, review-folyamatok és mechanikus kapuk. | [Toolkit áttekintő](toolkit/README.md) |
 | [`participant-starter/`](participant-starter/) | Szándékosan minimális technikai alap, amely köré a résztvevő felépíti a saját agent-ready működését. | [Starter útmutató](participant-starter/README.md) |
 | [`reference-app/`](reference-app/) | Kitalált referencia-workload és követhető mintaút; a keretrendszer rendszerpróbája, nem a workshop elsődleges terméke. | [Referenciaalkalmazás áttekintő](reference-app/README.md) |
@@ -81,9 +81,8 @@ workshop-lab/
 └── workshop-evidence/  ← helyi, privát futási bizonyítékok
 ```
 
-A pontos tulajdonosi és `cd`-szabályokat a
-[notebookok munkatér-szerződése](materials/notebooks/README.md#közös-munkatér-szerződés)
-rögzíti.
+A pontos tulajdonosi és `cd`-szabályokat a [C0 setup guide](materials/setup-guide.md) rögzíti;
+a bootstrap ugyanezt a három testvérmappát hozza létre.
 
 ## Gyors tájékozódás
 
@@ -91,7 +90,7 @@ rögzíti.
 - A workshop teljes logikája: [big picture](materials/big-picture.md)
 - Állomás → eredmény → bizonyíték térkép: [agent-ready repo](materials/agent-ready-repo.md)
 - Kifejezések és .NET-párhuzamok: [fogalomtár](materials/fogalomtar.md)
-- Modulok sorrendben: [tananyag-notebookok](materials/notebooks/README.md)
+- Modulok sorrendben: [tananyagközpont](materials/README.md#napi-terkep)
 - Hogyan készült az anyag: [építési napló — 1. nap](materials/epitesi-naplo/day-1.md)
 
 ## Közreműködőknek
