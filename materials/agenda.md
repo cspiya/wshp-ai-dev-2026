@@ -6,6 +6,13 @@
 > A modell és a coding tool cserélhető végrehajtó: a minőségi lécet a repo, a gate-ek és az evidence tartja
 > stabilan szolgáltatáskiesés, költségváltozás vagy egy jobb modellre váltás közben is.
 
+
+> **Ez a fájl a nap kanonikus idő-forrása.** A résztvevői napirend-oldal ebből származik.
+> A nap 405 aktív perc + 75 perc szünet; a blokkok **47 perc nevesített vágható sávot**
+> tartalmaznak (M2 második szabálykör 10p · M4 második RUG-kör 8p · M5 második hook-kör 7p ·
+> M7 Azure DevOps kiegészítés 15p · M8 eval-mélyítés 7p). Csúszásnál ezek esnek ki —
+> a checkpoint és a készítő-blokk (C4) soha nem vágható.
+
 | Idő | Blokk | Vidd haza |
 |---|---|---|
 | 09:00–09:45 | **Bevezető** — az agentikus fejlesztés alapfogalmai, eszközök és költségek, hogyan működik a Claude Code, setup-ellenőrzés | **Az AI-t gyors junior kollégaként kell vezetni, nem varázslatként kezelni.** |
