@@ -90,5 +90,7 @@ Neon / Vercel: copy `.mcp.json.example` to `.mcp.json`.
 - `checkout/` isolates the changing payment vendor behind `PaymentPort`.
 - `registrations/` has in-memory and Drizzle adapters plus a deterministic,
   injected clock for the 48-hour cancellation rule.
-- Neon Auth is not claimed complete: provisioning, package installation, and
-  environment variables are external blockers listed in `SETUP-STATUS.md`.
+- Neon Auth is not claimed complete: the package, route, session context, protected
+  write procedures, and UI are present, but provisioning/environment correctness and
+  a post-merge authenticated Preview journey still require live proof. The exact
+  checklist is in `SETUP-STATUS.md`.
