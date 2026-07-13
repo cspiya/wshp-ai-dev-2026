@@ -9,6 +9,10 @@ import {
   createCheckoutRouter,
   createFakePaymentAdapter,
 } from "@/modules/checkout/checkout.contract";
+import {
+  createInMemoryOrderRepo,
+  createOrdersRouter,
+} from "@/modules/orders/orders.contract";
 import { createPricingRouter } from "@/modules/pricing/pricing.contract";
 import {
   createDrizzleRegistrationRepo,
@@ -96,6 +100,16 @@ export const appRouter = router({
   workshops: createWorkshopsRouter(workshopRepo),
   pricing: createPricingRouter(),
   checkout: createCheckoutRouter(createFakePaymentAdapter()),
+  /**
+   * Orders (webshop journey, WEN-324) have ONLY the in-memory adapter for
+   * now: the order aggregate (buyer union + items array) needs a
+   * jsonb-backed table and migration, deferred as a documented follow-up
+   * (docs/build-journal/2026-07-13-wen-324-webshop.md). Orders therefore
+   * live in the server process and vanish on restart in EVERY environment —
+   * acceptable for the teaching journey, unacceptable for production, and
+   * said out loud here so nobody mistakes it for done.
+   */
+  orders: createOrdersRouter(createInMemoryOrderRepo()),
   registrations: createRegistrationsRouter(
     createRegistrationRepo(),
     workshopSchedule,

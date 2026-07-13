@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-import { ShopDemo } from "./shop-demo";
+import { ShopJourney } from "@/modules/orders/orders.contract";
 
-export const metadata: Metadata = { title: "Shop journey — Reference Lab" };
+export const metadata: Metadata = { title: "Shop — Reference Lab" };
 
 export default function ShopPage() {
-  return <ShopDemo />;
+  return <ShopJourney />;
 }
