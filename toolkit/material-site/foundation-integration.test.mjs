@@ -28,7 +28,7 @@ test('fully populated source tree still validates the foundation fixture disposi
   const site = path.join(temp, 'site');
   try {
     const build = run(['toolkit/material-site/build-site.mjs', '--clean', '--out', site, '--phase', 'foundation']);
-    assert.match(build, /32 routes \(2 real, 30 fixture substitutions\)/);
+    assert.match(build, /33 routes \(2 real, 31 fixture substitutions\)/);
 
     run(['toolkit/material-site/check-manifest.mjs', '--source', '.', '--site', site, '--phase', 'foundation']);
     run(['toolkit/material-site/check-links.mjs', '--source', '.', '--site', site, '--file-protocol', '--phase', 'foundation']);

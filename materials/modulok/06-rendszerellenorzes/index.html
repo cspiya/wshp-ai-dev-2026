@@ -19,8 +19,8 @@
   </header>
 
   <section class="grid">
-    <article class="card"><h2>Előfeltétel</h2><p>A 3. modul elfogadott specifikációja, a 4. modul ellenőrzött review-eredménye és az 5. modulból hozott automatikus ellenőrzés. Ezekből válassz <a data-route="/materials/fogalomtar/#reference-task">referenciafeladatot</a>. A futás előtt nyisd meg a <a data-route="/reference-app/">referenciaalkalmazás áttekintését</a>, és keresd meg a saját repóban a tényleges parancsokat.</p></article>
-    <article class="card"><h2>Kimenet</h2><p>Egy <code>workshop-evidence/06-rendszerellenorzes/</code> mappa, amelyben egymáshoz illő forrásverzió, <a data-route="/materials/fogalomtar/#preview">preview környezet</a>, aktív adapter, <a data-route="/materials/fogalomtar/#unit-test">unit teszt</a>, <a data-route="/materials/fogalomtar/#contract-test">contract test</a>, <a data-route="/materials/fogalomtar/#e2e">E2E teszt</a>, hibás út, adatellenőrzés és következtetés található.</p></article>
+    <article class="card"><h2>Előfeltétel</h2><p>A saját workspace-edben él a nap munkadarabja: a 3. modul C4 készítő lépésében implementált és a 4. modul review-jában ellenőrzött <strong>KK-Regisztráció</strong> szelet. A vizsgált verzió a review utáni <code>FIX_SHA</code> (ha javítás nem kellett, a <code>MAKER_SHA</code>), és a kapuk zöldek: <code>npm run typecheck &amp;&amp; npm run lint &amp;&amp; npm run test</code>. Ha a saját szeleted nem fut, a tréner <code>known-good</code> snapshotjával zárkózz fel (lásd Plan B).</p></article>
+    <article class="card"><h2>Kimenet</h2><p>Egy <code>workshop-evidence/C6-rendszerellenorzes/</code> mappa, rétegenként egy-egy bizonyítékfájllal: <code>00-eredet-es-verzio.txt</code>, <code>01-unit.txt</code> (<a data-route="/materials/fogalomtar/#unit-test">unit teszt</a>), <code>02-contract.txt</code> (<a data-route="/materials/fogalomtar/#contract-test">contract test</a>), <code>03-api.txt</code>, <code>04-ui.png</code>, <code>05-data.txt</code> és <code>06-kovetkeztetes.md</code> — összeillő forrásverzióval, környezettel és aktív adapterrel.</p></article>
   </section>
   <p class="takeaway">Az <a data-route="/materials/fogalomtar/#provenance">eredet és verzió</a> köti össze a futásokat; a döntéshez szükséges <a data-route="/materials/fogalomtar/#context">kontextus</a> férjen bele a tudatosan beosztott <a data-route="/materials/fogalomtar/#context-budget">kontextuskeretbe</a>.</p>
 
@@ -49,12 +49,12 @@
   <section>
     <h2>Tanulási sorrend</h2>
     <ol class="sequence">
-      <li><span class="time">0–5 perc</span> Válaszd ki a kitalált felhasználói utat, és rögzítsd az ellenőrzött commitot, buildet, környezetet és aktív adaptert.</li>
-      <li><span class="time">5–12 perc</span> Rendeld a fő kockázatokat a megfelelő tesztréteghez. Egy kockázatot ne fedj le három drága teszttel csak megszokásból.</li>
-      <li><span class="time">12–20 perc</span> Futtasd a unit és contract ellenőrzéseket; mentsd a pontos parancsot, kilépési kódot és eredményt.</li>
-      <li><span class="time">20–30 perc</span> Járd be a sikeres utat a böngészőben, majd kösd össze az API-kéréssel és az aktív adapterben látható eredménnyel. Memóriabeli adapterrel ne állíts adatbázis-futást.</li>
-      <li><span class="time">30–36 perc</span> Járj be egy dokumentált, elvárt hibás utat, és ellenőrizd, hogy nem jött létre hibás adat.</li>
-      <li><span class="time">36–41 perc</span> Lokalizáld az esetleges eltérést a legszűkebb rétegre; ne öntsd a teljes naplót az AI kontextusába.</li>
+      <li><span class="time">0–5 perc</span> Rögzítsd az eredetet: melyik commit fut (<code>FIX_SHA</code> vagy <code>MAKER_SHA</code>), milyen környezetben, és hogy az aktív adapter a fájl-alapú tár.</li>
+      <li><span class="time">5–12 perc</span> Rendeld a fő kockázatokat a megfelelő tesztréteghez: üzleti szabály → unit; adapter-szerződés → contract; látható út → API és felület; tartósság → adat. Egy kockázatot ne fedj le három drága teszttel csak megszokásból.</li>
+      <li><span class="time">12–20 perc</span> Futtasd a unit és contract réteget; mentsd a pontos parancsot, kilépési kódot és eredményt.</li>
+      <li><span class="time">20–30 perc</span> Bizonyítsd az API-réteget futó alkalmazás mellett, majd a felületi sikeres utat — a rétegeket ugyanaz az egyedi, kitalált e-mail-cím köti össze.</li>
+      <li><span class="time">30–36 perc</span> Járd be az elvárt hibás utat (duplikált e-mail → elutasítás), és ellenőrizd, hogy nem jött létre hibás adat.</li>
+      <li><span class="time">36–41 perc</span> Ellenőrizd az adatréteget a művelet előtti és utáni állapottal. Eltérésnél a legszűkebb rétegre lokalizálj; ne öntsd a teljes naplót az AI kontextusába.</li>
       <li><span class="time">41–45 perc</span> Zárd le az eredménymappát egy ellenőrizhető következtetéssel, és add át a fennmaradó kockázatot a következő modulnak.</li>
     </ol>
   </section>
@@ -126,34 +126,48 @@
 
   <section class="card">
     <h2>Kitöltött minta: hogyan áll össze a hét fájl?</h2>
-    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden fájl első négy sora ugyanaz a közös fejléc: <code>STATUS=REPLAY</code>, <code>SOURCE_SHA=7f3a2c1</code>, <code>ENVIRONMENT=replay-minta-2026-07-12</code>, <code>ADAPTER=drizzle-neon</code>. Minden sor ugyanahhoz a <code>WSHOP-CSIGA-20260712T120000Z</code> azonosítóhoz tartozik.</p>
+    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden szöveges fájl első négy sora ugyanaz a közös fejléc: <code>STATUS=REPLAY</code>, <code>SOURCE_SHA=7f3a2c1</code>, <code>ENVIRONMENT=replay-minta-2026-07-13</code>, <code>ADAPTER=file-store</code>. Minden sor ugyanahhoz a kitalált <code>proba-minta-01@example.invalid</code> jelentkezőhöz tartozik.</p>
     <table><thead><tr><th>Fájl</th><th>A kitalált minta lényegi tartalma</th></tr></thead><tbody>
       <tr><td><code>00-eredet-es-verzio.txt</code></td><td>A közös fejléc, a buildazonosító és az UTC-időpont; ez az alaprekord.</td></tr>
-      <tr><td><code>01-unit-test.txt</code></td><td>Közös fejléc; <code>npm test -- pricing</code>; kilépési kód 0; az érintett árszabály PASS.</td></tr>
-      <tr><td><code>02-contract-test.txt</code></td><td>Közös fejléc; <code>npm test -- repository-contract</code>; kilépési kód 0.</td></tr>
-      <tr><td><code>03-e2e-sikeres-ut.txt</code></td><td>Közös fejléc; a böngésző visszaigazolja az azonosítót; API 201; azonos korrelációs azonosító.</td></tr>
-      <tr><td><code>04-adatellenorzes.txt</code></td><td>Közös fejléc; célzott, csak olvasó lekérdezés: pontosan 1 rekord ugyanazzal az azonosítóval.</td></tr>
-      <tr><td><code>05-e2e-hibas-ut.txt</code></td><td>Közös fejléc; hiányzó kötelező mező; API 400; célzott lekérdezés: 0 új rekord.</td></tr>
-      <tr><td><code>06-kovetkeztetes.md</code></td><td>Közös fejléc; a rögzített DB-adapteren mindkét út összefüggő; REPLAY; élő futás nincs ellenőrizve.</td></tr>
+      <tr><td><code>01-unit.txt</code></td><td>Közös fejléc; <code>npm run test</code>; kilépési kód 0; kiemelve a 48 órás pontos határeset (SC-02B) PASS eredménye.</td></tr>
+      <tr><td><code>02-contract.txt</code></td><td>Közös fejléc; <code>npm run test -- repo-contract</code>; kilépési kód 0; ugyanaz a szerződés memória- és fájl-adapteren zöld.</td></tr>
+      <tr><td><code>03-api.txt</code></td><td>Közös fejléc; POST → 201 + a lista GET-je a jelentkezővel; második POST ugyanazzal az e-maillel → 409 <code>duplicate-registration</code>.</td></tr>
+      <tr><td><code>04-ui.png</code></td><td>A <code>/regisztracio</code> oldal: az új jelentkezés a listában, a duplikált kísérlet látható hibaüzenettel; a végrehajtási mód a következtetésben jelölt.</td></tr>
+      <tr><td><code>05-data.txt</code></td><td>Közös fejléc; a <code>data/registrations.json</code> előtte/utána: pontosan 1 új <code>active</code> rekord a mintacímmel.</td></tr>
+      <tr><td><code>06-kovetkeztetes.md</code></td><td>Közös fejléc; a fájl-alapú lokális táron a sikeres és a hibás út is összefüggő; REPLAY; élő futás nincs ellenőrizve.</td></tr>
     </tbody></table>
     <p class="takeaway"><strong>Röviden:</strong> az azonosító, forrásverzió, környezet és adapter minden fájlban egyezik; a REPLAY megjelölés megakadályozza, hogy a mintát saját élő futásként értelmezd.</p>
   </section>
 
   <section class="exercise">
-    <h2>Gyakorlat: készíts ellenőrizhető rendszereredményt</h2>
-    <p><strong>Kitalált eset:</strong> egy résztvevő az „Agentikus fejlesztés alapjai” nevű, kitalált workshopra jelentkezik az egyedi <code>WSHOP-&lt;csapat&gt;-&lt;időbélyeg&gt;</code> azonosítóval. A konkrét mezőneveket és parancsokat a saját repód dokumentált felületéhez igazítsd; ne találj ki nem létező végpontot vagy futtatási eredményt.</p>
+    <h2>Gyakorlat: rétegzett bizonyítás a saját szeleteden</h2>
+    <p><strong>Miért rétegenként?</strong> Minden réteg más kockázatot fed le: a zöld unit teszt semmit sem mond a hálózati formátumról, a zöld API-válasz semmit a tartós tárolásról. Ezért rétegenként egy-egy bizonyítékfájlt készítesz a <code>workshop-evidence/C6-rendszerellenorzes/</code> mappába — mindegyik olyan lépésről, amely a workspace-edben ezen a ponton már valóban létezik.</p>
+    <p><strong>Kitalált eset:</strong> egy jelentkező regisztrál az „AI-alapú fejlesztés — alapozó műhely” kitalált workshopra (<code>ws-2026-08-alap</code>). A korrelációs azonosító egy egyedi, kitalált e-mail-cím, például <code>proba-&lt;csapat&gt;-&lt;idobelyeg&gt;@example.invalid</code> — ez köti össze az API-t, a felületet és az adattárat. Éles vagy személyes adatot soha ne használj.</p>
     <ol>
-      <li>Hozd létre a mappát: <code>workshop-evidence/06-rendszerellenorzes/</code>.</li>
-      <li>A <code>00-eredet-es-verzio.txt</code> fájlba írd be a <code>STATUS</code>, <code>SOURCE_SHA</code>, <code>ENVIRONMENT</code> és <code>ADAPTER</code> mezőt, továbbá a buildazonosítót és az ellenőrzés UTC-időpontját. Ugyanezt a négymezős fejlécet másold minden további eredményfájl elejére. Ha a futó verzió vagy adapter nem azonosítható, állj meg.</li>
-      <li>Keresd meg a repóban a dokumentált unit teszt parancsát. Futtasd változtatás nélkül; a parancsot, kilépési kódot és releváns eredményt mentsd a <code>01-unit-test.txt</code> fájlba.</li>
-      <li>Futtasd a dokumentált contract testet azzal az adapterrel, amelyet a rendszerút használ. Mentsd a parancsot, adaptert, kilépési kódot és eredményt a <code>02-contract-test.txt</code> fájlba.</li>
-      <li>Nyisd meg a tényleges alkalmazást. Vidd végig a sikeres utat az egyedi, kitalált azonosítóval. A <code>03-e2e-sikeres-ut.txt</code> fájlban rögzítsd a kezdőoldalt vagy helyi útvonalat, a műveletet, a várt és kapott felületi eredményt, az API-státuszt és a kérés korrelációs azonosítóját. Titkot, munkamenet-sütit és személyes adatot ne másolj be.</li>
-      <li>A repository vagy a projekt dokumentált, csak olvasó ellenőrzési módjával keresd meg ugyanezt az azonosítót. A célzott eredményt mentsd a <code>04-adatellenorzes.txt</code> fájlba. A teljes táblát ne exportáld. Ha az aktív adapter memóriabeli, írd le: <code>DB=BLOCKED – a helyi E2E csak memóriabeli tárolást ellenőrzött</code>; adatbázisos állításhoz kérj SHA-hoz rögzített REPLAY csomagot vagy futtass DB-adapterrel.</li>
-      <li>Futtass egy dokumentált, elvárt hibás utat, például hiányzó kötelező mezőt vagy tiltott duplikációt. A <code>05-e2e-hibas-ut.txt</code> fájlban rögzítsd a látható hibaüzenetet, API-státuszt és azt a célzott adatellenőrzést, amely megmutatja, hogy hibás rekord nem jött létre.</li>
-      <li>A <code>06-kovetkeztetes.md</code> fájlban válaszolj: mit támasztanak alá az eredmények; mi maradt ellenőrizetlen; egyezik-e minden eredet- és verzióadat és az adapter; hol lokalizálható az esetleges eltérés; mi a következő döntés.</li>
+      <li>Hozd létre a mappát: <code>workshop-evidence/C6-rendszerellenorzes/</code>. A <code>00-eredet-es-verzio.txt</code> fájlba írd be a négymezős fejlécet — <code>STATUS=LOCAL</code>, <code>SOURCE_SHA</code> (a 4. modul <code>FIX_SHA</code>-ja; ha javítás nem kellett, a <code>MAKER_SHA</code>), <code>ENVIRONMENT</code>, <code>ADAPTER=file-store</code> —, továbbá a buildazonosítót és az UTC-időpontot. Ugyanezt a fejlécet másold minden további szöveges eredményfájl elejére. Ha a futó verzió vagy adapter nem azonosítható, állj meg.</li>
+      <li><strong>Unit réteg → <code>01-unit.txt</code>.</strong> Futtasd: <code>npm run test</code>. Mentsd a parancsot, kilépési kódot és eredményt; emeld ki a 48 órás lemondási szabály pontos határeset-tesztjét (AC-02 / SC-02B: pontosan 48 órával a kezdés előtt már nem lemondható) — a 4. modul javítása után ennek zölden kell futnia.</li>
+      <li><strong>Contract réteg → <code>02-contract.txt</code>.</strong> Futtasd a közös szerződéstesztet: <code>npm run test -- repo-contract</code>. Ez UGYANAZT az elvárás-sort futtatja a memória- és a fájl-adapteren. Mondd ki a fájlban: a memóriabeli adapter kontraktus-egyenlősége bizonyított, de a rendszerpróbában az aktív adatforrás a FÁJL-alapú tár.</li>
+      <li><strong>API réteg → <code>03-api.txt</code>.</strong> Először mentsd el a kiinduló adatállapotot (ez lesz a <code>05-data.txt</code> „előtte” fele): <code>Get-Content data\registrations.json</code>. Majd futó <code>npm run dev</code> mellett, PowerShell-ből:
+<pre><code>$base = "http://localhost:3000"
+$body = @{
+  workshopId = "ws-2026-08-alap"
+  name       = "Proba Petra"
+  email      = "proba-csapat01-20260714@example.invalid"
+} | ConvertTo-Json
+# happy path: create (expected 201), then list
+Invoke-RestMethod -Method Post -Uri "$base/api/registrations" -ContentType "application/json" -Body $body
+Invoke-RestMethod -Uri "$base/api/registrations"
+# expected error path: the SAME email again -> 409 duplicate-registration
+try { Invoke-RestMethod -Method Post -Uri "$base/api/registrations" -ContentType "application/json" -Body $body }
+catch { $_.Exception.Response.StatusCode.value__ }</code></pre>
+      A parancsokat ÉS a válaszokat mentsd a <code>03-api.txt</code> fájlba — a 409-es hibaút ugyanolyan értékű bizonyíték, mint a 201-es sikeres út.</li>
+      <li><strong>Felületi réteg → <code>04-ui.png</code>.</strong> Nyisd meg a <code>/regisztracio</code> oldalt. Sikeres út: jelentkezés egy MÁSIK egyedi, kitalált e-mail-címmel — az új jelentkezés megjelenik a listában. Látható hibaút: ugyanazzal a címmel újra — a felületen hibaüzenet jelenik meg. Képernyőkép → <code>04-ui.png</code>. <strong>„Browser Boss Fight”:</strong> ha az agent vezérli a böngészőt (Claude <code>--chrome</code> / Codex <code>@Browser</code>), és ő hajtja végre meg dokumentálja a két utat, az extra pecsétet ér; kézi végrehajtásnál a jelölés <code>Execution mode: MANUAL</code> (ez nem replay — te futtattad, csak nem az agent).</li>
+      <li><strong>Adat réteg → <code>05-data.txt</code>.</strong> Zárd a kört: <code>Get-Content data\registrations.json</code> újra — az „utána” állapot. Az előtte/utána különbség pontosan a te új rekordjaid legyenek. Őszinte megfogalmazás a fájlban: ez az aktív, perzisztens LOKÁLIS adatforrás — egy fájl a workspace-edben, nem külső adatbázis; a különbséget nem mossuk el.</li>
+      <li>A <code>06-kovetkeztetes.md</code> fájlban válaszolj: mit támasztanak alá a rétegek; mi maradt ellenőrizetlen; egyezik-e minden fejléc; mi volt a <code>04-ui.png</code> végrehajtási módja (AGENT vagy MANUAL); hol lokalizálható az esetleges eltérés; mi a következő döntés.</li>
       <li>Nyisd meg az <a data-route="/materials/modszertan/#fig-evidence-chain">ellenőrzési eredmények láncát</a>, és ellenőrizd: állítás → futtatható ellenőrzés → megfigyelt eredmény → döntés. A lánc minden elemére mutass rá a saját mappádban.</li>
     </ol>
-    <p class="takeaway"><strong>Kész, ha:</strong> a hét fájl megvan; a forrásverzió, környezet és aktív adapter minden eredménynél egyezik; a sikeres és hibás út böngésző-, API- és az aktív adattároló szintjén ellenőrizhető; memóriabeli E2E mellett az adatbázis-állítás BLOCKED vagy SHA-hoz rögzített REPLAY; a következtetés különválasztja az ellenőrzött és ellenőrizetlen állításokat.</p>
+    <p><strong>Stretch (nevesített, vágható):</strong> az élő, adatbázisos út bemutatása a <a data-route="/reference-app/">referenciaalkalmazáson</a> — a tréner demója, preview környezettel és Neon adatbázissal. A saját szeleted fájl-alapú tára ugyanazt a szerződést teljesíti, mint a referencia-app adatbázis-adaptere; ott láthatod, hogyan lesz ugyanabból a portból külső adatbázis. A teljes, valódi alkalmazás felépítését külön dokumentáltuk: <a data-route="/materials/epitesi-naplo/">építési napló</a>.</p>
+    <p class="takeaway"><strong>Kész, ha:</strong> a hét fájl megvan; a négymezős fejléc minden szöveges fájlban azonos; a unit rétegben a 48 órás pontos határeset zöld; a contract réteg mindkét adapteren fut, és kimondtad, hogy az aktív forrás a fájl-tár; az API rétegben a 201-es sikeres és a 409-es hibaút is rögzített; a felületen a sikeres és a hibás út is látható, a végrehajtási mód jelölt; az adatrétegben az előtte/utána különbség pontosan a te rekordjaid; a következtetés különválasztja az ellenőrzött és az ellenőrizetlen állításokat.</p>
   </section>
 
   <section class="grid">
@@ -167,13 +181,13 @@
       </ul>
     </article>
     <article class="card ok">
-      <h2>Plan B: jelölt REPLAY</h2>
-      <p>Ha a helyi rendszer vagy a preview környezet nem fut, használd a tréner által átadott, commitazonosítóhoz és adapterhez rögzített kitalált eredménycsomagot. A saját mappádban minden átvett fájl közös fejlécében szerepeljen <code>STATUS=REPLAY</code> és ugyanaz a SHA, környezet, adapter; ellenőrizd az összefüggéseket, és ne állítsd, hogy te futtattad. Élő URL-t vagy PASS eredményt soha ne találj ki.</p>
+      <h2>Plan B: snapshot-catch-up vagy jelölt REPLAY</h2>
+      <p><strong>Ha a saját szeleted nem fut:</strong> zárkózz fel a tréner <code>known-good</code> snapshotjából scratch branchen (másolás a <code>toolkit/golden-thread/README.md</code> szerint), és a fejlécben őszintén a snapshot-állapot SHA-ja szerepeljen — a futásokat így is te végzed, ez nem replay. <strong>Ha semmi sem fut:</strong> használd a tréner commitazonosítóhoz és adapterhez rögzített, kitalált eredménycsomagját; minden átvett fájl fejlécében <code>STATUS=REPLAY</code> és ugyanaz a SHA, környezet, adapter — ellenőrizd az összefüggéseket, és ne állítsd, hogy te futtattad. Élő URL-t vagy PASS eredményt soha ne találj ki.</p>
     </article>
   </section>
 
   <section class="grid">
-    <article class="card"><h2>Minőségi önellenőrzés</h2><ul class="checklist"><li>Az egyedi azonosító mindhárom rétegben követhető.</li><li>A nyers eredmény mellett szerepel a parancs és a kilépési kód.</li><li>Az aktív adapter minden fájlban azonos.</li><li>A hibás út a várt okból hibázik.</li><li>A következtetés nem állít többet a megfigyelt eredménynél.</li><li>Csak a döntéshez szükséges kivonat kerül az AI kontextusába.</li></ul></article>
+    <article class="card"><h2>Minőségi önellenőrzés</h2><ul class="checklist"><li>Az egyedi kitalált e-mail-cím az API-válaszban, a felületen és a <code>data/registrations.json</code> fájlban is követhető.</li><li>A nyers eredmény mellett szerepel a parancs és a kilépési kód.</li><li>Az aktív adapter minden fájlban azonos: a fájl-alapú tár.</li><li>A hibás út a várt okból hibázik: 409 <code>duplicate-registration</code>.</li><li>A <code>04-ui.png</code> végrehajtási módja jelölt: AGENT vagy MANUAL.</li><li>A következtetés nem állít többet a megfigyelt eredménynél.</li><li>Csak a döntéshez szükséges kivonat kerül az AI kontextusába.</li></ul></article>
     <article class="card"><h2>Segédletek és átadás</h2><p>A futtatási mód egységesítéséhez használd az <a data-route="/toolkit/utmutatok/automatizalt-kapuk/">automatizált kapuk</a>, az eredmények visszakereséséhez a <a data-route="/toolkit/utmutatok/projektmemoria/">projektmemória</a> útmutatóját. A fennmaradó rendszerkockázatot és a legszűkebb eltérést add át a <a data-route="/materials/modulok/07-legacy-rendszer/">7. modulnak</a>; az elfogadási döntés a 8. modulba kerül.</p></article>
   </section>
 

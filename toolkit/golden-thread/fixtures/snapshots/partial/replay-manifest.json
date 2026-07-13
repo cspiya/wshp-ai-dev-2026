@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "kk-regisztracio-partial",
+  "description": "Compiling KK-Regisztracio skeleton (invented workload): domain, repo port, memory adapter and domain tests are complete and GREEN; file adapter, API routes and page are unimplemented on purpose. Slow-path catch-up start point. Copy src/ and data/ onto a bootstrapped participant workspace root; append .gitignore-additions.txt to .gitignore.",
+  "files": [
+    "src/lib/registrations/domain.ts",
+    "src/lib/registrations/repo.ts",
+    "src/lib/registrations/file-repo.ts",
+    "src/lib/registrations/memory-repo.ts",
+    "src/lib/registrations/domain.test.ts",
+    "src/app/api/registrations/route.ts",
+    "src/app/api/registrations/[id]/cancel/route.ts",
+    "src/app/regisztracio/page.tsx",
+    "data/registrations.seed.json",
+    ".gitignore-additions.txt"
+  ]
+}

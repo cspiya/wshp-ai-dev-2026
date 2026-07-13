@@ -32,7 +32,7 @@
       "figureSelector": "#fig-agenda-mikor-melyik-modul-fut-es",
       "svgSelector": "#fig-agenda-mikor-melyik-modul-fut-es svg",
       "textFallbackSelector": "#fig-agenda-mikor-melyik-modul-fut-es-text",
-      "inlineSvgHash": "b6f6dcd31ba6724e091a38e8018863a4d66ca483cff21082a94a193191920edd"
+      "inlineSvgHash": "9cc173c914f51faf7bfeab316ba6083f5c5ea2e0c1fb51c5687d9d2d85b02276"
     },
     {
       "visualQuestionId": "q-agenda-timeline-2",

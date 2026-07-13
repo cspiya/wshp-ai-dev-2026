@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "name": "kk-regisztracio-known-good",
+  "description": "Complete KK-Regisztracio slice (invented workload). Copy src/ and data/ onto a bootstrapped participant workspace root; append .gitignore-additions.txt to .gitignore.",
+  "files": [
+    "src/lib/registrations/domain.ts",
+    "src/lib/registrations/repo.ts",
+    "src/lib/registrations/file-repo.ts",
+    "src/lib/registrations/memory-repo.ts",
+    "src/lib/registrations/domain.test.ts",
+    "src/lib/registrations/repo-contract.test.ts",
+    "src/app/api/registrations/route.ts",
+    "src/app/api/registrations/[id]/cancel/route.ts",
+    "src/app/regisztracio/page.tsx",
+    "src/app/regisztracio/registration-panel.tsx",
+    "data/registrations.seed.json",
+    ".gitignore-additions.txt"
+  ]
+}

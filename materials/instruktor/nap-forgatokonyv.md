@@ -10,7 +10,8 @@
 **Előadás/gyakorlat filozófia:** az instruktori beszéd állványzat, nem tartalom-átadás. Minden
 blokkban a hallgató épít, és minden blokk egy megnevezett munkadarabbal zárul, amely a következő
 blokk bemenete. A közös ellenőrzés (checkpoint) soha nem marad el — ha vágni kell, a gyakorlat
-utolsó iterációja megy, nem az ellenőrzés (részletek a végén: „Ha csúszik a nap").
+utolsó iterációja megy, nem az ellenőrzés; a **C4 készítő lépés (4. blokk eleje) ugyanígy nem
+vágható** (részletek a végén: „Ha csúszik a nap").
 
 | Blokk | Idősáv | Előadás | Gyakorlat | Közös ellenőrzés |
 |---|---|---:|---:|---:|
@@ -18,7 +19,7 @@ utolsó iterációja megy, nem az ellenőrzés (részletek a végén: „Ha csú
 | 2. Üres repo → agent-ready repo v0 | 09:45–10:45 | 12 perc | 38 perc | 10 perc |
 | Szünet | 10:45–11:00 | — | — | — |
 | 3. Spec-vezérelt SDLC + BA-kapu | 11:00–11:45 | 12 perc | 25 perc | 8 perc |
-| 4. Orchestrátor + Repeat-Until-Good | 11:45–12:30 | 10 perc | 27 perc | 8 perc |
+| 4. Orchestrátor + Repeat-Until-Good (C4 készítő + C5 review) | 11:45–12:30 | 5 perc | 32 perc | 8 perc |
 | Ebéd | 12:30–13:15 | — | — | — |
 | 5. A keretrendszer megerősítése | 13:15–14:00 | 12 perc | 25 perc | 8 perc |
 | 6. A keretrendszer rendszerpróbája | 14:00–14:45 | 10 perc | 27 perc | 8 perc |
@@ -33,6 +34,9 @@ utolsó iterációja megy, nem az ellenőrzés (részletek a végén: „Ha csú
 
 - **Időfelosztás:** 20 perc előadás + 17 perc gyakorlat (setup-ellenőrzés érkezéskor indul +
   repo-diagnózis) + 8 perc közös ellenőrzés
+- **Nyitó képernyő (érkezéstől kivetítve):** a [repo-térkép oldal](../repo-terkep/index.html) —
+  a repo öt területe és a C0–C7 aranyfonál. Erre az oldalra küldesz vissza mindenkit, aki a nap
+  során elveszik: „nézd meg, melyik állomáson állsz".
 - **Amit elmondasz (beszédvázlat):**
   - „A mai nap take-home üzenete már az első percben kimondható: az AI-t gyors junior kollégaként
     kell vezetni, nem varázslatként kezelni. Egy junior is akkor dolgozik jól, ha van célja, határa
@@ -78,6 +82,9 @@ utolsó iterációja megy, nem az ellenőrzés (részletek a végén: „Ha csú
   - Létezik a `workshop-evidence/01-helyzetkep.md`, benne 3 ismeretlen válaszadó szereppel és külön
     várt/tényleges ellenőrzési eredmény.
   - Legalább egy párnál meghallgatod a visszamondást: egyezik-e a leírt határokkal.
+  - **A blokk végén kiosztod a C0–C7 útlevelet és az Evidence-bingót**
+    ([workshop-passport](../../toolkit/checklists/workshop-passport.md), nyomtatva vagy letöltve),
+    és kimondod a szabályt: pecsét és pont kizárólag evidence-fájlra jár, sosem gyorsaságra.
 - **Tipikus elakadás + Plan B:** nincs használható saját repo → a tréner kitalált
   starter-pillanatképe, a fájl első sora „PLAN B — kitalált starter-pillanatkép alapján".
   Leggyakoribb hiba: a hiányzó információt valószínű részlettel pótolják — ilyenkor ismeretlenként
@@ -159,33 +166,39 @@ párosítsd össze egy kész résztvevővel. Készítsd elő kivetítésre a 3. 
     döntést visszaküldeni, nem kitalálni. A magyar üzleti szabályból itt lesz angol, tesztelhető
     elfogadási kritérium."
 - **Amit a hallgatók csinálnak:**
-  1. (5–12) A kapott (vagy saját, kitalált) üzleti kéréshez rögzíti a scope-ot három listában: benne
+  1. (5–11) A kapott (vagy saját, kitalált) üzleti kéréshez rögzíti a scope-ot három listában: benne
      van / nincs benne / nyitott döntés.
-  2. (12–20) Megfigyelhető elfogadási feltételeket ír `AC-01`, `AC-02`… azonosítókkal — viselkedést,
+  2. (11–17) Megfigyelhető elfogadási feltételeket ír `AC-01`, `AC-02`… azonosítókkal — viselkedést,
      nem megoldási ötletet.
-  3. (20–27) Minden AC-hez legalább egy normál és egy hibautas Given–When–Then forgatókönyvet ír.
-  4. (27–35) Elkészíti a `plan.md`-t (csak függőségi sorrend és ellenőrzési stratégia) és a
+  3. (17–23) Minden AC-hez legalább egy normál és egy hibautas Given–When–Then forgatókönyvet ír.
+  4. (23–28) Elkészíti a `plan.md`-t (csak függőségi sorrend és ellenőrzési stratégia) és a
      `tasks.md`-t — minden feladatnál AC + forgatókönyv + futtatandó ellenőrzés hivatkozással.
-  5. (35–45) Megnevezi a döntéshozót és rögzíti az állapotot: APPROVED / BLOCKED / `DECISION
+  5. (28–32) Megnevezi a döntéshozót és rögzíti az állapotot: APPROVED / BLOCKED / `DECISION
      REQUIRED — owner — next decision point`.
   Kimenet: **ötfájlos csomag (`constitution.md`, `spec.md`, `given-when-then.md`, `plan.md`,
-  `tasks.md`) + explicit emberi döntés**.
+  `tasks.md`) + explicit emberi döntés.** A MAKER_SHA a következő blokk elején, a C4 lépésben
+  készül el.
 - **Ezt ellenőrzöd a teremben:**
   - Mind az öt fájl létezik, és a spec.md-ben ott a hármas scope-lista.
   - Szúrópróba egy AC-n: van hibautas forgatókönyve, és a tasks.md-ből visszakövethető az
     ellenőrzésig.
   - A csomagon explicit állapot van — nem „kb. kész", hanem APPROVED / BLOCKED / DECISION REQUIRED,
     névvel.
+  - Az APPROVED állapotú csomagok száma — aki BLOCKED/DECISION REQUIRED, annak a 4. blokk elején
+    a tréneri referencia-csomag jár.
 - **Tipikus elakadás + Plan B:** megoldásnak álcázott feltétel („legyen Redis cache") → átírni
   megfigyelhető viselkedésre; kapcsolódás nélküli feladat → AC-hez kötni vagy törölni; hiányzó
   döntéshozó → DECISION REQUIRED, az agent nem hagyhatja jóvá; nincs elérhető BA → a tréner kitalált
-  kéréscsomagja, de a döntési pont akkor is rögzítve.
-- **Átvezetés:** „Van jóváhagyott szerződésünk. Most megnézzük, mi történik, amikor egy builder
-  ebből dolgozik — és egy tőle független, friss kontextus bírálja el, amit csinált."
+  kéréscsomagja, de a döntési pont akkor is rögzítve; nincs APPROVED saját csomag a C4 lépéshez →
+  a tréner referencia-csomagja (`toolkit/golden-thread/spec-package/`, fejléce
+  `C3-APPROVED-CONTRACT`); elakadt implementáció → `partial`/`known-good` snapshot, jelölt
+  Execution mode-dal.
+- **Átvezetés:** „Van jóváhagyott szerződésünk ÉS egy valódi commitunk. Most megnézzük, mi
+  történik, amikor egy tőle független, friss kontextus pontosan ezt a commitot bírálja el."
 
 ## 11:45–12:30 · Orchestrátor + Repeat-Until-Good (→ [4. modul: Független review és javítási ciklus](../modulok/04-fuggetlen-review/index.html))
 
-- **Időfelosztás:** 10 perc előadás + 27 perc gyakorlat + 8 perc közös ellenőrzés
+- **Időfelosztás:** 5 perc előadás + 32 perc gyakorlat + 8 perc közös ellenőrzés
 - **Amit elmondasz (beszédvázlat):**
   - „A szerző és a bíráló ne ugyanaz a kontextus legyen. Az önellenőrzés ugyanabból a
     gondolatmenetből indul, mint a készítés — a közös vakfolt megmarad. A független review a
@@ -197,35 +210,56 @@ párosítsd össze egy kész résztvevővel. Készítsd elő kivetítésre a 3. 
   - „A review-megállapítás még nem tény. Előbb ellenőrizni kell, aztán elfogadni vagy indokoltan
     elvetni. Saját anyagunk építésénél is előfordult, hogy a review magabiztosan tévedett — a
     szabály: verify before implementing."
+  - „Ezt a False-positive Hunter gyakorlaton a saját bőrötökön tapasztaljátok: a broken snapshot
+    egy valódi, minden kapun átcsúszó hibát ÉS egy hamis pozitív csalit tartalmaz. A pecsét kettős:
+    a valódi hibához futtatható bizonyíték, a csalihoz indoklással rögzített REJECTED."
   - „Az orchestrator agent koordinálhatja az átadásokat, de nem veheti át az ellenőrző szerepét. És
     az emberi review meg a gépi kapu nem helyettesíti egymást: a gép a determinisztikus hibát fogja,
     az ember a szándékot és a kockázatot."
   - „A dogfooding-bizonyíték: ezt az anyagot is így építettük — zöld CI után a független review
     valódi hibákat talált. A zöld pipeline szükséges, nem elégséges."
 - **Amit a hallgatók csinálnak:**
-  1. (0–5) A készítő rögzíti a vizsgált commitot (`MAKER_SHA`), a szerepek szétválnak: maker / friss
-     reviewer / fixer.
-  2. (5–12) Review-csomag összeállítása: spec, diff, futtatási parancsok, ismert korlátok, pontos
-     commit.
-  3. (12–22) A friss kontextusú reviewer több szempontból keres eltérést; minden megállapítás
-     azonosítót, helyet (fájl:sor), súlyosságot és bizonyítékot kap.
+  1. (0–20) **C4 készítő lépés — NEM VÁGHATÓ:** a készítő szerepű agent a jóváhagyott csomagból
+     implementálja a KK-Regisztráció szeletet a saját workspace-ben (első lépésként visszamondja az
+     elfogadási feltételeket és a scope-ot); a kapuk zöldjéig iterál: `npm run typecheck && npm run
+     lint && npm run test`; majd commit + `git rev-parse HEAD` → **MAKER_SHA**, evidence:
+     `workshop-evidence/C4-maker.md`. Ha 10 perc után sincs zöld kapu: tréneri `partial` vagy
+     `known-good` snapshot (`toolkit/golden-thread/README.md`), az evidence-ben `Execution mode:
+     SNAPSHOT`. Utána a szerepek szétválnak: maker / friss reviewer / fixer.
+  2. (20–26) Review-csomag összeállítása: spec, a `MAKER_SHA` diffje (`git show MAKER_SHA`),
+     futtatási parancsok, ismert korlátok. A reviewer friss kontextusban indul (a
+     `toolkit/skills/rug-review` skill vagy a `toolkit/orchestrator/README.md` kézi kontraktusa
+     szerint) — a készítő gondolatmenetét nem kapja meg.
+  3. (26–36) **False-positive Hunter a broken snapshottal:** a tréner kiosztja az előre elrontott,
+     kitalált változatot (`toolkit/golden-thread/fixtures/snapshots/broken`) — annak is, akinek
+     nincs saját diffje. Kettős feladat: (a) a valódi hiba megtalálása és futtatható bizonyítása
+     (a 48 órás lemondási határ pontos határeset-tesztje, amely elbukik, miközben minden kapu
+     zöld); (b) a hamis pozitív csali elvetése bizonyítékkal (a fájl-adapter visszaolvasása
+     verify-before-swap guard, nem hiba). Minden megállapítás azonosítót, helyet, súlyosságot és
+     bizonyítékot kap.
   4. (22–28) Minden tétel `ACCEPTED` vagy `REJECTED` — futtatási eredménnyel vagy konkrét
      indoklással.
-  5. (28–36) A fixer csak az elfogadott tételeket javítja, rögzíti a `FIX_SHA`-t; (36–42) ugyanaz a
+  5. (28–36) A fixer csak az elfogadott tételeket javítja, ÉS visszaállítja a hiányzó
+     határeset-tesztet, hogy a kapu fogja a regressziót; rögzíti a `FIX_SHA`-t; (36–42) ugyanaz a
      reviewer újraellenőrzi a javítást és legalább egy regressziós kockázatot.
-  6. (42–45) A visszakövetési tábla lezárása; egy ellenőrzött, ismétlődő hiba kijelölése az 5.
-     modulnak.
-  Kimenet: **MAKER_SHA + review-megállapítás-tábla + FIX_SHA + újraellenőrzési eredmény, teljes
-  visszakövetéssel**.
+  6. (42–45) A visszakövetési tábla lezárása a `workshop-evidence/C5-review.md`-ben; egy
+     ellenőrzött, ismétlődő hiba kijelölése az 5. modulnak.
+  Kimenet: **MAKER_SHA + review-megállapítás-tábla + elutasított hamis pozitív indoklással +
+  FIX_SHA + újraellenőrzési eredmény, teljes visszakövetéssel a `workshop-evidence/C5-review.md`
+  fájlban**.
 - **Ezt ellenőrzöd a teremben:**
   - A REV-táblában nincs nyitott HIGH súlyosságú tétel — ha van, az átadás BLOCKED.
   - MAKER_SHA és FIX_SHA különbözik és mindkettő visszakereshető; az elvetett tételeknél indoklás
     áll, nem csak „nem értek egyet".
+  - A hamis pozitív csalinál REJECTED áll, írásos indoklással — aki ACCEPTED-ként „javította",
+    azzal átbeszéled: verify before implementing.
   - Legalább egy tételnél megnézed: a bizonyíték tényleg megismételhető (parancs + eredmény).
 - **Tipikus elakadás + Plan B:** nincs friss reviewer → a tréner előkészített, kitalált diffje egy
   valóban friss kontextusú ellenőrzővel — az önellenőrzést nem nevezzük függetlennek; nem
   reprodukálható megállapítás → nem javítunk találomra, ellenőrizetlennek jelöljük; a vizsgált
-  commit review közben változik → a review leáll, új csomag készül.
+  commit review közben változik → a review leáll, új csomag készül; a teljes RUG-kör nem fér az
+  időbe → a `toolkit/orchestrator/trace/sample-run.md` valós trace-én mutatod be, az evidence-ben
+  `Execution mode: REPLAY`.
 - **Átvezetés:** „Ebéd után arról lesz szó, hogy ami most kézi fegyelem volt — a review-tanulság —
   hogyan válik mechanikus garanciává, ami akkor is véd, amikor senki nem figyel."
 
@@ -288,39 +322,56 @@ torlódjon a lemaradás.
   - „A tesztrétegek kockázat szerint osztoznak: hibás üzleti számítás → unit; az adapter eltér a
     szerződéstől → contract; a látható út rétegek között szakad meg → E2E. Egy kockázatot nem fedünk
     le három drága teszttel megszokásból."
-  - „Élő demó a [referencia-appon](../../reference-app/README.md): a `/shop` út — ár kiszámítása
-    tiszta domain-logikával, fake payment a `PaymentPort` mögött, jelentkezés, visszaigazolás és
-    lemondás a 48 órás szabállyal. Az írások session-höz kötöttek; a `npm run test:e2e` lokálisan
-    adatbázis nélkül, in-memory adapterrel fut, és ugyanaz a Playwright-út `PLAYWRIGHT_BASE_URL`-lel
-    valódi preview ellen is lefut."
+  - „A rétegzett bizonyítás a SAJÁT szeleteteken fut — minden parancsolt lépés létezik a
+    workspace-etekben: unit (a 48 órás határeset), contract (két adapter, egy szerződés), API
+    (`Invoke-RestMethod`, 201 + 409), felület (sikeres + látható hibaút), adat
+    (`data/registrations.json` előtte/utána). Az aktív adatforrás a fájl-alapú LOKÁLIS tár —
+    őszintén kimondjuk: nem külső adatbázis."
+  - (Stretch demó, nevesített, vágható) „Az élő, adatbázisos utat a
+    [referencia-appon](../../reference-app/README.md) mutatom meg: ugyanaz a port-szerződés,
+    preview környezettel és Neon adatbázissal. A teljes app felépítése az építési naplóban
+    dokumentált. Ez tréneri demó, nem résztvevői feladat."
   - „Minden eredményfájl közös fejléccel indul: STATUS, SOURCE_SHA, ENVIRONMENT, ADAPTER. Ha nem
     tudod, melyik commit fut és melyik adapterrel, az eredményed nem eredmény. És a memóriabeli
-    adapter nem igazol adatbázis-futást — az DB=BLOCKED."
+    adapter nem igazol adatbázis-futást — a contract test egyenlőséget bizonyít, de a rendszerpróba
+    aktív forrása a fájl-tár."
   - „Kontextus-büdzsé: hibánál nem a teljes naplót öntjük az AI-ba, hanem kizárásos szűkítéssel a
     legszűkebb eltérést adjuk át."
 - **Amit a hallgatók csinálnak:**
-  1. (0–5) Kiválasztja a kitalált felhasználói utat, létrehozza a
-     `workshop-evidence/06-rendszerellenorzes/` mappát, és a `00-eredet-es-verzio.txt`-be rögzíti a
-     négymezős fejlécet (STATUS, SOURCE_SHA, ENVIRONMENT, ADAPTER) + build + UTC-időpont.
-  2. (12–20) Futtatja a saját repóban dokumentált unit és contract teszteket; parancs + kilépési kód
-     + eredmény a `01-unit-test.txt` és `02-contract-test.txt` fájlba.
-  3. (20–30) Végigviszi a sikeres utat a böngészőben egyedi `WSHOP-<csapat>-<időbélyeg>`
-     azonosítóval; felület + API-státusz + korrelációs azonosító a `03-e2e-sikeres-ut.txt`-be, majd
-     célzott, csak olvasó lekérdezéssel megkeresi ugyanazt az azonosítót (`04-adatellenorzes.txt`).
-  4. (30–36) Bejár egy dokumentált hibás utat (pl. hiányzó kötelező mező): látható hibaüzenet +
-     elutasító API-státusz + „0 új rekord" ellenőrzés az `05-e2e-hibas-ut.txt`-be.
-  5. (36–45) `06-kovetkeztetes.md`: mit igazolnak az eredmények, mi maradt ellenőrizetlen, egyezik-e
-     minden fejléc. Kimenet: **a hétfájlos evidence-mappa**.
+  1. (0–5) Létrehozza a `workshop-evidence/C6-rendszerellenorzes/` mappát, és a
+     `00-eredet-es-verzio.txt`-be rögzíti a négymezős fejlécet (STATUS=LOCAL, SOURCE_SHA = a 4.
+     modul FIX_SHA-ja, ENVIRONMENT, ADAPTER=file-store) + build + UTC-időpont.
+  2. (5–14) **Unit réteg:** `npm run test` → `01-unit.txt`, kiemelve a 48 órás pontos határeset
+     tesztje. **Contract réteg:** `npm run test -- repo-contract` → `02-contract.txt`, kimondva:
+     a memória-adapter kontraktus-egyenlősége bizonyított, az aktív forrás a fájl-tár.
+  3. (14–24) **API réteg:** először elmenti a kiinduló adatállapotot (`Get-Content
+     data\registrations.json` — ez a `05-data.txt` „előtte" fele), majd futó `npm run dev` mellett
+     PowerShell-ből `Invoke-RestMethod`: POST (201) + GET (lista) + második POST ugyanazzal az
+     e-maillel → 409 duplicate → parancs + válasz a `03-api.txt`-be.
+  4. (24–33) **Felületi réteg:** a `/regisztracio` oldalon sikeres út (új jelentkezés a listában,
+     MÁSIK egyedi kitalált e-maillel) + látható hibaút (duplikált e-mail → hibaüzenet a felületen);
+     képernyőkép → `04-ui.png`. **Browser Boss Fight:** ha az agent vezérli a böngészőt (Claude
+     `--chrome` / Codex `@Browser`) és ő hajtja végre + dokumentálja → extra pecsét; kézi
+     végrehajtás = `Execution mode: MANUAL` (nem replay).
+  5. (33–40) **Adat réteg:** `Get-Content data\registrations.json` újra → `05-data.txt` („utána");
+     a különbség pontosan az új rekordok. Őszinte megfogalmazás: aktív, perzisztens LOKÁLIS
+     adatforrás, nem külső adatbázis.
+  6. (40–45) `06-kovetkeztetes.md`: mit igazolnak a rétegek, mi maradt ellenőrizetlen, egyezik-e
+     minden fejléc, mi volt a `04-ui.png` végrehajtási módja (AGENT/MANUAL). Kimenet: **a hétfájlos
+     evidence-mappa**.
 - **Ezt ellenőrzöd a teremben:**
-  - A mappában megvan mind a hét fájl, és a négymezős fejléc mindegyikben azonos.
-  - Az egyedi azonosító mindhárom rétegben (felület, API, adat) követhető; a hibás útnál tényleg nem
-    jött létre rekord.
-  - In-memory adapternél a `04-adatellenorzes.txt`-ben ott a `DB=BLOCKED` jelölés — nem állítanak
-    adatbázis-futást.
-- **Tipikus elakadás + Plan B:** nem fut a helyi rendszer vagy a preview → a tréner SHA-hoz és
-  adapterhez rögzített, kitalált REPLAY-csomagja, minden átvett fájlban `STATUS=REPLAY` — élő URL-t
-  vagy PASS-t kitalálni tilos. Verzióeltérésnél vagy ismeretlen tesztparancsnál megállás; éles vagy
-  személyes adat soha.
+  - A mappában megvan mind a hét fájl (00–06), a négymezős fejléc a szöveges fájlokban azonos, és a
+    SOURCE_SHA a review utáni commit.
+  - Az egyedi kitalált e-mail mindhárom rétegben (API, felület, adat) követhető; a 409-es hibaútnál
+    tényleg nem jött létre új rekord.
+  - A `04-ui.png` végrehajtási módja jelölt (AGENT → extra pecsét, vagy MANUAL); senki nem állít
+    külső adatbázist a fájl-tárról.
+- **Tipikus elakadás + Plan B:** nem fut a saját szelet → catch-up a tréner `known-good`
+  snapshotjából scratch branchen (`toolkit/golden-thread/README.md`), a fejlécben a
+  snapshot-állapot SHA-ja — a futásokat a résztvevő így is maga végzi; semmi nem fut → a tréner
+  SHA-hoz és adapterhez rögzített, kitalált REPLAY-csomagja, minden átvett fájlban `STATUS=REPLAY`
+  — élő URL-t vagy PASS-t kitalálni tilos. Verzióeltérésnél vagy ismeretlen tesztparancsnál
+  megállás; éles vagy személyes adat soha.
 - **Átvezetés:** „Greenfieldben bizonyított a rendszer. A szünet után jön a nehezebb kérdés: hogyan
   visszük be ugyanezt egy meglévő, ismeretlen viselkedésű legacy kódbázisba?"
 
@@ -390,9 +441,16 @@ DevOps nézetet a legacy blokkhoz; ellenőrizd, kinél hiányzik a 6. modul evid
     mérjük, nem hangulaton."
   - „Az eszközválasztás nem bevezetés. A csapatnak felelős szerep, szűk és visszafordítható pilot,
     mérhető jel és emberi döntési pont kell." (Mutasd a modul áttekintő ábráját.)
-  - „A kontrollált eval így néz ki: fagyasztott referenciafeladat azonos commiton, A és B változat
-    azonos korlátokkal, négy közös mérés — minőség, idő, emberi beavatkozás, hibamód — és leállási
-    feltétel. Az eval döntést készít elő, nem automatikusan győztest hirdet."
+  - „A kontrollált eval nálunk konkrét: a befagyasztott feladat a broken snapshot review-ja — ma
+    délelőtt már láttátok. Claude ÉS Codex ugyanazt kapja, és ugyanazt a scorecardot töltitek ki:
+    helyesség, evidence-minőség, emberi beavatkozások száma, eltelt idő, maradék kockázat. A
+    kitöltött scorecard az evidence. Az eval döntést készít elő, nem automatikusan győztest hirdet."
+  - „Párban dolgozóknál Build–Review–Swap váltó: a két kör között a készítő és a reviewer szerepet
+    ÉS agentet is cserél — a pecsét a váltó teljesítéséért jár."
+  - „És az utolsó próba: a memória nem kapu, hanem visszakereshetőség — a repo maga a memória.
+    Zárjátok be a sessiont, nyissatok újat, és kérdezzétek meg: mi a cél, milyen döntések születtek,
+    mik a korlátok, mi a következő lépés? Az agentnek az AGENTS.md + spec-csomag + evidence alapján
+    kell rekonstruálnia, memória-trükk nélkül."
   - „Nézzétek a kitalált Homokóra-példát a modul-oldalon: a B változat kevesebb téves
     megállapítással és idővel találta meg ugyanazt a magas hibát, ezért az ment pilotba — a 30.
     napon mégis »javítandó« lett a kapu, mert egy magas súlyú megállapítás nyitva maradt. Így néz ki
@@ -400,24 +458,37 @@ DevOps nézetet a legacy blokkhoz; ellenőrizd, kinél hiányzik a 6. modul evid
   - „A 30/60/90 minden kapuja külön emberi döntés: a naptári idő nem jogosít fel bővítésre. A 60/90
     alapállapota: DECISION REQUIRED."
 - **Amit a hallgatók csinálnak:**
-  1. (0–6) `agent-ready-audit.md`: kiválasztja az 1–7. modul leggyengébb saját képességét, és
-     kitalált felelős szerepálnevet rendel hozzá.
-  2. (6–12) `model-harness-eval.md`: megnevezi a következő kitalált referenciafeladatot, a
-     fagyasztott bemenetet, két változatot, a négy mérést, a leállási feltételt és a tartalékutat —
-     a Homokóra-példa szerkezetét követve.
-  3. (12–18) `adoption-30-60-90.md`: 30 napos pilot hatókör, felelős szerep, mérések; a 60/90
-     állapota `DECISION REQUIRED — owner — next decision point`.
-  4. (checkpoint) Egy társ **csak a három fájlból** visszamondja: leggyengébb képesség, felelős
-     szerep, következő feladat, mérés, leállási feltétel.
-  Kimenet: **a három bevezetési fájl, kitalált szerepnevekkel**.
+  1. (0–5) **Projektmemória-próba új sessionben (C7):** session lezárása → ÚJ session a
+     workspace-ben → a négy kérdés („mi a cél, milyen döntések születtek, mik a korlátok, mi a
+     következő lépés?") → az agent az AGENTS.md + spec-csomag + evidence alapján rekonstruál,
+     forráshivatkozással. Evidence: `workshop-evidence/C7-memoria.md` (a rekonstruált állapot + mi
+     hiányzott; a hiány repo-fájlban pótlandó, nem a chatben).
+  2. (5–12) **Kétagentes scorecard:** a broken snapshot review-ja mint befagyasztott feladat,
+     Claude-dal ÉS Codex-szel; a scorecard (helyesség / evidence-minőség / emberi beavatkozások /
+     idő / maradék kockázat) kitöltve a `model-harness-eval.md`-be — párban Build–Review–Swap
+     váltóval (szerep- és agentcsere a két kör között).
+  3. (12–18) `agent-ready-audit.md` (leggyengébb képesség + kitalált felelős szerepálnév) és
+     `adoption-30-60-90.md` (30 napos pilot hatókör, mérések) — a Homokóra-példa átszabásával, nem
+     nulláról; a 60/90 állapota `DECISION REQUIRED — owner — next decision point`.
+  4. (checkpoint) Egy társ **csak a fájlokból** visszamondja: leggyengébb képesség, felelős szerep,
+     következő feladat, mérés, leállási feltétel.
+  Kimenet: **a három bevezetési fájl + `workshop-evidence/C7-memoria.md` + kitöltött kétagentes
+  scorecard, kitalált szerepnevekkel**.
 - **Ezt ellenőrzöd a teremben:**
   - A három fájl nem mond ellent egymásnak: ugyanaz a hiány, ugyanaz a szerep, ugyanaz a következő
     döntés fut végig rajtuk.
+  - A `C7-memoria.md`-ben forráshivatkozás áll (melyik fájlból jött a rekonstrukció), és a hiány
+    repo-pótlásként jelölt, nem chat-jegyzetként.
+  - A scorecard mind az öt szempontra kitöltött mindkét agentre; pecsét csak evidence-re jár,
+    sosem gyorsaságra.
   - Minden bővítéshez mérési feltétel tartozik, és a 60/90 tényleg DECISION REQUIRED.
   - Csak kitalált szerepálnevek szerepelnek — valódi név, ügyfél vagy belső azonosító nem.
 - **Tipikus elakadás + Plan B:** hiányzó saját eredmény vagy valódi felelős → a tréner kitalált
-  felmérése és szerepálnevei, teljes kitalált 30 napos pilottal. Megállási szabály: ha a
-  referenciafeladat, a leállási feltétel vagy a döntéshozó szerep hiányzik, a csomag nincs kész.
+  felmérése és szerepálnevei, teljes kitalált 30 napos pilottal; csak egy agent érhető el → a
+  scorecard másik oszlopát a tréner kitalált mintafutása adja, jelölve; új session nem indítható →
+  a memóriapróba kérdéseit a társ teszi fel, és a válasz kizárólag repo-fájlokból adható.
+  Megállási szabály: ha a referenciafeladat, a leállási feltétel vagy a döntéshozó szerep
+  hiányzik, a csomag nincs kész.
 - **Átvezetés:** „Utolsó tíz perc: közösen megnézzük, mit visztek haza ténylegesen — nem érzésre,
   hanem audit-szemmel."
 
@@ -455,16 +526,20 @@ Vezérelv (a napirend-oldalról): a Plan B nem a tanulási cél elhagyása — a
 előkészített mintával, de a döntés, az ellenőrzés és a résztvevő saját kimenete maradjon.
 **Soha nem a közös ellenőrzést vágjuk, hanem a gyakorlat utolsó iterációját.**
 
+A vágható sáv az [agenda](../agenda.md) **47 perces nevesített puffere**: M2 második szabálykör
+10p · M4 második RUG-kör 8p · M5 második hook-kör 7p · M7 Azure DevOps kiegészítés 15p ·
+M8 eval-mélyítés 7p. Csúszásnál ezekhez nyúlsz, ebben a sorrendben az adott blokkon belül.
+
 | Blokk | Ezt vágd (sorrendben) | Ez nem vágható |
 |---|---|---|
-| 1. Bevezető | A réteg- és tölcsér-ábra magyarázatát rövidítsd; a 7 diagnózis-lépésből elég 4 (cél, határok, ellenőrzés, ismeretlenek) | A setup-ellenőrzés és a társ-visszamondás |
-| 2. Repo | A 47–60. perc (worktree-rend + CI/preview elhelyezés) instruktori demóvá alakítható | A friss agentes negatív próba (FAIL → helyreállított PASS) |
-| 3. Spec | Szűkíts egyetlen AC-ra (egy normál + egy hibautas forgatókönyv); a constitution átvehető a tréneri mintából | Az explicit döntési állapot (APPROVED / BLOCKED / DECISION REQUIRED) rögzítése |
-| 4. Review | A regressziós újraellenőrzés szűkíthető egyetlen tételre; a review-csomag sablonból tölthető | Minden HIGH tétel lezárása vagy BLOCKED jelölése |
-| 5. Kapuk | A besorolási gyakorlat közösen, szóban is elvégezhető | A PASS → FAIL → PASS hármas ugyanazon a fixture-ön |
-| 6. Rendszerpróba | A hibás út közös demóként is futhat; a contract-futás hivatkozhat a 2. modul eredményére | A négymezős fejléc (STATUS/SOURCE_SHA/ENVIRONMENT/ADAPTER) és a sikeres út három rétege |
-| 7. Legacy | A kitalált példa végigkövetése (18–30. perc) rövidíthető; az Azure DevOps demó 2 percre húzható | A mutáció-bukás ellenőrzése és a `legacy-entry-plan.md` stop/rollback szekciója |
-| 8. Bevezetés | Az eval-fájl a Homokóra-példa átszabásával készül, nem nulláról | A három fájl konzisztencia-visszamondása és a 60/90 DECISION REQUIRED |
+| 1. Bevezető | A réteg- és tölcsér-ábra magyarázatát rövidítsd; a 7 diagnózis-lépésből elég 4 (cél, határok, ellenőrzés, ismeretlenek) | A setup-ellenőrzés, a társ-visszamondás és az útlevél/bingó kiosztása |
+| 2. Repo | **Második szabálykör (10p):** a 47–60. perc (worktree-rend + CI/preview elhelyezés) instruktori demóvá alakítható | A friss agentes negatív próba (FAIL → helyreállított PASS) |
+| 3. Spec | Szűkíts egyetlen AC-ra (egy normál + egy hibautas forgatókönyv); a constitution átvehető a tréneri mintából | Az explicit döntési állapot rögzítése — csúszásnál a spec-iterációt rövidítsd; a C4 készítő lépés a 4. blokk eleje, és ott NEM vágható |
+| 4. Review | **Második RUG-kör (8p):** a regressziós újraellenőrzés szűkíthető egyetlen tételre; a review-csomag sablonból tölthető | Minden HIGH tétel lezárása vagy BLOCKED jelölése, és a False-positive Hunter kettős pecsétje (bizonyított hiba + indokolt REJECTED) |
+| 5. Kapuk | **Második hook-kör (7p):** a besorolási gyakorlat közösen, szóban is elvégezhető | A PASS → FAIL → PASS hármas ugyanazon a fixture-ön |
+| 6. Rendszerpróba | A reference-app stretch demó (preview + Neon) és a Browser Boss Fight extra pecsét elhagyható; a felületi hibaút közös demóként is futhat | A négymezős fejléc (STATUS/SOURCE_SHA/ENVIRONMENT/ADAPTER) és a rétegzett mag: unit (48 órás határeset) → API (201 + 409) → adat (előtte/utána) |
+| 7. Legacy | **Azure DevOps kiegészítés (15p):** a demó 2 percre húzható; a kitalált példa végigkövetése (18–30. perc) rövidíthető | A mutáció-bukás ellenőrzése és a `legacy-entry-plan.md` stop/rollback szekciója |
+| 8. Bevezetés | **Eval-mélyítés (7p):** a scorecard második agent-futása tréneri kitalált mintából pótolható (jelölve); az eval-fájl a Homokóra-példa átszabásával készül, nem nulláról | A memóriapróba (`C7-memoria.md`), a fájlok konzisztencia-visszamondása és a 60/90 DECISION REQUIRED |
 | 9. Zárás | A Q&A rövidíthető | A következő jóváhagyható lépés kimondása |
 
 Ha egy blokk több mint 15 percet csúszik: az adott modul Plan B-csomagjára váltasz (tréneri
