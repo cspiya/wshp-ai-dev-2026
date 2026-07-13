@@ -1,0 +1,101 @@
+/* Discreet Wenova attribution shared by every generated participant route. */
+.wenova-footer {
+  width: min(72rem, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.1rem clamp(1rem, 3vw, 2rem);
+  border-radius: 1rem;
+  background: #06071a;
+  color: #f0f4ff;
+  text-align: left;
+}
+.wenova-brand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.wenova-wordmark {
+  display: block;
+  width: clamp(9.5rem, 22vw, 14rem);
+  height: auto;
+}
+.wenova-brand-copy,
+.creator-card p {
+  margin: 0;
+}
+.wenova-brand-copy {
+  color: #cbd5e1;
+  font-size: 0.86rem;
+}
+.wenova-footer a {
+  color: #67e8f9;
+}
+.creator-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 14rem;
+}
+.creator-avatar {
+  width: 3.25rem;
+  height: 3.25rem;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #f0f4ff;
+}
+.creator-card small,
+.creator-card strong,
+.creator-card a {
+  display: block;
+}
+.creator-card small {
+  color: #94a3b8;
+}
+.creator-card strong {
+  color: #ffffff;
+}
+.site-footer-meta {
+  margin-top: 1rem;
+}
+.site-footer-legal {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .wenova-footer {
+    grid-template-columns: 1fr;
+  }
+  .wenova-brand {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media print {
+  .wenova-footer {
+    display: block;
+    padding: 0.5rem 0;
+    border-top: 1px solid #64748b;
+    border-radius: 0;
+    background: transparent;
+    color: #111827;
+  }
+  .wenova-wordmark,
+  .creator-avatar {
+    display: none;
+  }
+  .wenova-brand-copy,
+  .creator-card small,
+  .creator-card strong,
+  .wenova-footer a {
+    color: #111827;
+  }
+  .creator-card {
+    margin-top: 0.35rem;
+  }
+}

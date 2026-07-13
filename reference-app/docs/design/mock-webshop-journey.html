@@ -12,6 +12,8 @@
   }
   *{box-sizing:border-box;margin:0}
   body{background:#0e1015;color:var(--ink);font-family:var(--text);line-height:1.55}
+  .historical-notice{max-width:82rem;margin:1.4rem auto 0;padding:1rem 1.25rem;border:2px solid var(--amber);border-radius:10px;background:#2b2417;color:#fff3d2;font:600 .9rem/1.5 var(--text)}
+  .historical-notice strong{display:block;color:var(--amber);font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.25rem}
   .note{max-width:70rem;margin:2.2rem auto .9rem;padding:0 1.5rem;color:#7d8290;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
   .frame{max-width:82rem;margin:0 auto 4rem;border:1px solid var(--seam);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55)}
   .bar{background:linear-gradient(180deg,var(--chassis2),var(--chassis));border-bottom:1px solid var(--seam);display:flex;align-items:stretch;padding:0 1.4rem}
@@ -104,6 +106,13 @@
   @media(max-width:820px){.cat,.grid2,.two,.rail{grid-template-columns:1fr}.rail::before{display:none}}
 </style>
 
+<div class="historical-notice" role="note">
+  <strong>Történeti design mock — az auth rész felülírva</strong>
+  A vizuális elrendezés továbbra is referencia, de a checkouton látható
+  „Sign in” és „Create an account” vezérlők nem részei a jelenlegi alkalmazásnak.
+  A 2026-07-14-i WEN-324 döntés szerint a vásárlás teljesen vendégként történik,
+  amíg az Auth nincs élő környezetben bizonyítva.
+</div>
 <p class="note">WEN-324 · Webshop journey mock · 1/5 · Katalógus (nettó + ÁFA + bruttó minden terméknél)</p>
 <div class="frame">
   <div class="bar">
@@ -229,7 +238,7 @@
   <footer class="strip"><span><b>PRICES</b> net + 27% VAT · invented</span></footer>
 </div>
 
-<p class="note">4/5 · Checkout — vendégvásárlás, cég-mód, kupon (regisztráció opcionális)</p>
+<p class="note">4/5 · Történeti checkout mock — az account vezérlők felülírva; a jelenlegi flow vendég-only</p>
 <div class="frame">
   <div class="bar">
     <div class="plate"><span class="lamp"></span><div class="word">Reference Lab<small>Workshop console</small></div></div>

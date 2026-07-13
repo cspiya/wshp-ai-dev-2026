@@ -103,6 +103,23 @@ Before changing anything, follow [AGENTS.md](AGENTS.md) and [PARALLEL-WORK.md](P
 one Linear issue, one branch, one worktree, an independent RUG review, trace evidence, and
 human approval before any merge to `main`.
 
+## Licenc és márkajelzés
+
+A repó kettős licencelésű:
+
+- a tananyag, dokumentáció, ábrák és résztvevői HTML a
+  [Creative Commons Nevezd meg! – Ne add el! – Így add tovább! 4.0 Nemzetközi](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.hu)
+  (`CC BY-NC-SA 4.0`) feltételei szerint használható;
+- a programkód, futtatható scriptek, konfigurációs fájlok és workflow-definíciók az
+  [MIT licenc](LICENSE) szerint használhatók.
+
+A pontos hatókört, a harmadik féltől származó elemek kezelését és a márkakizárást a
+kanonikus [LICENSE](LICENSE) tartalmazza. A Wenova név, wordmark, logók és más
+márkaelemek egyik licencengedélynek sem részei; használatuk nem sugallhat Wenova-jóváhagyást.
+
 ---
 
-© Wenova · Workshop delivery: 2026-07-14 · License: materials MIT unless noted otherwise.
+Készítette: **Csaba Piya** · [cspiya@wenova.io](mailto:cspiya@wenova.io) ·
+[Wenova](https://edu.wenova.io) · Workshop delivery: 2026-07-14
+
+© 2026 Wenova · Wenova™ · [Licenc](LICENSE)

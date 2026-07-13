@@ -246,6 +246,54 @@ async function browserChecks(page, label, mode, failures) {
       `${label} (${mode}): page contains a second local site shell (${extraShellRegions.join(", ")})`,
     );
   }
+  const sharedShellCount = await page.locator(".shell-header").count();
+  if (sharedShellCount) {
+    const brandFooterCount = await page.locator(".site-footer .wenova-footer").count();
+    if (brandFooterCount !== 1)
+      failures.push(
+        `${label} (${mode}): shared shell must contain exactly one Wenova footer band`,
+      );
+    const creatorCount = await page.locator(".wenova-footer .creator-card").count();
+    if (creatorCount !== 1)
+      failures.push(
+        `${label} (${mode}): Wenova footer must contain exactly one creator card`,
+      );
+    for (const [selector, description] of [
+      [".wenova-footer .wenova-wordmark", "wordmark"],
+      [".wenova-footer .creator-avatar", "creator image"],
+    ]) {
+      const count = await page.locator(selector).count();
+      if (count !== 1)
+        failures.push(
+          `${label} (${mode}): Wenova footer must contain exactly one ${description}`,
+        );
+    }
+    const licenseCount = await page.locator('.site-footer a[href$="LICENSE"]').count();
+    if (licenseCount !== 1)
+      failures.push(
+        `${label} (${mode}): Wenova footer must contain exactly one repository license link`,
+      );
+    const brokenBrandImages = await page
+      .locator(".wenova-footer img")
+      .evaluateAll((images) =>
+        images.filter((image) => !image.complete || image.naturalWidth === 0).length,
+      );
+    if (brokenBrandImages)
+      failures.push(
+        `${label} (${mode}): ${brokenBrandImages} Wenova footer image(s) failed to load`,
+      );
+  }
+  if (normalizedLabel(label) === "materials/fogalomtar/index.html") {
+    const outlinedLabels = await page
+      .locator("#fig-concept-families svg text")
+      .evaluateAll((labels) =>
+        labels.filter((label) => getComputedStyle(label).stroke !== "none").length,
+      );
+    if (outlinedLabels)
+      failures.push(
+        `${label} (${mode}): ${outlinedLabels} concept-family label(s) retain an unreadable SVG stroke`,
+      );
+  }
   const brokenBlockCode = await page.locator("pre code").evaluateAll(
     (els) =>
       els.filter((el) => {

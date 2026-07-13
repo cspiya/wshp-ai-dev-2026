@@ -45,6 +45,7 @@ main { padding: 2rem 0 5rem; }
 .visual { padding: 1rem; overflow: hidden; }
 .visual svg { width: min(100%, 60rem); height: auto; display: block; margin-inline: auto; }
 .visual svg a { cursor: pointer; }
+#fig-concept-families svg text { stroke: none; paint-order: normal; }
 .visual svg a .node-shape { transition: stroke-width .14s ease, filter .14s ease; }
 .visual svg a:hover .node-shape { stroke: #e86f2d; stroke-width: 5; filter: brightness(.98); }
 .visual svg a:focus-visible { outline: none; }

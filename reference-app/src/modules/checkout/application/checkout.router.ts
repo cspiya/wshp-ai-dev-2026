@@ -1,4 +1,4 @@
-import { protectedProcedure, router } from "@/platform/api/trpc";
+import { publicProcedure, router } from "@/platform/api/trpc";
 
 import {
   paymentRequestSchema,
@@ -13,7 +13,7 @@ export interface PaymentPort {
 
 export function createCheckoutRouter(payment: PaymentPort) {
   return router({
-    authorize: protectedProcedure.input(paymentRequestSchema).mutation(async ({ input }) =>
+    authorize: publicProcedure.input(paymentRequestSchema).mutation(async ({ input }) =>
       paymentResultSchema.parse(await payment.authorize(input)),
     ),
   });

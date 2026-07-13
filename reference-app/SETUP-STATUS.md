@@ -62,14 +62,18 @@ observed; code being present is not proof that an external integration works.
 - [x] The `/api/auth/[...path]` route proxies Neon Auth requests.
 - [x] The tRPC request context obtains the server-side session when Auth is
       configured; protected write procedures reject anonymous callers.
-- [x] `/shop` contains sign-up, sign-in, session, and sign-out UI.
-- [x] The deployed E2E path contains real sign-up/session steps; local E2E keeps the
-      guarded fixed user and in-memory adapters.
+- [x] `/shop` states and enforces guest checkout: account creation and sign-in are
+      not required while the live Auth integration remains unaccepted.
+- [x] Local and deployed E2E use the same signed-out guest path; PR #12's fresh
+      Preview run `29290588293` passed on 2026-07-14, the implementation does
+      not sign up, and the local-only in-memory seam remains guarded from Vercel.
 
 ### External/runtime proof still required
 
 - [ ] Confirm/provision Neon Auth on the production branch and record sanitized
       evidence that the expected Auth schema/configuration exists.
+- [ ] Restore a truthful optional account UI only after the complete Auth runtime
+      proof below is accepted; it must never become a guest-purchase prerequisite.
 - [ ] Set `NEON_AUTH_BASE_URL` and a stable, 32+ character
       `NEON_AUTH_COOKIE_SECRET` in local, Preview, and Production environments.
 - [ ] Verify that preview branches receive their own Auth configuration.

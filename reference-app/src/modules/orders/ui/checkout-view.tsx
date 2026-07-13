@@ -9,7 +9,6 @@ import { formatHufAmount } from "@/lib/format";
 import { orderDraftSchema, type Order, type OrderDraft } from "../domain/order";
 import { trpc } from "@/platform/api/client";
 
-import { AuthPanel } from "./auth-panel";
 import { cartItemsInput } from "./cart-view";
 import { JourneyRail, type JourneyStep } from "./journey-rail";
 import { useCart } from "./shop-journey";
@@ -35,7 +34,6 @@ export function CheckoutView({
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [wantsAccount, setWantsAccount] = useState(false);
   // buyer
   const [isCompany, setIsCompany] = useState(false);
   const [companyName, setCompanyName] = useState("");
@@ -156,19 +154,18 @@ export function CheckoutView({
 
       <div className="mt-6 grid items-start gap-6 md:grid-cols-[1.6fr_1fr]">
         <div>
-          {/* ── contact (guest by default, account optional) ─────────── */}
+          {/* ── contact (guest checkout; auth is a separate future slice) ── */}
           <section aria-labelledby="contact-heading" className="mod">
             <div className="mod-head">
               <span className="mod-tag" id="contact-heading">
                 Contact — guest checkout
               </span>
-              <span className="mod-stat">Account optional</span>
+              <span className="mod-stat">No account required</span>
             </div>
             <div className="mod-body">
               <p className="okbox mb-4">
-                You can buy without an account. Tick &ldquo;create an account&rdquo; below to
-                sign up (or sign in) — signing in only prefills your email, it is never
-                required.
+                No account or sign-in is required. This workshop build uses guest checkout;
+                authentication will be connected separately.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
@@ -193,28 +190,9 @@ export function CheckoutView({
                   onChange={setPhone}
                   error={fieldErrors["contact.phone"]}
                 />
-                <label className="flex min-h-11 items-center gap-2.5 self-end text-sm">
-                  <input
-                    type="checkbox"
-                    className="size-[1.1rem] accent-[--console-amber-deep]"
-                    checked={wantsAccount}
-                    onChange={(event) => setWantsAccount(event.target.checked)}
-                  />
-                  Create an account from these details (optional)
-                </label>
               </div>
             </div>
           </section>
-
-          {wantsAccount && (
-            <div className="mt-4">
-              <AuthPanel
-                onStatusChange={(authedEmail) => {
-                  if (authedEmail) setEmail((current) => current || authedEmail);
-                }}
-              />
-            </div>
-          )}
 
           {/* ── billing: buyer mode + address ─────────────────────────── */}
           <section aria-labelledby="billing-heading" className="mod mt-4">
