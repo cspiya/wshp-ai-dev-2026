@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Wenova AI-Assisted Development Workshop — Üdvözlünk!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  /* Wenova brand tokens (extracted from edu.wenova.io — WSP-J / WEN-339).
+     Single-source instructor screen: sensitive QR codes (wifi, Discord invite)
+     are NEVER committed — they load from the git-ignored ./local/ folder and
+     their panels remove themselves when the file is absent (e.g. on a deploy
+     or a fresh clone). Launch in the room via the Drive start-welcome.cmd. */
+  :root{
+    --bg:#06071a; --text:#f0f4ff; --muted:#94a3c0;
+    --cyan:#22d3ee; --cyan-l:#67e8f9; --blue:#3b82f6; --purple:#8b5cf6;
+    --orange:#f97316; --amber:#f59e0b; --amber-l:#fbbf24;
+    --card:rgba(255,255,255,.06); --border:rgba(103,232,249,.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    display:flex; flex-direction:column; padding:2.2vh 3vw; gap:1.5vh;
+  }
+  header{display:flex; align-items:center; justify-content:space-between}
+  header img{height:4.2vh}
+  header .date{color:var(--muted); font-size:2vh}
+  h1{font-size:4.2vh; line-height:1.15}
+  .thesis{font-size:2.4vh; color:var(--cyan-l); max-width:70vw}
+  .thesis b{color:var(--amber-l)}
+  main{flex:1; display:grid; grid-template-columns:1.15fr 1fr; gap:2vw; min-height:0}
+  .steps{display:flex; flex-direction:column; gap:1.3vh}
+  .steps h2{font-size:2.5vh; color:var(--amber); letter-spacing:.04em}
+  .step{
+    background:var(--card); border:1px solid var(--border); border-radius:1.2vh;
+    padding:1.4vh 1.6vw; display:flex; gap:1.2vw; align-items:center;
+  }
+  .step .n{
+    flex:0 0 auto; width:4.4vh; height:4.4vh; border-radius:50%;
+    background:var(--cyan); color:var(--bg); font-weight:700; font-size:2.5vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step h3{font-size:2.3vh}
+  .step p{font-size:1.85vh; color:var(--muted)}
+  .step code{
+    font-family:ui-monospace,Consolas,monospace; color:var(--cyan-l);
+    background:rgba(34,211,238,.08); padding:.1em .4em; border-radius:.35em; font-size:1.75vh;
+  }
+  .qrs{display:grid; grid-auto-rows:1fr; gap:1.4vh; min-height:0}
+  .qr{
+    background:var(--card); border:1px solid var(--border); border-radius:1.2vh;
+    display:flex; align-items:center; gap:1.5vw; padding:1.3vh 1.5vw; min-height:0;
+  }
+  .qr .code{flex:0 0 auto; height:100%; aspect-ratio:1; background:#fff; border-radius:1vh; padding:.9vh; display:flex}
+  .qr .code img{width:100%; height:100%}
+  .qr h3{font-size:2.35vh; color:var(--amber-l)}
+  .qr p{font-size:1.8vh; color:var(--muted)}
+  .arc{
+    display:flex; align-items:center; gap:.6vw; flex-wrap:wrap;
+    font-size:1.7vh; color:var(--muted);
+  }
+  .arc b{color:var(--text); font-weight:600}
+  .arc .sep{color:var(--cyan)}
+  footer{
+    display:flex; align-items:center; justify-content:space-between;
+    border-top:1px solid var(--border); padding-top:1.1vh; color:var(--muted); font-size:1.65vh;
+  }
+  .card-id{display:flex; align-items:center; gap:.8vw}
+  .card-id img{height:3.4vh; width:3.4vh; border-radius:50%; object-fit:cover; background:var(--card)}
+</style>
+</head>
+<body>
+  <header>
+    <img src="wenova-wordmark.png" alt="Wenova">
+    <div class="date">AI-Assisted Development Workshop · 2026. július 14. · 09:00–17:00</div>
+  </header>
+
+  <h1>Üdvözlünk! Ma megbízható, AI-vezérelt fejlesztési rendszert építesz.</h1>
+  <p class="thesis">Nem egy webalkalmazást építünk AI-val — egy <b>agent-ready fejlesztési keretrendszert</b>,
+  a saját repódban, és a nap végén egy élő alkalmazással bizonyítod, hogy működik.</p>
+
+  <main>
+    <section class="steps">
+      <h2>ELSŐ LÉPÉS — MOST:</h2>
+      <div class="step"><div class="n">1</div><div>
+        <h3>Csatlakozz a wifihez</h3>
+        <p>Szkenneld a 📶 QR-kódot — a hálózat nevét és jelszavát a teremben kivetítve látod</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h3>Nyisd meg a tananyagot és futtasd a setup-ellenőrzést</h3>
+        <p>📚 QR → <b>Felkészülés</b> oldal: <code>git --version</code> · <code>claude --version</code> · <code>/mcp</code></p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h3>Kész vagy? Segíts a szomszédodnak!</h3>
+        <p>Kérdésed van? Tedd fel élőben — vagy írd meg a 💬 Discord-csatornán.</p>
+      </div></div>
+      <div class="arc">
+        <b>A nap íve:</b>
+        <span>Bevezető</span><span class="sep">→</span>
+        <span>agent-ready repo</span><span class="sep">→</span>
+        <span>spec-kapu</span><span class="sep">→</span>
+        <span>független review</span><span class="sep">→</span>
+        <span>gépi garanciák</span><span class="sep">→</span>
+        <span>rendszerpróba</span><span class="sep">→</span>
+        <span>legacy</span><span class="sep">→</span>
+        <span>csapat</span>
+        <span class="sep">·</span><span>Ha elveszel: <b>Repo-térkép</b> oldal</span>
+      </div>
+    </section>
+
+    <section class="qrs">
+      <div class="qr" id="qr-wifi">
+        <div class="code"><img src="local/qr-wifi.svg" alt="Wifi QR"
+             onerror="document.getElementById('qr-wifi').remove()"></div>
+        <div><h3>📶 Wifi</h3><p>Szkenneld, és a telefonod/laptopod csatlakozik.</p></div>
+      </div>
+      <div class="qr">
+        <div class="code"><img src="qr-site.svg" alt="Tananyag QR"></div>
+        <div><h3>📚 Tananyag — kezdd itt</h3><p>cspiya.github.io/wshp-ai-dev-2026<br>Nyisd meg a <b>Felkészülés</b> oldalt.</p></div>
+      </div>
+      <div class="qr" id="qr-discord">
+        <div class="code"><img src="local/qr-discord.svg" alt="Discord QR"
+             onerror="document.getElementById('qr-discord').remove()"></div>
+        <div><h3>💬 Discord — kérdések, linkek</h3><p>Ide írhatsz kérdést a nap során,<br>és itt osztjuk meg a linkeket is.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="card-id">
+      <img src="piya_csaba_center-bg-removed.png" alt="">
+      <span><b style="color:var(--text)">Csaba Piya</b> · cspiya@wenova.io</span>
+    </div>
+    <div>Wenova · edu.wenova.io · © Wenova</div>
+  </footer>
+</body>
+</html>

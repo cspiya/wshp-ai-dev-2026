@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>WSHP 2026-07-14 — QR lap (A4 nyomtatáshoz)</title>
+<style>
+  /* Print sheet — same local/ mechanism as welcome-projected.html:
+     the wifi QR loads from the git-ignored ./local/ folder; when absent
+     (deploy, fresh clone) its panel removes itself and only public QRs print. */
+  @page{size:A4 portrait; margin:14mm}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif; color:#111}
+  .sheet{display:flex; flex-direction:column; gap:8mm; height:100%}
+  header{display:flex; justify-content:space-between; align-items:center}
+  header img{height:9mm}
+  header span{font-size:4mm; color:#555}
+  h1{font-size:7.5mm}
+  .steps{font-size:4.6mm; line-height:1.5}
+  .steps b{color:#c2410c}
+  .qrrow{display:grid; grid-auto-columns:1fr; grid-auto-flow:column; gap:8mm; flex:1}
+  .qr{border:0.6mm solid #ddd; border-radius:4mm; padding:6mm; text-align:center;
+      display:flex; flex-direction:column; align-items:center; gap:4mm}
+  .qr img{width:62mm; height:62mm}
+  .qr h2{font-size:5mm}
+  .qr p{font-size:3.8mm; color:#555}
+  footer{border-top:0.3mm solid #ccc; padding-top:3mm; font-size:3.6mm; color:#666;
+         display:flex; justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <img src="wenova-wordmark.png" alt="Wenova" style="filter:invert(1) hue-rotate(180deg)">
+    <span>AI-Assisted Development Workshop · 2026. július 14.</span>
+  </header>
+  <h1>Kezdd itt — 3 lépés, 3 perc</h1>
+  <div class="steps">
+    <b>1.</b> Csatlakozz a wifihez (📶 QR). &nbsp;
+    <b>2.</b> Nyisd meg a tananyagot (📚 QR) → <b>Felkészülés</b> oldal → setup-ellenőrzés. &nbsp;
+    <b>3.</b> Kész vagy? Segíts a szomszédodnak — kérdés a 💬 Discordon is mehet.
+  </div>
+  <div class="qrrow">
+    <div class="qr" id="qr-wifi">
+      <h2>📶 Wifi</h2>
+      <img src="local/qr-wifi.svg" alt="Wifi QR"
+           onerror="document.getElementById('qr-wifi').remove()">
+      <p>Szkenneld — a készülék<br>automatikusan csatlakozik.</p>
+    </div>
+    <div class="qr">
+      <h2>📚 Tananyag</h2>
+      <img src="qr-site.svg" alt="Tananyag QR">
+      <p>cspiya.github.io/wshp-ai-dev-2026<br>Kezdőlap → Felkészülés</p>
+    </div>
+    <div class="qr" id="qr-discord">
+      <h2>💬 Discord</h2>
+      <img src="local/qr-discord.svg" alt="Discord QR"
+           onerror="document.getElementById('qr-discord').remove()">
+      <p>Kérdések és linkmegosztás<br>a nap során.</p>
+    </div>
+  </div>
+  <footer>
+    <span>Csaba Piya · cspiya@wenova.io</span>
+    <span>Wenova · edu.wenova.io · © Wenova</span>
+  </footer>
+</div>
+</body>
+</html>
