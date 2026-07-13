@@ -2003,6 +2003,8 @@
     "toolkit/legacy-playbook/sample/LegacyShop.Tests/OrderTotalsCharacterizationTests.PlainOrder_NewCustomer.verified.txt",
     "toolkit/legacy-playbook/sample/sql/tsqlt-template.sql",
     "toolkit/legacy-playbook/sample/sql/usp_CalculateOrderTotals.sql",
-    "toolkit/setup/scoop-telepito.cmd"
+    "toolkit/setup/scoop-telepito.cmd",
+    "toolkit/setup/workshop-doctor.ps1",
+    "toolkit/setup/workshop-bootstrap.ps1"
   ]
 }

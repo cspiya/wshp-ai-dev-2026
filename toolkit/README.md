@@ -14,10 +14,16 @@ visszakereshető [evidence](../materials/fogalomtar.md#1-agentikus-fejlesztés--
 > **Döntési szabály:** ne azt kérdezd, melyik komponenst másold ki, hanem azt, melyik következő
 > képességet tudod a legkisebb csomaggal bizonyítani.
 
+Ha még a workshop munkakörnyezete sincs bizonyítva, kezdd a
+[`setup/` C0 doctor + bootstrap útjával](setup/README.md). Ez külön participant repót és
+evidence-könyvtárat készít, majd ugyanazzal a diagnosztikával PASS, REPLAY vagy BLOCKED
+eredményt ad Claude, Codex vagy mindkét agent használatához.
+
 ## Gyors döntési útvonal
 
 | Amit ma bizonyítani tudsz | Következő útvonal | Következő bizonyítható képesség |
 |---|---|---|
+| A workshop eszközei vagy a külön participant munkatér még nincsenek bizonyítva | [C0 — doctor és bootstrap](setup/README.md) | A gép és a munkatér állapota futtatott evidence-ből, nem feltételezésből ismert. |
 | A repó célja, határai és valódi parancsai még nincsenek a repóban | [C1 — repóidentitás](#c1--a-repó-tudja-mi-ő) | Az agent nem találgatja a munkateret és a szabályokat. |
 | A repó szabályai megvannak, de a kérés még nem jóváhagyható munkaszerződés | [C3 — spec-kapu](#c3--a-kérésből-jóváhagyott-munkaszerződés-lesz) | A viselkedés, scope és bizonyítás implementáció előtt ellenőrizhető. |
 | Van jóváhagyott spec, de a szerző önmagát ellenőrzi, vagy a kapuk csak leírások | [C4–C5 — RUG és mechanikus kapuk](#c4c5--független-review-és-mechanikus-kapuk) | A review független, a kötelező minimum pedig narráció helyett fut. |

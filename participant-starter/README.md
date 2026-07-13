@@ -6,7 +6,7 @@ shadcn/ui** projekt. Ez még **nem agent-ready fejlesztési rendszer**, csak a t
 első feladata, hogy missionnel, repo-szabályokkal, kanonikus standarddal, spec-kapuval, RUG-gal és
 mechanikus ellenőrzésekkel megbízható fejlesztési környezetté alakítsd.
 
-Az ezután készülő alkalmazás a rendszer real-life validációs workloadja: azt bizonyítja, hogy az
+Az ezután készülő alkalmazás a rendszer életszerű, de **KITALÁLT** validációs workloadja: azt bizonyítja, hogy az
 operating modellel valóban végigvihető egy üzleti változás a specifikációtól a review-zott eredményig.
 
 A működési szerződést ne egy konkrét modell prompt-trükkjeire építsd. A spec, standard, DoD, gate-ek és
@@ -68,8 +68,7 @@ typecheck, lint, teszt és build kapukat.
 
 Abszolút linkek, hogy a saját repódba másolás után is működjenek:
 
-- Szakszavak: [fogalomtár](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/fogalomtar.md)
-- Felkészülés / telepítés: [setup-guide](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/setup-guide.md)
-- Napirend: [agenda](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/agenda.md)
-- G1 munkafüzet — saját repo, CI, Vercel preview és Neon DB-branch:
-  [01-greenfield-setup.html](https://github.com/cspiya/wshp-ai-dev-2026/blob/main/materials/notebooks/01-greenfield-setup.html)
+- Szakszavak: [fogalomtár](https://cspiya.github.io/wshp-ai-dev-2026/materials/fogalomtar/)
+- Felkészülés / telepítés: [C0 setup](https://cspiya.github.io/wshp-ai-dev-2026/materials/felkeszules/)
+- Napirend: [a nap térképe](https://cspiya.github.io/wshp-ai-dev-2026/materials/napirend/)
+- Első modul: [Szerepek és korlátok](https://cspiya.github.io/wshp-ai-dev-2026/materials/modulok/01-agentikus-fejlesztes/)
