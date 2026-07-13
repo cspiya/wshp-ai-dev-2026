@@ -1,0 +1,391 @@
+<title>Reference Lab — Precision Workshop Console (design mock)</title>
+<style>
+  :root{
+    --chassis:#14161c; --chassis2:#1d2028; --chassis3:#262a34;
+    --seam:#3a3f4d; --engrave:#8a8f9e;
+    --paper:#f4f2ec; --paper2:#fbfaf6; --paper-edge:#e2ddcd;
+    --ink:#1b1d22; --muted:#5d6068;
+    --amber:#ffb224; --amber-deep:#a05a00; --amber-glow:rgba(255,178,36,.35);
+    --ok:#2f9e6e; --ok-deep:#1d7a52; --bad:#d64545;
+    --mono:"Cascadia Code","JetBrains Mono",Consolas,ui-monospace,monospace;
+    --disp:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+    --text:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:#0e1015;color:var(--ink);font-family:var(--text);line-height:1.55}
+  .note{max-width:70rem;margin:2.2rem auto .9rem;padding:0 1.5rem;color:#7d8290;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+  .frame{max-width:82rem;margin:0 auto 4rem;border:1px solid var(--seam);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+
+  /* ── chassis ─────────────────────────────── */
+  .bar{background:linear-gradient(180deg,var(--chassis2),var(--chassis));border-bottom:1px solid var(--seam);display:flex;align-items:stretch;gap:0;padding:0 1.4rem}
+  .plate{display:flex;align-items:center;gap:.7rem;padding:.95rem 1.1rem .95rem 0;margin-right:.6rem;border-right:1px solid var(--seam)}
+  .lamp{width:.55rem;height:.55rem;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber-glow), inset 0 -1px 2px rgba(0,0,0,.4)}
+  .word{color:#f3f4f7;font-family:var(--disp);font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+  .word small{display:block;font-family:var(--mono);font-weight:400;font-size:.58rem;letter-spacing:.22em;color:var(--engrave);text-transform:uppercase;margin-top:.1rem}
+  nav{display:flex;align-items:stretch}
+  nav a{display:flex;align-items:center;padding:0 1.15rem;color:#aeb3c0;text-decoration:none;font-size:.9rem;font-weight:600;border-bottom:2px solid transparent}
+  nav a.on{color:#fff;border-bottom-color:var(--amber);background:linear-gradient(180deg,transparent 60%,rgba(255,178,36,.08))}
+  .badge{margin-left:auto;align-self:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;color:var(--amber);border:1px solid rgba(255,178,36,.45);border-radius:4px;padding:.32rem .6rem;background:rgba(255,178,36,.07)}
+
+  /* ── deck ────────────────────────────────── */
+  .deck{background:
+    linear-gradient(rgba(27,29,34,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(27,29,34,.035) 1px,transparent 1px),
+    var(--paper);
+    background-size:28px 28px;
+    padding:2.6rem clamp(1.4rem,4vw,3.4rem) 3rem}
+  .crumb{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;gap:.8rem;align-items:center}
+  .crumb b{color:var(--amber-deep)}
+  h1{font-family:var(--disp);font-weight:750;font-size:clamp(2rem,4.4vw,3.1rem);letter-spacing:-.025em;line-height:1.06;margin:.5rem 0 .4rem;text-wrap:balance}
+  .lede{color:var(--muted);max-width:56ch;font-size:1.02rem}
+
+  /* instrument module */
+  .mod{background:var(--paper2);border:1px solid var(--paper-edge);border-radius:10px;box-shadow:0 1px 0 #fff inset,0 10px 24px rgba(27,29,34,.07);overflow:hidden;margin-top:1.6rem}
+  .mod-head{display:flex;align-items:center;gap:.8rem;padding:.72rem 1.2rem;background:linear-gradient(180deg,#efece2,#e9e5d8);border-bottom:1px solid var(--paper-edge)}
+  .mod-head .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .mod-head .stat{margin-left:auto;display:flex;align-items:center;gap:.45rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.16em}
+  .dotlamp{width:.5rem;height:.5rem;border-radius:50%}
+  .body{padding:1.35rem 1.4rem 1.5rem}
+
+  /* hero composite */
+  .hero{display:grid;grid-template-columns:1.5fr 1fr;gap:1.6rem;margin-top:1.9rem}
+  .hero .mod{margin-top:0}
+  .big-actions{display:flex;gap:.8rem;margin-top:1.3rem;flex-wrap:wrap}
+  .btn{font:600 .95rem var(--text);border-radius:8px;padding:.72rem 1.25rem;border:1px solid transparent;cursor:pointer}
+  .btn-amber{background:linear-gradient(180deg,#ffc14e,var(--amber));color:#3a2500;border-color:#d99a1d;box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 2px 0 #b97e12,0 6px 14px rgba(185,126,18,.3)}
+  .btn-ghost{background:#fff;border-color:#d8d3c4;color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--amber-deep)}
+  .gaugebox{display:grid;gap:.85rem}
+  .read{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dashed #ddd7c6;padding:.45rem 0;font-size:.92rem}
+  .read .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .read .v{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+  .read .v.ok{color:var(--ok-deep);font-weight:600}
+  .healthline{display:flex;align-items:center;gap:.6rem;padding:.8rem 1rem;border:1px solid #d9ecd9;background:#eef7ef;border-radius:8px;font-size:.9rem}
+  .healthline .lamp{background:var(--ok);box-shadow:0 0 8px rgba(47,158,110,.5)}
+  .healthline code{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+
+  /* pillars */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem}
+  .pillar{background:var(--paper2);border:1px solid var(--paper-edge);border-radius:10px;padding:1.15rem 1.2rem;position:relative}
+  .pillar::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--amber);border-radius:10px 0 0 10px}
+  .pillar .no{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;color:var(--amber-deep)}
+  .pillar h3{font-family:var(--disp);font-size:1.06rem;margin:.35rem 0 .3rem}
+  .pillar p{font-size:.88rem;color:var(--muted)}
+
+  /* calibration rail */
+  .rail{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:1.8rem 0 .4rem;position:relative}
+  .rail::before{content:"";position:absolute;top:-.65rem;left:.2rem;right:.2rem;height:6px;
+    background:repeating-linear-gradient(90deg,#c9c3b1 0 1px,transparent 1px 12px);opacity:.8}
+  .station{background:var(--paper2);border:1px solid var(--paper-edge);border-radius:9px;padding:.75rem .9rem;display:flex;flex-direction:column;gap:.28rem;position:relative}
+  .station .idx{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--muted)}
+  .station .nm{font-family:var(--disp);font-weight:700;font-size:.98rem}
+  .station .st{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em}
+  .station.done{border-color:#cfe4d6}
+  .station.done .st{color:var(--ok-deep)} .station.done .idx{color:var(--ok-deep)}
+  .station.now{border-color:var(--amber-deep);box-shadow:0 0 0 3px var(--amber-glow)}
+  .station.now .st{color:var(--amber-deep)} .station.now .nm{color:var(--amber-deep)}
+  .station.lock{opacity:.62;border-style:dashed}
+  .station .lampline{position:absolute;top:.8rem;right:.8rem}
+  .station.done .dotlamp{background:var(--ok)} .station.now .dotlamp{background:var(--amber);box-shadow:0 0 8px var(--amber-glow)} .station.lock .dotlamp{background:#b9b4a4}
+
+  /* forms */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.4rem}
+  label{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+  input,select{width:100%;font:500 .95rem var(--text);padding:.6rem .75rem;border:1px solid #d5d0c0;border-radius:7px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,.btn:focus{outline:2px solid var(--amber-deep);outline-offset:2px}
+  .formfoot{display:flex;align-items:center;gap:.9rem;margin-top:1.15rem}
+  .mini{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+
+  .total{display:flex;align-items:baseline;gap:.9rem;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--paper-edge)}
+  .total .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .total .n{font-family:var(--mono);font-weight:700;font-size:2.2rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .total .cur{font-family:var(--mono);color:var(--muted)}
+
+  /* certificate */
+  .cert{border:2px solid var(--ok-deep);border-radius:12px;background:linear-gradient(180deg,#f2f8f2,#fbfaf6 30%);padding:1.4rem 1.5rem;margin-top:1.6rem;position:relative}
+  .cert::after{content:"VERIFIED";position:absolute;top:1.1rem;right:1.2rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.3em;color:var(--ok-deep);border:1.5px solid var(--ok-deep);padding:.3rem .55rem;border-radius:4px;transform:rotate(4deg);opacity:.85}
+  .cert h2{font-family:var(--disp);font-size:1.35rem;letter-spacing:-.015em;display:flex;gap:.6rem;align-items:center}
+  .ledger{margin-top:.9rem;display:grid;gap:0}
+  .ledger div{display:grid;grid-template-columns:11rem 1fr;padding:.5rem 0;border-bottom:1px dashed #cfe0cf;font-size:.93rem}
+  .ledger .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);align-self:center}
+  .ledger .v{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* workshops table */
+  table{width:100%;border-collapse:collapse;font-size:.93rem}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.55rem .8rem;border-bottom:2px solid var(--ink)}
+  tbody td{padding:.72rem .8rem;border-bottom:1px solid var(--paper-edge)}
+  tbody tr:hover{background:rgba(255,178,36,.06)}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+  .rowbtn{font:600 .8rem var(--text);padding:.34rem .7rem;border-radius:6px;border:1px solid #d5d0c0;background:#fff;cursor:pointer}
+  .rowbtn.del{color:var(--bad);border-color:#eecaca}
+
+  footer.strip{background:var(--chassis);border-top:1px solid var(--seam);color:var(--engrave);font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;padding:.85rem 1.5rem;display:flex;gap:2rem;flex-wrap:wrap}
+  footer.strip b{color:#cdd2de;font-weight:500}
+
+
+  /* catalog cards */
+  .cat{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.7rem}
+  .wcard{background:var(--paper2);border:1px solid var(--paper-edge);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 #fff inset,0 8px 20px rgba(27,29,34,.06)}
+  .wcard .strip{height:6px;background:repeating-linear-gradient(90deg,var(--amber) 0 14px,#e8b45c 14px 28px)}
+  .wcard .in{padding:1.05rem 1.15rem 1.2rem;display:flex;flex-direction:column;gap:.55rem;flex:1}
+  .wcard .kind{font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;color:var(--amber-deep);text-transform:uppercase}
+  .wcard h3{font-family:var(--disp);font-weight:750;font-size:1.12rem;letter-spacing:-.015em;line-height:1.2}
+  .wcard .meta{display:grid;gap:.3rem;margin-top:.15rem}
+  .wcard .meta span{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);border-bottom:1px dashed #e3decd;padding-bottom:.28rem}
+  .wcard .meta b{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+  .wcard .price{margin-top:auto;display:flex;align-items:baseline;gap:.4rem;padding-top:.7rem}
+  .wcard .price .n{font-family:var(--mono);font-weight:700;font-size:1.55rem;letter-spacing:-.02em}
+  .wcard .price .cur{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+  .wcard.full{opacity:.6}
+  .soldout{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--bad);border:1px solid #eecaca;border-radius:4px;padding:.25rem .5rem;align-self:flex-start;margin-top:.7rem}
+  /* wizard summary chips */
+  .chips{display:grid;gap:.55rem;margin-top:1.4rem}
+  .chip{display:flex;align-items:center;gap:.8rem;background:var(--paper2);border:1px solid #cfe4d6;border-radius:8px;padding:.6rem .9rem;font-size:.9rem}
+  .chip .ck{color:var(--ok-deep);font-weight:700}
+  .chip .lbl{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);width:7.5rem}
+  .chip .val{font-weight:600}
+  .chip .chg{margin-left:auto;font-size:.8rem;color:var(--amber-deep);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--text)}
+  .wizfoot{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+  .back{font:600 .9rem var(--text);color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline}
+
+  @media (max-width:760px){
+    .hero,.pillars,.grid2,.rail{grid-template-columns:1fr}
+    .rail::before{display:none}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .station.now .dotlamp{animation:pulse 2.4s ease-in-out infinite}
+    @keyframes pulse{50%{box-shadow:0 0 14px var(--amber-glow)}}
+  }
+</style>
+
+<p class="note">Design mock · Direction A v3 — Precision Workshop Console · 1/5 · Overview</p>
+<div class="frame">
+  <div class="bar">
+    <div class="plate"><span class="lamp"></span><div class="word">Reference Lab<small>Workshop console</small></div></div>
+    <nav><a class="on" href="#">Overview</a><a href="#">Workshops</a><a href="#">Shop journey</a></nav>
+    <span class="badge">INVENTED TRAINING DATA</span>
+  </div>
+  <div class="deck">
+    <div class="crumb"><b>REF-LAB/00</b> · REFERENCE WORKLOAD · CALIBRATED 2026-07-13</div>
+    <h1>A small webshop,<br>built to prove the method.</h1>
+    <p class="lede">Spec-first slices, hard quality gates and independent review produce a working checkout journey you can inspect end to end — and repeat.</p>
+
+    <div class="hero">
+      <div class="mod">
+        <div class="mod-head"><span class="tag">Mission</span><span class="stat"><span class="dotlamp" style="background:var(--amber)"></span>READY</span></div>
+        <div class="body">
+          <p style="max-width:52ch">Every screen of this console is driven by the real application state — pricing, fake payment authorization and registration run against the same contracts the tests protect.</p>
+          <div class="big-actions">
+            <button class="btn btn-amber">Start shop journey</button>
+            <button class="btn btn-ghost">Inspect workshops</button>
+          </div>
+        </div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="tag">System health</span><span class="stat"><span class="dotlamp" style="background:var(--ok)"></span>PASS</span></div>
+        <div class="body gaugebox">
+          <div class="healthline"><span class="lamp"></span> API responding <code>pong · workshop</code></div>
+          <div class="read"><span class="k">Transport</span><span class="v">tRPC / React Query</span></div>
+          <div class="read"><span class="k">Data adapter</span><span class="v ok">in-memory · contract-equal</span></div>
+          <div class="read"><span class="k">Last check</span><span class="v">15:13:24 UTC</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar"><span class="no">01 · SPEC</span><h3>Spec before code</h3><p>Every slice starts as a written spec with acceptance criteria; the builder restates them first.</p></div>
+      <div class="pillar"><span class="no">02 · GATES</span><h3>Gates on every change</h3><p>Typecheck, lint, tests and a production build guard each change to the golden-path slice.</p></div>
+      <div class="pillar"><span class="no">03 · EVIDENCE</span><h3>Evidence over claims</h3><p>The journey ends in a proof summary — price, payment authorization and registration status, captured live.</p></div>
+    </div>
+  </div>
+  <footer class="strip"><span><b>GOLDEN PATH</b> src/modules/workshops</span><span><b>GATES</b> typecheck · lint · test · build</span><span><b>REVIEW</b> RUG</span></footer>
+</div>
+
+<p class="note">2/4 · Shop journey — 1. lépés: workshop-kiválasztás (katalógus)</p>
+<div class="frame">
+  <div class="bar">
+    <div class="plate"><span class="lamp"></span><div class="word">Reference Lab<small>Workshop console</small></div></div>
+    <nav><a href="#">Overview</a><a href="#">Workshops</a><a class="on" href="#">Shop journey</a></nav>
+    <span class="badge">INVENTED TRAINING DATA</span>
+  </div>
+  <div class="deck">
+    <div class="crumb"><b>REF-LAB/03</b> · CROSS-SLICE JOURNEY</div>
+    <h1>Choose your workshop</h1>
+    <p class="lede">Pick a training to register for — price, date and remaining seats come from the live catalog. Checkout takes three short steps after this.</p>
+
+    <div class="rail">
+      <div class="station now"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">01</span><span class="nm">Workshop</span><span class="st">CHOOSE</span></div>
+      <div class="station lock"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">02</span><span class="nm">Account</span><span class="st">LOCKED</span></div>
+      <div class="station lock"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">03</span><span class="nm">Price &amp; payment</span><span class="st">LOCKED</span></div>
+      <div class="station lock"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">04</span><span class="nm">Confirmation</span><span class="st">LOCKED</span></div>
+    </div>
+
+    <div class="cat">
+      <div class="wcard">
+        <div class="strip"></div>
+        <div class="in">
+          <span class="kind">ONLINE · CHECKOUT</span>
+          <h3>Sample Workshop: Checkout Flow</h3>
+          <div class="meta">
+            <span>Date <b>15 Jan 2028 · 10:00</b></span>
+            <span>Seats left <b>17 / 20</b></span>
+          </div>
+          <div class="price"><span class="n">10 000</span><span class="cur">HUF</span></div>
+          <button class="btn btn-amber" style="margin-top:.7rem">Select &amp; continue</button>
+        </div>
+      </div>
+      <div class="wcard">
+        <div class="strip" style="background:repeating-linear-gradient(90deg,#8fb8a4 0 14px,#a9cbb9 14px 28px)"></div>
+        <div class="in">
+          <span class="kind" style="color:var(--ok-deep)">ON-SITE · TESTING</span>
+          <h3>Contract Testing Lab</h3>
+          <div class="meta">
+            <span>Date <b>02 Feb 2028 · 09:00</b></span>
+            <span>Seats left <b>4 / 12</b></span>
+          </div>
+          <div class="price"><span class="n">18 500</span><span class="cur">HUF</span></div>
+          <button class="btn btn-ghost" style="margin-top:.7rem">Select &amp; continue</button>
+        </div>
+      </div>
+      <div class="wcard full">
+        <div class="strip" style="background:repeating-linear-gradient(90deg,#c2bdae 0 14px,#d4cfbf 14px 28px)"></div>
+        <div class="in">
+          <span class="kind" style="color:var(--muted)">ONLINE · REVIEW</span>
+          <h3>Independent Review Clinic</h3>
+          <div class="meta">
+            <span>Date <b>20 Feb 2028 · 13:00</b></span>
+            <span>Seats left <b>0 / 15</b></span>
+          </div>
+          <div class="price"><span class="n">14 000</span><span class="cur">HUF</span></div>
+          <span class="soldout">SOLD OUT · WAITLIST OPENS SOON</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="strip"><span><b>GOLDEN PATH</b> src/modules/workshops</span><span><b>GATES</b> typecheck · lint · test · build</span><span><b>REVIEW</b> RUG</span></footer>
+</div>
+
+<p class="note">3/4 · Shop journey — 3. lépés: ár &amp; fizetés (a korábbi lépések összegzőként)</p>
+<div class="frame">
+  <div class="bar">
+    <div class="plate"><span class="lamp"></span><div class="word">Reference Lab<small>Workshop console</small></div></div>
+    <nav><a href="#">Overview</a><a href="#">Workshops</a><a class="on" href="#">Shop journey</a></nav>
+    <span class="badge">INVENTED TRAINING DATA</span>
+  </div>
+  <div class="deck">
+    <div class="crumb"><b>REF-LAB/03</b> · STEP 03 OF 04</div>
+    <h1>Price &amp; payment</h1>
+    <p class="lede">Your quote is calculated from the selected workshop; the fake payment boundary authorizes the exact quoted amount — nothing real is charged.</p>
+
+    <div class="rail">
+      <div class="station done"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">01</span><span class="nm">Workshop</span><span class="st">DONE</span></div>
+      <div class="station done"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">02</span><span class="nm">Account</span><span class="st">SIGNED IN</span></div>
+      <div class="station now"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">03</span><span class="nm">Price &amp; payment</span><span class="st">NOW</span></div>
+      <div class="station lock"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">04</span><span class="nm">Confirmation</span><span class="st">LOCKED</span></div>
+    </div>
+
+    <div class="chips">
+      <div class="chip"><span class="ck">✓</span><span class="lbl">Workshop</span><span class="val">Sample Workshop: Checkout Flow · 15 Jan 2028</span><button class="chg">Change</button></div>
+      <div class="chip"><span class="ck">✓</span><span class="lbl">Account</span><span class="val">trainee@example.test · signed in</span><button class="chg">Sign out</button></div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-head"><span class="tag">Step 03 · Quote</span><span class="stat"><span class="dotlamp" style="background:var(--amber)"></span>NOW</span></div>
+      <div class="body">
+        <div class="grid2">
+          <div><label>List price (from workshop)</label><input value="10000" readonly style="background:#f5f2e8;color:var(--muted)"></div>
+          <div><label>Coupon (minor units)</label><input value="1000"></div>
+          <div><label>Group discount (%)</label><input value="10"></div>
+          <div><label>VAT (%)</label><input value="27" readonly style="background:#f5f2e8;color:var(--muted)"></div>
+        </div>
+        <div class="total"><span class="k">Total to authorize</span><span class="n">10 287</span><span class="cur">HUF</span></div>
+      </div>
+    </div>
+
+    <div class="mod">
+      <div class="mod-head"><span class="tag">Step 03 · Fake payment</span><span class="stat" style="color:var(--amber-deep)"><span class="dotlamp" style="background:var(--amber)"></span>PROTECTED</span></div>
+      <div class="body">
+        <p style="max-width:52ch;color:var(--muted);font-size:.92rem">Training boundary: the PaymentPort authorizes the quote and returns an authorization id. No card, no charge.</p>
+        <div class="formfoot"><button class="btn btn-amber">Authorize 10 287 HUF</button><span class="mini">port: fake-payment-adapter</span></div>
+      </div>
+    </div>
+
+    <div class="wizfoot"><button class="back">← Back to account</button><span class="mini">STEP 03 / 04</span></div>
+  </div>
+  <footer class="strip"><span><b>GOLDEN PATH</b> src/modules/workshops</span><span><b>GATES</b> typecheck · lint · test · build</span><span><b>REVIEW</b> RUG</span></footer>
+</div>
+
+<p class="note">4/4 · Shop journey — visszaigazolás (mérési tanúsítvány)</p>
+<div class="frame">
+  <div class="bar">
+    <div class="plate"><span class="lamp"></span><div class="word">Reference Lab<small>Workshop console</small></div></div>
+    <nav><a href="#">Overview</a><a href="#">Workshops</a><a class="on" href="#">Shop journey</a></nav>
+    <span class="badge">INVENTED TRAINING DATA</span>
+  </div>
+  <div class="deck">
+    <div class="crumb"><b>REF-LAB/03</b> · STEP 04 OF 04</div>
+    <h1>You're registered.</h1>
+    <p class="lede">Every claim below came from the live flow you just ran — this is the evidence the method produces.</p>
+
+    <div class="rail">
+      <div class="station done"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">01</span><span class="nm">Workshop</span><span class="st">DONE</span></div>
+      <div class="station done"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">02</span><span class="nm">Account</span><span class="st">SIGNED IN</span></div>
+      <div class="station done"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">03</span><span class="nm">Price &amp; payment</span><span class="st">AUTHORIZED</span></div>
+      <div class="station done"><span class="lampline"><span class="dotlamp"></span></span><span class="idx">04</span><span class="nm">Confirmation</span><span class="st">CONFIRMED</span></div>
+    </div>
+
+    <div class="cert">
+      <h2><span class="dotlamp" style="background:var(--ok);width:.7rem;height:.7rem"></span> Registration confirmed — proof</h2>
+      <div class="ledger">
+        <div><span class="k">Workshop</span><span class="v">Sample Workshop: Checkout Flow · 15 Jan 2028</span></div>
+        <div><span class="k">Attendee</span><span class="v">trainee@example.test</span></div>
+        <div><span class="k">Price</span><span class="v">10 287 HUF</span></div>
+        <div><span class="k">Payment auth</span><span class="v">fake_sample-order</span></div>
+        <div><span class="k">Registration</span><span class="v" style="color:var(--ok-deep);font-weight:600">confirmed · cancellable until 13 Jan 2028 10:00</span></div>
+      </div>
+      <div class="formfoot">
+        <button class="btn btn-amber">Browse more workshops</button>
+        <button class="btn btn-ghost">Cancel registration</button>
+        <span class="mini">cancel window: 48h exclusive</span>
+      </div>
+    </div>
+  </div>
+  <footer class="strip"><span><b>GOLDEN PATH</b> src/modules/workshops</span><span><b>GATES</b> typecheck · lint · test · build</span><span><b>REVIEW</b> RUG</span></footer>
+</div>
+
+<p class="note">5/5 · Workshops (admin / golden-path nézet) — golden-path CRUD slice</p>
+<div class="frame">
+  <div class="bar">
+    <div class="plate"><span class="lamp"></span><div class="word">Reference Lab<small>Workshop console</small></div></div>
+    <nav><a href="#">Overview</a><a class="on" href="#">Workshops</a><a href="#">Shop journey</a></nav>
+    <span class="badge">INVENTED TRAINING DATA</span>
+  </div>
+  <div class="deck">
+    <div style="display:flex;align-items:end;gap:1.5rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:16rem">
+        <div class="crumb"><b>REF-LAB/01</b> · GOLDEN PATH · CRUD SLICE</div>
+        <h1>Workshops</h1>
+        <p class="lede">The training catalog — the golden-path slice every other module copies.</p>
+      </div>
+      <button class="btn btn-amber">New workshop</button>
+    </div>
+
+    <div class="mod">
+      <div class="mod-head"><span class="tag">Catalog</span><span class="stat"><span class="dotlamp" style="background:var(--ok)"></span>1 RECORD</span></div>
+      <div class="body" style="padding:.4rem .6rem .6rem">
+        <table>
+          <thead><tr><th>Title</th><th>Date</th><th>Location</th><th style="text-align:right">Price (HUF)</th><th style="text-align:right">Capacity</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600">Sample Workshop: Checkout Flow</td>
+              <td>15 Jan 2028, 10:00</td><td>Online</td>
+              <td class="num">10 000</td><td class="num">20</td>
+              <td style="text-align:right"><button class="rowbtn">Edit</button> <button class="rowbtn del">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <footer class="strip"><span><b>GOLDEN PATH</b> src/modules/workshops</span><span><b>GATES</b> typecheck · lint · test · build</span><span><b>REVIEW</b> RUG</span></footer>
+</div>

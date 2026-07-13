@@ -192,12 +192,14 @@ The setup/replay package will turn steps 4–6 and 10 into idempotent scripts. T
 scripts must support a diagnostic mode, clear non-zero exits, secret-safe output,
 and explicit “human action required” messages rather than silently guessing.
 
-## 7. v0 visual-design phase
+## 7. Visual-design phase (v0 or Claude Design)
 
-v0 is the visual design and UI iteration partner, not the product owner or backend
-implementer. The workflow uses v0's current
+The selected design tool is the visual design and UI iteration partner, not the
+product owner or backend implementer. v0 may use its current
 [Git Import](https://v0.app/docs/git-import) and
-[Design Mode](https://v0.app/docs/design-mode) capabilities.
+[Design Mode](https://v0.app/docs/design-mode) capabilities. Claude Design may work
+from the same versioned brief, screenshots and repository checkout. Both tools obey
+the same protected-file and evidence contract.
 
 ### 7.1 Input before generation
 
@@ -214,7 +216,14 @@ Prepare a versioned design brief containing:
 - explicit architecture and behavior prohibitions;
 - screenshots of the current baseline.
 
-Do not ask v0 to “make the app beautiful” without this contract.
+Do not ask a design tool to “make the app beautiful” without this contract.
+
+**Budget rule:** one design run produces exactly **one human-selected visual
+direction**. The free v0 allowance is not used to generate alternatives: a full
+reference-app direction can consume the allowance before a second direction is
+verified. If v0 is unavailable or its free balance is insufficient, continue in
+Claude Design from the same brief and evidence. Claude receives the same single-output
+handoff; switching tools does not authorize multiple variants.
 
 ### 7.2 Safe Git round-trip
 
@@ -232,10 +241,12 @@ Do not ask v0 to “make the app beautiful” without this contract.
 4. Start from the approved base SHA. Let v0 create its dedicated branch; it must not
    modify `main` directly.
 5. Give v0 the design brief, relevant source files, and the explicit protected list.
-6. Generate **two or three meaningfully different visual directions** using the same
-   content and behavior.
-7. Compare them in a human design gate. Record what is accepted, rejected, and why.
-8. Refine the accepted direction in Design Mode. Applied edits create diffable,
+6. Before generation, the human selects exactly one direction from the design brief.
+   Generate one reviewable version only. Do not spend the free allowance on parallel
+   alternatives.
+7. Evaluate that version against the baseline, state matrix and weighted human design
+   gate. Record `ACCEPT`, `REVISE` or `REJECT` and why.
+8. Refine the accepted direction in Design Mode or Claude Design. Applied edits create diffable,
    reviewable versions; inspect the source diff after each coherent iteration.
 9. Validate mobile by using the actual responsive preview/browser. Design Mode itself
    is not available on mobile viewports, so its desktop visual editor is not mobile
@@ -301,10 +312,11 @@ WEN-310 is the planning/baseline package. Completion uses **four more coherent
 issues**, not dozens of micro-issues. Findings stay inside the active package unless
 they reveal a genuinely independent product decision.
 
-### Package 2 — v0 visual direction and accepted UI contract
+### Package 2 — visual direction and accepted UI contract
 
-Create the design brief; run the v0 alternatives and human design gate; establish
-the design guideline; integrate the selected responsive UI and all required states.
+Create the design brief; select and generate one direction with v0 or Claude Design;
+run the human design gate; establish the design guideline; integrate the selected
+responsive UI and all required states.
 Exit: accepted visual contract, UI diff, screenshots, accessibility review, and green
 local application gates.
 
@@ -410,7 +422,7 @@ proof; a successful deployment alone is not user-journey proof.
 |---|---|---|
 | Human | product/design choices, OAuth and secrets, account/resource selection, production promotion, merge/go decision | — |
 | Codex builder/coordinator | bounded implementation, scripts, integration, evidence collection, docs and trace | ambiguous scope, protected resource, destructive or external-state decision |
-| v0 | visual alternatives and accepted presentation-layer iteration | any backend/domain/schema/auth/workflow change |
+| v0 or Claude Design | one selected visual direction and accepted presentation-layer iteration | a second variant without a new human decision/budget, or any backend/domain/schema/auth/workflow change |
 | Browser agent | repeatable visible setup and end-to-end verification | credential entry, consent, MFA, irreversible actions |
 | Fresh reviewer | independent artifact review and reproducible findings | changing builder files directly |
 | Claude / WEN-129 | consumes the accepted reference SHA and turns its proof into the workshop journey | editing the reference-app lane |
@@ -419,7 +431,7 @@ proof; a successful deployment alone is not user-journey proof.
 
 | Risk | Primary response | Fallback without weakening the claim |
 |---|---|---|
-| v0 access/credits unavailable | resume from saved design brief and accepted screenshots | implement the accepted guideline with shadcn locally; record that v0 generation was not the proof |
+| v0 access/credits unavailable | continue the same single-direction handoff in Claude Design from the saved brief and screenshots | implement the accepted guideline with shadcn locally; record which tool produced the proposal and that tool output was not the proof |
 | v0 proposes backend changes | reject the version and narrow the prompt/protected list | extract only presentation concepts, then implement a bounded local UI diff |
 | v0 could access application secrets through a connected Vercel project | block import until the human env/integration inventory is complete; keep v0 disconnected from the production-linked project | use a dedicated secret-free design project in the same Vercel team |
 | Auth provisioning/env fails | diagnose configuration and verify each environment separately | keep local in-memory demo for teaching, but do not call live auth complete |
@@ -459,6 +471,9 @@ The reference app is complete only when all of the following are true:
 - Keep work in no more than five large packages including WEN-310.
 - Add v0 as a gated visual-design phase on the existing app, not as a separate app
   generator.
+- Produce one human-selected design version per design run. Use free v0 for at most
+  one complete direction; otherwise use Claude Design or a separately approved paid
+  v0 budget. Tool switches preserve the single-output scope.
 - Preserve the current domain, modular architecture, auth model, fake payment, and
   deployment topology.
 - Validate coherent batches, then run the full gate; do not over-validate every small
@@ -475,7 +490,7 @@ The reference app is complete only when all of the following are true:
 
 ### Unresolved decisions and human gates
 
-- select the visual direction after comparing v0 alternatives;
+- select the one visual direction before starting v0 or Claude Design generation;
 - choose, before v0 import, between no Vercel connection and a dedicated secret-free
   design project after reviewing environment/integration exposure;
 - authorize/provide access for Neon Auth and environment configuration;
