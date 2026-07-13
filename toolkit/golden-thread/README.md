@@ -209,4 +209,4 @@ The pack was validated by copying the participant-starter tracked files into a t
 workspace, applying each snapshot, and running the real gates (`npm run typecheck`,
 `npm run lint`, `npm run test`); the broken snapshot was additionally proven with a
 transient exact-boundary mutation test (fails on broken, passes on known-good, then
-deleted). See the WEN-129 work item for the recorded command log.
+deleted). See the material build trace for the recorded command log.

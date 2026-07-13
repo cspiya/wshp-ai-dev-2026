@@ -13,7 +13,7 @@
       "figureSelector": "#fig-concept-families",
       "svgSelector": "#fig-concept-families svg",
       "textFallbackSelector": "#fig-concept-families-text",
-      "inlineSvgHash": "a5ba6b96239d57e6023568de6ef6b2fabecee286e2e3f8e8f0cf8aab1994c0c6"
+      "inlineSvgHash": "e858f3870cad8eb536b4a9fa82eedf590fedd1c39b779839c9c835090c69f9cd"
     },
     {
       "id": "fig-terms-to-modules",
@@ -28,8 +28,8 @@
       "figureSelector": "#fig-terms-to-modules",
       "svgSelector": "#fig-terms-to-modules svg",
       "textFallbackSelector": "#fig-terms-to-modules-text",
-      "inlineSvgHash": "21debbca5038f8b9c1ab3eefffe077ea4bd74b01f68092e4295ff9e11aa73a93",
-      "generatedInlineSvgHash": "6aa5c43885584880ffbf4cecad9032ab1bfe980d2b50f884a04844e8a5fd44db"
+      "inlineSvgHash": "a6c584453c8ef1f52cce331a5550abe683a9e6cf2c36597dccea52f1df02a407",
+      "generatedInlineSvgHash": "37ab2b0c29d4a01f999266f94a4d1572d644ff0f486fc68fa27e67016e5cc50c"
     }
   ]
 }

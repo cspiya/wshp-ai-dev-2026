@@ -16,7 +16,7 @@ const DEFAULT_FILES = [
   "materials/napirend/index.html",
 ];
 
-const COMMAND = /(?:^|[\s>`])(?:git\s+(?:clone|add|commit|push|switch|checkout|rev-parse)|npm\s+(?:run|ci|install)|npx\s+(?:--yes\s+)?[\w@./-]+|curl(?:\.exe)?\s+(?:-[A-Za-z]+|https?:\/\/|["']https?:\/\/|\$[A-Za-z_])|node\s+[^\s<]+\.mjs|powershell\b|invoke-restmethod\b|dotnet\s+(?:test|build|run)|new-item\b|set-content\b|remove-item\b|claude\s+--|codex\s+--)/i;
+const COMMAND = /(?:^|[\s>`])(?:git\s+(?:clone|add|commit|push|switch|checkout|rev-parse)|npm\s+(?:run|ci|install)|npx\s+(?:--yes\s+)?[\w@./-]+|curl(?:\.exe)?\s+(?:-[A-Za-z]+|https?:\/\/|["']https?:\/\/|\$[A-Za-z_])|node\s+(?:(?:--?[\w-]+(?:=[^\s<]+)?)(?:\s+[^\s<]+)*|[^\s<]+\.m?js)|powershell\b|invoke-restmethod\b|dotnet\s+(?:test|build|run)|new-item\b|set-content\b|remove-item\b|claude\s+--|codex\s+--)/i;
 const HUMAN_DIRECTIVE = /\b(?:futtasd|futtassátok|másold|másoljátok|gépeld|gépeljétek|írd\s+be|írjátok\s+be|add\s+ki|commitold)\b/i;
 const AGENT_OWNED = /(?:agent-run|agent által|az agent|agentet|agentnek|claude code vagy codex|technical contract|technikai kontraktus|technikai trace|recorded evidence|non-executable|nem résztvevői|nem gépeli be|nem parancslista|replay transcript|sablon)/i;
 
@@ -113,6 +113,13 @@ export function checkFiles(files) {
   return failures;
 }
 
+export function checkNegativeFixtures(files) {
+  return files.map((file) => ({
+    file,
+    failures: checkFiles([file]),
+  }));
+}
+
 function parseArgs(argv) {
   const explicit = argv.filter((arg) => !arg.startsWith("--"));
   return {
@@ -126,18 +133,28 @@ function main() {
   const targets = selfTest
     ? walk(path.join(SCRIPT_DIR, "fixtures/no-cli-negative")).filter((file) => /\.(?:html?|md)$/i.test(file))
     : files.length ? files : defaultTargets(REPO_ROOT);
-  const failures = checkFiles(targets);
-
   if (selfTest) {
-    if (!failures.length) {
-      console.error("NO-CLI SELF-TEST FAIL: negative fixture was accepted");
+    const results = checkNegativeFixtures(targets);
+    const accepted = results.filter((result) => !result.failures.length);
+    if (accepted.length) {
+      console.error("NO-CLI SELF-TEST FAIL: negative fixture(s) were accepted");
+      for (const result of accepted) {
+        console.error(`- ${path.relative(REPO_ROOT, result.file)}`);
+      }
       process.exitCode = 1;
       return;
     }
-    console.log(`NO-CLI SELF-TEST PASS: rejected ${failures.length} regression(s)`);
+    const findingCount = results.reduce(
+      (count, result) => count + result.failures.length,
+      0,
+    );
+    console.log(
+      `NO-CLI SELF-TEST PASS: rejected ${results.length} fixture(s) with ${findingCount} finding(s)`,
+    );
     return;
   }
 
+  const failures = checkFiles(targets);
   if (failures.length) {
     console.error(`NO-CLI FAIL (${failures.length})`);
     for (const failure of failures) console.error(`- ${failure}`);

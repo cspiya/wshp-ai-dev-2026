@@ -2,7 +2,7 @@
 
 **Status:** approved project plan
 
-**Planning issue:** `WEN-310`
+**Planning baseline:** human-approved on 2026-07-13
 
 **Linear project:** `wshp-ai-dev-reference-app-2026`
 
@@ -77,7 +77,7 @@ Baseline inspected on **2026-07-13**, at `main` commit
 | Reproducibility | README, setup notes, ADR and historical verification record | Partial | One ordered zero-to-production runbook and a clean replay |
 
 [`SETUP-STATUS.md`](SETUP-STATUS.md) records the live setup checklist. It used to
-describe already-merged auth code as missing; WEN-310 corrects that distinction:
+describe already-merged auth code as missing; the approved plan corrects that distinction:
 **code present is not the same claim as live integration proven**.
 
 ## 4. Decisions already made
@@ -117,18 +117,17 @@ evidence links, failure/recovery path, and replay result for one large work pack
 The root build journal keeps only the diagram, synthesis, separated human/agent
 lessons, and collapsed cases required by the repository contract.
 
-The first detailed record is
-[`docs/build-journal/2026-07-13-wen-310-plan.md`](docs/build-journal/2026-07-13-wen-310-plan.md).
+The first detailed planning record is stored in the internal build-journal directory.
 
 ### 4.3 Parallel ownership
 
 - **Codex reference-app lane:** `reference-app/**` and the integration of its final
   evidence.
-- **Claude / WEN-129 lane:** workshop material and executable golden-thread content;
+- **Claude material lane:** workshop material and executable golden-thread content;
   it treats `reference-app/**` as read-only.
 - **Root and `.github/**`:** coordinator-owned unless an issue explicitly transfers
   them.
-- **Handoff to WEN-129:** accepted commit SHA, replay commands, evidence locations,
+- **Handoff to the material lane:** accepted commit SHA, replay commands, evidence locations,
   and known limitations — never an unreviewed working branch.
 
 ## 5. Completion flow
@@ -308,7 +307,7 @@ The phase is accepted only when it produces:
 
 ## 8. Four remaining large work packages
 
-WEN-310 is the planning/baseline package. Completion uses **four more coherent
+The approved plan is the planning/baseline package. Completion uses **four more coherent
 issues**, not dozens of micro-issues. Findings stay inside the active package unless
 they reveal a genuinely independent product decision.
 
@@ -339,7 +338,7 @@ replay succeeds without relying on this conversation.
 Run a fresh-context audit of the complete specification, architecture, security,
 visual system, accessibility, browser/API/data chain, documentation, and workshop
 usability. Fix verified findings through RUG, publish the accepted SHA/evidence pack
-to WEN-129, and freeze the instructor fallback. Exit: no verified blocker, explicit
+to the material lane, and freeze the instructor fallback. Exit: no verified blocker, explicit
 residual risks, human go decision, and reproducible participant/trainer entrypoints.
 
 ## 9. C0–C7 relationship
@@ -425,7 +424,7 @@ proof; a successful deployment alone is not user-journey proof.
 | v0 or Claude Design | one selected visual direction and accepted presentation-layer iteration | a second variant without a new human decision/budget, or any backend/domain/schema/auth/workflow change |
 | Browser agent | repeatable visible setup and end-to-end verification | credential entry, consent, MFA, irreversible actions |
 | Fresh reviewer | independent artifact review and reproducible findings | changing builder files directly |
-| Claude / WEN-129 | consumes the accepted reference SHA and turns its proof into the workshop journey | editing the reference-app lane |
+| Claude material lane | consumes the accepted reference SHA and turns its proof into the workshop journey | editing the reference-app lane |
 
 ## 13. Risks and fallbacks
 
@@ -454,7 +453,7 @@ The reference app is complete only when all of the following are true:
 - Production is promoted only after Preview acceptance and receives a smoke test;
 - a fresh person/session replays the zero-to-production instructions successfully;
 - every large package has a build record and a closed RUG trace;
-- WEN-129 receives the accepted SHA, commands, evidence map, limitations, and trainer
+- The material lane receives the accepted SHA, commands, evidence map, limitations, and trainer
   fallback;
 - no secret, personal data, client fact, private invite, or real commercial value is
   present in the public repository;
@@ -468,7 +467,7 @@ The reference app is complete only when all of the following are true:
 - Keep the existing production-linked Vercel project for normal application delivery;
   v0 uses no connected project or a separate secret-free design project.
 - Store the canonical plan and key decisions in Git; use Linear for execution state.
-- Keep work in no more than five large packages including WEN-310.
+- Keep work in no more than five large packages including the planning baseline.
 - Add v0 as a gated visual-design phase on the existing app, not as a separate app
   generator.
 - Produce one human-selected design version per design run. Use free v0 for at most
@@ -486,7 +485,7 @@ The reference app is complete only when all of the following are true:
 | Existing Vercel and Neon delivery resources still match the 2026-07-11 evidence | `SETUP-STATUS.md` and historical verification record | re-observe project, branch mapping and scoped env names before Package 3 / human + builder |
 | v0 Git Import and Design Mode remain available with the documented branch/version behavior | official v0 docs checked 2026-07-13 | re-open official docs immediately before Package 2 / builder |
 | The accepted visual design can preserve routes, tRPC contracts and business tests | current UI is separated from domain/application modules | prove with bounded diff plus full gates in Package 2 / builder + reviewer |
-| WEN-129 continues treating `reference-app/**` as read-only | recorded lane boundary | confirm lease/scope before either branch integrates / coordinator |
+| The material lane continues treating `reference-app/**` as read-only | recorded lane boundary | confirm lease/scope before either branch integrates / coordinator |
 
 ### Unresolved decisions and human gates
 
@@ -497,6 +496,6 @@ The reference app is complete only when all of the following are true:
 - approve each **subsequent** implementation branch merge and Production promotion;
 - make the final workshop go/no-go decision from the evidence pack.
 
-The human explicitly approved the WEN-310 planning branch merge on 2026-07-13; that
+The human explicitly approved the planning branch merge on 2026-07-13; that
 gate is closed. The remaining items above are intentional future gates, not missing
 plan details.
