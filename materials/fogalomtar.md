@@ -34,9 +34,9 @@
 | <a id="subagent"></a>**Subagent** | Elkülönített kontextusban dolgozó specializált agent, amely körülhatárolt részfeladatot vagy független ellenőrzést végez, majd eredményt ad vissza a koordinátornak. |
 | <a id="rug"></a>**RUG — Repeat-Until-Good** | Review-hurok: minden munkadarabot egy **külön** (friss kontextusú) bíráló-agent ellenőriz; az igazolt finding visszamegy javításra, majd ugyanazokat a kapukat újrafuttatjuk. Kilépés csak bizonyított PASS-nál van. Kulcs: a szerző ≠ a bíráló, és a review-javaslatot implementálás előtt ellenőrizni kell. |
 | **AGENTS.md / CLAUDE.md** | A repóban élő "szabálykönyv a gépeknek": konvenciók, tiltások, minták — ezt minden agent-futás beolvassa. |
-| **Skill** | Újrafelhasználható, becsomagolt tudás/munkafolyamat az agentnek (pl. "hogyan írj release note-ot nálunk") — a leírása alapján aktiválódik. |
-| **Hook** | A folyamat adott pontján **determinisztikusan** lefutó szkript (pl. "minden módosítás után futtasd a teszteket"). A prompt csak kérés — a hook garancia. |
-| **MCP** (Model Context Protocol) | Szabvány, amivel az agent külső rendszerekhez kapcsolódik (GitHub, Linear, Neon, Vercel…). Olyan, mint egy "driver" az agent és a szolgáltatás között. |
+| <a id="skill"></a>**Skill** | Újra felhasználható, célhoz kötött agent-útmutató, amely megmondja, milyen eljárást és eszközöket kell követni egy feladattípusnál. |
+| <a id="hook"></a>**Hook** | Egy meghatározott eseménynél automatikusan lefutó program vagy parancs, amely következetesen kikényszerít egy ellenőrzést vagy műveletet. A lefutás kiszámítható, de a hook helyességét pozitív és negatív próbával kell bizonyítani. |
+| <a id="mcp"></a>**MCP** (Model Context Protocol) | Nyílt protokoll, amelyen keresztül egy AI-alkalmazás szabványos módon érhet el külső eszközöket és adatforrásokat. Nem általános API-szinonima. |
 | **Golden path / referencia-slice** | Egy tökéletesen megcsinált minta-feature, amiről minden továbbit (ember és agent) másol. Az agentek a legközelebbi mintát utánozzák — adjunk nekik jót! |
 | **Vertical slice** | A feature minden rétege (DB → API → UI → teszt → doksi) **egy mappában** — nem szétszórva rétegek szerint. Egy feladat = egy mappa = kis kontextus. |
 | **Bounded context / boundary** | Modul-határ: mit importálhat egy modul a másikból (nálunk: csak a `*.contract.ts`-t). Erős határok = kis hibaterjedés + párhuzamosítható agent-munka. |

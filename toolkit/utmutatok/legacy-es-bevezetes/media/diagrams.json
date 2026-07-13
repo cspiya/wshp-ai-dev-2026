@@ -16,7 +16,7 @@
       "figureSelector": "#fig-guide-legacy",
       "svgSelector": "#fig-guide-legacy svg",
       "textFallbackSelector": "#fig-guide-legacy-text",
-      "inlineSvgHash": "f9a65e38a519e65e167e18941db4ff1dc61264be073fdba071bf3deb2ebc67c0"
+      "inlineSvgHash": "d33083a509ada16b877ebf1a1eb8d32bb3543980ce3d4c846b3208a328912ede"
     },
     {
       "id": "fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes",
@@ -34,7 +34,7 @@
       "figureSelector": "#fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes",
       "svgSelector": "#fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes svg",
       "textFallbackSelector": "#fig-guide-legacy-milyen-lepcsokon-halad-a-bevezetes-text",
-      "inlineSvgHash": "5c0d7e3ce140e0eaa8ddc0c5ce9589d11db72fd893eaca22a860d6f8e6435fe6"
+      "inlineSvgHash": "5518f52eaf7d70c5e9714188c5142c90c7ad024a36b4c831db2f6f757fc1c014"
     }
   ]
 }
