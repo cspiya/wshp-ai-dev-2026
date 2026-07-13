@@ -11,16 +11,16 @@ describe("checkout router", () => {
     ).resolves.toEqual({ status: "authorized", paymentId: "fake_sample-order" });
   });
 
-  it("rejects authorization without a session", async () => {
+  it("authorizes a guest without a session", async () => {
     const caller = createCheckoutRouter(createFakePaymentAdapter()).createCaller({ userId: null });
     await expect(
       caller.authorize({ reference: "sample-order", amountMinor: 10_287, currency: "HUF" }),
-    ).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    ).resolves.toEqual({ status: "authorized", paymentId: "fake_sample-order" });
   });
 
   it("rejects non-positive amounts before calling the adapter", async () => {
     const payment = { authorize: async () => ({ status: "authorized" as const, paymentId: "x" }) };
-    const caller = createCheckoutRouter(payment).createCaller({ userId: "test-user" });
+    const caller = createCheckoutRouter(payment).createCaller({ userId: null });
     await expect(
       caller.authorize({ reference: "sample-order", amountMinor: 0, currency: "HUF" }),
     ).rejects.toMatchObject({ code: "BAD_REQUEST" });

@@ -152,8 +152,12 @@ Footer: ink strip of mono `LABEL value` pairs (golden path, gates, review).
 
 ## 8. Webshop journey addendum
 
-**Accepted mock:** [`docs/design/mock-webshop-journey.html`](docs/design/mock-webshop-journey.html)
-(5 screens: catalog → product detail → cart → checkout → confirmation).
+**Historical accepted visual mock:**
+[`docs/design/mock-webshop-journey.html`](docs/design/mock-webshop-journey.html)
+(5 screens: catalog → product detail → cart → checkout → confirmation). Its
+checkout account controls are superseded by the 2026-07-14 WEN-324 remediation:
+the current reference app is guest-only until Auth has live runtime proof. Keep
+the mock as a visual/layout reference, not as the current authentication contract.
 New patterns introduced by the shop rebuild — all in `src/app/globals.css`,
 components in `src/modules/orders/ui/`:
 
@@ -186,7 +190,7 @@ the client renders totals, it never adds numbers up.
 ### Switch row (`.switch-row`) and boxes (`.hintbox` / `.okbox`)
 Labelled checkbox on a white plate (company mode toggle) with amber-deep
 accent-color; `.hintbox` is the amber dashed advisory (seat cap), `.okbox`
-the green reassurance (guest checkout / account optional).
+the green reassurance (guest checkout / no account required).
 
 ### Five-station rail (`.rail-5`)
 The shop rail adds a fifth station (Cart → Your details → Billing →
