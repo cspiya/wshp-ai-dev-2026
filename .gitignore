@@ -5,8 +5,8 @@ dist/
 .env
 .env.*
 !.env.example
-# local MCP config may hold tokens — only the .example is tracked
-.mcp.json
+# The tracked root and participant-starter .mcp.json hold OAuth-only HTTP
+# servers (no tokens). reference-app keeps its own ignore for local configs.
 .vercel/
 *.log
 .DS_Store

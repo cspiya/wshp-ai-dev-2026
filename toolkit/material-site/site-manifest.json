@@ -2002,6 +2002,7 @@
     "toolkit/legacy-playbook/sample/LegacyShop.Tests/OrderTotalsCharacterizationTests.GroupDiscountAndCoupon_LoyalCustomer.verified.txt",
     "toolkit/legacy-playbook/sample/LegacyShop.Tests/OrderTotalsCharacterizationTests.PlainOrder_NewCustomer.verified.txt",
     "toolkit/legacy-playbook/sample/sql/tsqlt-template.sql",
-    "toolkit/legacy-playbook/sample/sql/usp_CalculateOrderTotals.sql"
+    "toolkit/legacy-playbook/sample/sql/usp_CalculateOrderTotals.sql",
+    "toolkit/setup/scoop-telepito.cmd"
   ]
 }

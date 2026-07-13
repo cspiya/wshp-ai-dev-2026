@@ -1,0 +1,21 @@
+{
+  "$comment": "Workshop MCP servers. All four authenticate via OAuth in the browser on first use (/mcp in Claude Code) — this file holds no secrets and must stay that way. Never add token-bearing entries here; use a local, untracked config for those.",
+  "mcpServers": {
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    }
+  }
+}
