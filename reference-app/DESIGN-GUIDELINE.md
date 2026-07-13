@@ -186,7 +186,7 @@ the client renders totals, it never adds numbers up.
 ### Switch row (`.switch-row`) and boxes (`.hintbox` / `.okbox`)
 Labelled checkbox on a white plate (company mode toggle) with amber-deep
 accent-color; `.hintbox` is the amber dashed advisory (seat cap), `.okbox`
-the green reassurance (guest checkout / account optional).
+the green reassurance (guest checkout / no account required).
 
 ### Five-station rail (`.rail-5`)
 The shop rail adds a fifth station (Cart → Your details → Billing →
