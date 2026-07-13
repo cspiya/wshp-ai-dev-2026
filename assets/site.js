@@ -39,6 +39,8 @@
 
   for (var i = 0; i < blocks.length; i++) {
     (function (pre) {
+      // Blocks marked as non-executable examples must not invite copying.
+      if (pre.closest && pre.closest("section.example")) return;
       // Horizontal-scroll wrappers (e.g. .code-scroll) rely on child
       // selectors and clip overlays; anchor the bar before the wrapper.
       var anchor = pre;
