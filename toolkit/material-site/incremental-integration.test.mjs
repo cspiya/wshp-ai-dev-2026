@@ -49,12 +49,12 @@ test('incremental preview reports complete content and preserves the partial-rou
   const site = path.join(temp, 'site');
   try {
     const build = run(['toolkit/material-site/build-site.mjs', '--clean', '--out', site, '--phase', 'incremental']);
-    assert.match(build, /32 routes \(32 real, 0 fixture substitutions\)/);
+    assert.match(build, /33 routes \(33 real, 0 fixture substitutions\)/);
     assert.match(build, /real \/materials\/fogalomtar\/ <- materials\/fogalomtar\/index\.html/);
     assert.match(build, /real \/materials\/ <- materials\/index\.html/);
 
     const disposition = JSON.parse(fs.readFileSync(path.join(site, 'assets', 'route-disposition.json'), 'utf8'));
-    assert.equal(disposition.real.length, 32);
+    assert.equal(disposition.real.length, 33);
     assert.deepEqual(disposition.substituted, []);
 
     run(['toolkit/material-site/check-manifest.mjs', '--source', '.', '--site', site, '--phase', 'foundation']);

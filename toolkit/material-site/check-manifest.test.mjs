@@ -74,7 +74,7 @@ test('foundation rejects omitted canonical routes and wrong frozen ownership', (
   routes[0] = { ...routes[0], owner: 'WRONG-OWNER' };
   const root = fixture(routes);
   const failures = validateManifest({ source: root, site: path.join(root, '.site'), phase: 'foundation' });
-  assert.ok(failures.some((x) => x.includes('exactly 32 frozen canonical routes')));
+  assert.ok(failures.some((x) => x.includes('exactly 33 frozen canonical routes')));
   assert.ok(failures.some((x) => x.includes('frozen owner mismatch')));
   assert.ok(failures.some((x) => x.includes('missing frozen canonical route: /reference-app/')));
 });
