@@ -3,6 +3,70 @@
 // Progressive enhancement only: without JS the static navigation is the
 // full experience; the search form stays hidden. No fetch/XHR/worker/
 // module/eval — works from file:// with zero network requests.
+// Copy-to-clipboard on every command/prompt block. Progressive enhancement:
+// without JS the block stays plain selectable text. navigator.clipboard needs
+// a secure context (https/localhost); from file:// the selection+execCommand
+// fallback keeps the button working offline.
+(function () {
+  "use strict";
+  var blocks = document.querySelectorAll("main pre");
+  if (!blocks.length) return;
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function copyText(text, done) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(
+        function () { done(true); },
+        function () { done(fallbackCopy(text)); }
+      );
+    } else {
+      done(fallbackCopy(text));
+    }
+  }
+
+  for (var i = 0; i < blocks.length; i++) {
+    (function (pre) {
+      // Horizontal-scroll wrappers (e.g. .code-scroll) rely on child
+      // selectors and clip overlays; anchor the bar before the wrapper.
+      var anchor = pre;
+      var parent = pre.parentElement;
+      if (parent && /(^|\s)(code-scroll|scroll-surface)(\s|$)/.test(parent.className)) {
+        anchor = parent;
+      }
+      var bar = document.createElement("div");
+      bar.className = "copy-bar";
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "copy-btn";
+      btn.textContent = "📋 Másolás";
+      btn.setAttribute("aria-label", "A blokk tartalmának másolása a vágólapra");
+      btn.addEventListener("click", function () {
+        copyText(pre.textContent.replace(/\s+$/, ""), function (ok) {
+          btn.textContent = ok ? "✅ Másolva" : "Nem sikerült — jelöld ki kézzel";
+          window.setTimeout(function () {
+            btn.textContent = "📋 Másolás";
+          }, 2000);
+        });
+      });
+      bar.appendChild(btn);
+      anchor.parentNode.insertBefore(bar, anchor);
+    })(blocks[i]);
+  }
+})();
+
 (function () {
   "use strict";
 
