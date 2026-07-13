@@ -16,7 +16,7 @@
       "figureSelector": "#fig-guide-review",
       "svgSelector": "#fig-guide-review svg",
       "textFallbackSelector": "#fig-guide-review-text",
-      "inlineSvgHash": "4b7489d79dee8105269e4409a08bd971a03040a10b5a702ed582f33c6843aa3d"
+      "inlineSvgHash": "98bb1b307a7841c4fced8d92d0d3a6b23d4de777ea50886e93dac1ce68e34602"
     },
     {
       "id": "fig-guide-review-hogyan-zajlik-a-kor-a",
@@ -34,7 +34,7 @@
       "figureSelector": "#fig-guide-review-hogyan-zajlik-a-kor-a",
       "svgSelector": "#fig-guide-review-hogyan-zajlik-a-kor-a svg",
       "textFallbackSelector": "#fig-guide-review-hogyan-zajlik-a-kor-a-text",
-      "inlineSvgHash": "53cadd12e17198da6e2b188acced86bc544e8a7284592fa2f29b0a3e8cd92bfe"
+      "inlineSvgHash": "59016574f5d6acab09f4061b053a305434d7834ed743ac12abc822b3b1b8eac7"
     }
   ]
 }

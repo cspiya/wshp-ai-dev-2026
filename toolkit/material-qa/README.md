@@ -1,5 +1,9 @@
 # Material-QA render harness
 
+Ez a tananyagkészítők és reviewer-ek **agent által futtatott technikai szerződése**. Kérd meg Claude Code-ot
+vagy Codexet a releváns render-mátrix futtatására, majd az evidence könyvtár, a manifest, a hibák és a
+maradék vizuális kockázat visszaadására; a résztvevőknek nem kell begépelniük ezeket a parancsokat.
+
 Deterministic local rendering of standalone workshop HTML (notebooks and
 similar self-contained pages) into per-viewport evidence plus a
 machine-readable manifest. Built for material builders and fresh-context
@@ -83,12 +87,12 @@ from the repository's already-locked toolchain at `reference-app/`
 shared Chromium build). Override with `--playwright-root` or
 `MATERIAL_QA_PLAYWRIGHT_ROOT` when running against a different installation.
 
-## Adapter point (WEN-214 / WEN-216)
+## Adapter point
 
 `--assert <file.mjs>` loads a module exporting
 `assertPage({ page, file, mode, failures })`, called after load and before
 capture; push `{ kind: 'assert', detail }` into `failures` to fail the
-entry. WEN-214's accessibility/static-fallback assertions and WEN-216's CI
+entry. The accessibility/static-fallback assertions and CI
 wiring plug in here — those final assertions are intentionally NOT encoded
 in this harness (`fixtures/assert-example.mjs` documents the contract).
 Screenshot/PDF evidence alone does not constitute semantic accessibility

@@ -1,5 +1,9 @@
 # Deterministic hook commands
 
+Az itt szereplő parancsok **agent által futtatott technikai szerződések**. A résztvevő Claude Code-nak
+vagy Codexnek mondja meg az elvárt eredményt és a blokkolási feltételt; az agent igazítja, futtatja és
+rögzíti a parancsokat. Az engedélyeket vagy védett útvonalakat érintő hook- és CI-konfiguráció emberi kapu.
+
 These scripts are product-neutral commands. Connect them to the selected agent product's official pre-write/pre-commit/stop hook mechanism. The hook event name, JSON schema, and configuration location are adapter points; this toolkit intentionally does not invent them.
 
 ## Public-content guard
@@ -12,7 +16,7 @@ node toolkit/hooks/guard-public-content.mjs README.md materials/example.md
 
 Exit `0` permits the operation; exit `1` blocks known secret/private markers or unreadable inputs; exit `2` means incorrect usage. Extend the `forbidden` list with reviewed project-specific patterns. This is a backstop, not a complete secret scanner.
 
-## Repo quality gates (WEN-185)
+## Repo quality gates
 
 Self-globbing validators behind the canonical standards' "mechanical gates"
 sections — each scans the tracked repo files by default and accepts explicit
@@ -25,7 +29,7 @@ node toolkit/hooks/check-links.mjs          # relative links resolve; directory 
 node toolkit/hooks/check-public-content.mjs # guard-public-content over all tracked md/html
 ```
 
-### WEN-216 gate extensions
+### Gate extensions
 
 - Every validator has a `--self-test` mode: it generates violating fixtures
   in a temp directory and exits `0` only if each fixture produces the

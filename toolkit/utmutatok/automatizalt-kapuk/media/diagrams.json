@@ -17,7 +17,7 @@
       "figureSelector": "#fig-guide-gates",
       "svgSelector": "#fig-guide-gates svg",
       "textFallbackSelector": "#fig-guide-gates-text",
-      "inlineSvgHash": "b88229001bfbc64a5c19562d9639b3ef23ae158bca4d2ff28fc3fdfb4efff30a"
+      "inlineSvgHash": "31240e940a7c8321714de141d6880e0c4d36eac8615bdfff00164dae68a0a30b"
     },
     {
       "id": "fig-guide-gates-hol-kapcsolodnak-a-kapuk-a",
@@ -36,7 +36,7 @@
       "figureSelector": "#fig-guide-gates-hol-kapcsolodnak-a-kapuk-a",
       "svgSelector": "#fig-guide-gates-hol-kapcsolodnak-a-kapuk-a svg",
       "textFallbackSelector": "#fig-guide-gates-hol-kapcsolodnak-a-kapuk-a-text",
-      "inlineSvgHash": "46f180bf2498a8adc0f83d5e3211d1427d51042868df20b1e9a3d721c7366cc4"
+      "inlineSvgHash": "99c630cf14301feae2ebb61bca058df14a49f53d879406ea5cb247938a3c0195"
     }
   ]
 }

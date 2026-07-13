@@ -12,7 +12,8 @@ termék maga az ismételhető működés: jóváhagyott
 visszakereshető [evidence](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak).
 
 > **Döntési szabály:** ne azt kérdezd, melyik komponenst másold ki, hanem azt, melyik következő
-> képességet tudod a legkisebb csomaggal bizonyítani.
+> képességet tudja Claude Code vagy Codex a legkisebb csomaggal bizonyítani. A technikai műveletet
+> az agent végzi; az ember a célt, a kockázati határt és az evidence elfogadását adja.
 
 Ha még a workshop munkakörnyezete sincs bizonyítva, kezdd a
 [`setup/` C0 doctor + bootstrap útjával](setup/README.md). Ez külön participant repót és
@@ -42,7 +43,7 @@ a tiltott területeket és a valódi ellenőrző parancsokat.
 [`engineering-standards.md`](standards/engineering-standards.md), benne a repo közvetlenül
 futtatható valódi ellenőrző parancsaival és közös Definition of Done-jával.
 
-**Másold és igazítsd:** a starter szabályait a célrepo gyökerébe; nevezd meg a missiont,
+**Mondd az agentnek:** vegye át célzottan a starter szabályait a célrepo gyökerébe; nevezze meg a missiont,
 [scope boundaryt](../materials/fogalomtar.md#scope-boundary), adat- és publikus szabályokat,
 tiltott útvonalakat és tényleges parancsokat. A
 [`checks.project.example.json`](hooks/checks.project.example.json) konfigurációból készíts
@@ -67,7 +68,7 @@ még hiányzik az ellenőrizhető viselkedés, a név szerinti out-of-scope vagy
 [`Given–When–Then`](spec-templates/given-when-then.md), [`plan`](spec-templates/plan.md) és
 [`tasks`](spec-templates/tasks.md) sablonnal, valamint a [`spec-gate`](checklists/spec-gate.md).
 
-**Másold és igazítsd:** a sablonokat munkapéldányként másold a célrepo egyetlen, verziózott
+**Mondd az agentnek:** a sablonokat munkapéldányként vegye át a célrepo egyetlen, verziózott
 spec-csomagjába. Töltsd ki a tényleges issue, standard, modulok és parancsok alapján. Minden
 acceptance criterion kapjon scenario-t, ownert, rendezett taskot, exact checket és evidence-helyet.
 Üzleti bizonytalanságnál `DECISION REQUIRED`; csak a megnevezett ember hagyhatja jóvá a kaput.
@@ -86,11 +87,11 @@ bíráló, bizonyított finding-disposition vagy automatikusan blokkoló minős�
 [`folyamatszerződése`](orchestrator/README.md), a [`reviewer szerepek`](orchestrator/reviewer-agents.md),
 a [`dedup + verify`](orchestrator/dedup-and-verify.md), a futtatható
 [`rug-cycle.workflow.js`](orchestrator/rug-cycle.workflow.js), valamint a meglévő
-[`WEN-185 gate-ek`](hooks/README.md#repo-quality-gates-wen-185). A teljes, visszajátszható
+[`repószintű gate-ek`](hooks/README.md#repo-quality-gates). A teljes, visszajátszható
 [`sample trace`](orchestrator/trace/sample-run.md) és
 [`journal`](orchestrator/trace/sample-run.journal.jsonl) példa, nem újragyártandó sablon.
 
-**Másold és igazítsd:** tartsd változatlanul a maker → fresh reviewer → finding-verification
+**Mondd az agentnek:** tartsa változatlanul a maker → fresh reviewer → finding-verification
 → fixer → re-check szerephatárokat; csak a subagent-indítást igazítsd a választott agent
 hivatalos adapteréhez. A négy validátort és a repo valódi lint/typecheck/test parancsait kösd
 stop hookba vagy CI fallbackbe. A negatív fixture bizonyítsa, hogy a hibás út tényleg blokkol.
@@ -122,7 +123,7 @@ helyzetéhez illő C7 ágat; a többi ág nem előfeltétel.
 Ez önmagában nem külön C7 ág; a hozzá tartozó evidence a guideline-ra hivatkozó prompt és a
 vizuális review. Ne készíts róluk párhuzamos leírást.
 
-**Másold és igazítsd:** a döntéseket
+**Mondd az agentnek:** a döntéseket
 [ADR-be](../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak), a tartós szabályokat a legközelebbi `AGENTS.md`-be,
 a work state-et a trackerbe tedd. A reprezentatív workloadon tartsd változatlanul a specet,
 DoD-ot és gate-eket. Ezután csak a kiválasztott C7 ág assetjeit és evidence-szerződését
@@ -140,24 +141,24 @@ kaput; nem követel legacy- vagy generált-UI bizonyítékot olyan repótól, ah
 ## Kattintható, kanonikus asset-térkép
 
 A linkek relatívak: ugyanaz a cél nyílik meg lokális Markdown-renderelőben és a publikált
-repo-oldalon. A térkép a
-[`WEN-211 kanonikus baseline`](https://github.com/cspiya/wshp-ai-dev-2026/tree/1e8a903753d3d2860be4ef16729dba4aa8370638/toolkit)
-meglévő assetjeire mutat; egyik sort sem kell újraalkotni.
+repo-oldalon. A térkép a meglévő kanonikus assetekre mutat; egyik sort sem kell
+újraalkotni.
 
-| Eredet | Asset | Mire való | Szándékolt érettség | Kötelező evidence |
-|---|---|---|---|---|
-| WEN-121 | [`spec-templates/README.md`](spec-templates/README.md) | Constitution → spec → GWT → plan → tasks, humán kapukkal | C3 | Jóváhagyott verziók és teljes AC-evidence mátrix; feature-fájl változatlan |
-| WEN-118 | [`orchestrator/README.md`](orchestrator/README.md) | Maker/reviewer/fixer RUG-szerződés | C4 | Fresh-context review packet, finding disposition, bounce-back és re-review |
-| WEN-118 | [`trace/sample-run.md`](orchestrator/trace/sample-run.md) | Valódi, visszajátszható RUG run és hamis finding elutasítása | C4 | Run log + gépi journal + emberi merge gate |
-| WEN-185 | [`check-placeholders`](hooks/check-placeholders.mjs), [`check-notebooks`](hooks/check-notebooks.mjs), [`check-links`](hooks/check-links.mjs), [`check-public-content`](hooks/check-public-content.mjs) | Négy repószintű validator; a bekötési szerződés a [`hooks/README.md`](hooks/README.md#repo-quality-gates-wen-185) oldalon van | C5 | Exact parancs/exit code; zöld pozitív és blokkolt negatív út |
-| WEN-120 | [`memory/README.md`](memory/README.md) | Szabály, döntés, work state és retrieval helyének szétválasztása | C5–C7 | Egyetlen kanonikus forrás, tracker-trace, visszakereshető ADR/rule |
-| WEN-120 | [`DESIGN-GUIDELINE.md`](../participant-starter/DESIGN-GUIDELINE.md) | Generált UI tartós vizuális memóriája, ha a repóban van generált UI | C5–C6 kiegészítő | Kitöltött guideline-ra hivatkozó prompt és vizuális review |
-| WEN-122 | [`legacy-playbook/README.md`](legacy-playbook/README.md) | Választható legacy ág: safety net → seam → strangler, INVENTED .NET/MS-SQL mintán | C6–C7, csak legacy kontextusban | 3 passing characterization test + mutációs bukás + rollback/fallback |
+| Asset | Mire való | Szándékolt érettség | Kötelező evidence |
+|---|---|---|---|
+| [`spec-templates/README.md`](spec-templates/README.md) | Constitution → spec → GWT → plan → tasks, humán kapukkal | C3 | Jóváhagyott verziók és teljes AC-evidence mátrix; feature-fájl változatlan |
+| [`orchestrator/README.md`](orchestrator/README.md) | Maker/reviewer/fixer RUG-szerződés | C4 | Fresh-context review packet, finding disposition, bounce-back és re-review |
+| [`trace/sample-run.md`](orchestrator/trace/sample-run.md) | Valódi, visszajátszható RUG run és hamis finding elutasítása | C4 | Run log + gépi journal + emberi merge gate |
+| [`check-placeholders`](hooks/check-placeholders.mjs), [`check-notebooks`](hooks/check-notebooks.mjs), [`check-links`](hooks/check-links.mjs), [`check-public-content`](hooks/check-public-content.mjs) | Négy repószintű validator; a bekötési szerződés a [`hooks/README.md`](hooks/README.md#repo-quality-gates) oldalon van | C5 | Exact parancs/exit code; zöld pozitív és blokkolt negatív út |
+| [`memory/README.md`](memory/README.md) | Szabály, döntés, work state és retrieval helyének szétválasztása | C5–C7 | Egyetlen kanonikus forrás, tracker-trace, visszakereshető ADR/rule |
+| [`DESIGN-GUIDELINE.md`](../participant-starter/DESIGN-GUIDELINE.md) | Generált UI tartós vizuális memóriája, ha a repóban van generált UI | C5–C6 kiegészítő | Kitöltött guideline-ra hivatkozó prompt és vizuális review |
+| [`legacy-playbook/README.md`](legacy-playbook/README.md) | Választható legacy ág: safety net → seam → strangler, INVENTED .NET/MS-SQL mintán | C6–C7, csak legacy kontextusban | 3 passing characterization test + mutációs bukás + rollback/fallback |
 
 ## Közös zárókapu
 
 Minden útvonal után ugyanaz a szabály: előbb futtatott evidence, utána érettségi állítás.
-A toolkit saját publikus és linkellenőrzései a repó gyökeréből:
+A toolkit saját publikus és linkellenőrzéseit az agent, a hook vagy a CI futtatja a repó gyökeréből;
+a blokk technikai szerződés, nem résztvevő által begépelendő utasítás:
 
 ```powershell
 node toolkit/hooks/check-placeholders.mjs

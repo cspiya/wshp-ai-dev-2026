@@ -65,8 +65,8 @@
   <section aria-labelledby="workspace-boundary-title">
     <h2 id="workspace-boundary-title">Melyik repóban dolgozz?</h2>
     <div class="grid">
-      <article class="card"><h3>Workshop forrásrepo · csak olvasd és másold</h3><p>Itt találod a tananyagot és a starter eredeti példányát. Ebben a repóban ne végezd el a gyakorlatot, és ne írd felül a közös workshop-forrást.</p></article>
-      <article class="card ready"><h3>Saját résztvevői repo · itt dolgozz</h3><p>Másold ide a startert. Itt alakítsd ki a szabályokat és a specifikációt, itt módosítsd a kódot, és itt rögzítsd az ellenőrzési eredményeket.</p></article>
+      <article class="card"><h3>Workshop forrásrepo · csak olvasd</h3><p>Itt találod a tananyagot és a starter eredeti példányát. Ebben a repóban ne végezd el a gyakorlatot, és ne írd felül a közös workshop-forrást.</p></article>
+      <article class="card ready"><h3>Saját résztvevői repo · itt dolgozik az agent</h3><p>Mondd Claude Code-nak vagy Codexnek, hogy a starterből készítse elő a saját munkapéldányodat. Itt alakítjátok ki a szabályokat és a specifikációt, itt készül a kód és az ellenőrzési evidence.</p></article>
     </div>
     <p class="takeaway"><strong>Határ:</strong> a workshop forrásrepo a kiindulópont; a saját repód az írható munkatér. A preview, az API és az adatbázis csak a megfelelő későbbi modulban kapcsolódik hozzá.</p>
   </section>
@@ -149,20 +149,17 @@
   </figure>
 
   <section class="steps">
-    <h2>Első biztonságos lépések</h2>
-    <p><strong>Előfeltétel:</strong> a starter már a saját, írható repódban van, és legalább Node.js 22.13 fut a gépeden. A workshop CI-folyamata is a 22-es főverziót használja; régebbi 22.x verziónál egyes fejlesztői függőségek figyelmeztetést adnak.</p>
-    <ol>
-      <li><strong>Ellenőrizd a környezetet.</strong><pre><code>node --version
-npm --version</code></pre><p>Elvárt eredmény: mindkét parancs verziószámot ír ki.</p></li>
-      <li><strong>Telepítsd a zárolt függőségeket.</strong><pre><code>npm ci</code></pre><p>Elvárt eredmény: a parancs hibakód nélkül befejeződik. Ne másolj titkot az <code>.env.example</code> fájlba.</p></li>
-      <li><strong>Futtasd a teljes indulás előtti ellenőrzést (preflight).</strong><pre><code>npm run typecheck
-npm run lint
-npm run test
-npm run build</code></pre><p>Elvárt eredmény: mind a négy parancs sikeres. A teszt jelenleg egy szándékosan kicsi mintát ellenőriz.</p></li>
-      <li><strong>Olvasd el, majd igazítsd a saját repohoz</strong> az <code>AGENTS.md</code> és <code>DESIGN-GUIDELINE.md</code> fájlokat. Ne tekintsd késznek az általános kiinduló szöveget.</li>
-      <li><strong>Állj meg az üzleti funkció fejlesztése előtt.</strong> A következő modulban rögzítsd a repo célját, határait és kötelező ellenőrzési pontjait.</li>
-    </ol>
-    <p><strong>Sikerfeltétel:</strong> egy friss agent chatelőzmény nélkül meg tudja mondani, hol dolgozhat, mely parancsokat kell futtatnia, és mely döntéseket nem hozhatja meg helyetted.</p>
+    <h2>Első biztonságos agent-lépések</h2>
+    <p><strong>Előfeltétel:</strong> a minimális bootstrap után a starter már a saját, írható repódban van, és Claude Code vagy Codex ebben a munkakönyvtárban aktív. Ettől a ponttól nem kell Node-, npm-, Git- vagy operációs rendszer parancsot begépelned.</p>
+    <p><strong>Mondd az agentnek:</strong></p>
+    <pre><code>Dolgozz kizárólag a saját résztvevői repómban. Olvasd el a legközelebbi agent-utasításokat és a design guideline-t. Ellenőrizd a fejlesztői környezetet, telepítsd a lockfile szerinti függőségeket, majd futtasd a projekt teljes indulás előtti ellenőrzését. Ne olvass vagy írj valódi titkot. Add vissza: a munkakönyvtárat, az elvégzett műveleteket, az ellenőrzések pontos eredményét, valamint minden BLOCKED vagy emberi döntést igénylő pontot. Az üzleti funkció fejlesztése előtt állj meg.</code></pre>
+    <div class="grid">
+      <article class="card"><h3>🤖 Mit végez el az agent?</h3><p>Azonosítja a helyes repót, ellenőrzi a környezetet, telepíti a zárolt függőségeket, futtatja a typecheck, lint, test és build kapukat, és szükség esetén böngészőben is megnyitja az oldalt.</p></article>
+      <article class="card"><h3>🧑 Mit dönt az ember?</h3><p>Jóváhagyja a munkateret, a jogosultságbővítést és minden olyan javítást, amely túllépne a környezet-előkészítésen.</p></article>
+      <article class="card"><h3>✅ Mi bizonyítja a kész állapotot?</h3><p>Az agent visszaadja a repo elérési helyét, a kapuk exit állapotát, a build eredményét és a maradék kockázatot. Hibánál nem mond PASS-t.</p></article>
+      <article class="card"><h3>🔁 Repeat until good</h3><p>Ha bármelyik kapu bukik, kérd az agentet az ok bizonyítására és a legkisebb, scope-on belüli javításra; utána ugyanazt a teljes preflightot futtassa újra.</p></article>
+    </div>
+    <p><strong>Sikerfeltétel:</strong> egy friss agent chatelőzmény nélkül meg tudja mondani, hol dolgozhat, mely kapukat kell végrehajtania, és mely döntéseket nem hozhatja meg helyetted.</p>
     <p><strong>Ha elakadsz:</strong> hálózati vagy telepítési hiba esetén használd a tréner által megadott commitazonosítóhoz (SHA) tartozó, kitalált adatokkal készült ellenőrzési eredményt. Jelöld <em>REPLAY</em>-ként, vagyis visszajátszott eredményként; ne állítsd, hogy helyben futtattad.</p>
   </section>
 

@@ -41,9 +41,12 @@ main { padding: 2rem 0 5rem; }
 .panel, .visual, .term-card { background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; box-shadow: 0 8px 24px rgba(30, 43, 77, .06); }
 .panel { padding: 1.25rem; }
 .panel h2, .visual h2 { margin-top: 0; }
-.visuals { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0 2rem; }
+.visuals { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1rem 0 2rem; }
 .visual { padding: 1rem; overflow: hidden; }
-.visual svg { width: 100%; height: auto; display: block; }
+.visual svg { width: min(100%, 60rem); height: auto; display: block; margin-inline: auto; }
+.visual svg a { cursor: pointer; }
+.visual svg a:focus-visible { outline: none; }
+.visual svg a:focus-visible rect { stroke: #e86f2d; stroke-width: 5; }
 figcaption { margin-top: .8rem; color: var(--muted); }
 .text-equivalent { border-top: 1px solid var(--line); margin-top: .8rem; padding-top: .6rem; }
 .text-equivalent summary { cursor: pointer; font-weight: 700; }
@@ -101,8 +104,10 @@ input, select { width: 100%; max-width: 100%; min-width: 0; }
   .mobile-family-map ul { display: grid; gap: .55rem; margin: .8rem 0 0; padding: 0; list-style: none; }
   .mobile-family-map li { position: relative; padding: .65rem .75rem .65rem 2rem; border: 1px solid var(--brand); border-radius: .65rem; background: var(--accent); font-weight: 700; }
   .mobile-family-map li::before { content: "→"; position: absolute; left: .7rem; color: var(--brand-dark); }
+  .mobile-family-map li a { display: block; color: inherit; }
   .mobile-module-map { margin: .5rem 0; padding: 0; list-style: none; }
   .mobile-module-map li { display: grid; gap: .15rem; margin-bottom: .55rem; padding: .65rem .75rem; border-left: 4px solid var(--brand); border-radius: .45rem; background: var(--accent); }
+  .mobile-module-map li a { display: grid; gap: .15rem; color: inherit; }
   .mobile-module-map span { color: var(--muted); font-size: .92rem; }
   .mobile-module-map li, .mobile-family-map li { min-width: 0; overflow-wrap: anywhere; }
 }

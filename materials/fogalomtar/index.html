@@ -11,77 +11,15 @@
 </head>
 <body>
   <a class="skip-link" href="#fogalmak">Ugrás a fogalmakhoz</a>
-  <header class="site-header"><div class="site-header__inner">
-    <a class="brand" href="../../index.html">AI-assisted fejlesztési workshop</a>
-    <nav class="site-nav" aria-label="Fő navigáció"><a href="../index.html">Tananyag</a><a href="../modulok/index.html">Modulok</a><a href="index.html" aria-current="page">Fogalomtár</a></nav>
-  </div></header>
 
-  <section class="hero" aria-labelledby="page-title"><div class="hero__inner">
-    <div><p class="eyebrow">Kereshető szakmai nyelv</p><h1 id="page-title">Fejlesztői fogalomtár</h1><p class="lead">Az angol szakkifejezéseket ott tartjuk meg, ahol a magyar fejlesztői gyakorlatban is természetesek. Minden bejegyzés megmutatja a javasolt szóhasználatot, a kerülendő tükörfordításokat és a kapcsolódó modulokat.</p></div>
-    <p class="version"><strong>Fogalomjegyzék 2.0.1</strong>A fogalomkártyák stabil hivatkozással nyithatók meg, és internetkapcsolat nélkül is kereshetők.</p>
-  </div></section>
+  <section class="hero" aria-labelledby="page-title"><div class="hero__inner"><div><p class="eyebrow">Kereshető szakmai nyelv</p><h1 id="page-title">Fejlesztői fogalomtár</h1><p class="lead">Az angol szakkifejezéseket ott tartjuk meg, ahol a magyar fejlesztői gyakorlatban is természetesek. Minden bejegyzés megmutatja a javasolt szóhasználatot, a kerülendő tükörfordításokat és a kapcsolódó modulokat.</p></div><p class="version"><strong>Fogalomjegyzék 2.1.0</strong>A 70 fogalomkártya stabil hivatkozással nyitható meg, és internetkapcsolat nélkül is kereshető.</p></div></section>
 
   <main>
-    <section class="intro-grid" aria-label="A fogalomtár használata">
-      <article class="panel"><h2>Hogyan használd?</h2><p>Minden fogalomnak ez a <a href="#canonical">kijelölt elsődleges</a> meghatározása; a tananyag első magyarázó előfordulásai ide mutatnak. Keress magyar vagy angol kifejezésre, válassz témacsaládot, vagy nyiss meg egy pontos hivatkozást, például <a href="#quality-gate">kötelező ellenőrzési pont</a>. A „Kerüld” sor olyan félreérthető fordításokat mutat, amelyek helyett természetesebb megfogalmazást ajánlunk.</p></article>
-      <article class="panel"><h2>Szakmai nyelvi elv</h2><p>Először természetes magyar mondatot írunk. Az angol szakkifejezést akkor tartjuk meg, ha a fejlesztők a mindennapi munkában is így használják. Az első nem magától értetődő előfordulás erre a fogalomkártyára mutat.</p></article>
-    </section>
+    <section class="intro-grid" aria-label="A fogalomtár használata"><article class="panel"><h2>Hogyan használd?</h2><p>Minden fogalomnak ez a <a href="#canonical">kijelölt elsődleges</a> meghatározása; a tananyag első magyarázó előfordulásai ide mutatnak. Keress magyar vagy angol kifejezésre, válassz témacsaládot, vagy nyiss meg egy pontos hivatkozást, például <a href="#quality-gate">kötelező ellenőrzési pont</a>. A „Kerüld” sor olyan félreérthető fordításokat mutat, amelyek helyett természetesebb megfogalmazást ajánlunk.</p></article>
+        <article class="panel"><h2>Szakmai nyelvi elv</h2><p>Először természetes magyar mondatot írunk. Az angol szakkifejezést akkor tartjuk meg, ha a fejlesztők a mindennapi munkában is így használják. Az első nem magától értetődő előfordulás erre a fogalomkártyára mutat.</p></article></section>
 
-    <section class="visuals" aria-label="A fogalmak kapcsolatai">
-      <figure class="visual" id="fig-concept-families">
-        <h2>Milyen témák rendezik rendszerbe a fogalmakat?</h2>
-        <svg viewBox="0 0 720 410" role="img" aria-labelledby="families-title families-desc">
-          <title id="families-title">A fogalomtár hét témacsaládja</title><desc id="families-desc">Középen az agentikus fejlesztési rendszer áll. Körülötte hét szakmai témacsalád helyezkedik el.</desc>
-          <defs><marker id="families-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7181a3"/></marker></defs>
-          <g fill="none" stroke="#7181a3" stroke-width="2" marker-end="url(#families-arrow)"><path d="M360 194 L360 72"/><path d="M405 205 L575 104"/><path d="M415 238 L604 238"/><path d="M405 271 L563 348"/><path d="M315 271 L157 348"/><path d="M305 238 L116 238"/><path d="M315 205 L145 104"/></g>
-          <rect x="275" y="184" width="170" height="105" rx="20" fill="#183083"/><g fill="#fff" font-size="19" font-weight="700" text-anchor="middle"><text x="360" y="225">Agentikus</text><text x="360" y="252">fejlesztési rendszer</text></g>
-          <g fill="#e8edff" stroke="#2949c7" stroke-width="2" font-size="15" font-weight="700" text-anchor="middle"><rect x="250" y="18" width="220" height="55" rx="14"/><text x="360" y="51" fill="#172033">Alapok és specifikáció</text><rect x="500" y="63" width="210" height="70" rx="14"/><text x="605" y="93" fill="#172033">Review és minőség</text><text x="605" y="114" fill="#172033">ellenőrzése</text><rect x="545" y="208" width="165" height="60" rx="14"/><text x="628" y="244" fill="#172033">Git és kiadás</text><rect x="480" y="326" width="230" height="65" rx="14"/><text x="595" y="354" fill="#172033">Eszközök és</text><text x="595" y="376" fill="#172033">automatizálás</text><rect x="10" y="326" width="230" height="65" rx="14"/><text x="125" y="354" fill="#172033">Tesztelés és</text><text x="125" y="376" fill="#172033">rendszerellenőrzés</text><rect x="10" y="208" width="165" height="60" rx="14"/><text x="93" y="234" fill="#172033">Legacy rendszer</text><text x="93" y="255" fill="#172033">változtatása</text><rect x="10" y="63" width="210" height="70" rx="14"/><text x="115" y="93" fill="#172033">Csapatszintű</text><text x="115" y="114" fill="#172033">bevezetés</text></g>
-        </svg>
-        <div class="mobile-diagram mobile-family-map" role="img" aria-label="Az agentikus fejlesztési rendszer hét fogalomcsaládja">
-          <strong>Agentikus fejlesztési rendszer</strong>
-          <ul><li>Alapok és specifikáció</li><li>Review és minőség</li><li>Git és kiadás</li><li>Eszközök és automatizálás</li><li>Tesztelés és rendszerellenőrzés</li><li>Legacy rendszer változtatása</li><li>Csapatszintű bevezetés</li></ul>
-        </div>
-        <figcaption>A térkép arra válaszol, hogy egy ismeretlen fogalom melyik szakmai kérdéskörbe illeszkedik. <strong>Röviden:</strong> egy fogalom jelentését a kapcsolatai és a fejlesztési folyamatban betöltött szerepe teszi használhatóvá.</figcaption>
-        <details class="text-equivalent static-fallback" id="fig-concept-families-text"><summary>Az ábra teljes szöveges megfelelője</summary><p>Az agentikus fejlesztési rendszer fogalmait hét család rendezi: alapok és specifikáció; review és minőség; Git és kiadás; eszközök és automatizálás; tesztelés és rendszerellenőrzés; legacy rendszer változtatása; csapatszintű bevezetés.</p></details>
-      </figure>
-      <figure class="visual" id="fig-terms-to-modules">
-        <h2>Hol találkozol a fogalmakkal a workshopon?</h2>
-        <svg viewBox="0 0 720 520" role="img" aria-labelledby="modules-title modules-desc">
-          <title id="modules-title">Fogalomcsaládok és példafogalmak kapcsolata a nyolc modullal</title><desc id="modules-desc">Nyolcsoros térkép. Minden sor egy modulhoz rendeli annak szakmai fókuszát és három jellemző fogalmát.</desc>
-          <rect x="10" y="10" width="700" height="46" rx="10" fill="#183083"/><g fill="#fff" font-size="15" font-weight="700"><text x="28" y="39">Modul</text><text x="120" y="39">Szakmai fókusz</text><text x="390" y="39">Jellemző fogalmak</text></g>
-          <g font-size="13" fill="#172033">
-            <g transform="translate(0 66)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">1.</text><text x="70" y="22" font-weight="700">Agentikus alapok</text><text x="70" y="40">szerep és feladathatár</text><text x="390" y="30">coding agent · kontextus · scope</text></g>
-            <g transform="translate(0 124)"><rect x="10" width="700" height="50" rx="8" fill="#f7f8fc"/><text x="32" y="30" font-weight="700">2.</text><text x="70" y="22" font-weight="700">Repo és Git</text><text x="70" y="40">szabályozott munkatér</text><text x="390" y="30">agent-ready repo · repo szabályai · worktree</text></g>
-            <g transform="translate(0 182)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">3.</text><text x="70" y="22" font-weight="700">Specifikáció</text><text x="70" y="40">ellenőrizhető döntések</text><text x="390" y="30">spec · elfogadási feltételek · döntési pont</text></g>
-            <g transform="translate(0 240)"><rect x="10" width="700" height="50" rx="8" fill="#f7f8fc"/><text x="32" y="30" font-weight="700">4.</text><text x="70" y="22" font-weight="700">Független review</text><text x="70" y="40">szerepek és javítási kör</text><text x="390" y="30">RUG · reviewer · review finding</text></g>
-            <g transform="translate(0 298)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">5.</text><text x="70" y="22" font-weight="700">Automatizált kapuk</text><text x="70" y="40">szabályok végrehajtása</text><text x="390" y="30">rule · skill · kötelező ellenőrzési pont</text></g>
-            <g transform="translate(0 356)"><rect x="10" width="700" height="50" rx="8" fill="#f7f8fc"/><text x="32" y="30" font-weight="700">6.</text><text x="70" y="22" font-weight="700">Rendszerellenőrzés</text><text x="70" y="40">felülettől az adatig</text><text x="390" y="30">E2E teszt · eredet · ellenőrzési eredmény</text></g>
-            <g transform="translate(0 414)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">7.</text><text x="70" y="22" font-weight="700">Legacy változtatás</text><text x="70" y="40">biztonságos cserepontok</text><text x="390" y="30">characterization teszt · seam · rollback</text></g>
-            <g transform="translate(0 472)"><rect x="10" width="700" height="38" rx="8" fill="#f7f8fc"/><text x="32" y="25" font-weight="700">8.</text><text x="70" y="25" font-weight="700">Csapatbevezetés</text><text x="240" y="25">működési modell</text><text x="390" y="25">eval · pilot · bevált mintaút</text></g>
-          </g>
-        </svg>
-        <ol class="mobile-diagram mobile-module-map" aria-label="Fogalomcsaládok és példafogalmak modulonként"><li><strong>1. Agentikus alapok</strong><span>coding agent, kontextus, scope</span></li><li><strong>2. Repo és Git</strong><span>agent-ready repo, repo szabályai, worktree</span></li><li><strong>3. Specifikáció</strong><span>spec, elfogadási feltételek, döntési pont</span></li><li><strong>4. Független review</strong><span>RUG, reviewer, review finding</span></li><li><strong>5. Automatizált kapuk</strong><span>rule, skill, kötelező ellenőrzési pont</span></li><li><strong>6. Rendszerellenőrzés</strong><span>E2E teszt, eredet, ellenőrzési eredmény</span></li><li><strong>7. Legacy változtatás</strong><span>characterization teszt, seam, rollback</span></li><li><strong>8. Csapatbevezetés</strong><span>működési modell, eval, pilot</span></li></ol>
-        <figcaption>A térkép a szakmai kérdésköröket és jellemző fogalmakat ahhoz a modulhoz rendeli, ahol először dolgozol velük. <strong>Röviden:</strong> ha tudod, milyen problémát akarsz megoldani, a sor azonnal megmutatja, melyik modulban és mely fogalmakkal kezdd.</figcaption>
-        <details class="text-equivalent static-fallback" id="fig-terms-to-modules-text"><summary>Mind az 57 fogalom modulkapcsolata</summary><table class="term-module-table"><caption>A fogalmak elsődleges tananyaghelye</caption><thead><tr><th>Hely</th><th>Fogalmak</th></tr></thead><tbody>
-          <tr><th>1. modul</th><td>agent-ready repo; coding agent; kontextus; scope; review</td></tr>
-          <tr><th>2. modul</th><td>repo szabályai; Definition of Done; kötelező ellenőrzési pont; branch; worktree; commit; pull request; CI; preview környezet</td></tr>
-          <tr><th>3. modul</th><td>spec; elfogadási feltételek; Given–When–Then; döntési pont; munkadarab; a repo alapszabályai</td></tr>
-          <tr><th>4. modul</th><td>review-megállapítás; készítő; független ellenőrző; javító; RUG-ciklus; orchestrator agent; visszakövetési napló</td></tr>
-          <tr><th>5. modul</th><td>szabály; skill; hook; MCP; test fixture; projektmemória; védőellenőrzés</td></tr>
-          <tr><th>6. modul</th><td>eredet és verzió; ellenőrzési eredmény; referenciafeladat; unit teszt; contract test; E2E teszt; kontextuskeret</td></tr>
-          <tr><th>7. modul</th><td>legacy rendszer; characterization teszt; biztonsági háló; seam; Strangler pattern; rollback</td></tr>
-          <tr><th>8. modul</th><td>kiinduló állapot; működési modell; felelős; eval; pilot; bevált mintaút; Plan B</td></tr>
-          <tr><th>Támogató oldalak</th><td>állomás; nyilvánosan megosztható; kijelölt elsődleges</td></tr>
-        </tbody></table></details>
-      </figure>
-    </section>
-
-    <p class="panel visual-coverage"><strong>Hogyan követhető egy fogalom?</strong> A kártya témacsaládja elhelyezi az első térképen, a „Kapcsolódik” sor megmutatja a közvetlen fogalmi kapcsolatokat, a „Tananyagban” sor pedig ahhoz a modulhoz vezet, ahol a fogalom magyarázó ábrán és gyakorlatban is szerepet kap.</p>
-
-    <section id="fogalmak" aria-labelledby="terms-title"><h2 id="terms-title">Fogalmak</h2>
-      <noscript><p class="no-js-note">A kereséshez JavaScript szükséges, de az összes fogalom alább olvasható és a böngésző saját oldal-keresőjével is megtalálható.</p></noscript>
-      <div class="controls" role="search"><div class="control-grid"><label for="term-search">Keresés magyarul vagy angolul<input id="term-search" type="search" autocomplete="off" placeholder="Például: worktree, ellenőrzés, legacy"></label><label for="family-filter">Témacsalád<select id="family-filter"><option value="">Minden témacsalád</option><option value="alapok">Alapok és specifikáció</option><option value="minoseg">Review és minőség</option><option value="git">Git és kiadás</option><option value="automatizalas">Eszközök és automatizálás</option><option value="teszteles">Tesztelés és rendszerellenőrzés</option><option value="legacy">Legacy rendszer változtatása</option><option value="bevezetes">Csapatszintű bevezetés</option></select></label><button id="clear-filters" type="button">Szűrők törlése</button></div><p class="result-line" id="result-count" aria-live="polite">A teljes fogalomtár látható.</p></div>
-      <div class="term-list" id="term-list">
+    <section class="visuals" aria-label="A fogalmak kapcsolatai"><figure class="visual" id="fig-concept-families"><h2>Milyen témák rendezik rendszerbe a fogalmakat?</h2><svg viewBox="0 0 720 410" role="img" aria-labelledby="families-title families-desc"><title id="families-title">A fogalomtár hét témacsaládja</title><desc id="families-desc">Középen az agentikus fejlesztési rendszer áll. Körülötte hét szakmai témacsalád helyezkedik el.</desc><defs><marker id="families-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7181a3"/></marker></defs><g fill="none" stroke="#7181a3" stroke-width="2" marker-end="url(#families-arrow)"><path d="M360 194 L360 72"/><path d="M405 205 L575 104"/><path d="M415 238 L604 238"/><path d="M405 271 L563 348"/><path d="M315 271 L157 348"/><path d="M305 238 L116 238"/><path d="M315 205 L145 104"/></g><rect x="275" y="184" width="170" height="105" rx="20" fill="#183083"/><g fill="#fff" font-size="19" font-weight="700" text-anchor="middle"><text x="360" y="225">Agentikus</text><text x="360" y="252">fejlesztési rendszer</text></g><g fill="#e8edff" stroke="#2949c7" stroke-width="2" font-size="16" font-weight="700" text-anchor="middle"><a href="#agent-ready-repo" aria-label="Alapok és specifikáció fogalomcsalád"><rect x="250" y="18" width="220" height="55" rx="14"/><text x="360" y="51" fill="#172033">Alapok és specifikáció</text></a><a href="#rug" aria-label="Review és minőség fogalomcsalád"><rect x="500" y="63" width="210" height="70" rx="14"/><text x="605" y="93" fill="#172033">Review és minőség</text><text x="605" y="114" fill="#172033">ellenőrzése</text></a><a href="#worktree" aria-label="Git és kiadás fogalomcsalád"><rect x="545" y="208" width="165" height="60" rx="14"/><text x="628" y="244" fill="#172033">Git és kiadás</text></a><a href="#plugin" aria-label="Eszközök és automatizálás fogalomcsalád"><rect x="480" y="326" width="230" height="65" rx="14"/><text x="595" y="354" fill="#172033">Eszközök és</text><text x="595" y="376" fill="#172033">automatizálás</text></a><a href="#e2e" aria-label="Tesztelés és rendszerellenőrzés fogalomcsalád"><rect x="10" y="326" width="230" height="65" rx="14"/><text x="125" y="354" fill="#172033">Tesztelés és</text><text x="125" y="376" fill="#172033">rendszerellenőrzés</text></a><a href="#legacy-system" aria-label="Legacy rendszer változtatása fogalomcsalád"><rect x="10" y="208" width="165" height="60" rx="14"/><text x="93" y="234" fill="#172033">Legacy rendszer</text><text x="93" y="255" fill="#172033">változtatása</text></a><a href="#operating-model" aria-label="Csapatszintű bevezetés fogalomcsalád"><rect x="10" y="63" width="210" height="70" rx="14"/><text x="115" y="93" fill="#172033">Csapatszintű</text><text x="115" y="114" fill="#172033">bevezetés</text></a></g></svg><div class="mobile-diagram mobile-family-map" role="img" aria-label="Az agentikus fejlesztési rendszer hét fogalomcsaládja"><strong>Agentikus fejlesztési rendszer</strong><ul><li><a href="#agent-ready-repo">Alapok és specifikáció</a></li><li><a href="#rug">Review és minőség</a></li><li><a href="#worktree">Git és kiadás</a></li><li><a href="#plugin">Eszközök és automatizálás</a></li><li><a href="#e2e">Tesztelés és rendszerellenőrzés</a></li><li><a href="#legacy-system">Legacy rendszer változtatása</a></li><li><a href="#operating-model">Csapatszintű bevezetés</a></li></ul></div><figcaption> A térkép arra válaszol, hogy egy ismeretlen fogalom melyik szakmai kérdéskörbe illeszkedik. <strong>Röviden:</strong> egy fogalom jelentését a kapcsolatai és a fejlesztési folyamatban betöltött szerepe teszi használhatóvá. </figcaption><details class="text-equivalent static-fallback" id="fig-concept-families-text"><summary>Az ábra teljes szöveges megfelelője</summary><p>Az agentikus fejlesztési rendszer fogalmait hét család rendezi: <a href="#agent-ready-repo">alapok és specifikáció</a>; <a href="#rug">review és minőség</a>; <a href="#worktree">Git és kiadás</a>; <a href="#plugin">eszközök és automatizálás</a>; <a href="#e2e">tesztelés és rendszerellenőrzés</a>; <a href="#legacy-system">legacy rendszer változtatása</a>; <a href="#operating-model">csapatszintű bevezetés</a>.</p></details></figure>
+      <figure class="visual" id="fig-terms-to-modules"><h2>Hol találkozol a fogalmakkal a workshopon?</h2><svg viewBox="0 0 720 520" role="img" aria-labelledby="modules-title modules-desc"><title id="modules-title"> Fogalomcsaládok és példafogalmak kapcsolata a nyolc modullal </title><desc id="modules-desc">Nyolcsoros térkép. Minden sor egy modulhoz rendeli annak szakmai fókuszát és három jellemző fogalmát.</desc><rect x="10" y="10" width="700" height="46" rx="10" fill="#183083"/><g fill="#fff" font-size="15" font-weight="700"><text x="28" y="39">Modul</text><text x="120" y="39">Szakmai fókusz</text><text x="390" y="39">Jellemző fogalmak</text></g><g font-size="15" fill="#172033"><a data-route="/materials/modulok/01-agentikus-fejlesztes/" aria-label="1. modul: Agentikus alapok"><g transform="translate(0 66)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">1.</text><text x="70" y="22" font-weight="700">Agentikus alapok</text><text x="70" y="40">szerep és feladathatár</text><text x="390" y="30">coding agent · kontextus · scope</text></g></a><a data-route="/materials/modulok/02-repo-felkeszitese/" aria-label="2. modul: Repo és Git"><g transform="translate(0 124)"><rect x="10" width="700" height="50" rx="8" fill="#f7f8fc"/><text x="32" y="30" font-weight="700">2.</text><text x="70" y="22" font-weight="700">Repo és Git</text><text x="70" y="40">szabályozott munkatér</text><text x="390" y="30">agent-ready repo · repo szabályai · worktree</text></g></a><a data-route="/materials/modulok/03-specifikacio/" aria-label="3. modul: Specifikáció"><g transform="translate(0 182)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">3.</text><text x="70" y="22" font-weight="700">Specifikáció</text><text x="70" y="40">ellenőrizhető döntések</text><text x="390" y="30">spec · elfogadási feltételek · döntési pont</text></g></a><a data-route="/materials/modulok/04-fuggetlen-review/" aria-label="4. modul: Független review"><g transform="translate(0 240)"><rect x="10" width="700" height="50" rx="8" fill="#f7f8fc"/><text x="32" y="30" font-weight="700">4.</text><text x="70" y="22" font-weight="700">Független review</text><text x="70" y="40">szerepek és javítási kör</text><text x="390" y="30">RUG · reviewer · review finding</text></g></a><a data-route="/materials/modulok/05-szabalyok-es-kapuk/" aria-label="5. modul: Automatizált kapuk"><g transform="translate(0 298)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">5.</text><text x="70" y="22" font-weight="700">Automatizált kapuk</text><text x="70" y="40">szabályok végrehajtása</text><text x="390" y="30">rule · skill · kötelező ellenőrzési pont</text></g></a><a data-route="/materials/modulok/06-rendszerellenorzes/" aria-label="6. modul: Rendszerellenőrzés"><g transform="translate(0 356)"><rect x="10" width="700" height="50" rx="8" fill="#f7f8fc"/><text x="32" y="30" font-weight="700">6.</text><text x="70" y="22" font-weight="700">Rendszerellenőrzés</text><text x="70" y="40">felülettől az adatig</text><text x="390" y="30">E2E teszt · eredet · ellenőrzési eredmény</text></g></a><a data-route="/materials/modulok/07-legacy-rendszer/" aria-label="7. modul: Legacy változtatás"><g transform="translate(0 414)"><rect x="10" width="700" height="50" rx="8" fill="#eef2ff"/><text x="32" y="30" font-weight="700">7.</text><text x="70" y="22" font-weight="700">Legacy változtatás</text><text x="70" y="40">biztonságos cserepontok</text><text x="390" y="30">characterization teszt · seam · rollback</text></g></a><a data-route="/materials/modulok/08-csapatbevezetes/" aria-label="8. modul: Csapatbevezetés"><g transform="translate(0 472)"><rect x="10" width="700" height="38" rx="8" fill="#f7f8fc"/><text x="32" y="25" font-weight="700">8.</text><text x="70" y="25" font-weight="700">Csapatbevezetés</text><text x="240" y="25">működési modell</text><text x="390" y="25">eval · pilot · bevált mintaút</text></g></a></g></svg><ol class="mobile-diagram mobile-module-map" aria-label="Fogalomcsaládok és példafogalmak modulonként"><li><a data-route="/materials/modulok/01-agentikus-fejlesztes/"><strong>1. Agentikus alapok</strong><span>coding agent, kontextus, scope</span></a></li><li><a data-route="/materials/modulok/02-repo-felkeszitese/"><strong>2. Repo és Git</strong><span>agent-ready repo, repo szabályai, worktree</span></a></li><li><a data-route="/materials/modulok/03-specifikacio/"><strong>3. Specifikáció</strong><span>spec, elfogadási feltételek, döntési pont</span></a></li><li><a data-route="/materials/modulok/04-fuggetlen-review/"><strong>4. Független review</strong><span>RUG, reviewer, review finding</span></a></li><li><a data-route="/materials/modulok/05-szabalyok-es-kapuk/"><strong>5. Automatizált kapuk</strong><span>rule, skill, kötelező ellenőrzési pont</span></a></li><li><a data-route="/materials/modulok/06-rendszerellenorzes/"><strong>6. Rendszerellenőrzés</strong><span>E2E teszt, eredet, ellenőrzési eredmény</span></a></li><li><a data-route="/materials/modulok/07-legacy-rendszer/"><strong>7. Legacy változtatás</strong><span>characterization teszt, seam, rollback</span></a></li><li><a data-route="/materials/modulok/08-csapatbevezetes/"><strong>8. Csapatbevezetés</strong><span>működési modell, eval, pilot</span></a></li></ol><figcaption> A térkép a szakmai kérdésköröket és jellemző fogalmakat ahhoz a modulhoz rendeli, ahol először dolgozol velük. <strong>Röviden:</strong> ha tudod, milyen problémát akarsz megoldani, a sor azonnal megmutatja, melyik modulban és mely fogalmakkal kezdd. </figcaption><details class="text-equivalent static-fallback" id="fig-terms-to-modules-text"><summary>Mind a 70 fogalom modulkapcsolata</summary><table class="term-module-table"><caption>A fogalmak elsődleges tananyaghelye</caption><thead><tr><th>Hely</th><th>Fogalmak</th></tr></thead><tbody><tr><th><a data-route="/materials/modulok/01-agentikus-fejlesztes/">1. modul</a></th><td>agent-ready repo; coding agent; Claude Code; Codex; agent harness; kontextus; scope; review</td></tr><tr><th><a data-route="/materials/modulok/02-repo-felkeszitese/">2. modul</a></th><td>repo szabályai; Definition of Done; kötelező ellenőrzési pont; branch; worktree; commit; pull request; CI; preview környezet</td></tr><tr><th><a data-route="/materials/modulok/03-specifikacio/">3. modul</a></th><td>spec; elfogadási feltételek; Given–When–Then; döntési pont; munkadarab; a repo alapszabályai</td></tr><tr><th><a data-route="/materials/modulok/04-fuggetlen-review/">4. modul</a></th><td>review-megállapítás; készítő; független ellenőrző; javító; RUG-ciklus; workflow; Goal; subagent; orchestrator agent; visszakövetési napló</td></tr><tr><th><a data-route="/materials/modulok/05-szabalyok-es-kapuk/">5. modul</a></th><td>szabály; skill; hook; plugin; marketplace; guardrail; MCP; test fixture; projektmemória; védőellenőrzés</td></tr><tr><th><a data-route="/materials/modulok/06-rendszerellenorzes/">6. modul</a></th><td>browser agent; eredet és verzió; ellenőrzési eredmény; referenciafeladat; unit teszt; contract test; E2E teszt; kontextuskeret</td></tr><tr><th><a data-route="/materials/modulok/07-legacy-rendszer/">7. modul</a></th><td>legacy rendszer; characterization teszt; biztonsági háló; seam; Strangler pattern; rollback</td></tr><tr><th><a data-route="/materials/modulok/08-csapatbevezetes/">8. modul</a></th><td>kiinduló állapot; modellcserélhetőség; működési modell; felelős; eval; pilot; bevált mintaút; Plan B</td></tr><tr><th>Támogató oldalak</th><td>állomás; nyilvánosan megosztható; kijelölt elsődleges</td></tr></tbody></table></details></figure></section><p class="panel visual-coverage"><strong>Hogyan követhető egy fogalom?</strong> A kártya témacsaládja elhelyezi az első térképen, a „Kapcsolódik” sor megmutatja a közvetlen fogalmi kapcsolatokat, a „Tananyagban” sor pedig ahhoz a modulhoz vezet, ahol a fogalom magyarázó ábrán és gyakorlatban is szerepet kap.</p><section id="fogalmak" aria-labelledby="terms-title"><h2 id="terms-title">Fogalmak</h2><noscript><p class="no-js-note">A kereséshez JavaScript szükséges, de az összes fogalom alább olvasható és a böngésző saját oldal-keresőjével is megtalálható.</p></noscript><div class="controls" role="search"><div class="control-grid"><label for="term-search">Keresés magyarul vagy angolul<input id="term-search" type="search" autocomplete="off" placeholder="Például: worktree, ellenőrzés, legacy"></label><label for="family-filter">Témacsalád<select id="family-filter"><option value="">Minden témacsalád</option><option value="alapok">Alapok és specifikáció</option><option value="minoseg">Review és minőség</option><option value="git">Git és kiadás</option><option value="automatizalas">Eszközök és automatizálás</option><option value="teszteles"> Tesztelés és rendszerellenőrzés </option><option value="legacy">Legacy rendszer változtatása</option><option value="bevezetes">Csapatszintű bevezetés</option></select></label><button id="clear-filters" type="button">Szűrők törlése</button></div><p class="result-line" id="result-count" aria-live="polite">A teljes fogalomtár látható.</p></div><div class="term-list" id="term-list">
         <article class="term-card" id="repository-constitution" data-family="alapok" data-search="a repo alapszabályai repository constitution repoalapszabályok repóalkotmány repository constitution résztvevői magyarázat nélkül A repo célját, változtathatatlan korlátait, döntési felelőseit és kötelező ellenőrzéseit összefogó, jóváhagyott szabálycsomag.">
           <span class="family">Alapok és specifikáció</span>
           <h2><a href="#repository-constitution">a repo alapszabályai</a></h2>
@@ -823,10 +761,130 @@
             <div><dt>Tananyagban</dt><dd><span class="pill-list"><a href="../modulok/02-repo-felkeszitese/index.html">2. A repo felkészítése</a><a href="../modulok/04-fuggetlen-review/index.html">4. Független review</a></span></dd></div>
           </dl>
         </article>
-      </div>
-      <p class="empty" id="empty-state" hidden>Nincs találat. Próbálj rövidebb kifejezést, angol aliast vagy másik témacsaládot.</p>
-    </section>
-  </main>
-  <footer class="footer"><div class="footer__inner"><p>Ez az oldal hálózati kapcsolat nélkül is használható. A definíciók kijelölt elsődleges forrása a <code>glossary.json</code> fájl.</p></div></footer>
-</body>
-</html>
+        <article class="term-card" id="plugin" data-family="automatizalas" data-search="plugin agent plugin képességcsomag">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#plugin">plugin</a></h2>
+          <p class="english"><span lang="en">plugin</span></p>
+          <p class="definition">Telepíthető és terjeszthető képességcsomag, amely skilleket, hookokat, agenteket, eszközöket, integrációkat vagy MCP-kapcsolatot tartalmazhat.</p>
+          <p class="example"><strong>Példa:</strong> A csapat ellenőrzött pluginban terjeszti a közös review-skillt és hookot.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#marketplace">marketplace</a> · <a href="#skill">skill</a> · <a href="#hook">hook</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://code.claude.com/docs/en/plugins">Claude Code</a> · <a href="https://learn.chatgpt.com/docs/glossary">Codex</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="marketplace" data-family="automatizalas" data-search="marketplace plugin marketplace pluginforrás">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#marketplace">marketplace</a></h2>
+          <p class="english"><span lang="en">plugin marketplace</span></p>
+          <p class="definition">Pluginok felfedezésére és terjesztésére szolgáló forrás vagy katalógus; a benne szereplés önmagában nem biztonsági vagy minőségi minősítés.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#plugin">plugin</a> · <a href="#guardrail">guardrail</a> · <a href="#provenance">eredet és verzió</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://code.claude.com/docs/en/discover-plugins">Claude Code plugin-felfedezés</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="workflow" data-family="minoseg" data-search="workflow végrehajtási folyamat">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#workflow">workflow</a></h2>
+          <p class="english"><span lang="en">workflow</span></p>
+          <p class="definition">Szerepek, lépések, átadások, visszatérési pontok és kapuk rendezett végrehajtási útja egy ismételhető eredményhez.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#rug">RUG</a> · <a href="#goal-completion-condition">Goal</a> · <a href="#orchestrator">orchestrator agent</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="goal-completion-condition" data-family="minoseg" data-search="Goal completion condition befejezési feltétel">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#goal-completion-condition">Goal / completion condition</a></h2>
+          <p class="english"><span lang="en">goal / completion condition</span></p>
+          <p class="definition">Megfigyelhető végállapot, amelyig az agent folytatja a munkát; a feltétel teljesülése nem helyettesíti a független review-t vagy az emberi jóváhagyást.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#goal-vs-rug">Goal és RUG kapcsolata</a> · <a href="#definition-of-done">Definition of Done</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://code.claude.com/docs/en/goal">Claude Code Goal</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="claude-code" data-family="alapok" data-search="Claude Code Anthropic coding agent">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#claude-code">Claude Code</a></h2>
+          <p class="english"><span lang="en">Claude Code</span></p>
+          <p class="definition">Az Anthropic agentikus fejlesztési felülete, amely repófájlokon, fejlesztői eszközökön és kapcsolt szolgáltatásokon képes többlépéses munkát végezni.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#codex">Codex</a> · <a href="#agent-harness">agent harness</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://code.claude.com/docs/en/features-overview">Claude Code áttekintés</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="codex" data-family="alapok" data-search="Codex OpenAI coding agent">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#codex">Codex</a></h2>
+          <p class="english"><span lang="en">Codex</span></p>
+          <p class="definition">Az OpenAI coding agentje, amely helyi vagy felhős fejlesztési környezetben fájlokat, eszközöket, böngészőt és kapcsolt szolgáltatásokat használhat.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#claude-code">Claude Code</a> · <a href="#agent-harness">agent harness</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://learn.chatgpt.com/docs/glossary">Codex hivatalos fogalomtár</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="agent-harness" data-family="alapok" data-search="agent harness agent futtatókörnyezet">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#agent-harness">agent harness</a></h2>
+          <p class="english"><span lang="en">agent harness</span></p>
+          <p class="definition">A modellt körülvevő futtató- és eszközréteg, amely fájl-, shell-, böngésző-, subagent- és integrációs hozzáférést, valamint engedélyezési határokat ad.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#claude-code">Claude Code</a> · <a href="#codex">Codex</a> · <a href="#model-replaceability">modellcserélhetőség</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="model-replaceability" data-family="bevezetes" data-search="modellcserélhetőség model replaceability hordozócserélhetőség">
+          <span class="family">Csapatszintű bevezetés</span>
+          <h2><a href="#model-replaceability">modellcserélhetőség</a></h2>
+          <p class="english"><span lang="en">model replaceability</span></p>
+          <p class="definition">Az a képesség, hogy az elfogadási feltételek, szabályok, kapuk és evidence megtartása mellett másik modellt vagy agent harnesst próbálunk ki és mérünk meg.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#agent-harness">agent harness</a> · <a href="#eval">eval</a> · <a href="#reference-task">referenciafeladat</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="browser-agent" data-family="teszteles" data-search="browser agent böngészőagent Chrome böngésző">
+          <span class="family">Tesztelés és rendszerellenőrzés</span>
+          <h2><a href="#browser-agent">browser agent</a></h2>
+          <p class="english"><span lang="en">browser agent</span></p>
+          <p class="definition">Böngészőt eszközként használó agent, amely oldalt nyit meg, interakciót végez, vizuális állapotot és hibát vizsgál, majd bizonyítékot ad vissza.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#e2e">E2E teszt</a> · <a href="#evidence">ellenőrzési eredmény</a> · <a href="#guardrail">guardrail</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://learn.chatgpt.com/docs/chrome-extension">ChatGPT/Codex Chrome-bővítmény</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="guardrail" data-family="automatizalas" data-search="guardrail védősáv engedélyprofil">
+          <span class="family">Eszközök és automatizálás</span>
+          <h2><a href="#guardrail">guardrail</a></h2>
+          <p class="english"><span lang="en">guardrail</span></p>
+          <p class="definition">Az agent mozgásterét előre korlátozó technikai vagy folyamati védősáv, például engedélyprofil, védett útvonal vagy kötelező emberi kapu.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#guard">védőellenőrzés</a> · <a href="#hook">hook</a> · <a href="#decision-gate">döntési pont</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="goal-vs-rug" data-family="minoseg" data-search="Goal és RUG kapcsolata Goal versus RUG">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#goal-vs-rug">Goal és RUG kapcsolata</a></h2>
+          <p class="english"><span lang="en">Goal versus RUG</span></p>
+          <p class="definition">A Goal a készítő agentet tartja a mérhető végállapot felé mozgásban, míg a RUG friss kontextusú review-val, finding-ellenőrzéssel és visszajavítással vizsgálja az eredményt; egymást kiegészítik.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#goal-completion-condition">Goal</a> · <a href="#rug">RUG</a> · <a href="#reviewer">független ellenőrző</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="ai-reinforced-human-learning-loop" data-family="alapok" data-search="AI-val megerősített emberi tanulási ciklus ember AI tanulás RLHF">
+          <span class="family">Alapok és specifikáció</span>
+          <h2><a href="#ai-reinforced-human-learning-loop">AI-val megerősített emberi tanulási ciklus</a></h2>
+          <p class="english"><span lang="en">AI-reinforced human learning loop</span></p>
+          <p class="definition">Workshop-saját pedagógiai mikro-ciklus: az ember előre jelez vagy dönt, az AI magyaráz vagy végrehajt, az ember evidence-t vizsgál, korrigál és saját szavaival összegzi a tanulságot.</p>
+          <p class="example"><strong>Nem RLHF:</strong> itt a résztvevő tanulási ciklusáról van szó, nem a modell tréningjéről; nem használjuk a félreérthető RHEL betűszót.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#evidence">ellenőrzési eredmény</a> · <a href="#decision-gate">döntési pont</a> · <a href="#rug">RUG</a></dd></div>
+          </dl>
+        </article>
+        <article class="term-card" id="subagent" data-family="minoseg" data-search="subagent alagent fresh context">
+          <span class="family">Review és minőség</span>
+          <h2><a href="#subagent">subagent</a></h2>
+          <p class="english"><span lang="en">subagent</span></p>
+          <p class="definition">Elkülönített kontextusban dolgozó specializált agent, amely körülhatárolt részfeladatot vagy független ellenőrzést végez, majd eredményt ad vissza a koordinátornak.</p>
+          <dl class="meta">
+            <div><dt>Kapcsolódik</dt><dd><a href="#orchestrator">orchestrator agent</a> · <a href="#reviewer">független ellenőrző</a> · <a href="#agent-harness">agent harness</a></dd></div>
+            <div><dt>További hivatalos olvasás</dt><dd><a href="https://code.claude.com/docs/en/sub-agents">Claude Code subagent</a> · <a href="https://learn.chatgpt.com/docs/glossary">Codex subagent</a></dd></div>
+          </dl>
+        </article>
+      </div><p class="empty" id="empty-state" hidden>Nincs találat. Próbálj rövidebb kifejezést, angol aliast vagy másik témacsaládot.</p></section></main></body></html>

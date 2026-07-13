@@ -12,7 +12,8 @@
 |---|---|
 | **LLM** (Large Language Model) | Nagy nyelvi modell — a Claude, GPT stb. mögötti technológia. Szöveget kap (kontextus) és szöveget ad vissza. |
 | **Agent / ágens** | LLM, ami nem csak válaszol, hanem **eszközöket használ** (fájlt olvas/ír, parancsot futtat, API-t hív) és többlépéses feladatot visz végig önállóan. |
-| **Claude Code** | Az Anthropic terminálban futó coding agentje — ezzel dolgozunk egész nap. |
+| <a id="claude-code"></a>**Claude Code** | Az Anthropic agentikus fejlesztési felülete, amely repófájlokon, fejlesztői eszközökön és kapcsolt szolgáltatásokon képes többlépéses munkát végezni. A workshop kötelező módszertani útja ezzel vagy Codexszel is végrehajtható. [Hivatalos leírás](https://code.claude.com/docs/en/features-overview). |
+| <a id="codex"></a>**Codex** | Az OpenAI coding agentje, amely helyi vagy felhős környezetben fájlokat, eszközöket, böngészőt és kapcsolt szolgáltatásokat használhat. [Hivatalos fogalomtár](https://learn.chatgpt.com/docs/glossary). |
 | **Token** | A szöveg "darabkája", amiben a modell számol (kb. háromnegyed szó). Ezért fizetsz, és ebből van a limit — a token-gazdálkodás ezért téma. |
 | **Context / kontextus-ablak** | Amit a modell egyszerre "lát": az utasításaid + a beolvasott fájlok + az eddigi beszélgetés. Véges! Ha túl sok a szemét benne, romlik a minőség ("context pollution"). |
 | **Instrukció-plafon** | Tapasztalati szabály: ~100–200 utasításnál többet a modell már nem tart be megbízhatóan — ezért rövid, priorizált szabálylisták kellenek. |
@@ -24,18 +25,18 @@
 | <a id="operating-model"></a>**Operating model / működési modell** | A csapat ismételhető működési rendszere: szerepek, döntési kapuk, standardok, munkafolyamatok, automatizált ellenőrzések, evidence és felelősségek együtt. Ettől lesz az AI-assisted fejlesztés egyéni trükk helyett szervezeti képesség. |
 | <a id="linear-work-state"></a>**Linear work state / Linear-munkaállapot** | A munka élő, folytatható állapota a Linear-issue leírásában és kommentjeiben él: a leírás a spec, a lease-komment rögzíti az aktív worktree-t és scope-ot, a trace-komment pedig a commitot, ellenőrzéseket, review-t és maradó kockázatot. Nem tartunk külön handoff-fájlt; a Git-commit a verziózott eredmény, a Linear a koordinációs állapot. .NET/Azure DevOps párhuzam: work item + branch/commit kapcsolata, külön átadási dokumentum nélkül. |
 | <a id="invented-data"></a>**Lifelike but INVENTED / életszerű, de KITALÁLT adat** | Nyilvános tananyagban használt, hihető formájú, de kifejezetten kitalált példa. Nem ügyféladat, nem személyes adat és nem valódi üzleti szám; nem kérünk valós adathoz hasonlító mintát, mert az valós adatok bemásolására ösztönözhet. |
-| **Model portability / modellcserélhetőség** | Az a képesség, hogy ugyanazt a specet, standardot, tool contractot, gate-et és evidence-elvárást másik modellel vagy providerrel is használjuk. A váltást reprezentatív eval igazolja; nem feltételezzük, hogy az újabb vagy drágább modell automatikusan jobb. |
-| **Agent harness** | Az a futtató- és eszközréteg, amely a modellnek fájl-, shell-, böngésző-, subagent- és egyéb tool-hozzáférést ad. Például egy coding agent CLI vagy asztali alkalmazás. Az operating model tartós részeit nem ehhez kötjük; a termékspecifikus indítást és hookot adapterként kezeljük. |
+| <a id="model-replaceability"></a>**Modellcserélhetőség** | Az a képesség, hogy az elfogadási feltételek, szabályok, kapuk és evidence megtartása mellett másik modellt vagy agent harnesst próbálunk ki és mérünk meg. A váltást reprezentatív eval igazolja. |
+| <a id="agent-harness"></a>**Agent harness** | A modellt körülvevő futtató- és eszközréteg, amely fájl-, shell-, böngésző-, subagent- és integrációs hozzáférést, valamint engedélyezési határokat ad. Claude Code és Codex eltérő harness, de ugyanazt a repóban verziózott módszert követheti. |
 | **Spec-driven development** | A fejlesztés forrása a **specifikáció** (nem a ticket, nem a chat): spec → terv → feladatok → implementáció → ellenőrzés, minden fázis végén **emberi jóváhagyási kapuval** (validation gate). |
 | **Given-When-Then (Gherkin)** | Üzletileg olvasható elfogadási kritérium formátum: "Adott… — Amikor… — Akkor…". .NET-világban a SpecFlow ugyanez. |
 | **Acceptance criteria / elfogadási kritérium** | Mikor "kész" egy feature — az agent (és a teszt) számára ellenőrizhető formában. A BA-k kulcsterepe. |
 | **Orchestrator / orkesztrátor** | "Karmester"-agent: a folyamatot vezérli (tervezés → fejlesztés → teszt → review), és **subagenteket** hív az egyes lépésekre. |
-| **Subagent** | Az orkesztrátor által indított rész-agent, **saját, tiszta kontextussal**. Amit ő beolvas, az nála marad — nem szennyezi a fő döntési kontextust. |
+| <a id="subagent"></a>**Subagent** | Elkülönített kontextusban dolgozó specializált agent, amely körülhatárolt részfeladatot vagy független ellenőrzést végez, majd eredményt ad vissza a koordinátornak. |
 | <a id="rug"></a>**RUG — Repeat-Until-Good** | Review-hurok: minden munkadarabot egy **külön** (friss kontextusú) bíráló-agent ellenőriz; az igazolt finding visszamegy javításra, majd ugyanazokat a kapukat újrafuttatjuk. Kilépés csak bizonyított PASS-nál van. Kulcs: a szerző ≠ a bíráló, és a review-javaslatot implementálás előtt ellenőrizni kell. |
 | **AGENTS.md / CLAUDE.md** | A repóban élő "szabálykönyv a gépeknek": konvenciók, tiltások, minták — ezt minden agent-futás beolvassa. |
-| **Skill** | Újrafelhasználható, becsomagolt tudás/munkafolyamat az agentnek (pl. "hogyan írj release note-ot nálunk") — a leírása alapján aktiválódik. |
-| **Hook** | A folyamat adott pontján **determinisztikusan** lefutó szkript (pl. "minden módosítás után futtasd a teszteket"). A prompt csak kérés — a hook garancia. |
-| **MCP** (Model Context Protocol) | Szabvány, amivel az agent külső rendszerekhez kapcsolódik (GitHub, Linear, Neon, Vercel…). Olyan, mint egy "driver" az agent és a szolgáltatás között. |
+| <a id="skill"></a>**Skill** | Újra felhasználható, célhoz kötött agent-útmutató, amely megmondja, milyen eljárást és eszközöket kell követni egy feladattípusnál. |
+| <a id="hook"></a>**Hook** | Egy meghatározott eseménynél automatikusan lefutó program vagy parancs, amely következetesen kikényszerít egy ellenőrzést vagy műveletet. A lefutás kiszámítható, de a hook helyességét pozitív és negatív próbával kell bizonyítani. |
+| <a id="mcp"></a>**MCP** (Model Context Protocol) | Nyílt protokoll, amelyen keresztül egy AI-alkalmazás szabványos módon érhet el külső eszközöket és adatforrásokat. Nem általános API-szinonima. |
 | **Golden path / referencia-slice** | Egy tökéletesen megcsinált minta-feature, amiről minden továbbit (ember és agent) másol. Az agentek a legközelebbi mintát utánozzák — adjunk nekik jót! |
 | **Vertical slice** | A feature minden rétege (DB → API → UI → teszt → doksi) **egy mappában** — nem szétszórva rétegek szerint. Egy feladat = egy mappa = kis kontextus. |
 | **Bounded context / boundary** | Modul-határ: mit importálhat egy modul a másikból (nálunk: csak a `*.contract.ts`-t). Erős határok = kis hibaterjedés + párhuzamosítható agent-munka. |
@@ -61,6 +62,19 @@
 | **Characterization test** | "Befotózó" teszt legacy kódra: azt rögzíti, amit a kód **most** csinál (jót-rosszat), hogy a refaktor után kiderüljön, változott-e a viselkedés. A legacy-munka belépője. |
 | **Strangler fig** | Legacy-modernizálási minta: az új rendszer fokozatosan "fojtja ki" a régit — útvonalanként átirányítva, nem big-bang újraírással. |
 | **Demand shortage** | A meglepő új helyzet: az AI-val a fejlesztés gyorsabb, mint ahogy az igények érkeznek — a szűk keresztmetszet a review, a tesztelés és a **jó specifikáció** lesz. (Ezért értékelődik fel a BA!) |
+
+### Az AI-eszköztár új kanonikus fogalmai
+
+| Fogalom | Kanonikus meghatározás |
+|---|---|
+| <a id="plugin"></a>**Plugin** | Telepíthető és terjeszthető képességcsomag, amely skilleket, hookokat, agenteket, eszközöket, integrációkat vagy MCP-kapcsolatot tartalmazhat. [Claude Code](https://code.claude.com/docs/en/plugins) · [Codex](https://learn.chatgpt.com/docs/glossary) |
+| <a id="marketplace"></a>**Marketplace** | Pluginok felfedezésére és terjesztésére szolgáló forrás vagy katalógus; a benne szereplés önmagában nem biztonsági vagy minőségi minősítés. [Hivatalos Claude Code leírás](https://code.claude.com/docs/en/discover-plugins) |
+| <a id="workflow"></a>**Workflow** | Szerepek, lépések, átadások, visszatérési pontok és kapuk rendezett végrehajtási útja egy ismételhető eredményhez. |
+| <a id="goal-completion-condition"></a>**Goal / completion condition** | Megfigyelhető végállapot, amelyig az agent folytatja a munkát; a feltétel teljesülése nem helyettesíti a független review-t vagy az emberi jóváhagyást. [Claude Code Goal](https://code.claude.com/docs/en/goal) |
+| <a id="goal-vs-rug"></a>**Goal és RUG kapcsolata** | A Goal a készítő agentet tartja a mérhető végállapot felé mozgásban; a RUG friss kontextusú review-val, finding-ellenőrzéssel és visszajavítással vizsgálja az eredményt. Kiegészítik, nem helyettesítik egymást. |
+| <a id="browser-agent"></a>**Browser agent** | Böngészőt eszközként használó agent, amely oldalt nyit meg, interakciót végez, vizuális állapotot és hibát vizsgál, majd bizonyítékot ad vissza. Bejelentkezett Chrome-állapothoz külön engedélyezett bővítmény kell. [Hivatalos OpenAI leírás](https://learn.chatgpt.com/docs/chrome-extension) |
+| <a id="guardrail"></a>**Guardrail / védősáv** | Az agent mozgásterét előre korlátozó technikai vagy folyamati védelem, például engedélyprofil, védett útvonal vagy kötelező emberi kapu. Nem azonos a kész állapotot bizonyító quality gate-tel. |
+| <a id="ai-reinforced-human-learning-loop"></a>**AI-val megerősített emberi tanulási ciklus** | Workshop-saját pedagógiai mikro-ciklus: emberi előrejelzés vagy döntés → AI-magyarázat/végrehajtás → evidence-vizsgálat → korrekció → emberi összegzés. Nem modelltréning, nem RLHF, és nem nevezzük `RHEL`-nek. |
 
 ---
 

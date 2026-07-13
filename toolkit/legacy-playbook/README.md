@@ -1,5 +1,9 @@
 # Legacy playbook — safety net first, modernization second
 
+A végrehajtás AI-first: mondd Claude Code-nak vagy Codexnek, hogy vizsgálja meg a playbookot, futtassa a
+releváns labort, és adja vissza a characterization test, a mutáció, a rollback és a kockázatok evidence-ét.
+Az alábbi parancsokat az **agent futtatja**; az ember választ seamet és hagy jóvá viselkedésváltozást.
+
 Participant-shareable kit for working with AI agents on legacy .NET /
 MS-SQL code. Everything here uses INVENTED sample data.
 
