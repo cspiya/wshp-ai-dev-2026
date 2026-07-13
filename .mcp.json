@@ -1,5 +1,5 @@
 {
-  "$comment": "Workshop MCP servers. All four authenticate via OAuth in the browser on first use (/mcp in Claude Code) — this file holds no secrets and must stay that way. Never add token-bearing entries here; use a local, untracked config for those.",
+  "$comment": "Workshop MCP servers. Linear, Neon and Vercel authenticate via OAuth in the browser on first use (/mcp in Claude Code). The GitHub MCP endpoint does not support dynamic client registration, so OAuth from Claude Code fails there — use the gh CLI for GitHub operations (or add a PAT-header entry in a local, untracked scope). This file holds no secrets and must stay that way; never add token-bearing entries here.",
   "mcpServers": {
     "linear": {
       "type": "http",
