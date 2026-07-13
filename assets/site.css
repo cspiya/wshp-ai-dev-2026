@@ -284,17 +284,19 @@ main > header:first-child > :last-child { color: var(--muted); font-size: 1.08re
 .side-nav details[open] > summary::after { transform: rotate(90deg); }
 .side-nav summary > a { display: block; }
 .nav-num {
-  display: inline-grid;
-  place-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.15rem;
+  display: inline-block;
+  min-width: 1.35rem;
+  padding: 0 0.3rem;
+  margin-right: 0.2rem;
   border-radius: 0.35rem;
   background: var(--panel);
   border: 1px solid var(--line-soft);
   font-size: 0.72rem;
   font-weight: 700;
+  line-height: 1.2rem;
+  text-align: center;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 .side-nav a[aria-current="page"] .nav-num { background: var(--accent); border-color: var(--accent); color: #fff; }
 

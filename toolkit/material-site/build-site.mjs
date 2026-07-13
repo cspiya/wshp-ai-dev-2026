@@ -337,7 +337,18 @@ function buildNavModel(manifest) {
   for (const list of children.values()) list.sort((a, b) => a.order - b.order);
   const topLevel = manifest.routes.filter((r) => r.parent === "/").sort((a, b) => a.order - b.order);
   const modules = children.get("/materials/modulok/") ?? [];
-  return { byId, children, topLevel, modules };
+  // Hierarchical menu numbers: top-level areas count from 1, children add
+  // a dotted segment per level (1, 1.1, 1.8.3, …).
+  const numbers = new Map();
+  const assign = (list, prefix) => {
+    list.forEach((r, i) => {
+      const num = prefix ? `${prefix}.${i + 1}` : String(i + 1);
+      numbers.set(r.id, num);
+      assign(children.get(r.id) ?? [], num);
+    });
+  };
+  assign(topLevel, "");
+  return { byId, children, topLevel, modules, numbers };
 }
 
 function ancestors(route, byId) {
@@ -359,21 +370,19 @@ function renderSidebarTree(route, nav) {
 
   const link = (r, label) => {
     const current = r.id === route.id ? ' aria-current="page"' : "";
-    return `<a href="${p(r)}"${current}>${label ?? escapeHtml(shortTitle(r))}</a>`;
+    const num = nav.numbers.get(r.id);
+    const badge = num ? `<span class="nav-num">${num}</span> ` : "";
+    return `<a href="${p(r)}"${current}>${badge}${label ?? escapeHtml(shortTitle(r))}</a>`;
   };
 
   const subtree = (r) => {
     const kids = nav.children.get(r.id) ?? [];
     if (kids.length === 0) return `<li>${link(r)}</li>`;
     const open = trailIds.has(r.id) ? " open" : "";
-    const numbered = r.id === "/materials/modulok/" || r.id === "/materials/epitesi-naplo/";
     const items = kids
       .map((k) => {
-        const label = numbered
-          ? `<span class="nav-num">${k.order}</span> ${escapeHtml(shortTitle(k))}`
-          : escapeHtml(shortTitle(k));
         const kidTree = (nav.children.get(k.id) ?? []).length > 0 ? subtree(k) : null;
-        return kidTree ? kidTree : `<li>${link(k, label)}</li>`;
+        return kidTree ? kidTree : `<li>${link(k)}</li>`;
       })
       .join("");
     return `<li><details${open}><summary>${link(r)}</summary><ul>${items}</ul></details></li>`;
@@ -403,7 +412,7 @@ function renderShellTop(route, nav, headings) {
   const topLinks = nav.topLevel
     .map((r) => {
       const current = r.id === route.id ? ' aria-current="page"' : trailIds.has(r.id) ? ' class="trail"' : "";
-      return `<li><a href="${p(r)}"${current}>${escapeHtml(shortTitle(r))}</a></li>`;
+      return `<li><a href="${p(r)}"${current}>${nav.numbers.get(r.id)}. ${escapeHtml(shortTitle(r))}</a></li>`;
     })
     .join("");
 
@@ -423,10 +432,7 @@ function renderShellTop(route, nav, headings) {
           .join("")}</span>Modul ${moduleIndex + 1} / ${nav.modules.length}</p>`
       : "";
 
-  const isRoot = route.id === "/";
-  const sidebar = isRoot
-    ? ""
-    : `<aside class="site-sidebar">
+  const sidebar = `<aside class="site-sidebar">
 <details class="sidebar-toggle" open><summary>Tartalomjegyzék</summary>
 ${renderSidebarTree(route, nav)}
 ${renderToc(headings)}
@@ -446,7 +452,7 @@ ${renderToc(headings)}
     <ul id="site-search-results" class="search-results" hidden></ul>
   </form>
 </header>
-<div class="layout${isRoot ? " layout-full" : ""}">
+<div class="layout">
 ${sidebar}
 <div class="content-col">
 <nav class="breadcrumbs" aria-label="Elérési útvonal"><ol>${crumbs}</ol></nav>
