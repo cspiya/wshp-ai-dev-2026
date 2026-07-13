@@ -37,10 +37,12 @@ the LSP's job.
 **Context budget:** see `toolkit/checklists/context-budget.md` — memory
 that does not fit the window is not memory, it is an archive.
 
-## UI generation memory (v0 + shadcn MCP)
+## UI-generálási memória (egy designirány)
 
-The participant starter ships `participant-starter/.mcp.json.example` with
-the shadcn MCP (component registry over stdio) and the v0 MCP (generation,
-needs `V0_API_KEY`). The Design Guideline (`DESIGN-GUIDELINE.md` in the
-starter) is the memory that makes generated UI consistent: the G4 lab fills
-the stub, and every v0/shadcn prompt references it afterwards.
+A participant starter a `participant-starter/.mcp.json.example` fájlban adja a
+shadcn MCP-t és az opcionális v0 adaptert. A starter `DESIGN-GUIDELINE.md` fájlja
+az a tartós memória, amely következetessé teszi a generált UI-t. v0-ban **egyetlen**
+vizuális irányt készíts és fogadj el, majd az elfogadott kimenetből folytasd; több
+spekulatív variáns gyorsan elfogyaszthatja az ingyenes kreditet. Ha nincs v0-kapacitás,
+használd Claude designképességét ugyanazzal a guideline-nal és acceptance criteria-val.
+A szolgáltató adapter, nem ok a design újrakezdésére.

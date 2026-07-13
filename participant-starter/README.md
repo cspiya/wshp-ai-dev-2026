@@ -18,26 +18,21 @@ a nap későbbi blokkjaiban kerülnek be, lépésről lépésre.
 
 ## Hogyan használd
 
-1. **Másold le a saját GitHub-repódba.** A "Use this template" gombot később
-   kapcsoljuk be — addig klónozd/másold a `participant-starter` mappát egy új,
-   saját (public) repóba.
-2. Telepítés és indítás:
+1. A minimális bootstrap után indíts Claude Code-ot vagy Codexet abban a munkakönyvtárban, ahol a saját
+   résztvevői repód lesz.
+2. Mondd az agentnek, hogy a workshop forrásrepo `participant-starter` mappájából készítse elő a saját,
+   írható GitHub-repódat. A közös workshop-forrást nem módosíthatja.
+3. Kérd meg az agentet, hogy olvassa el az `AGENTS.md` és `DESIGN-GUIDELINE.md` fájlt, ellenőrizze a
+   környezetet, telepítse a lockfile szerinti függőségeket, és futtassa a teljes preflightot.
+4. Az agent adja vissza a munkakönyvtárat, a lefuttatott kapukat, az exit állapotokat, a maradék kockázatot
+   és minden emberi döntést. Hibánál javítson a jóváhagyott scope-on belül, majd ismételje meg a teljes
+   preflightot.
+5. Feature csak az ember által elfogadott bootstrap-evidence után indulhat. Második agent opcionális
+   portability smoke; nem feltétele a kötelező útnak.
 
-```bash
-npm install
-npm run dev        # http://localhost:3000
-```
+## Agent-run technikai szerződés
 
-3. Mielőtt feature-t építesz, zárd az **agent-ready bootstrap checkpointot**:
-   - igazítsd a repohoz az `AGENTS.md`-t;
-   - nevezd meg az egyetlen engineering standardot és Definition of Done-t;
-   - ellenőrizd a valódi typecheck/lint/test/build parancsokat;
-   - kérj egy read-only agentet, hogy mondja vissza a repo működési szerződését.
-4. Ha két agent vagy modell elérhető, ugyanazzal a read-only feladattal végezz portability smoke testet:
-   ugyanazokat a kötelező szabályokat, nyitott döntéseket és valódi parancsokat kell felismerniük.
-5. Csak ezután nyisd meg a `src/app/page.tsx`-et: a feature már a keretrendszer első rendszerpróbája.
-
-## Parancsok
+Az alábbi parancsokat az agent, a hook vagy a CI futtatja. A résztvevőnek nem kell ezeket begépelnie.
 
 | Parancs | Mit csinál |
 |---|---|
@@ -59,8 +54,7 @@ typecheck, lint, teszt és build kapukat.
 - **`DESIGN-GUIDELINE.md`** — a dizájn-szabálykönyv váza; az agent minden
   UI-munkánál ezt követi. A nap során töltöd fel.
 - **`src/components/ui/`** — shadcn/ui komponensek (helyi forráskód — az agent
-  olvashatja és szerkesztheti). Újat így adsz hozzá:
-  `npx shadcn@latest add <komponens>`.
+  olvashatja és szerkesztheti). Új komponenst az agent a telepített verzió hivatalos eljárásával ad hozzá.
 - **`.env.example`** — még üres; a `DATABASE_URL` a nap adatbázis-blokkjában
   kerül ide.
 

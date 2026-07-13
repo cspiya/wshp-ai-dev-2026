@@ -1,5 +1,10 @@
 # Spec-first munkacsomag — BA + fejlesztő
 
+> **AI-first végrehajtás:** a bootstrap után minden fájlműveletet, Git-műveletet és ellenőrzést Claude Code
+> vagy Codex végez. A résztvevő természetes nyelven adja meg a célt és a döntési határt, majd az evidence-et
+> ellenőrzi. Az alábbi pontos PowerShell- és Git-szintaxis **agent-run technikai szerződés**, nem bemásolandó
+> résztvevői utasítás.
+
 Ez a G2 labor a [spec-driven development](../../materials/fogalomtar.md#1-agentikus-fejlesztés--alapfogalmak)
 egyetlen, ismételhető átadási láncát gyakoroltatja:
 
@@ -326,7 +331,7 @@ git diff --cached --check
 if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: staged diff check failed.' }
 git diff --cached --stat
 
-$issueId = Read-Host 'Work-item ID (for example WEN-210)'
+$issueId = Read-Host 'Work-item ID (for example PROJECT-210)'
 if ([string]::IsNullOrWhiteSpace($issueId)) { throw 'BLOCKED: work-item ID is required.' }
 git commit -m "docs(spec): close $issueId spec gate"
 if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: documentation commit failed.' }

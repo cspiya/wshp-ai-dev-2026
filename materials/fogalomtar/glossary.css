@@ -41,9 +41,9 @@ main { padding: 2rem 0 5rem; }
 .panel, .visual, .term-card { background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; box-shadow: 0 8px 24px rgba(30, 43, 77, .06); }
 .panel { padding: 1.25rem; }
 .panel h2, .visual h2 { margin-top: 0; }
-.visuals { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0 2rem; }
+.visuals { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1rem 0 2rem; }
 .visual { padding: 1rem; overflow: hidden; }
-.visual svg { width: 100%; height: auto; display: block; }
+.visual svg { width: min(100%, 60rem); height: auto; display: block; margin-inline: auto; }
 figcaption { margin-top: .8rem; color: var(--muted); }
 .text-equivalent { border-top: 1px solid var(--line); margin-top: .8rem; padding-top: .6rem; }
 .text-equivalent summary { cursor: pointer; font-weight: 700; }

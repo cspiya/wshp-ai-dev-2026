@@ -13,7 +13,7 @@
       "figureSelector": "#fig-concept-families",
       "svgSelector": "#fig-concept-families svg",
       "textFallbackSelector": "#fig-concept-families-text",
-      "inlineSvgHash": "ce1c9cea8bb3a4dce386d57a562b372246ddec6bd39d9b72903a7e32619fa680"
+      "inlineSvgHash": "d0e102c381ae860176dc42f66e81081704db39e604bbdb044b8be0b8d2c226ac"
     },
     {
       "id": "fig-terms-to-modules",
@@ -24,11 +24,11 @@
       "rendering": "inline-svg",
       "diagramType": "relationship-map",
       "takeaway": "A szakmai kérdéskör megmutatja, melyik modulban és mely fogalmakkal kezdd a munkát.",
-      "glossarySlugs": ["agent-ready-repo", "coding-agent", "context", "repository-rules", "scope", "spec", "acceptance-criteria", "given-when-then", "definition-of-done", "quality-gate", "decision-gate", "review", "review-finding", "maker", "reviewer", "fixer", "rug", "orchestrator", "trace", "branch", "worktree", "commit", "pull-request", "ci", "preview", "provenance", "rule", "skill", "hook", "mcp", "fixture", "project-memory", "checkpoint", "artifact", "evidence", "guard", "baseline", "public-safe", "repository-constitution", "canonical", "reference-task", "unit-test", "contract-test", "e2e", "context-budget", "legacy-system", "characterization-test", "safety-net", "seam", "strangler-pattern", "rollback", "operating-model", "owner", "eval", "pilot", "golden-path", "plan-b"],
+      "glossarySlugs": ["agent-ready-repo", "coding-agent", "context", "repository-rules", "scope", "spec", "acceptance-criteria", "given-when-then", "definition-of-done", "quality-gate", "decision-gate", "review", "review-finding", "maker", "reviewer", "fixer", "rug", "orchestrator", "trace", "branch", "worktree", "commit", "pull-request", "ci", "preview", "provenance", "rule", "skill", "hook", "mcp", "fixture", "project-memory", "checkpoint", "artifact", "evidence", "guard", "baseline", "public-safe", "repository-constitution", "canonical", "reference-task", "unit-test", "contract-test", "e2e", "context-budget", "legacy-system", "characterization-test", "safety-net", "seam", "strangler-pattern", "rollback", "operating-model", "owner", "eval", "pilot", "golden-path", "plan-b", "plugin", "marketplace", "workflow", "goal-completion-condition", "claude-code", "codex", "agent-harness", "model-replaceability", "browser-agent", "guardrail", "goal-vs-rug", "ai-reinforced-human-learning-loop", "subagent"],
       "figureSelector": "#fig-terms-to-modules",
       "svgSelector": "#fig-terms-to-modules svg",
       "textFallbackSelector": "#fig-terms-to-modules-text",
-      "inlineSvgHash": "f88639d2b35968cf554417493ab8b2c0093457308a15721ba305f7dd7f9f353d"
+      "inlineSvgHash": "470e65878b429721be927b9c8a2963d1ce0d462f4b767aca4865a8df85712b06"
     }
   ]
 }

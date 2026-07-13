@@ -1,10 +1,18 @@
 # Workshop setup command surface
 
+A résztvevő közvetlenül csak a minimális bootstrap-kivételt végzi: szükség esetén a Scoop telepítését,
+Claude Code vagy Codex első indítását és a munkakönyvtár létrehozását/kiválasztását. Az aktív agentet
+természetes nyelven kérd meg az alábbi doctor- és bootstrap-szkriptek futtatására, a C0 evidence
+összegyűjtésére, valamint megállásra minden engedély- vagy fiókdöntésnél. A pontos szintaxis
+**agent által futtatott technikai szerződés**, nem résztvevői input.
+
 These scripts are the canonical Windows entry point for the participant setup journey. They never create accounts, store tokens, delete an existing workspace, or silently install project dependencies.
 
 ## 1. Install the local tools
 
-Run `scoop-telepito.cmd` as a regular user. It installs Git, GitHub CLI, Node.js LTS, Claude Code, and Codex through Scoop, then fails visibly if a required command is still missing.
+A bootstrap-kivétel részeként, hiányzó eszközöknél normál felhasználóként indítsd a
+`scoop-telepito.cmd` fájlt. A szkript a Scooppal telepíti a Git, GitHub CLI, Node.js LTS,
+Claude Code és Codex eszközöket, majd látható hibával leáll, ha egy szükséges parancs még hiányzik.
 
 ## 2. Diagnose the environment
 

@@ -36,7 +36,12 @@ PLAN -> SPEC GATE -> IMPLEMENT -> RUN CHECKS
 - every accepted finding is fixed and re-verified;
 - the run log links spec, evidence, findings, decisions, and residual risk.
 
-## Manual run
+## Hordozható, agent által futtatott recept
+
+Mondd Claude Code-nak vagy Codexnek, hogy a jóváhagyott specből, a repószabályokból
+és a kanonikus standardból hajtsa végre a következő receptet. A fájl-, Git- és
+ellenőrzési műveleteket az agent végzi; az ember jóváhagyja a specet, review-zza
+az evidence-et és dönt a merge-ről.
 
 1. Copy `../spec-templates/` into the work item and complete it.
 2. Apply `prompts/maker.md` in one agent context.
@@ -61,7 +66,11 @@ Human decisions:
 Residual risks:
 ```
 
-## Executable form (WEN-118)
+## Executable form
+
+Ez a futtatható workflow opcionális adapter az azt támogató környezetekhez; nem
+kötelező, Pro-safe alapút. A hordozható baseline a fenti szerződés, a repó skillje
+és egy valóban friss kontextusú reviewer.
 
 `rug-cycle.workflow.js` is the runnable distillation of this contract for
 Claude Code's Workflow tool: maker → two fresh-context reviewer lenses →
