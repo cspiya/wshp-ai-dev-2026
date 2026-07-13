@@ -128,7 +128,7 @@
 
   <section class="card">
     <h2>Kitöltött minta: hogyan áll össze a hét fájl?</h2>
-    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden szöveges fájl első négy sora ugyanaz a közös fejléc: <code>STATUS=REPLAY</code>, <code>SOURCE_SHA=7f3a2c1</code>, <code>ENVIRONMENT=replay-minta-2026-07-13</code>, <code>ADAPTER=file-store</code>. Minden sor ugyanahhoz a kitalált <code>proba-minta-01@example.invalid</code> jelentkezőhöz tartozik.</p>
+    <p><strong>KITALÁLT, REPLAY minta – nem élő futás.</strong> Minden szöveges fájl első négy sora ugyanaz a közös fejléc: <code>STATUS=REPLAY</code>, <code>SOURCE_SHA=7f3a2c1</code>, <code>ENVIRONMENT=replay-minta-2026-07-13</code>, <code>ADAPTER=file-store</code>. Ezen az egy futáson belül az API-evidence a kitalált <code>proba-api-minta-01@example.invalid</code>, a UI-evidence pedig a külön <code>proba-ui-minta-01@example.invalid</code> korrelációs azonosítót követi.</p>
     <table><thead><tr><th>Fájl</th><th>A kitalált minta lényegi tartalma</th></tr></thead><tbody>
       <tr><td><code>00-eredet-es-verzio.txt</code></td><td>A közös fejléc, a buildazonosító és az UTC-időpont; ez az alaprekord.</td></tr>
       <tr><td><code>01-unit.txt</code></td><td>Közös fejléc; <code>npm run test</code>; kilépési kód 0; kiemelve a 48 órás pontos határeset (SC-02B) PASS eredménye.</td></tr>
@@ -138,7 +138,7 @@
       <tr><td><code>05-data.txt</code></td><td>Közös fejléc; a <code>data/registrations.json</code> előtte/utána: pontosan 2 új <code>active</code> rekord, egy az API- és egy a UI-korrelációs címmel; a két duplikált kísérlet nem hoz létre további rekordot.</td></tr>
       <tr><td><code>06-kovetkeztetes.md</code></td><td>Közös fejléc; a fájl-alapú lokális táron a sikeres és a hibás út is összefüggő; REPLAY; élő futás nincs ellenőrizve.</td></tr>
     </tbody></table>
-    <p class="takeaway"><strong>Röviden:</strong> az azonosító, forrásverzió, környezet és adapter minden fájlban egyezik; a REPLAY megjelölés megakadályozza, hogy a mintát saját élő futásként értelmezd.</p>
+    <p class="takeaway"><strong>Röviden:</strong> a két csatornaspecifikus azonosító a saját API-, illetve UI-evidence láncán belül egyezik, miközben a futás, forrásverzió, környezet és adapter minden fájlban közös; a REPLAY megjelölés megakadályozza, hogy a mintát saját élő futásként értelmezd.</p>
   </section>
 
   <section class="exercise">
