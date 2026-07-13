@@ -1711,7 +1711,14 @@
     ]
   },
   "assets": {
-    "required": ["assets/site.css", "assets/site.js"],
+    "required": [
+      "assets/site.css",
+      "assets/brand.css",
+      "assets/site.js",
+      "LICENSE",
+      "materials/instruktor/entry/wenova-wordmark.png",
+      "materials/instruktor/entry/piya_csaba_center-bg-removed.png"
+    ],
     "optional": ["assets/diagram.css"]
   },
   "mediaRoots": ["index-media"],

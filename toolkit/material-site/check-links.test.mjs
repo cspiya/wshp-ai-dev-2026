@@ -14,7 +14,7 @@ function site(files) {
 
 test('relative links, resources and anchors pass in file mode', () => {
   const forward = '<link rel="canonical" href="../deep/index.html"><meta http-equiv="refresh" content="0; url=../deep/index.html"><a href="../deep/index.html">Tovább az új oldalra</a>';
-  const root = site({ 'index.html': `${canonical}<a href="deep/index.html#cel">Tovább</a>`, 'deep/index.html': `${canonical}<h1 id="cel">Cél</h1><a href="../index.html">Vissza</a>`, 'old/index.html': forward });
+  const root = site({ 'index.html': `${canonical}<a href="deep/index.html#cel">Tovább</a><a href="LICENSE">Licenc</a>`, LICENSE: 'License fixture.\n', 'deep/index.html': `${canonical}<h1 id="cel">Cél</h1><a href="../index.html">Vissza</a>`, 'old/index.html': forward });
   assert.deepEqual(validateLinks({ site: root, fileProtocol: true, phase: 'final' }), []);
 });
 

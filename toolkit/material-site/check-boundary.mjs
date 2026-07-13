@@ -26,6 +26,7 @@ const HIGH_RISK_RULES = [
 ];
 
 const TECHNICAL_EXT = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.cs', '.ps1', '.sh', '.yml', '.yaml', '.json']);
+const BINARY_ASSET_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.woff', '.woff2', '.pdf']);
 const NEGATIVE_FIXTURE_ROOT = 'toolkit/material-site/fixtures/boundary/negative/';
 const SOURCE_FALLBACK_SKIPS = new Set(['.git', '.site', 'node_modules']);
 
@@ -198,7 +199,21 @@ export function validateBoundary({ source, site, phase }) {
     }
   }
   const siteFiles = walk(site);
+  const declaredAssets = new Set([
+    ...(manifest.assets?.required ?? []),
+    ...(manifest.assets?.optional ?? []),
+  ].map(normalize));
   for (const relative of siteFiles) {
+    if (BINARY_ASSET_EXT.has(path.extname(relative).toLowerCase())) {
+      const sourceAsset = path.join(source, relative);
+      const generatedAsset = path.join(site, relative);
+      if (!declaredAssets.has(relative)) {
+        failures.push(`.site/${relative} [generated]: binary asset is not explicitly allowlisted in the site manifest`);
+      } else if (!fs.existsSync(sourceAsset) || !fs.readFileSync(sourceAsset).equals(fs.readFileSync(generatedAsset))) {
+        failures.push(`.site/${relative} [generated]: binary asset is not an exact copy of its declared source`);
+      }
+      continue;
+    }
     const text = decodeText(path.join(site, relative), true, failures, `.site/${relative} [generated]`);
     if (text == null) continue;
     scanText(text, [...INTERNAL_RULES, ...HIGH_RISK_RULES], `.site/${relative} [generated]`, failures);

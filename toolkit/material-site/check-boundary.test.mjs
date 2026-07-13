@@ -9,12 +9,12 @@ const FIXTURES = path.join(import.meta.dirname, 'fixtures', 'boundary');
 
 function sample(relative) { return fs.readFileSync(path.join(FIXTURES, relative), 'utf8'); }
 
-function fixture({ files = {}, site = {}, routes, downloads = [] }) {
+function fixture({ files = {}, site = {}, routes, downloads = [], assets }) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-boundary-'));
   const defaultRoutes = [{ id: '/', source: 'index.html', owner: 'SHELL-BUILD', alias: null }];
   const allFiles = {
     'index.html': '<h1>Nyilvános workshop</h1>',
-    'toolkit/material-site/site-manifest.json': JSON.stringify({ routes: routes ?? defaultRoutes, downloads }),
+    'toolkit/material-site/site-manifest.json': JSON.stringify({ routes: routes ?? defaultRoutes, downloads, assets }),
     ...files,
   };
   for (const [relative, content] of Object.entries(allFiles)) {
@@ -44,6 +44,19 @@ test('clean participant content, operator trace and neutral DEMO ID pass', () =>
     site: { 'index.html': sample('positive/participant.html') },
   });
   assert.deepEqual(validate(setup), []);
+});
+
+test('generated binary assets require an exact manifest-declared source copy', () => {
+  const bytes = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  const clean = fixture({
+    files: { 'assets/brand.png': bytes },
+    site: { 'assets/brand.png': bytes },
+    assets: { required: ['assets/brand.png'], optional: [] },
+  });
+  assert.deepEqual(validate(clean), []);
+
+  const unlisted = fixture({ site: { 'assets/unlisted.png': bytes } });
+  assert.ok(validate(unlisted).some((failure) => failure.includes('not explicitly allowlisted')));
 });
 
 test('operator code may retain issue trace but not private workspace locations', () => {
