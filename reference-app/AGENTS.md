@@ -68,8 +68,17 @@ If a check fails: read the output, fix, re-run. Report done only when all green.
 
 ## Hard-won gotchas (do not re-learn)
 
-- **Lockfiles must be generated with npm 10** (`npx npm@10 install`): the CI runner
-  pairs Node 22 + npm 10; npm-11 lockfiles break `npm ci`.
+- **Lockfiles: npm 10 only, and never regenerate wholesale on Windows.** The CI runner
+  pairs Node 22 + npm 10; npm-11 lockfiles break `npm ci`. Worse: ANY local npm on a
+  Windows machine records win32-only entries for native-binding families (@rolldown,
+  @tailwindcss/oxide, @next/swc, @img/sharp, @unrs, nested @esbuild under tsx/vitest) —
+  everything green locally, `npm ci`/vitest "Cannot find native binding" on Linux CI
+  (npm/cli#4828 variant; 2026-07-13, three failed attempts). Git-merged lockfiles are
+  equally unreliable even when JSON-valid. Recovery recipe that works:
+  `git show <last-green-sha>:reference-app/package-lock.json > package-lock.json`, then
+  `npx -y npm@10 install --package-lock-only` to add only the new package's subtree,
+  then audit that every native family has a `linux` entry (darwin-only fsevents is
+  fine), then validate with `npx npm@10 ci` + tests.
 - **`shadcn` IS a runtime dependency** (globals.css imports `shadcn/tailwind.css`) —
   do not "clean it up".
 - **`E2E_IN_MEMORY_DB=1` is a local-e2e-only seam**, guarded by a startup throw on

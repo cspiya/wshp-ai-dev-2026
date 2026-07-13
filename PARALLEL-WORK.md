@@ -14,6 +14,13 @@ Root files and `.github/**` belong to the coordinating session unless the active
 explicitly transfers ownership. Do not edit a file owned by the other lane without first releasing and
 reassigning it in Linear.
 
+Lane labels are file-ownership defaults, **not fixed session identities** (proven in practice
+2026-07-13: the same session delivered both materials and reference-app packages). The constant is
+that ASSIGNMENT comes from the human coordinator per issue — never self-grabbed. Before touching any
+path, check that issue's `ACTIVE` lease comment in Linear; a takeover requires the human's instruction
+plus a new `ACTIVE` lease. Never fix another session's breakage uninvited, even when delivery-critical —
+surface it and let the human route it. An overdue date does not cancel a task.
+
 ## One issue = one branch = one worktree lease
 
 Branch format:
@@ -103,3 +110,18 @@ git worktree remove C:\Zulu\git_wt\wshp-ai-dev-2026\wen-129
 git worktree remove C:\Zulu\git_wt\wshp-ai-dev-2026\wen-116
 git worktree prune
 ```
+
+## New working machine bootstrap
+
+Everything a session needs travels with the repo — clone and authenticate:
+
+1. Clone the repo. Plugin/MCP configuration is tracked (`.mcp.json`, `.claude/settings.json`
+   with `enableAllProjectMcpServers`); only authentication is per-machine.
+2. Authenticate: Claude Code login; `gh auth login` for GitHub (the GitHub MCP server cannot
+   OAuth from Claude Code — see the gotcha in `AGENTS.md`); Linear/Neon/Vercel MCP via the
+   `/mcp` OAuth prompts.
+3. Recreate the worktree root (`C:\Zulu\git_wt\<repo-slug>\`) when a parallel lane starts.
+4. Machine-local and untracked by design: `.claude/settings.local.json` (e.g. silencing the
+   github MCP entry). Claude's per-project memory does NOT travel between machines — durable
+   project knowledge belongs in this repo (`AGENTS.md` gotchas, subproject rules, the journal),
+   never only in `~/.claude`.
