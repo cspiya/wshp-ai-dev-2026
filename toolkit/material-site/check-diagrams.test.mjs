@@ -16,11 +16,13 @@ function localDiagram({ id = 'flow', visualQuestionId = 'q-overview', question =
     mmd, svg,
   };
 }
-function inlineDiagram({ id = 'inline-map', visualQuestionId = 'q-overview', question = 'Mi mivel függ össze?', type = 'relationship', diagramType = 'relationship-map', takeaway = 'A kapcsolat iránya határozza meg a következő lépést.', glossarySlugs = ['rug'], hash = null } = {}) {
-  const svg = `<svg viewBox="0 0 200 80" role="img" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">Kapcsolati térkép</title><desc id="${id}-desc">A pontból B pontba mutató nyíl.</desc><path d="M20 40 H180"/></svg>`;
+function inlineDiagram({ id = 'inline-map', visualQuestionId = 'q-overview', question = 'Mi mivel függ össze?', type = 'relationship', diagramType = 'relationship-map', takeaway = 'A kapcsolat iránya határozza meg a következő lépést.', glossarySlugs = ['rug'], hash = null, linkHref = null, linkName = 'Részletek', linkLabelledBy = null, linkTabIndex = null, fallbackHref = linkHref } = {}) {
+  const linkAttrs = `${linkLabelledBy ? ` aria-labelledby="${linkLabelledBy}"` : ''}${linkTabIndex !== null ? ` tabindex="${linkTabIndex}"` : ''}`;
+  const content = linkHref ? `<a href="${linkHref}"${linkAttrs}><rect x="20" y="20" width="160" height="40"/>${linkName ? `<text x="100" y="45">${linkName}</text>` : ''}</a>` : '<path d="M20 40 H180"/>';
+  const svg = `<svg viewBox="0 0 200 80" role="img" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">Kapcsolati térkép</title><desc id="${id}-desc">A pontból B pontba mutató nyíl.</desc>${content}</svg>`;
   return {
     record: { id, visualQuestionId, question, type, disposition: 'page-local', rendering: 'inline-svg', diagramType, takeaway, glossarySlugs, figureSelector: `#${id}`, svgSelector: `#${id} svg`, textFallbackSelector: `#${id}-text`, inlineSvgHash: hash ?? crypto.createHash('sha256').update(svg).digest('hex') },
-    inlineSvg: svg,
+    inlineSvg: svg, fallbackHref,
   };
 }
 function visualQuestion({ id = 'q-overview', question = 'Mi következik?', type = 'process', diagramId = 'flow', coverage = 'page-local', takeaway = 'A lépések egymásra épülnek.', glossarySlugs = ['rug'], ...extra } = {}) { return { id, question, type, diagramId, coverage, takeaway, glossarySlugs, ...extra }; }
@@ -44,7 +46,7 @@ function fixture({ diagrams, questions, owner = 'SHELL-BUILD' } = {}) {
   fs.writeFileSync(path.join(site, 'assets/route-disposition.json'), JSON.stringify({ phase: 'foundation', real: ['/page/'], substituted: [] }));
   const figures = records.filter((item) => (item.record ?? item).disposition === 'page-local').map((item) => {
     const d = item.record ?? item;
-    if (d.rendering === 'inline-svg') return `<figure id="${d.id}">${item.inlineSvg}<figcaption>Kapcsolati térkép</figcaption><p id="${d.id}-text">Teljes szöveges magyarázat.</p></figure>`;
+    if (d.rendering === 'inline-svg') return `<figure id="${d.id}">${item.inlineSvg}<figcaption>Kapcsolati térkép</figcaption><p id="${d.id}-text">${item.fallbackHref ? `<a href="${item.fallbackHref}">Részletek</a>` : 'Teljes szöveges magyarázat.'}</p></figure>`;
     return `<figure id="${d.id}"><img src="media/${d.output}" alt="A folyamat" width="400" height="200"><figcaption>Folyamat</figcaption><p id="${d.id}-text">Teljes szöveges magyarázat.</p></figure>`;
   }).join('');
   fs.writeFileSync(path.join(root, 'page/index.html'), `<h1>Forrás</h1>${figures}`);
@@ -62,6 +64,29 @@ test('first-class inline SVG disposition verifies exact figure, fallback and int
   const question = visualQuestion({ question: inline.record.question, type: 'relationship', diagramId: inline.record.id, takeaway: inline.record.takeaway });
   const f = fixture({ diagrams: [inline], questions: [question] });
   assert.deepEqual(validateDiagrams({ source: f.root, site: f.site, phase: 'foundation' }), []);
+});
+
+test('linked inline SVG requires an accessible name and the same HTML fallback target', () => {
+  const linked = inlineDiagram({ linkHref: '../module/index.html', linkName: '', linkLabelledBy: 'inline-map-title' });
+  const question = visualQuestion({ question: linked.record.question, type: 'relationship', diagramId: linked.record.id, takeaway: linked.record.takeaway });
+  const good = fixture({ diagrams: [linked], questions: [question] });
+  assert.deepEqual(validateDiagrams({ source: good.root, site: good.site, phase: 'foundation' }), []);
+
+  const broken = inlineDiagram({ id: 'broken-map', linkHref: '../module/index.html', linkName: '', fallbackHref: '../other/index.html' });
+  const brokenQuestion = visualQuestion({ question: broken.record.question, type: 'relationship', diagramId: broken.record.id, takeaway: broken.record.takeaway });
+  const bad = fixture({ diagrams: [broken], questions: [brokenQuestion] });
+  const failures = validateDiagrams({ source: bad.root, site: bad.site, phase: 'foundation' });
+  assert.ok(failures.some((x) => x.includes('lacks an accessible name')));
+  assert.ok(failures.some((x) => x.includes('missing from the HTML fallback')));
+});
+
+test('linked inline SVG resolves labelled-by text and stays in sequential keyboard navigation', () => {
+  const inaccessible = inlineDiagram({ id: 'inaccessible-map', linkHref: '../module/index.html', linkName: '', linkLabelledBy: 'missing-label', linkTabIndex: '-1' });
+  const question = visualQuestion({ question: inaccessible.record.question, type: 'relationship', diagramId: inaccessible.record.id, takeaway: inaccessible.record.takeaway });
+  const bad = fixture({ diagrams: [inaccessible], questions: [question] });
+  const failures = validateDiagrams({ source: bad.root, site: bad.site, phase: 'foundation' });
+  assert.ok(failures.some((x) => x.includes('lacks an accessible name')));
+  assert.ok(failures.some((x) => x.includes('removed from sequential keyboard navigation')));
 });
 
 test('negative inline fixture rejects undeclared figures and mismatched registry integrity', () => {

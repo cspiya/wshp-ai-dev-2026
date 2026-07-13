@@ -1,13 +1,13 @@
-# Építési napló — Day 5 (2026.07.13): a referenciaapp visszakapta a saját térképét
+# Építési napló — Day 5 (2026.07.13): a termék és a tananyag visszakapta a saját térképét
 
-*A nap terméke: a reference app kanonikus, repóban verziózott befejezési terve. A terv szétválasztja a
-már elkészült kódot, a még nem bizonyított élő integrációt, a v0-val végzett vizuális tervezést és a
-nulláról visszajátszható delivery-láncot. Szakszavak: [fogalomtár](../fogalomtar.md) · teljes ív:
+*A nap terméke: a reference app kanonikus, repóban verziózott befejezési terve és a résztvevői
+tananyag AI-first, vizuális helyreállítási terve. Az első szétválasztja a kész kódot a még nem
+bizonyított élő integrációtól; a második három nagy munkacsomagba rendezi az egynapos tanulási ív,
+az eszközkészlet és a közös vizuális rendszer javítását. Szakszavak: [fogalomtár](../fogalomtar.md) · teljes ív:
 [big picture](../big-picture.md) · kanonikus terv: [Reference App Plan](../../reference-app/PLAN.md) ·
 előzmény: [Day 4](day-4.md)*
 
-**Linear:** `WEN-310` ·
-külön projekt: `wshp-ai-dev-reference-app-2026` · egy nagy tervezési/baseline munkacsomag
+**Végrehajtási állapot:** Linear · a tartós döntések és szabályok a repóban · nagy, integrálható munkacsomagok
 
 ---
 
@@ -20,6 +20,8 @@ flowchart LR
     TRUTH --> V0["🎨 v0: több irány<br/>+ humán design-kapu"]
     V0 --> PROOF["🧪 Auth · browser · API · DB<br/>egy elfogadott SHA-n"]
     PROOF --> REPLAY["🔁 Szűz környezetből<br/>nullától productionig"]
+    GIT --> MATERIAL["🧭 AI-first tanulási ív<br/>+ közös vizuális szerződés"]
+    MATERIAL --> PACKAGES["📦 3 nagy csomag<br/>+ ratchetes quality gate"]
 ```
 
 ## 2. Szintézis — mit bizonyított a nap?
@@ -47,6 +49,13 @@ séma, az Auth-modell, a PaymentPort és a deployment workflow védett. Így az 
 össze a vizuális iterációt a termék- és architektúradöntéssel. A v0 nem kapcsolódhat a secret-bearing
 alkalmazásprojekthez: import előtt emberi env-leltár és elkülönített, secretmentes design-környezet kell.
 
+### D) A tananyag formája is a módszert tanítja
+
+A résztvevő a minimális bootstrap után nem pontos parancsokat másol: természetes nyelven megbízza
+Claude Code-ot vagy Codexet, az agent végrehajt, bizonyítékot hoz, az ember pedig kapuz és javíttat.
+Ugyanez a szerződés vezeti végig a teljes napot. A közös vizuális szerepek — ember, agent, gépi kapu,
+artifact, evidence és kockázat — ezért nem díszítő CSS-elemek, hanem a módszer látható nyelve.
+
 ## 3. A két tanulási hurok — szétválasztva
 
 ### 🧑 Humán hurok (mit kellett pontosítani?)
@@ -57,6 +66,8 @@ alkalmazásprojekthez: import előtt emberi env-leltár és elkülönített, sec
    findingjai alapból az aktív csomagban maradnak, nem lesz belőlük ötven mikro-issue.
 3. **A design valódi kapu:** a vizuális irányt az ember választja ki a v0-alternatívák közül; az agent
    nem dönt helyette brandről, accountról, productionről vagy merge-ről.
+4. **A minimális bootstrap kivétel tudatos döntés:** utána a résztvevő nem parancsokat tanul, hanem
+   megtanulja specifikálni, ellenőrizni és javíttatni az agent munkáját.
 
 ### 🤖 Agent-hurok (mit kellett a gép állításain kijavítani?)
 
@@ -69,6 +80,8 @@ alkalmazásprojekthez: import előtt emberi env-leltár és elkülönített, sec
 3. **Az „app nincs kész” túl durva állítás volt:** a fájl- és tesztevidencia alapján a helyes
    diagnózis a delivery-proof hiánya. A terv ezért nem generál új scope-ot, hanem bezárja a valódi
    bizonyítási réseket.
+4. **A vizuális konvenció önmagában nem guard rail:** közös stílus, hozzáférhető link-szerződés,
+   sötét kódfelület és regressziós teszt együtt akadályozza meg, hogy az új oldalak visszacsússzanak.
 
 ## 4. Esettár (részletek, összecsukva)
 
@@ -100,8 +113,19 @@ visszafordítható verzió. A végleges diff ezután ugyanazokon a RUG- és alka
 bármely más kód.
 </details>
 
+<details>
+<summary>🤖 <b>A3 · AI-first tananyag-alap</b> (szerződés, stílus, ratchet)</summary>
+
+A kanonikus helyreállítási terv rögzíti a minimális bootstrap kivételt, az egész nap aktív agentet,
+az ember–agent–evidence–RUG mikrociklust és a szolgáltatói tartalékutat. A közös CSS szemantikus
+szerepeket és egyetlen olvasható, sötét blokk-kódfelületet ad. A render- és diagramellenőrzők az új
+hibákat azonnal megállítják, miközben a három nagy csomag fokozatosan felszámolja a név szerint ismert
+régi eltéréseket.
+</details>
+
 ## 5. Következő bizonyítás
 
-A v0 design brief és alternatívák elkészítése, emberi vizuális döntés, majd a kiválasztott UI
-integrálása. Ezután ugyanazon elfogadott SHA-n kell lezárni az élő Neon Auth, Preview browser/API/DB
-evidencia és a nulláról újrajátszható runbook kapuit.
+A referenciaappnál a v0 design brief és alternatívák elkészítése, majd emberi vizuális döntés
+következik. A tananyagnál először az AI-first vizuális alap korai integrációját kell bizonyítani,
+utána erre épülhet párhuzamosan a C0–C7 tanulási ív, valamint az eszköz–fogalomtár–starter csomag.
+Végül mindkét szálat elfogadott SHA-n, böngészőben és reprodukálható evidenciával kell lezárni.

@@ -39,6 +39,27 @@ function inlineSvgFromFigure(html, figureSelector, svgSelector) {
   const figure = elementById(html, 'figure', figureId);
   return figure?.match(/<svg\b[\s\S]*?<\/svg>/i)?.[0] ?? null;
 }
+function elementWithId(html, id) {
+  if (!id) return null;
+  const safe = escapeRegex(id);
+  return html.match(new RegExp(`<([a-z][\\w:-]*)\\b(?=[^>]*\\bid=(?:"${safe}"|'${safe}'))[^>]*>[\\s\\S]*?<\\/\\1>`, 'i'))?.[0] ?? null;
+}
+function svgNavigationLinks(svg) {
+  return [...svg.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)].map((match) => {
+    const opening = `<a ${match[1]}>`;
+    const href = attr(opening, 'href');
+    const labelledBy = attr(opening, 'aria-labelledby') ?? '';
+    const referencedLabel = labelledBy.split(/\s+/).filter(Boolean).map((id) =>
+      (elementWithId(svg, id) ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+    ).filter(Boolean).join(' ');
+    const labelled = attr(opening, 'aria-label') || referencedLabel;
+    const title = match[2].match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? '';
+    const visibleText = match[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    const tabIndex = attr(opening, 'tabindex');
+    const excludedFromTabOrder = tabIndex !== undefined && Number.parseInt(tabIndex, 10) < 0;
+    return { href, name: `${labelled} ${title} ${visibleText}`.trim(), excludedFromTabOrder };
+  });
+}
 export function normalizedInlineSvg(svg) {
   return svg
     .replaceAll('\r\n', '\n')
@@ -227,6 +248,18 @@ export function validateDiagrams({ source, site, phase }) {
             const expectedGeneratedHash = diagram.generatedInlineSvgHash ?? diagram.inlineSvgHash;
             if (generatedHash !== expectedGeneratedHash) failures.push(`${label}: generated inline SVG integrity differs from source/registry`);
             if (generatedHash !== diagram.inlineSvgHash && !/^[a-f0-9]{64}$/.test(diagram.generatedInlineSvgHash ?? '')) failures.push(`${label}: route-resolved inline SVG requires generatedInlineSvgHash`);
+            const navigationLinks = svgNavigationLinks(generatedSvg);
+            if (navigationLinks.length) {
+              const fallbackId = selectorId(diagram.textFallbackSelector);
+              const fallback = elementWithId(generatedHtml, fallbackId) ?? '';
+              const fallbackTargets = new Set([...fallback.matchAll(/<a\b[^>]*\bhref=(?:"([^"]+)"|'([^']+)')[^>]*>/gi)].map((match) => match[1] ?? match[2]));
+              for (const link of navigationLinks) {
+                if (!link.href || /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(link.href)) failures.push(`${label}: diagram navigation link must use a resolved internal href`);
+                if (!link.name) failures.push(`${label}: diagram navigation link lacks an accessible name`);
+                if (link.excludedFromTabOrder) failures.push(`${label}: diagram navigation link is removed from sequential keyboard navigation`);
+                if (link.href && !fallbackTargets.has(link.href)) failures.push(`${label}: diagram navigation target is missing from the HTML fallback: ${link.href}`);
+              }
+            }
           }
         }
       } else {
