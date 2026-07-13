@@ -75,6 +75,9 @@ If a check fails: read the output, fix, re-run. Report done only when all green.
 - **`E2E_IN_MEMORY_DB=1` is a local-e2e-only seam**, guarded by a startup throw on
   Vercel (`src/platform/api/root.ts`) — never weaken the guard; composition lives at
   the composition root, never at module import time.
+- **`npx vercel env pull` writes `VERCEL="1"` into the file** (plus TURBO_*/VERCEL_*
+  noise) — that makes the local e2e build trip the seam guard above. Keep only the
+  `DATABASE_URL*` and `NEON_AUTH_*` lines in `.env`.
 - **Test lint-boundary rules with REAL files** — eslint zones are generated from
   existing module folders, so stdin tests against non-existent paths false-pass.
 - **Both repo adapters must stay contract-equal:** the shared port-contract suite

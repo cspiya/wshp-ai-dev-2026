@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "@/platform/api/root";
 
 describe("health.ping", () => {
-  const caller = appRouter.createCaller({});
+  const caller = appRouter.createCaller({ userId: "test-user" });
 
   it("answers pong without input", async () => {
     const result = await caller.health.ping();

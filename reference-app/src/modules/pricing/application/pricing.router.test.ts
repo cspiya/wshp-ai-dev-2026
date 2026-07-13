@@ -3,7 +3,7 @@ import { expect, it } from "vitest";
 import { createPricingRouter } from "./pricing.router";
 
 it("exposes quote calculation through the validated API boundary", async () => {
-  const caller = createPricingRouter().createCaller({});
+  const caller = createPricingRouter().createCaller({ userId: "test-user" });
   const quote = await caller.quote({
     currency: "HUF",
     listPriceMinor: 10_000,

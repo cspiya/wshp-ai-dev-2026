@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 
-import { publicProcedure, router } from "@/platform/api/trpc";
+import { protectedProcedure, publicProcedure, router } from "@/platform/api/trpc";
 
 import {
   CANCELLATION_WINDOW_MS,
@@ -45,14 +45,14 @@ export function createRegistrationsRouter(
   const windowHours = cancellationWindowMs / 3_600_000;
   return router({
     list: publicProcedure.query(() => repo.list()),
-    create: publicProcedure.input(registrationInputSchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(registrationInputSchema).mutation(async ({ input }) => {
       const workshopStartsAt = await schedule.getStartsAt(input.workshopId);
       if (!workshopStartsAt) {
         throw new TRPCError({ code: "NOT_FOUND", message: `Workshop ${input.workshopId} not found` });
       }
       return repo.create({ ...input, workshopStartsAt });
     }),
-    confirm: publicProcedure.input(idInput).mutation(async ({ input }) => {
+    confirm: protectedProcedure.input(idInput).mutation(async ({ input }) => {
       const registration = await repo.getById(input.id);
       if (!registration) throw notFound(input.id);
       if (registration.status !== "pending") {
@@ -62,7 +62,7 @@ export function createRegistrationsRouter(
       if (!updated) throw conflict("Registration status changed concurrently");
       return updated;
     }),
-    cancel: publicProcedure.input(idInput).mutation(async ({ input }) => {
+    cancel: protectedProcedure.input(idInput).mutation(async ({ input }) => {
       const registration = await repo.getById(input.id);
       if (!registration) throw notFound(input.id);
       if (registration.status === "cancelled") {
