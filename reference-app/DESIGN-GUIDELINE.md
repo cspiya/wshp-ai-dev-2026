@@ -17,7 +17,7 @@ shadcn variable names so existing primitives keep working).
 
 | Token | Value | Usage |
 |---|---|---|
-| `--console-chassis` / `--shell` | `#14161c` | header/footer background (ink chassis) |
+| `--console-chassis` / `--shell` | `#14161c` | footer background; header uses a `#1d2028` → `#14161c` gradient (chassis-2 → chassis) |
 | `--console-chassis-2` | `#1d2028` | chassis gradient top |
 | `--console-seam` | `#3a3f4d` | chassis borders/dividers ("seams") |
 | `--console-engrave` | `#8a8f9e` | engraved mono text on chassis |
