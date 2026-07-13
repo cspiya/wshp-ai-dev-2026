@@ -10,7 +10,7 @@
 **Előadás/gyakorlat filozófia:** az instruktori beszéd állványzat, nem tartalom-átadás. Minden
 blokkban a hallgató épít, és minden blokk egy megnevezett munkadarabbal zárul, amely a következő
 blokk bemenete. A közös ellenőrzés (checkpoint) soha nem marad el — ha vágni kell, a gyakorlat
-utolsó iterációja megy, nem az ellenőrzés; a **C4 készítő lépés (3. blokk vége) ugyanígy nem
+utolsó iterációja megy, nem az ellenőrzés; a **C4 készítő lépés (4. blokk eleje) ugyanígy nem
 vágható** (részletek a végén: „Ha csúszik a nap").
 
 | Blokk | Idősáv | Előadás | Gyakorlat | Közös ellenőrzés |
@@ -19,7 +19,7 @@ vágható** (részletek a végén: „Ha csúszik a nap").
 | 2. Üres repo → agent-ready repo v0 | 09:45–10:45 | 12 perc | 38 perc | 10 perc |
 | Szünet | 10:45–11:00 | — | — | — |
 | 3. Spec-vezérelt SDLC + BA-kapu | 11:00–11:45 | 12 perc | 25 perc | 8 perc |
-| 4. Orchestrátor + Repeat-Until-Good | 11:45–12:30 | 10 perc | 27 perc | 8 perc |
+| 4. Orchestrátor + Repeat-Until-Good (C4 készítő + C5 review) | 11:45–12:30 | 5 perc | 32 perc | 8 perc |
 | Ebéd | 12:30–13:15 | — | — | — |
 | 5. A keretrendszer megerősítése | 13:15–14:00 | 12 perc | 25 perc | 8 perc |
 | 6. A keretrendszer rendszerpróbája | 14:00–14:45 | 10 perc | 27 perc | 8 perc |
@@ -175,23 +175,17 @@ párosítsd össze egy kész résztvevővel. Készítsd elő kivetítésre a 3. 
      `tasks.md`-t — minden feladatnál AC + forgatókönyv + futtatandó ellenőrzés hivatkozással.
   5. (28–32) Megnevezi a döntéshozót és rögzíti az állapotot: APPROVED / BLOCKED / `DECISION
      REQUIRED — owner — next decision point`.
-  6. (32–45) **C4 készítő lépés — NEM VÁGHATÓ:** a készítő szerepű agent a jóváhagyott csomagból
-     implementálja a KK-Regisztráció szeletet a saját workspace-ben (első lépésként visszamondja az
-     elfogadási feltételeket és a scope-ot); a kapuk zöldjéig iterál: `npm run typecheck && npm run
-     lint && npm run test`; majd commit + `git rev-parse HEAD` → **MAKER_SHA**, evidence:
-     `workshop-evidence/C4-maker.md`. Ha 10 perc után sincs zöld kapu: tréneri `partial` vagy
-     `known-good` snapshot (`toolkit/golden-thread/README.md`), az evidence-ben `Execution mode:
-     SNAPSHOT`.
   Kimenet: **ötfájlos csomag (`constitution.md`, `spec.md`, `given-when-then.md`, `plan.md`,
-  `tasks.md`) + explicit emberi döntés + MAKER_SHA a `workshop-evidence/C4-maker.md`-ben**.
+  `tasks.md`) + explicit emberi döntés.** A MAKER_SHA a következő blokk elején, a C4 lépésben
+  készül el.
 - **Ezt ellenőrzöd a teremben:**
   - Mind az öt fájl létezik, és a spec.md-ben ott a hármas scope-lista.
   - Szúrópróba egy AC-n: van hibautas forgatókönyve, és a tasks.md-ből visszakövethető az
     ellenőrzésig.
   - A csomagon explicit állapot van — nem „kb. kész", hanem APPROVED / BLOCKED / DECISION REQUIRED,
     névvel.
-  - Létezik a MAKER_SHA és a `C4-maker.md` — e nélkül a 4. blokk review-jának nincs tárgya; aki
-    snapshotból folytatott, annál az `Execution mode: SNAPSHOT` jelölés is ott van.
+  - Az APPROVED állapotú csomagok száma — aki BLOCKED/DECISION REQUIRED, annak a 4. blokk elején
+    a tréneri referencia-csomag jár.
 - **Tipikus elakadás + Plan B:** megoldásnak álcázott feltétel („legyen Redis cache") → átírni
   megfigyelhető viselkedésre; kapcsolódás nélküli feladat → AC-hez kötni vagy törölni; hiányzó
   döntéshozó → DECISION REQUIRED, az agent nem hagyhatja jóvá; nincs elérhető BA → a tréner kitalált
@@ -225,13 +219,18 @@ párosítsd össze egy kész résztvevővel. Készítsd elő kivetítésre a 3. 
   - „A dogfooding-bizonyíték: ezt az anyagot is így építettük — zöld CI után a független review
     valódi hibákat talált. A zöld pipeline szükséges, nem elégséges."
 - **Amit a hallgatók csinálnak:**
-  1. (0–5) A készítő előveszi a 3. blokk C4 lépésében rögzített `MAKER_SHA`-t; a szerepek
-     szétválnak: maker / friss reviewer / fixer.
-  2. (5–12) Review-csomag összeállítása: spec, a `MAKER_SHA` diffje (`git show MAKER_SHA`),
+  1. (0–20) **C4 készítő lépés — NEM VÁGHATÓ:** a készítő szerepű agent a jóváhagyott csomagból
+     implementálja a KK-Regisztráció szeletet a saját workspace-ben (első lépésként visszamondja az
+     elfogadási feltételeket és a scope-ot); a kapuk zöldjéig iterál: `npm run typecheck && npm run
+     lint && npm run test`; majd commit + `git rev-parse HEAD` → **MAKER_SHA**, evidence:
+     `workshop-evidence/C4-maker.md`. Ha 10 perc után sincs zöld kapu: tréneri `partial` vagy
+     `known-good` snapshot (`toolkit/golden-thread/README.md`), az evidence-ben `Execution mode:
+     SNAPSHOT`. Utána a szerepek szétválnak: maker / friss reviewer / fixer.
+  2. (20–26) Review-csomag összeállítása: spec, a `MAKER_SHA` diffje (`git show MAKER_SHA`),
      futtatási parancsok, ismert korlátok. A reviewer friss kontextusban indul (a
      `toolkit/skills/rug-review` skill vagy a `toolkit/orchestrator/README.md` kézi kontraktusa
      szerint) — a készítő gondolatmenetét nem kapja meg.
-  3. (12–22) **False-positive Hunter a broken snapshottal:** a tréner kiosztja az előre elrontott,
+  3. (26–36) **False-positive Hunter a broken snapshottal:** a tréner kiosztja az előre elrontott,
      kitalált változatot (`toolkit/golden-thread/fixtures/snapshots/broken`) — annak is, akinek
      nincs saját diffje. Kettős feladat: (a) a valódi hiba megtalálása és futtatható bizonyítása
      (a 48 órás lemondási határ pontos határeset-tesztje, amely elbukik, miközben minden kapu
@@ -535,7 +534,7 @@ M8 eval-mélyítés 7p. Csúszásnál ezekhez nyúlsz, ebben a sorrendben az ado
 |---|---|---|
 | 1. Bevezető | A réteg- és tölcsér-ábra magyarázatát rövidítsd; a 7 diagnózis-lépésből elég 4 (cél, határok, ellenőrzés, ismeretlenek) | A setup-ellenőrzés, a társ-visszamondás és az útlevél/bingó kiosztása |
 | 2. Repo | **Második szabálykör (10p):** a 47–60. perc (worktree-rend + CI/preview elhelyezés) instruktori demóvá alakítható | A friss agentes negatív próba (FAIL → helyreállított PASS) |
-| 3. Spec | Szűkíts egyetlen AC-ra (egy normál + egy hibautas forgatókönyv); a constitution átvehető a tréneri mintából | Az explicit döntési állapot rögzítése ÉS a C4 készítő lépés (MAKER_SHA + `C4-maker.md`) — csúszásnál a spec-iterációt rövidítsd, sose a makert |
+| 3. Spec | Szűkíts egyetlen AC-ra (egy normál + egy hibautas forgatókönyv); a constitution átvehető a tréneri mintából | Az explicit döntési állapot rögzítése — csúszásnál a spec-iterációt rövidítsd; a C4 készítő lépés a 4. blokk eleje, és ott NEM vágható |
 | 4. Review | **Második RUG-kör (8p):** a regressziós újraellenőrzés szűkíthető egyetlen tételre; a review-csomag sablonból tölthető | Minden HIGH tétel lezárása vagy BLOCKED jelölése, és a False-positive Hunter kettős pecsétje (bizonyított hiba + indokolt REJECTED) |
 | 5. Kapuk | **Második hook-kör (7p):** a besorolási gyakorlat közösen, szóban is elvégezhető | A PASS → FAIL → PASS hármas ugyanazon a fixture-ön |
 | 6. Rendszerpróba | A reference-app stretch demó (preview + Neon) és a Browser Boss Fight extra pecsét elhagyható; a felületi hibaút közös demóként is futhat | A négymezős fejléc (STATUS/SOURCE_SHA/ENVIRONMENT/ADAPTER) és a rétegzett mag: unit (48 órás határeset) → API (201 + 409) → adat (előtte/utána) |

@@ -93,14 +93,14 @@
       <li>Nevezd meg a döntéshozót, majd kérj APPROVED vagy BLOCKED döntést. Hiánynál írj: <code>DECISION REQUIRED — owner — next decision point</code>.</li>
     </ol>
     <h3>Visszakövetési minta</h3>
-    <table><thead><tr><th>Elfogadási feltétel</th><th>Forgatókönyv</th><th>Feladat</th><th>Ellenőrzés</th></tr></thead><tbody><tr><td>AC-02</td><td>SC-02A, SC-02B</td><td>TASK-04</td><td><code>npm run test -- order</code></td></tr></tbody></table>
+    <table><thead><tr><th>Elfogadási feltétel</th><th>Forgatókönyv</th><th>Feladat</th><th>Ellenőrzés</th></tr></thead><tbody><tr><td>AC-02</td><td>SC-02A, SC-02B</td><td>TASK-04</td><td><code>npm run test -- domain</code></td></tr></tbody></table>
     <p class="takeaway"><strong>Kész, ha:</strong> egy másik ember meg tudja nevezni a scope-ot, minden elfogadási feltétel útját az ellenőrzésig, valamint azt, ki és milyen állapotban döntött. Ha ez nem teljesül, a csomag még nem APPROVED.</p>
   </section>
 
   <section class="exercise" id="c4-keszito-lepes">
     <h2>A készítő lépés (C4): a jóváhagyott csomagból commit lesz</h2>
     <p><strong>Mi ez, és miért?</strong> Eddig a csomag csak dokumentum volt. Ebben a lépésben a <a data-route="/materials/fogalomtar/#maker">készítő</a> szerepű agent — a te felügyeleteddel — implementálja a jóváhagyott csomagot a saját workspace-edben, a nap kitalált munkadarabján (a „KK-Regisztráció” szeleten). A kimenet egy valódi, azonosítható <a data-route="/materials/fogalomtar/#commit">commit</a>: enélkül a 4. modul független review-jának nincs tárgya.</p>
-    <p><span class="time">~20 perc</span></p>
+    <p><span class="time">~20 perc — a 11:45-ös blokk (4. modul) első szakasza</span></p>
     <ol>
       <li>Nyisd meg a saját <strong>APPROVED</strong> csomagod. Ha nincs APPROVED csomagod, használd a tréner referencia-csomagját: <code>toolkit/golden-thread/spec-package/</code> (fejléce: <code>STATUS: C3-APPROVED-CONTRACT</code>).</li>
       <li>Add az agentnek a csomagot és a repo szabályait, és kérd a <code>TASK-01</code>…<code>TASK-05</code> feladatok végrehajtását a saját workspace-edben. A készítő első lépésként mondja vissza az elfogadási feltételeket és a scope-ot, és csak utána módosítson fájlt.</li>
