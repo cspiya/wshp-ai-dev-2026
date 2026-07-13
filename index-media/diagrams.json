@@ -19,7 +19,7 @@
       "figureSelector": "#fig-product-reference",
       "svgSelector": "#fig-product-reference svg",
       "textFallbackSelector": "#fig-product-reference-text",
-      "inlineSvgHash": "5c04015fdaa65f075f2f2079ee55516fbe0d8be888c56f600484a6e440bb0e32"
+      "inlineSvgHash": "859a66f643a2f88d222d8080f3c1696c847b7b6626e6c2a0501b1ecbf771d45a"
     },
     {
       "id": "fig-learning-roadmap",
@@ -43,8 +43,8 @@
       "figureSelector": "#fig-learning-roadmap",
       "svgSelector": "#fig-learning-roadmap svg",
       "textFallbackSelector": "#fig-learning-roadmap-text",
-      "inlineSvgHash": "9e30f434165241317dae5159ea123dd80480ac70ad757e32736f038ed00af21c",
-      "generatedInlineSvgHash": "a4aec1f8fd225c1a7fd2717afc28c813c1dd5516d5aa17602916559babd55f38"
+      "inlineSvgHash": "e7adca37ea081072a4725ef9ffd3b63d090d991fb37a0f2a99fa6e900f0afb1c",
+      "generatedInlineSvgHash": "6b5a1ef6062a03407d0da6cb19f97a86543ac027839a1f295d892eebadd82188"
     }
   ]
 }

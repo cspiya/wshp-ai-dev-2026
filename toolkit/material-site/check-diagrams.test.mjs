@@ -68,11 +68,12 @@ function inlineDiagram({
   linkName = "Részletek",
   linkLabelledBy = null,
   linkTabIndex = null,
+  linkShapeClass = "node-shape node-artifact",
   fallbackHref = linkHref,
 } = {}) {
   const linkAttrs = `${linkLabelledBy ? ` aria-labelledby="${linkLabelledBy}"` : ""}${linkTabIndex !== null ? ` tabindex="${linkTabIndex}"` : ""}`;
   const content = linkHref
-    ? `<a href="${linkHref}"${linkAttrs}><rect x="20" y="20" width="160" height="40"/>${linkName ? `<text x="100" y="45">${linkName}</text>` : ""}</a>`
+    ? `<a href="${linkHref}"${linkAttrs}><rect class="${linkShapeClass}" x="20" y="20" width="160" height="40"/>${linkName ? `<text x="100" y="45">${linkName}</text>` : ""}</a>`
     : '<path d="M20 40 H180"/>';
   const svg = `<svg viewBox="0 0 200 80" role="img" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">Kapcsolati térkép</title><desc id="${id}-desc">A pontból B pontba mutató nyíl.</desc>${content}</svg>`;
   return {
@@ -329,6 +330,31 @@ test("linked inline SVG resolves labelled-by text and stays in sequential keyboa
   assert.ok(
     failures.some((x) =>
       x.includes("removed from sequential keyboard navigation"),
+    ),
+  );
+});
+
+test("linked inline SVG requires a semantic node shape for visible hover and focus", () => {
+  const unhooked = inlineDiagram({
+    id: "unhooked-map",
+    linkHref: "../module/index.html",
+    linkShapeClass: "plain-shape",
+  });
+  const question = visualQuestion({
+    question: unhooked.record.question,
+    type: "relationship",
+    diagramId: unhooked.record.id,
+    takeaway: unhooked.record.takeaway,
+  });
+  const bad = fixture({ diagrams: [unhooked], questions: [question] });
+  const failures = validateDiagrams({
+    source: bad.root,
+    site: bad.site,
+    phase: "foundation",
+  });
+  assert.ok(
+    failures.some((failure) =>
+      failure.includes("lacks a semantic node-shape hover/focus hook"),
     ),
   );
 });

@@ -147,6 +147,22 @@ származik: az ellenőrzés 57 és 70 fogalmas registryvel is átment, egy szán
 pedig megállított. Ez bizonyítja, hogy a kapu a szerződést védi, nem egy tegnapi elemszámot.
 </details>
 
+<details>
+<summary>🤖 <b>A5 · A friss review visszapattintotta a látszólag kész vizuális migrációt</b> (szerep, fókusz, olvashatóság)</summary>
+
+A független ellenőrző három olyan eltérést talált, amelyet a zöld build önmagában nem mutatott meg.
+A huszonegy kattintható SVG-csomópont alakja még nem használta mindenhol a közös szemantikus
+`node-shape` horgot, ezért a hover és a billentyűzetfókusz nem adott látható visszajelzést. Az AI-társ
+„Mit végez az agent?” kártyái tévesen determinisztikus gépi szerepet kaptak. Több ábra magyarázó
+szövege pedig 12–13 képpontos maradt, ami a tényleges renderelt méretben túl apró volt.
+
+A javítás nemcsak színt cserélt: a linkelt alakok szerepet kaptak, az agentkártyák az agent
+szemantikába kerültek, a magyarázó feliratokat 15–16 képpontra emeltük és a hosszú sorokat több
+sorra tördeltük. Két negatív fixture azóta külön bizonyítja, hogy szemantikus hover/fókusz-horog
+nélküli SVG-link, illetve gépi szerepű agentkártya nem mehet át. A tanulság: a „kattintható” és az
+„olvasható” nem forráskód-tulajdonság; valós böngészőben kell bizonyítani.
+</details>
+
 ## 5. Következő bizonyítás
 
 A referenciaappnál a kiválasztott vizuális irány emberi ACCEPT után integrálva; a következő

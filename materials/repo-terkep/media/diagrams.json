@@ -15,8 +15,8 @@
       "figureSelector": "#fig-repo-map",
       "svgSelector": "#fig-repo-map svg",
       "textFallbackSelector": "#fig-repo-map-text",
-      "inlineSvgHash": "1d1d728a60d368b98246e4631522f01fdda1f6c0ee581efa6b62cdc46a9c4713",
-      "generatedInlineSvgHash": "e2d0ded9a25315ca107aff9c3717ecb38a6d50f04ced81c4af14cfeed5bccfdc"
+      "inlineSvgHash": "f3413920df2dfab84b13fc6d213eac704a7011a485a6bca53f2e2d733c6c75cc",
+      "generatedInlineSvgHash": "b79bef47d22a26dc30a1ab01e329ff9d9514155adf4d7f9734000baabd073fc6"
     },
     {
       "id": "fig-golden-thread",
@@ -33,8 +33,8 @@
       "figureSelector": "#fig-golden-thread",
       "svgSelector": "#fig-golden-thread svg",
       "textFallbackSelector": "#fig-golden-thread-text",
-      "inlineSvgHash": "46d5230faa0da30bb45f84dfc0be09aa0690e1a8084947b0b54a85c242cec7fa",
-      "generatedInlineSvgHash": "c805cf6e021841ebba113938a9e7dc4132c999c446fdc8e3971cf16db8c43a01"
+      "inlineSvgHash": "a5c1e36a6be725c98e739fd1db1b79bc2055d3aa4835dd9d7330e4d917b0c0b3",
+      "generatedInlineSvgHash": "94d1249ec287ce0db6d248629143a71a12f12f891ab5582ad05077c6279c2732"
     }
   ]
 }

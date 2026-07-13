@@ -30,6 +30,14 @@ test('page titles are plain text while exact migration-debt pages remain tempora
   assert.deepEqual(validateStaticPage(linkedTitle, 'materials/eszkozok/index.html'), []);
 });
 
+test('AI companion agent-work card uses agent, never deterministic machine semantics', () => {
+  const shell = (role) => `<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>AI-társ</title></head><body><main><section class="ai-companion"><article class="ai-role ${role}"><h3>Mit végez az agent?</h3><p>Dolgozik.</p></article></section></main></body></html>`;
+  assert.deepEqual(validateStaticPage(shell('agent'), 'good-companion.html'), []);
+  const failures = validateStaticPage(shell('machine'), 'bad-companion.html');
+  assert.ok(failures.some((failure) => failure.includes('must use the semantic agent role')));
+  assert.ok(failures.some((failure) => failure.includes('cannot use the deterministic machine role')));
+});
+
 test('real browser rejects a second local shell', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-double-shell-'));
   const html = '<!doctype html><html lang="hu"><head><meta name="viewport" content="width=device-width"><title>Ket keret</title></head><body><a href="#main">Tartalom</a><header class="local-header">Masodik fejléc</header><main id="main">Magyarazat</main><footer class="local-footer">Masodik lablec</footer></body></html>';

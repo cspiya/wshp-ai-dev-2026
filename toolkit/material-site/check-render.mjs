@@ -84,6 +84,29 @@ export function validateStaticPage(html, label = "page") {
     failures.push(`${label}: motion has no reduced-motion fallback`);
   if (/\bautoplay\b/i.test(html))
     failures.push(`${label}: autoplay is forbidden`);
+  for (const companion of html.matchAll(
+    /<section\b[^>]*\bclass=(?:"[^"]*\bai-companion\b[^"]*"|'[^']*\bai-companion\b[^']*')[^>]*>[\s\S]*?<\/section>/gi,
+  )) {
+    const agentWorkCard = companion[0].match(
+      /<article\b([^>]*)>(?:(?!<\/article>)[\s\S])*?<h3\b[^>]*>\s*Mit végez az agent\?\s*<\/h3>(?:(?!<\/article>)[\s\S])*?<\/article>/i,
+    );
+    if (!agentWorkCard) continue;
+    const classMatch = agentWorkCard[1].match(
+      /\bclass=(?:"([^"]*)"|'([^']*)')/i,
+    );
+    const roleClasses = classMatch?.[1] ?? classMatch?.[2] ?? "";
+    if (
+      !/(?:^|\s)ai-role(?:\s|$)/.test(roleClasses) ||
+      !/(?:^|\s)agent(?:\s|$)/.test(roleClasses)
+    )
+      failures.push(
+        `${label}: AI companion agent-work card must use the semantic agent role`,
+      );
+    if (/(?:^|\s)machine(?:\s|$)/.test(roleClasses))
+      failures.push(
+        `${label}: AI companion agent-work card cannot use the deterministic machine role`,
+      );
+  }
   const animations = [
     ...html.matchAll(/<[^>]+\bdata-animation=["']([^"']+)["'][^>]*>/gi),
   ];

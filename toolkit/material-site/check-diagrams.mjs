@@ -120,10 +120,24 @@ function svgNavigationLinks(svg) {
     const tabIndex = attr(opening, "tabindex");
     const excludedFromTabOrder =
       tabIndex !== undefined && Number.parseInt(tabIndex, 10) < 0;
+    const hasSemanticHoverShape = [
+      ...match[2].matchAll(/<(?:rect|circle|ellipse|path|polygon)\b[^>]*>/gi),
+    ].some((shapeMatch) => {
+      const classes = new Set(
+        (attr(shapeMatch[0], "class") ?? "").split(/\s+/).filter(Boolean),
+      );
+      return (
+        classes.has("node-shape") &&
+        ["human", "agent", "machine", "artifact", "evidence", "risk"].some(
+          (role) => classes.has(`node-${role}`),
+        )
+      );
+    });
     return {
       href,
       name: `${labelled} ${title} ${visibleText}`.trim(),
       excludedFromTabOrder,
+      hasSemanticHoverShape,
     };
   });
 }
@@ -158,6 +172,11 @@ const COMPLEX_TYPES = new Set([
   "decision",
   "timeline",
   "quantitative-data",
+]);
+// Exact current-base debt owned by the preparation lane. Remove this ratchet
+// exception during final composed-main integration once that lane has landed.
+const LEGACY_LINK_HOVER_HOOK_DEBT = new Set([
+  "/materials/felkeszules/#fig-preparation-milyen-sorrendben-epulnek-egymasra-az",
 ]);
 const DIAGRAM_TYPES = {
   "key-concept": new Set([
@@ -629,6 +648,14 @@ export function validateDiagrams({ source, site, phase }) {
                 if (link.excludedFromTabOrder)
                   failures.push(
                     `${label}: diagram navigation link is removed from sequential keyboard navigation`,
+                  );
+                const hoverDebtKey = `${route?.id ?? ""}#${diagram.id}`;
+                if (
+                  !link.hasSemanticHoverShape &&
+                  !LEGACY_LINK_HOVER_HOOK_DEBT.has(hoverDebtKey)
+                )
+                  failures.push(
+                    `${label}: diagram navigation link lacks a semantic node-shape hover/focus hook`,
                   );
                 if (link.href && !fallbackTargets.has(link.href))
                   failures.push(
