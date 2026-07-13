@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { createAuthClient } from "@neondatabase/auth/next";
 
-import { Button } from "@/components/ui/button";
+import { CheckGlyph, WarnGlyph } from "@/components/ui/glyphs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -15,12 +15,23 @@ const authClient = createAuthClient();
  * /api/auth proxy route. In the local in-memory demo the auth service is
  * absent — the panel then reports "not configured" and the server context
  * supplies the fixed local-e2e user, so the flow below stays clickable.
+ *
+ * `onStatusChange` is a presentation-only mirror for the journey rail;
+ * it changes no query, mutation, or observable auth behavior.
  */
-export function AuthPanel() {
+export function AuthPanel({
+  onStatusChange,
+}: {
+  onStatusChange?: (email: string | null) => void;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signedInAs, setSignedInAs] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    onStatusChange?.(signedInAs);
+  }, [signedInAs, onStatusChange]);
 
   const refresh = useCallback(async () => {
     try {
@@ -62,70 +73,120 @@ export function AuthPanel() {
 
   if (signedInAs) {
     return (
-      <section className="space-y-3" aria-labelledby="account-heading">
-        <h2 id="account-heading" className="text-lg font-semibold">0. Account</h2>
-        <p data-testid="auth-status">Signed in as {signedInAs}</p>
-        <Button variant="outline" onClick={() => run(() => authClient.signOut())}>
-          Sign out
-        </Button>
+      <section aria-labelledby="account-heading" className="mod">
+        <div className="mod-head">
+          <span className="mod-tag" id="account-heading">
+            Step 02 · Account
+          </span>
+          <span className="mod-stat">
+            <span className="dotlamp dotlamp-ok" aria-hidden="true" />
+            Signed in
+          </span>
+        </div>
+        <div className="mod-body">
+          <p
+            data-testid="auth-status"
+            className="inline-flex items-center gap-1.5 text-sm"
+          >
+            <CheckGlyph className="text-success" />
+            Signed in as {signedInAs}
+          </p>
+          <div className="mt-4">
+            <button
+              type="button"
+              className="btn-plate min-h-11"
+              onClick={() => run(() => authClient.signOut())}
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="space-y-3" aria-labelledby="account-heading">
-      <h2 id="account-heading" className="text-lg font-semibold">0. Account</h2>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="auth-email">Email</Label>
-          <Input
-            id="auth-email"
-            data-testid="auth-email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="auth-password">Password</Label>
-          <Input
-            id="auth-password"
-            data-testid="auth-password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
+    <section aria-labelledby="account-heading" className="mod">
+      <div className="mod-head">
+        <span className="mod-tag" id="account-heading">
+          Step 02 · Account
+        </span>
+        <span className="mod-stat">
+          <span className="dotlamp dotlamp-amber" aria-hidden="true" />
+          Signed out
+        </span>
       </div>
-      <div className="flex gap-2">
-        <Button
-          data-testid="auth-signup"
-          onClick={() =>
-            run(() =>
-              authClient.signUp.email({
-                email,
-                password,
-                name: email.split("@")[0] || "Participant",
-              }),
-            )
-          }
-        >
-          Sign up
-        </Button>
-        <Button
-          variant="outline"
-          data-testid="auth-signin"
-          onClick={() => run(() => authClient.signIn.email({ email, password }))}
-        >
-          Sign in
-        </Button>
-      </div>
-      <p data-testid="auth-status">Signed out</p>
-      {message && (
-        <p role="alert" className="text-sm text-destructive">
-          {message}
+      <div className="mod-body">
+        <p className="text-sm text-muted-foreground">
+          Email + password against the auth proxy — the local demo also runs signed out.
         </p>
-      )}
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="auth-email" className="micro-label">
+              Email
+            </Label>
+            <Input
+              id="auth-email"
+              data-testid="auth-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="bg-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="auth-password" className="micro-label">
+              Password
+            </Label>
+            <Input
+              id="auth-password"
+              data-testid="auth-password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="bg-white"
+            />
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            className="keycap min-h-11"
+            data-testid="auth-signup"
+            onClick={() =>
+              run(() =>
+                authClient.signUp.email({
+                  email,
+                  password,
+                  name: email.split("@")[0] || "Participant",
+                }),
+              )
+            }
+          >
+            Sign up
+          </button>
+          <button
+            type="button"
+            className="btn-plate min-h-11"
+            data-testid="auth-signin"
+            onClick={() => run(() => authClient.signIn.email({ email, password }))}
+          >
+            Sign in
+          </button>
+          <p data-testid="auth-status" className="micro-label">
+            Signed out
+          </p>
+        </div>
+        {message && (
+          <p
+            role="alert"
+            className="mt-3 inline-flex items-center gap-1.5 text-sm text-destructive"
+          >
+            <WarnGlyph />
+            {message}
+          </p>
+        )}
+      </div>
     </section>
   );
 }
