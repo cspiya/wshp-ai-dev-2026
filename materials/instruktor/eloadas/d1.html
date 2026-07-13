@@ -1,505 +1,453 @@
-<!DOCTYPE html>
 <!--
-  D1 — AI gyorstalpaló · HTML twin of the accepted Gamma deck.
-  Single-source note:
-    content source = Drive 10_Internal/02_Production/decks/D1-ai-gyorstalpalo.md (WEN-333)
-    brand tokens   = edu.wenova.io extraction (WSP-J / WEN-339), same :root block as
-                     materials/instruktor/entry/welcome-projected.html
-  Speaker notes are intentionally NOT included here — they stay in the Drive markdown.
-  Self-contained: inline CSS+JS, images via ../entry/ relative paths, no network requests.
+  D1 — AI gyorstalpaló · Claude-design HTML deck (WEN-333)
+  Content source: Drive 10_Internal/02_Production/decks/D1-ai-gyorstalpalo.md (canonical, speaker notes stay there)
+  Brand tokens: WSP-J / WEN-339 (edu.wenova.io) — deliberately single-theme dark: projection deck.
+  Engine: fixed 1280x720 design canvas scaled to the viewport (transform: scale) — size-proof on any screen.
+  Nav: ArrowRight/Left · Space · PageUp/Down · Home/End · click left/right half.
 -->
+<!DOCTYPE html>
 <html lang="hu">
 <head>
 <meta charset="utf-8">
 <title>D1 — AI gyorstalpaló · Wenova</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  /* Wenova brand tokens (WSP-J / WEN-339) — identical to welcome-projected.html */
   :root{
     --bg:#06071a; --text:#f0f4ff; --muted:#94a3c0;
-    --cyan:#22d3ee; --cyan-l:#67e8f9; --blue:#3b82f6; --purple:#8b5cf6;
+    --cyan:#22d3ee; --cyan-l:#67e8f9; --blue:#3b82f6;
     --orange:#f97316; --amber:#f59e0b; --amber-l:#fbbf24;
     --card:rgba(255,255,255,.06); --border:rgba(103,232,249,.15);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%; overflow:hidden}
-  body{
-    background:var(--bg); color:var(--text);
-    font-family:'Segoe UI',system-ui,sans-serif;
-    cursor:default; user-select:none;
+  body{background:#020310; font-family:'Segoe UI',system-ui,sans-serif; color:var(--text)}
+
+  /* ——— fixed-canvas stage ——— */
+  #viewport{position:fixed; inset:0; display:flex; align-items:center; justify-content:center}
+  #stage{
+    width:1280px; height:720px; position:relative; flex:0 0 auto;
+    background:var(--bg); overflow:hidden;
+    background-image:radial-gradient(900px 500px at 75% -10%, rgba(34,211,238,.10), transparent 60%),
+                     radial-gradient(700px 420px at 8% 110%, rgba(59,130,246,.08), transparent 60%);
   }
 
-  /* ---- deck chrome ---- */
-  .slide{
-    display:none; position:absolute; inset:0;
-    flex-direction:column; padding:5vh 5vw 8vh; gap:3vh;
-  }
-  .slide.active{display:flex}
-  #chrome{
-    position:fixed; left:0; right:0; bottom:0;
-    display:flex; justify-content:space-between; align-items:center;
-    padding:1.4vh 3vw; font-size:1.7vh; color:var(--muted);
-    pointer-events:none; z-index:5;
-  }
-  #chrome.hidden{visibility:hidden}
-  #counter{font-variant-numeric:tabular-nums}
+  .slide{position:absolute; inset:0; padding:64px 84px 74px; display:none; flex-direction:column}
+  .slide.on{display:flex}
 
-  /* ---- shared type ---- */
-  h1{font-size:5.4vh; line-height:1.12}
-  h1 .accent{color:var(--cyan-l)}
-  .amber, b{color:var(--amber-l); font-weight:700}
-  .lead{font-size:2.9vh; line-height:1.4}
-  .muted{color:var(--muted)}
-  .card{
-    background:var(--card); border:1px solid var(--border);
-    border-radius:1.2vh; padding:2vh 1.6vw;
+  /* ——— typographic system ——— */
+  .eyebrow{
+    font-size:15px; letter-spacing:.22em; color:var(--cyan);
+    text-transform:uppercase; font-weight:600; margin-bottom:14px;
   }
-  .fill{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:3vh}
-  .arrow{color:var(--cyan); font-size:3.4vh; flex:0 0 auto}
-  .qr-tile{
-    flex:0 0 auto; background:#fff; border-radius:1vh; padding:.9vh;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .qr-tile img{display:block}
-  .gate{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:4.6vh; height:4.6vh; border-radius:1vh; flex:0 0 auto;
-    border:1px solid var(--border); background:rgba(34,211,238,.08);
-    color:var(--cyan-l); font-size:2.8vh; font-weight:700;
+  h1{font-size:46px; line-height:1.12; font-weight:700; letter-spacing:-.01em; text-wrap:balance; max-width:1050px}
+  h1 .hl{color:var(--amber-l)}
+  .lede{font-size:25px; color:var(--muted); margin-top:14px; max-width:900px; line-height:1.4}
+  .fill{flex:1; display:flex; flex-direction:column; justify-content:center; min-height:0}
+  .big-num{
+    position:absolute; right:56px; top:34px; font-size:120px; font-weight:700;
+    color:rgba(103,232,249,.07); letter-spacing:-.04em; user-select:none;
   }
 
-  /* ---- Dia 1: title ---- */
-  #s1{justify-content:center; align-items:center; text-align:center; gap:4vh; padding:0 10vw}
-  #s1 img.wordmark{height:6.5vh}
-  #s1 h1{font-size:7.5vh}
-  #s1 .date{font-size:2.6vh; color:var(--muted); letter-spacing:.05em}
-  #s1 .thesis{font-size:3.4vh; line-height:1.45; color:var(--cyan-l); max-width:74vw}
-  #s1 .thesis b{color:var(--amber-l)}
+  /* ——— shared diagram language ——— */
+  .node{
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 26px; font-size:24px; text-align:center;
+  }
+  .node b{color:var(--amber-l)}
+  .arrow{color:var(--cyan); font-size:34px; line-height:1}
+  .chip{
+    display:inline-block; background:rgba(34,211,238,.08); border:1px solid var(--border);
+    color:var(--cyan-l); border-radius:999px; padding:8px 20px; font-size:20px;
+  }
+  .code{
+    font-family:ui-monospace,Consolas,monospace; font-size:26px;
+    background:rgba(34,211,238,.07); border:1px solid var(--border);
+    border-radius:12px; padding:16px 28px; color:var(--cyan-l);
+  }
+  .code b{color:var(--amber-l); font-weight:600}
+  .row{display:flex; align-items:center; justify-content:center; gap:18px}
+  .stack{display:flex; flex-direction:column; gap:16px}
 
-  /* ---- Dia 2: token flow ---- */
-  #s2 .flow{display:flex; align-items:center; gap:1.4vw; justify-content:center}
-  #s2 .flow .card{font-size:2.6vh; padding:2.4vh 2vw; text-align:center; position:relative}
-  #s2 .flow .loop{position:relative}
-  #s2 .flow .loop::after{
-    content:'⟲'; position:absolute; top:-3.4vh; right:-1vw;
-    color:var(--amber); font-size:3vh;
-  }
-  #s2 .example{
-    text-align:center; font-size:3.2vh;
-    font-family:ui-monospace,Consolas,monospace;
-    color:var(--cyan-l); background:rgba(34,211,238,.08);
-    border:1px solid var(--border); border-radius:1.2vh; padding:2.2vh 2vw;
-  }
-  #s2 .example b{color:var(--amber-l)}
-  #s2 .nots{display:flex; gap:1.6vw; justify-content:center}
-  #s2 .nots .card{
-    font-size:2.5vh; text-align:center; flex:1; max-width:20vw;
-    border-color:rgba(249,115,22,.4);
-  }
-  #s2 .nots .no{color:var(--orange); font-weight:700}
+  /* ——— chrome (footer + progress) ——— */
+  #chrome{position:absolute; left:0; right:0; bottom:0; height:44px;
+    display:flex; align-items:center; justify-content:space-between; padding:0 84px;
+    color:var(--muted); font-size:15px}
+  #chrome img{height:14px; opacity:.65; vertical-align:middle}
+  #bar{position:absolute; left:0; bottom:0; height:3px; background:linear-gradient(90deg,var(--cyan),var(--blue)); width:0; transition:width .25s}
+  @media (prefers-reduced-motion: reduce){ #bar{transition:none} }
+  #stage.s1 #chrome .mid, #stage.s1 #chrome img{visibility:hidden}
 
-  /* ---- Dia 3: three-step training ---- */
-  #s3 .steps{display:flex; align-items:stretch; gap:1.2vw}
-  #s3 .step{flex:1; display:flex; flex-direction:column; gap:1.2vh}
-  #s3 .step .n{
-    width:4.4vh; height:4.4vh; border-radius:50%; background:var(--cyan);
-    color:var(--bg); font-weight:700; font-size:2.5vh;
-    display:flex; align-items:center; justify-content:center;
+  /* ——— slide-specific ——— */
+  /* 1 · title */
+  .title-slide{align-items:center; justify-content:center; text-align:center; gap:26px}
+  .title-slide img.mark{height:44px; margin-bottom:8px}
+  .title-slide h1{font-size:64px; max-width:1000px}
+  .title-slide .sub{font-size:22px; color:var(--muted); letter-spacing:.06em}
+  .thesis{
+    margin-top:10px; font-size:27px; line-height:1.45; max-width:940px;
+    border:1px solid var(--border); border-left:4px solid var(--amber);
+    background:var(--card); border-radius:14px; padding:22px 34px;
   }
-  #s3 .step h3{font-size:2.7vh}
-  #s3 .step p{font-size:2.2vh; color:var(--muted)}
-  #s3 .steps .arrow{align-self:center}
-  #s3 .outcomes{display:flex; gap:2vw; justify-content:center}
-  #s3 .outcomes .card{font-size:2.5vh; text-align:center; flex:1; max-width:32vw}
-  #s3 .outcomes .card span{color:var(--muted); font-size:2.1vh}
+  .thesis b{color:var(--amber-l)}
 
-  /* ---- Dia 4: context window ---- */
-  #s4 .split{display:grid; grid-template-columns:1.1fr 1fr; gap:3vw; flex:1; min-height:0; align-items:center}
-  #s4 .facts{display:flex; flex-direction:column; gap:2.4vh; font-size:2.9vh; line-height:1.4}
-  #s4 .window-scene{
-    position:relative; display:flex; align-items:center; justify-content:center;
-    min-height:0; height:100%;
-  }
-  #s4 .dark-repo{
-    position:absolute; inset:0; display:grid;
-    grid-template-columns:repeat(4,1fr); grid-auto-rows:1fr; gap:1vh;
-    opacity:.18;
-  }
-  #s4 .dark-repo div{background:var(--card); border:1px solid var(--border); border-radius:.8vh}
-  #s4 .funnel{position:relative; display:flex; flex-direction:column; align-items:center; gap:1vh; width:100%}
-  #s4 .funnel div{
-    background:rgba(34,211,238,.10); border:1px solid var(--cyan);
-    border-radius:.9vh; text-align:center; padding:1vh .5vw;
-    font-size:1.95vh; color:var(--cyan-l);
-    box-shadow:0 0 2.4vh rgba(34,211,238,.25);
-  }
-  #s4 .funnel div:nth-child(1){width:100%}
-  #s4 .funnel div:nth-child(2){width:82%}
-  #s4 .funnel div:nth-child(3){width:64%}
-  #s4 .funnel div:nth-child(4){width:46%}
-  #s4 .funnel div:nth-child(5){width:30%; border-color:var(--amber); color:var(--amber-l); box-shadow:0 0 2.4vh rgba(245,158,11,.3)}
+  /* 2 · flow + NEM */
+  .claim{font-size:28px; margin-bottom:26px}
+  .claim b{color:var(--amber-l)}
+  .nem-row{display:flex; gap:18px; justify-content:center; margin-top:34px}
+  .nem{border:1px dashed rgba(249,115,22,.45); color:var(--text);
+    border-radius:12px; padding:14px 26px; font-size:23px}
+  .nem b{color:var(--orange)}
 
-  /* ---- Dia 5: hallucination split ---- */
-  #s5 .split{display:grid; grid-template-columns:1fr 1fr; gap:2.5vw; flex:1; min-height:0; align-items:stretch}
-  #s5 .panel{display:flex; flex-direction:column; justify-content:center; gap:2.6vh; font-size:3vh; line-height:1.45}
-  #s5 .panel.left{border-color:rgba(249,115,22,.45)}
-  #s5 .err{
-    text-decoration:underline wavy #ef4444 .35vh; text-underline-offset:.8vh;
-  }
-  #s5 .panel.right{border-color:rgba(251,191,36,.45)}
-  #s5 .panel.right p{font-size:3.3vh}
+  /* 3 · process */
+  .steps3{display:flex; align-items:stretch; gap:14px}
+  .step3{flex:1; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:26px 28px}
+  .step3 .n{width:44px; height:44px; border-radius:50%; background:var(--cyan); color:var(--bg);
+    font-weight:700; font-size:24px; display:flex; align-items:center; justify-content:center; margin-bottom:14px}
+  .step3 h3{font-size:27px; color:var(--amber-l); margin-bottom:8px}
+  .step3 p{font-size:21px; color:var(--muted); line-height:1.35}
+  .maps{display:flex; gap:18px; margin-top:26px}
+  .maps .node{flex:1; font-size:22px}
 
-  /* ---- Dia 6: three layers ---- */
-  #s6 .layers{display:flex; flex-direction:column-reverse; gap:1.6vh; flex:1; justify-content:center}
-  #s6 .layer{display:flex; align-items:center; gap:2vw; padding:2.4vh 2vw}
-  #s6 .layer h3{font-size:2.9vh; min-width:22vw}
-  #s6 .layer p{font-size:2.3vh; color:var(--muted)}
-  #s6 .layer:nth-child(1){margin:0 14vw; border-color:rgba(34,211,238,.35)}
-  #s6 .layer:nth-child(2){margin:0 7vw; border-color:rgba(139,92,246,.4)}
-  #s6 .layer:nth-child(3){margin:0; border-color:rgba(245,158,11,.45)}
+  /* 4 · context window */
+  .ctx{display:flex; gap:44px; align-items:center}
+  .ctx .stack{flex:1}
+  .ctx .stmt{font-size:27px; line-height:1.4}
+  .ctx .stmt b{color:var(--amber-l)}
+  .win{flex:1; position:relative; height:380px}
+  .win .frame{position:absolute; inset:60px 40px; border:2px solid var(--cyan); border-radius:18px;
+    box-shadow:0 0 60px rgba(34,211,238,.25), inset 0 0 40px rgba(34,211,238,.06);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px}
+  .win .frame .cap{color:var(--cyan-l); font-size:18px; letter-spacing:.14em; text-transform:uppercase}
+  .win .ghost{position:absolute; color:rgba(148,163,192,.28); font-size:17px;
+    font-family:ui-monospace,Consolas,monospace}
+  .win .frame .chip{font-size:16px; padding:6px 14px}
 
-  /* ---- Dia 7: prompt vs contracts ---- */
-  #s7 .split{display:grid; grid-template-columns:1fr 1.1fr; gap:2.5vw; flex:1; min-height:0}
-  #s7 .panel{display:flex; flex-direction:column; gap:2vh; justify-content:center}
-  #s7 .panel h3{font-size:2.2vh; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
-  #s7 .panel.left{border-style:dashed; opacity:.92}
-  #s7 .panel.left li{font-size:2.6vh; line-height:1.5; list-style:none; padding-left:1.4vw; text-indent:-1.4vw}
-  #s7 .panel.left li::before{content:'✕ '; color:var(--orange)}
-  #s7 .panel.right{border-color:rgba(251,191,36,.45)}
-  #s7 .panel.right p{font-size:3vh; line-height:1.5}
+  /* 5 · hallucination */
+  .split{display:flex; gap:24px; align-items:stretch}
+  .pane{flex:1; border-radius:16px; padding:30px 34px; font-size:25px; line-height:1.45}
+  .pane.warn{border:1px solid rgba(249,115,22,.5); background:rgba(249,115,22,.05)}
+  .pane.calm{border:1px solid var(--border); background:var(--card)}
+  .pane .tag{font-size:15px; letter-spacing:.18em; text-transform:uppercase; margin-bottom:14px; font-weight:600; display:block}
+  .pane.warn .tag{color:var(--orange)} .pane.calm .tag{color:var(--cyan)}
+  .squiggle{text-decoration:underline wavy rgba(249,115,22,.8) 2px; text-underline-offset:6px}
 
-  /* ---- Dia 8: 8-block timeline ---- */
-  #s8 .timeline{display:flex; align-items:stretch; gap:.6vw; flex:1; align-items:center}
-  #s8 .block{
-    flex:1; display:flex; flex-direction:column; align-items:center; gap:1.4vh;
-    text-align:center; padding:2.2vh .4vw;
-  }
-  #s8 .block p{font-size:2vh; line-height:1.3}
-  #s8 .t-arrow{color:var(--cyan); font-size:2.6vh; flex:0 0 auto}
+  /* 6 · three layers */
+  .layers{display:flex; flex-direction:column-reverse; gap:14px; max-width:980px; margin:0 auto; width:100%}
+  .layer{display:flex; align-items:center; gap:26px; border:1px solid var(--border);
+    border-radius:14px; padding:20px 30px; background:var(--card)}
+  .layer:last-child{border-color:rgba(245,158,11,.5)}
+  .layer h3{font-size:26px; min-width:330px}
+  .layer h3 small{display:block; font-size:18px; color:var(--muted); font-weight:400; margin-top:2px}
+  .layer .par{margin-left:auto; color:var(--cyan-l); font-size:19px; white-space:nowrap}
 
-  /* ---- Dia 9: question pair ---- */
-  #s9 .fill{gap:4vh}
-  #s9 .q{padding:3vh 2.5vw; font-size:3.2vh; line-height:1.45}
-  #s9 .q .tag{display:block; font-size:2vh; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1.2vh}
-  #s9 .bad{opacity:.65}
-  #s9 .bad .tag{color:var(--orange)}
-  #s9 .good{border-color:rgba(251,191,36,.5)}
-  #s9 .good .tag{color:var(--amber)}
-  #s9 .good{font-size:3.7vh}
+  /* 7 · prompt vs contracts */
+  .vs{display:flex; gap:24px}
+  .vs .pane{font-size:24px}
+  .vs .pane.fade{border:1px dashed rgba(148,163,192,.4); color:var(--muted); background:transparent}
+  .vs ul{list-style:none; display:flex; flex-direction:column; gap:14px}
+  .vs li{padding-left:26px; position:relative; line-height:1.35}
+  .vs li::before{content:"→"; position:absolute; left:0; color:var(--cyan)}
+  .contracts{margin-top:26px; text-align:center}
+  .contracts p{font-size:26px}
+  .contracts b{color:var(--amber-l)}
 
-  /* ---- Dia 10: message slide ---- */
-  #s10{justify-content:center; text-align:center; gap:4.5vh}
-  #s10 h1{font-size:6.2vh}
-  #s10 .big{font-size:4.6vh; line-height:1.4}
-  #s10 .gates{display:flex; gap:3vw; justify-content:center}
-  #s10 .gates .card{display:flex; align-items:center; gap:1vw; font-size:2.6vh; padding:1.8vh 2vw}
+  /* 8 · timeline */
+  .tl{display:flex; align-items:center; gap:8px; justify-content:center}
+  .tl .node{font-size:17px; padding:14px 12px; flex:1; border-radius:10px}
+  .tl .arrow{font-size:20px; flex:0 0 auto}
+  .tl .node.hot{border-color:rgba(245,158,11,.55)}
+  .tl-cap{text-align:center; color:var(--muted); font-size:20px; margin-top:30px}
 
-  /* ---- Dia 11: link cards + QRs ---- */
-  #s11 .links{display:flex; gap:1.8vw; flex:1; align-items:center}
-  #s11 .link{
-    flex:1; display:flex; flex-direction:column; align-items:center; gap:2.2vh;
-    text-align:center; padding:3.5vh 1.4vw; height:100%; justify-content:center;
-  }
-  #s11 .link .qr-tile{width:16vh; height:16vh}
-  #s11 .link .qr-tile img{width:100%; height:100%}
-  #s11 .link h3{font-size:2.5vh; color:var(--cyan-l); font-family:ui-monospace,Consolas,monospace; font-weight:600}
-  #s11 .link p{font-size:2.2vh; color:var(--muted)}
+  /* 9 · questions */
+  .q{border-radius:16px; padding:30px 40px; font-size:30px; line-height:1.4}
+  .q .lab{font-size:15px; letter-spacing:.18em; text-transform:uppercase; display:block; margin-bottom:10px}
+  .q.bad{border:1px dashed rgba(148,163,192,.4); color:var(--muted)}
+  .q.bad .lab{color:var(--muted)}
+  .q.good{border:1px solid rgba(245,158,11,.55); background:rgba(245,158,11,.06); font-size:34px}
+  .q.good .lab{color:var(--amber)}
+  .q.good b{color:var(--amber-l)}
 
-  /* ---- Dia 12: transition + creator card ---- */
-  #s12{position:relative}
-  #s12 .silhouette{
-    position:absolute; inset:14vh 6vw 16vh; display:grid;
-    grid-template-columns:repeat(4,1fr); grid-auto-rows:1fr; gap:1.6vh;
-    opacity:.10; pointer-events:none;
-  }
-  #s12 .silhouette div{background:var(--card); border:1px solid var(--cyan); border-radius:1vh}
-  #s12 .fill{position:relative; z-index:1; align-items:flex-start; gap:4vh}
-  #s12 .lead{font-size:3.6vh; max-width:62vw}
-  #s12 .bottom{
-    position:relative; z-index:1; display:flex; justify-content:space-between;
-    align-items:flex-end; gap:2vw;
-  }
-  #s12 .site{display:flex; align-items:center; gap:1.2vw; padding:1.6vh 1.4vw}
-  #s12 .site .qr-tile{width:11vh; height:11vh}
-  #s12 .site .qr-tile img{width:100%; height:100%}
-  #s12 .site h3{font-size:2.2vh; color:var(--amber-l)}
-  #s12 .site p{font-size:1.9vh; color:var(--muted)}
-  #s12 .creator{display:flex; align-items:center; gap:1vw; padding:1.4vh 1.4vw}
-  #s12 .creator img{height:6vh; width:6vh; border-radius:50%; object-fit:cover; background:var(--card)}
-  #s12 .creator p{font-size:1.9vh; color:var(--muted)}
-  #s12 .creator p b{color:var(--text)}
+  /* 10 · key message */
+  .key h1{font-size:56px; max-width:1020px}
+  .key .three{display:flex; gap:20px; justify-content:center}
+  .key .three .chip{font-size:24px; padding:12px 30px}
+
+  /* 11 · links + QR */
+  .qr3{display:flex; gap:24px; align-items:stretch}
+  .qrcard{flex:1; background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:30px 24px; display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center}
+  .tile{background:#fff; border-radius:14px; padding:12px; width:190px; height:190px}
+  .tile img{width:100%; height:100%; display:block}
+  .qrcard .url, .url{font-family:ui-monospace,Consolas,monospace; color:var(--cyan-l); font-size:19px}
+  .qrcard p{color:var(--muted); font-size:18px}
+
+  /* 12 · closing */
+  .close{display:flex; gap:50px; align-items:center}
+  .close .lead{flex:1.3}
+  .close .aside{flex:1; display:flex; flex-direction:column; align-items:center; gap:18px}
+  .creator{display:flex; align-items:center; gap:16px; border:1px solid var(--border);
+    background:var(--card); border-radius:14px; padding:16px 24px; font-size:18px; color:var(--muted)}
+  .creator img.a{width:52px; height:52px; border-radius:50%; object-fit:cover}
+  .creator b{color:var(--text); display:block; font-size:20px}
 </style>
 </head>
 <body>
+<div id="viewport"><div id="stage">
 
-<!-- Dia 1 -->
-<section class="slide" id="s1">
-  <img class="wordmark" src="../entry/wenova-wordmark.png" alt="Wenova">
-  <h1>AI-vezérelt fejlesztés — <span class="accent">profin</span></h1>
-  <div class="date">Wenova AI-Assisted Development Workshop · 2026.07.14</div>
-  <p class="thesis">Nem webalkalmazást építünk ma. <b>Megbízható, agent-ready fejlesztési
-  rendszert — és bizonyítjuk, hogy működik.</b></p>
-</section>
+  <!-- 1 -->
+  <section class="slide title-slide">
+    <img class="mark" src="../entry/wenova-wordmark.png" alt="Wenova">
+    <h1>AI-vezérelt fejlesztés — <span class="hl">profin</span></h1>
+    <div class="sub">Wenova AI-Assisted Development Workshop · 2026.07.14</div>
+    <p class="thesis"><b>Nem webalkalmazást építünk ma.</b> Megbízható, agent-ready fejlesztési
+      rendszert — és bizonyítjuk, hogy működik.</p>
+  </section>
 
-<!-- Dia 2 -->
-<section class="slide" id="s2">
-  <h1>Mi van a motorháztető alatt?</h1>
-  <div class="fill">
-    <p class="lead">Az LLM egyetlen alapfeladatot végez: <b>megjósolja a következő tokent.</b></p>
-    <div class="flow">
-      <div class="card">bemenet</div><span class="arrow">→</span>
-      <div class="card">jóslás</div><span class="arrow">→</span>
-      <div class="card loop">ismétlés</div>
-    </div>
-    <div class="example">„Magyarország fővárosa ___" → <b>Budapest</b></div>
-    <p class="lead muted">Egy válasz = több ezer ilyen jóslás egymás után.</p>
-    <div class="nots">
-      <div class="card"><span class="no">NEM</span> adatbázis.</div>
-      <div class="card"><span class="no">NEM</span> keresés.</div>
-      <div class="card"><span class="no">NEM</span> determinisztikus.</div>
-    </div>
-  </div>
-</section>
-
-<!-- Dia 3 -->
-<section class="slide" id="s3">
-  <h1>Hogyan lett ilyen? <span class="accent">Nyers tehetség → nevelés → betanítás</span></h1>
-  <div class="fill">
-    <div class="steps">
-      <div class="card step"><div class="n">1</div>
-        <h3><b>Pre-training</b></h3>
-        <p>elolvassa a fél internetet → nyers tehetség (képességek)</p>
+  <!-- 2 -->
+  <section class="slide">
+    <div class="big-num">02</div>
+    <div class="eyebrow">A modell</div>
+    <h1>Mi van a motorháztető alatt?</h1>
+    <div class="fill">
+      <p class="claim">Az LLM egyetlen alapfeladatot végez: <b>megjósolja a következő tokent.</b></p>
+      <div class="row">
+        <div class="node">bemenet</div><div class="arrow">→</div>
+        <div class="node">jóslás</div><div class="arrow">→</div>
+        <div class="node">ismétlés <span style="color:var(--cyan)">⟳</span></div>
       </div>
-      <span class="arrow">→</span>
-      <div class="card step"><div class="n">2</div>
-        <h3><b>Fine-tuning</b></h3>
-        <p>mintapéldákon formáljuk → nevelés</p>
+      <div class="row" style="margin-top:26px">
+        <div class="code">„Magyarország fővárosa ___" → <b>Budapest</b></div>
       </div>
-      <span class="arrow">→</span>
-      <div class="card step"><div class="n">3</div>
-        <h3><b>RLHF</b></h3>
-        <p>emberi visszajelzés → munkahelyi betanítás (viselkedés)</p>
+      <p style="text-align:center; color:var(--muted); font-size:21px; margin-top:14px">
+        Egy válasz = több ezer ilyen jóslás egymás után.</p>
+      <div class="nem-row">
+        <div class="nem"><b>NEM</b> adatbázis.</div>
+        <div class="nem"><b>NEM</b> keresés.</div>
+        <div class="nem"><b>NEM</b> determinisztikus.</div>
       </div>
     </div>
-    <div class="outcomes">
-      <div class="card">Képességek <span>← pre-training</span></div>
-      <div class="card">Viselkedés <span>← fine-tuning + RLHF</span></div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Dia 4 -->
-<section class="slide" id="s4">
-  <h1>Kontextusablak = <span class="accent">munkamemória</span></h1>
-  <div class="split">
-    <div class="facts">
-      <p>Amit tud rólad, az MIND a beszélgetésben van.</p>
-      <p>Ami nincs a kontextusban, az a modell számára <b>nem létezik</b>.</p>
-      <p class="muted">A kontextus fogy — a hosszú session felejt.</p>
-    </div>
-    <div class="window-scene">
-      <div class="dark-repo">
-        <div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div>
+  <!-- 3 -->
+  <section class="slide">
+    <div class="big-num">03</div>
+    <div class="eyebrow">A modell</div>
+    <h1>Hogyan lett ilyen? <span class="hl">Nyers tehetség → nevelés → betanítás</span></h1>
+    <div class="fill">
+      <div class="steps3">
+        <div class="step3"><div class="n">1</div><h3>Pre-training</h3>
+          <p>elolvassa a fél internetet → nyers tehetség (képességek)</p></div>
+        <div class="arrow" style="align-self:center">→</div>
+        <div class="step3"><div class="n">2</div><h3>Fine-tuning</h3>
+          <p>mintapéldákon formáljuk → nevelés</p></div>
+        <div class="arrow" style="align-self:center">→</div>
+        <div class="step3"><div class="n">3</div><h3>RLHF</h3>
+          <p>emberi visszajelzés → munkahelyi betanítás (viselkedés)</p></div>
       </div>
-      <div class="funnel">
-        <div>teljes repo</div>
-        <div>érintett terület</div>
-        <div>szabályok</div>
-        <div>fájlok</div>
-        <div>következő lépés</div>
+      <div class="maps">
+        <div class="node"><b>Képességek</b> ← pre-training</div>
+        <div class="node"><b>Viselkedés</b> ← fine-tuning + RLHF</div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Dia 5 -->
-<section class="slide" id="s5">
-  <h1>A hallucináció <span class="accent">tulajdonság</span>, nem hiba</h1>
-  <div class="split">
-    <div class="card panel left">
-      <p>A modell MINDIG folytat — akkor is, ha nem tudja.</p>
-      <p>Magabiztos hangnem ≠ <span class="err">helyes válasz</span>.</p>
-    </div>
-    <div class="card panel right">
-      <p><b>Következmény: az ellenőrzés nem opció, hanem a folyamat része.</b></p>
-    </div>
-  </div>
-</section>
+  <!-- 4 -->
+  <section class="slide">
+    <div class="big-num">04</div>
+    <div class="eyebrow">A modell</div>
+    <h1>Kontextusablak = <span class="hl">munkamemória</span></h1>
+    <div class="fill"><div class="ctx">
+      <div class="stack">
+        <p class="stmt">Amit tud rólad, az <b>MIND a beszélgetésben van.</b></p>
+        <p class="stmt">Ami nincs a kontextusban, az a modell számára <b>nem létezik.</b></p>
+        <p class="stmt" style="color:var(--muted); font-size:24px">A kontextus fogy — a hosszú session felejt.</p>
+      </div>
+      <div class="win">
+        <span class="ghost" style="top:8px; left:24px">reference-app/</span>
+        <span class="ghost" style="top:28px; right:10px">toolkit/hooks/</span>
+        <span class="ghost" style="bottom:22px; left:6px">epitesi-naplo/</span>
+        <span class="ghost" style="bottom:4px; right:40px">participant-starter/</span>
+        <div class="frame">
+          <span class="cap">kontextusablak</span>
+          <span class="chip">AGENTS.md</span>
+          <span class="chip">a feladat</span>
+          <span class="chip">az érintett 2 fájl</span>
+        </div>
+      </div>
+    </div></div>
+  </section>
 
-<!-- Dia 6 -->
-<section class="slide" id="s6">
-  <h1>Három réteg: <span class="accent">modell → agent → fejlesztési rendszer</span></h1>
-  <div class="layers">
-    <div class="card layer">
-      <h3><b>Nyelvi modell</b></h3>
-      <p>csak következtet (fordító)</p>
-    </div>
-    <div class="card layer">
-      <h3><b>Coding agent</b></h3>
-      <p>eszközökkel olvas, ír, parancsot futtat (IDE + build)</p>
-    </div>
-    <div class="card layer">
-      <h3><b>Fejlesztési rendszer</b></h3>
-      <p>szabályok, tesztek, emberi döntések keretezik (a módszertan)</p>
-    </div>
-  </div>
-</section>
-
-<!-- Dia 7 -->
-<section class="slide" id="s7">
-  <h1>Miért nem elég a jó prompt?</h1>
-  <div class="split">
-    <div class="card panel left">
-      <h3>„prompt-trükkök" — illékony</h3>
-      <ul>
-        <li>Nemdeterminizmus → ugyanaz a kérés, más eredmény</li>
-        <li>Kontextusvesztés → a session végén a tudás elpárolog</li>
-        <li>Magabiztos tévedés → a hiba jól néz ki</li>
-      </ul>
-    </div>
-    <div class="card panel right">
-      <h3>„repo-ban élő szerződések" — tartós</h3>
-      <p><b>Enterprise-munkához szerződések kellenek: spec · szabályok · kapuk ·
-      független review · evidencia.</b></p>
-    </div>
-  </div>
-</section>
-
-<!-- Dia 8 -->
-<section class="slide" id="s8">
-  <h1>A nap 8 blokkja = válasz erre a <span class="accent">3 problémára</span></h1>
-  <div class="timeline">
-    <div class="card block"><span class="gate">Π</span><p>Üres repo</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>agent-ready repo</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>spec-kapu</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>független review</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>gépi garanciák</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>rendszerpróba</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>legacy</p></div>
-    <span class="t-arrow">→</span>
-    <div class="card block"><span class="gate">Π</span><p>csapat</p></div>
-  </div>
-</section>
-
-<!-- Dia 9 -->
-<section class="slide" id="s9">
-  <h1>Mit vártok az AI-tól — és mit ad valójában?</h1>
-  <div class="fill">
-    <div class="card q bad">
-      <span class="tag">Rossz kérdés</span>
-      „Meg tudja írni helyettem?"
-    </div>
-    <div class="card q good">
-      <span class="tag">Jó kérdés</span>
-      „<b>Hogyan vezetem úgy, hogy ellenőrizhetően jót adjon?</b>"
-    </div>
-  </div>
-</section>
-
-<!-- Dia 10 -->
-<section class="slide" id="s10">
-  <h1>Az AI gyors <span class="accent">junior kolléga</span></h1>
-  <p class="big"><b>Célt, határt és ellenőrzést kell adni neki.</b></p>
-  <div class="gates">
-    <div class="card"><span class="gate">Π</span> cél</div>
-    <div class="card"><span class="gate">Π</span> határ</div>
-    <div class="card"><span class="gate">Π</span> ellenőrzés</div>
-  </div>
-  <p class="big"><b>A mai nap ezt a hármat építi meg.</b></p>
-</section>
-
-<!-- Dia 11 -->
-<section class="slide" id="s11">
-  <h1>Nézz bele élőben <span class="accent">(önálló felfedezéshez)</span></h1>
-  <div class="links">
-    <div class="card link">
-      <div class="qr-tile"><img src="../entry/qr-link-bbycroft.svg" alt="QR: bbycroft.net/llm"></div>
-      <h3>bbycroft.net/llm</h3>
-      <p>egy LLM belülről, 3D-ben</p>
-    </div>
-    <div class="card link">
-      <div class="qr-tile"><img src="../entry/qr-link-transformer.svg" alt="QR: transformer-explainer"></div>
-      <h3>poloclub.github.io/<br>transformer-explainer</h3>
-      <p>hogyan jósol a Transformer</p>
-    </div>
-    <div class="card link">
-      <div class="qr-tile"><img src="../entry/qr-link-playground.svg" alt="QR: playground.tensorflow.org"></div>
-      <h3>playground.tensorflow.org</h3>
-      <p>hogyan tanul egy háló</p>
-    </div>
-  </div>
-</section>
-
-<!-- Dia 12 -->
-<section class="slide" id="s12">
-  <div class="silhouette">
-    <div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div>
-  </div>
-  <h1>Következik: <span class="accent">az eszköztérkép</span></h1>
-  <div class="fill">
-    <p class="lead">Melyik szerszám mire való — és miért <b>Claude Code + Codex</b>
-    párossal dolgozunk ma?</p>
-  </div>
-  <div class="bottom">
-    <div class="card site">
-      <div class="qr-tile"><img src="../entry/qr-site.svg" alt="QR: tananyag"></div>
-      <div>
-        <h3>Tananyag</h3>
-        <p>cspiya.github.io/wshp-ai-dev-2026<br>edu.wenova.io</p>
+  <!-- 5 -->
+  <section class="slide">
+    <div class="big-num">05</div>
+    <div class="eyebrow">A modell</div>
+    <h1>A hallucináció <span class="hl">tulajdonság</span>, nem hiba</h1>
+    <div class="fill">
+      <div class="split">
+        <div class="pane warn"><span class="tag">a jelenség</span>
+          A modell <b style="color:var(--orange)">MINDIG folytat</b> — akkor is, ha nem tudja.<br><br>
+          <span class="squiggle">Magabiztos hangnem</span> ≠ helyes válasz.</div>
+        <div class="pane calm"><span class="tag">a következmény</span>
+          Az ellenőrzés nem opció,<br>hanem <b style="color:var(--cyan-l)">a folyamat része.</b></div>
       </div>
     </div>
-    <div class="card creator">
-      <img src="../entry/piya_csaba_center-bg-removed.png" alt="Csaba Piya">
-      <p><b>Csaba Piya</b> · cspiya@wenova.io<br>© Wenova</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- deck chrome: footer + counter (hidden on title slide) -->
-<div id="chrome" class="hidden">
-  <span>Wenova · edu.wenova.io</span>
-  <span id="counter"></span>
-</div>
+  <!-- 6 -->
+  <section class="slide">
+    <div class="big-num">06</div>
+    <div class="eyebrow">A rendszer</div>
+    <h1>Három réteg: modell → agent → <span class="hl">fejlesztési rendszer</span></h1>
+    <div class="fill">
+      <div class="layers">
+        <div class="layer"><h3>Nyelvi modell<small>csak következtet</small></h3>
+          <span class="par">mint a fordító</span></div>
+        <div class="layer"><h3>Coding agent<small>eszközökkel olvas, ír, parancsot futtat</small></h3>
+          <span class="par">mint az IDE + build</span></div>
+        <div class="layer"><h3 style="color:var(--amber-l)">Fejlesztési rendszer<small>szabályok, tesztek, emberi döntések keretezik</small></h3>
+          <span class="par" style="color:var(--amber-l)">a módszertan — ezt építjük MA</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide">
+    <div class="big-num">07</div>
+    <div class="eyebrow">A rendszer</div>
+    <h1>Miért nem elég a jó prompt?</h1>
+    <div class="fill">
+      <div class="vs">
+        <div class="pane fade"><span class="tag" style="color:var(--muted)">prompt-trükkök — illékonyak</span>
+          <ul><li>Nemdeterminizmus → ugyanaz a kérés, más eredmény</li>
+              <li>Kontextusvesztés → a session végén a tudás elpárolog</li>
+              <li>Magabiztos tévedés → a hiba jól néz ki</li></ul></div>
+        <div class="pane calm"><span class="tag">repo-ban élő szerződések — tartósak</span>
+          <div class="row" style="flex-wrap:wrap; justify-content:flex-start; gap:12px; margin-top:8px">
+            <span class="chip">spec</span><span class="chip">szabályok</span><span class="chip">kapuk</span>
+            <span class="chip">független review</span><span class="chip">evidencia</span>
+          </div></div>
+      </div>
+      <div class="contracts"><p><b>Enterprise-munkához szerződések kellenek.</b></p></div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide">
+    <div class="big-num">08</div>
+    <div class="eyebrow">A mai nap</div>
+    <h1>A nap 8 blokkja = <span class="hl">válasz erre a 3 problémára</span></h1>
+    <div class="fill">
+      <div class="tl">
+        <div class="node">Üres repo</div><span class="arrow">→</span>
+        <div class="node hot">agent-ready repo</div><span class="arrow">→</span>
+        <div class="node hot">spec-kapu</div><span class="arrow">→</span>
+        <div class="node hot">független review</div><span class="arrow">→</span>
+        <div class="node hot">gépi garanciák</div>
+      </div>
+      <div class="tl" style="margin-top:18px">
+        <span class="arrow">→</span>
+        <div class="node">rendszerpróba</div><span class="arrow">→</span>
+        <div class="node">legacy</div><span class="arrow">→</span>
+        <div class="node">csapat</div>
+      </div>
+      <p class="tl-cap">Minden délelőtti kapu a 7. dia egy-egy hiányát tömi be.</p>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide">
+    <div class="big-num">09</div>
+    <div class="eyebrow">A mai nap</div>
+    <h1>Mit vártok az AI-tól — és mit ad valójában?</h1>
+    <div class="fill"><div class="stack" style="gap:24px; max-width:1000px; margin:0 auto; width:100%">
+      <div class="q bad"><span class="lab">rossz kérdés</span>„Meg tudja írni helyettem?"</div>
+      <div class="q good"><span class="lab">jó kérdés</span>„<b>Hogyan vezetem úgy, hogy ellenőrizhetően jót adjon?</b>"</div>
+    </div></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide key">
+    <div class="fill" style="align-items:center; text-align:center; gap:36px">
+      <div class="eyebrow">a nap üzenete</div>
+      <h1>Az AI gyors junior kolléga:<br><span class="hl">célt, határt és ellenőrzést</span> kell adni neki.</h1>
+      <div class="three">
+        <span class="chip">cél</span><span class="chip">határ</span><span class="chip">ellenőrzés</span>
+      </div>
+      <p class="lede" style="text-align:center">A mai nap ezt a hármat építi meg.</p>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide">
+    <div class="big-num">11</div>
+    <div class="eyebrow">önálló felfedezéshez</div>
+    <h1>Nézz bele élőben</h1>
+    <div class="fill">
+      <div class="qr3">
+        <div class="qrcard"><div class="tile"><img src="../entry/qr-link-bbycroft.svg" alt="QR"></div>
+          <span class="url">bbycroft.net/llm</span><p>egy LLM belülről, 3D-ben</p></div>
+        <div class="qrcard"><div class="tile"><img src="../entry/qr-link-transformer.svg" alt="QR"></div>
+          <span class="url">poloclub.github.io/<br>transformer-explainer</span><p>hogyan jósol a Transformer</p></div>
+        <div class="qrcard"><div class="tile"><img src="../entry/qr-link-playground.svg" alt="QR"></div>
+          <span class="url">playground.tensorflow.org</span><p>hogyan tanul egy háló</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="slide">
+    <div class="big-num">12</div>
+    <div class="eyebrow">következik</div>
+    <h1>Az eszköztérkép</h1>
+    <div class="fill"><div class="close">
+      <div class="lead">
+        <p class="lede" style="font-size:29px; color:var(--text)">Melyik szerszám mire való — és miért
+          <span style="color:var(--amber-l)">Claude Code + Codex</span> párossal dolgozunk ma?</p>
+        <div class="creator" style="margin-top:44px">
+          <img class="a" src="../entry/piya_csaba_center-bg-removed.png" alt="">
+          <span><b>Csaba Piya</b>cspiya@wenova.io · Wenova · edu.wenova.io · © Wenova</span>
+        </div>
+      </div>
+      <div class="aside">
+        <div class="tile"><img src="../entry/qr-site.svg" alt="Tananyag QR"></div>
+        <span class="url" style="font-size:18px">cspiya.github.io/wshp-ai-dev-2026</span>
+      </div>
+    </div></div>
+  </section>
+
+  <div id="chrome">
+    <span><img src="../entry/wenova-wordmark.png" alt="Wenova"> · edu.wenova.io</span>
+    <span class="mid" style="letter-spacing:.14em; text-transform:uppercase; font-size:13px">D1 · AI gyorstalpaló</span>
+    <span id="ctr">1 / 12</span>
+  </div>
+  <div id="bar"></div>
+
+</div></div>
 
 <script>
-(function(){
-  var slides = document.querySelectorAll('.slide');
-  var chrome = document.getElementById('chrome');
-  var counter = document.getElementById('counter');
-  var n = slides.length, i = 0;
-
-  function show(k){
-    i = Math.max(0, Math.min(n - 1, k));
-    for (var j = 0; j < n; j++) slides[j].classList.toggle('active', j === i);
-    counter.textContent = (i + 1) + ' / ' + n;
-    chrome.classList.toggle('hidden', i === 0);
+  const slides=[...document.querySelectorAll(".slide")], stage=document.getElementById("stage"),
+        ctr=document.getElementById("ctr"), bar=document.getElementById("bar");
+  let i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle("on",k===i));
+    stage.classList.toggle("s1",i===0);
+    ctr.textContent=(i+1)+" / "+slides.length;
+    bar.style.width=((i+1)/slides.length*100)+"%";
   }
-  function next(){ show(i + 1); }
-  function prev(){ show(i - 1); }
-
-  document.addEventListener('keydown', function(e){
-    switch (e.key) {
-      case 'ArrowRight': case ' ': case 'PageDown': e.preventDefault(); next(); break;
-      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
-      case 'Home': e.preventDefault(); show(0); break;
-      case 'End': e.preventDefault(); show(n - 1); break;
-    }
+  function fit(){
+    const s=Math.min(innerWidth/1280,innerHeight/720);
+    stage.style.transform="scale("+s+")";
+  }
+  addEventListener("resize",fit);
+  addEventListener("keydown",e=>{
+    if(["ArrowRight","PageDown"," ","Spacebar"].includes(e.key)) show(i+1);
+    else if(["ArrowLeft","PageUp"].includes(e.key)) show(i-1);
+    else if(e.key==="Home") show(0);
+    else if(e.key==="End") show(slides.length-1);
   });
-  document.addEventListener('click', function(e){
-    if (e.clientX < window.innerWidth / 2) prev(); else next();
-  });
-
-  show(0);
-})();
+  addEventListener("click",e=>show(e.clientX>innerWidth/2? i+1 : i-1));
+  fit(); show(0);
 </script>
 </body>
 </html>
