@@ -16,7 +16,7 @@
       "figureSelector": "#fig-setup-flow",
       "svgSelector": "#fig-setup-flow svg",
       "textFallbackSelector": "#fig-setup-flow-text",
-      "inlineSvgHash": "37b427391a4f300056a40636e69593ea89e2d8eaa07a2c28cd9bd6bd9a1c4cd0"
+      "inlineSvgHash": "734f7ad843261e3240c317044f0bb5e9faaafaf3e3c0df7c9b32eb054ab26b77"
     },
     {
       "id": "fig-preparation-milyen-sorrendben-epulnek-egymasra-az",
@@ -34,7 +34,7 @@
       "figureSelector": "#fig-preparation-milyen-sorrendben-epulnek-egymasra-az",
       "svgSelector": "#fig-preparation-milyen-sorrendben-epulnek-egymasra-az svg",
       "textFallbackSelector": "#fig-preparation-milyen-sorrendben-epulnek-egymasra-az-text",
-      "inlineSvgHash": "c3afd133dd3b0dd211b6b1edc19f91e3655d726a407f01e421fc8b7ddb30f651"
+      "inlineSvgHash": "4e39ea6d88f6aac779b36611c86fa14b19935be5562b605d0fe0720a7887a26e"
     }
   ]
 }

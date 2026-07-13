@@ -1,5 +1,14 @@
 # Golden thread — the one central invented workload (KK-Regisztráció)
 
+> **Execution ownership:** every exact Git, npm, PowerShell, Node, API or browser
+> instruction in this technical package is an **agent-run contract or recorded
+> evidence**, not a participant typing exercise. After bootstrap, the human supplies
+> intent, scope and approval; Claude Code or Codex selects and runs the syntax, returns
+> exit codes/results, and repeats after evidence-based feedback.
+
+One primary agent completes the mandatory path. A second agent is optional for the C7
+portability/eval comparison.
+
 Operator/trainer documentation (English). Everything in this pack is **INVENTED**
 and public-safe: names, emails (`example.invalid`), dates, and the business brief
 itself. No real client, price, or personal data appears anywhere.

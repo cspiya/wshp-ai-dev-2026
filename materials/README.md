@@ -21,8 +21,9 @@ offline: klónozd a repót, majd nyisd meg a `materials/index.html` fájlt.
 
 1. **Előtte:** végezd el a [felkészülési útmutatót](setup-guide.md), majd olvasd el a
    [napirendet](agenda.md) és a [nagy képet](big-picture.md).
-2. **Közben:** nyisd meg az aktuális modult a [napi térképből](#napi-terkep), és csak a
-   `participant-repo/` mappában végezz résztvevői feature-munkát.
+2. **Közben:** tartsd aktívan Claude Code-ot vagy Codexet, és nyisd meg az aktuális
+   modult a [napi térképből](#napi-terkep). A technikai műveleteket az agent végzi
+   kizárólag a `participant-repo/` mappában; te célt adsz, döntesz és evidence-et bírálsz.
 3. **Utána:** fejezd be az utolsó hiányzó checkpoint bizonyítékát, majd a
    [8. modul önellenőrzésével](modulok/08-csapatbevezetes/index.html) készíts 30/60/90 napos tervet.
 
@@ -59,7 +60,26 @@ Mindhárom mappa ugyanabban a választott `workshop-lab/` könyvtárban legyen:
 | `participant-repo/` | résztvevő | Itt épül a saját agent-ready repo, a spec, a kód és a verziózott bizonyíték. | Workshop-forrás módosítása, titok vagy személyes adat. |
 | `workshop-evidence/` | résztvevő, lokálisan | Nem publikus képernyőkép és helyi ellenőrzési nyom. | Titok, ügyféladat és automatikusan publikálandó artifact. |
 
-Minden parancs előtt ellenőrizd a munkakönyvtárat. A modul `cd` lépése mondja meg, ha váltani kell.
+Minden technikai művelet előtt kérd meg az agentet a munkakönyvtár visszamondására.
+Mappaváltást, Git-, npm-, operációsrendszer- és API-műveletet is az agent végez.
+
+## A minden modulban ismétlődő munkaciklus
+
+1. **Emberi cél vagy döntés:** te mondod meg a kívánt eredményt, a határt és azt,
+   amiről az AI nem dönthet.
+2. **Természetes nyelvű agentfeladat:** Claude Code vagy Codex megkapja a scope-ot,
+   a szabályokat és a kért bizonyítékot.
+3. **Agent-végrehajtás:** az agent vizsgál, fájlt módosít, parancsot futtat vagy
+   böngészőt vezérel.
+4. **Evidence és kockázat:** visszaadja a változtatást, a futtatott ellenőrzéseket,
+   az eredményt és a nyitott döntéseket.
+5. **Emberi kapu és RUG:** elfogadod, visszaküldöd vagy leállítod; szükség esetén
+   független friss kontextusú review után ismétlitek, amíg jó nem lesz.
+
+Ez az **AI-val megerősített emberi tanulási ciklus**: előbb megfogalmazod a saját
+várakozásodat, aztán az AI magyarázatát és eredményét evidence alapján ellenőrzöd,
+végül saját szavaiddal összegzed, mit tanultál. Egy elsődleges agent elegendő; a
+második agent csak opcionális összehasonlítás vagy játékos extra.
 
 <a id="napi-terkep"></a>
 ## A nap térképe: idő → checkpoint → bizonyíték

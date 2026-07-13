@@ -1,5 +1,9 @@
 # Feature specification — KK-Regisztráció
 
+> **Agent-run technical contract:** exact commands and API probes below are executed by
+> Claude Code or Codex and returned with exit codes/results. The human owns the product
+> decisions, APPROVED/BLOCKED gate and evidence review.
+
 `STATUS: C3-APPROVED-CONTRACT (trainer reference — a résztvevő saját csomagja ezt helyettesíti, ha APPROVED)`
 
 Contract ID/version: KK-REG C3 v1.0
@@ -59,10 +63,11 @@ Use observable language and link detailed scenarios from [given-when-then.md](gi
 
 ## Evidence required for done
 
-- Automated tests and exact commands: `npm run test -- domain`,
+- Automated tests and agent-run commands: `npm run test -- domain`,
   `npm run test -- repo-contract`, teljes kapu: `npm run typecheck && npm run lint && npm run test`.
-- Manual verification: `npm run dev` → `/regisztracio`: sikeres regisztráció,
-  duplikátum-hiba felülete, lemondás.
+- Browser-agent verification: the agent starts the app and proves successful
+  registration, duplicate-error surface and cancellation on `/regisztracio`.
+  Manual execution is an honestly labeled Plan B.
 - Documentation/decision record: this spec package; deviations a work item kommentben.
 - Required independent reviewer roles: friss kontextusú független reviewer (module 4).
 - Evidence location: work item (Linear issue) comment — command, exit code, output tail,

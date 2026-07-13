@@ -13,10 +13,12 @@
 <main>
   <header>
     <p class="eyebrow">4. modul · 45 perc</p>
-    <h1>Független <a data-route="/materials/fogalomtar/#review">review</a> és javítási ciklus</h1>
+    <h1>Független ellenőrzés és javítási ciklus</h1>
     <p class="lead">Ebben a modulban egy kész munkadarabot független <a data-route="/materials/fogalomtar/#review">review</a> során úgy vizsgáltok át és javítotok, hogy a <a data-route="/materials/fogalomtar/#maker">készítő</a>, a <a data-route="/materials/fogalomtar/#reviewer">független ellenőrző</a> és a <a data-route="/materials/fogalomtar/#fixer">javító</a> szerepe elkülönüljön, minden <a data-route="/materials/fogalomtar/#review-finding">review-megállapítás</a> sorsa pedig visszakövethető maradjon.</p>
     <p class="takeaway"><strong>Lényeg:</strong> a review-megállapítás még nem tény. Előbb ellenőrizni kell, aztán elfogadni vagy indokoltan elvetni, végül a javítást újra ellenőrizni.</p>
-  </header>
+</header>
+
+  <section class="ai-companion" aria-labelledby="m04-ai"><h2 id="m04-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Te zárod le az ACCEPTED/REJECTED döntéseket és nem engedsz tovább nyitott magas súlyosságú tétellel.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Elkülönített agent-szerepek</h3><p>A maker rögzített SHA-t ad át; friss reviewer bizonyít; fixer csak elfogadott findingot javít.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>MAKER_SHA, deduplikált findingok, döntések, FIX_SHA, kapueredmény és re-review.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>A reviewer új kontextusban ellenőrzi a fixet és a kapcsolódó regressziós kockázatot.</p></article></div><p>Egy primary agent elég a kötelező úthoz, de a reviewernek friss kontextus kell; ugyanabban a beszélgetésben a szerepcsere nem független review.</p></section>
 
   <section class="grid" aria-label="A modul keretei">
     <article class="card"><h2>Előfeltétel</h2><p>A 3. modulban ember által jóváhagyott specifikációs csomag és az abból készült, <a data-route="/materials/fogalomtar/#commit">commit</a> azonosítóval rögzített munkadarab. A vizsgált commitazonosító (<code>MAKER_SHA</code>) a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">C4 készítő lépésnek</a> (ennek a blokknak az első ~20 perce; a lépés leírása a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">3. modul oldalán</a> van) kimenete — a review pontosan ezt a commitot vizsgálja. Ha a csomag nem APPROVED, térj vissza a <a data-route="/materials/modulok/03-specifikacio/">specifikációs modulhoz</a>.</p></article>
@@ -83,7 +85,7 @@
   </section>
 
   <section class="exercise" id="c5-vegrehajthato-ut">
-    <h2>Így futtasd le a review-kört a valódi munkadarabodon (C5)</h2>
+    <h2>Így add át a review-kört az agent-szerepek között (C5)</h2>
     <p><strong>Mi ez, és miért?</strong> A fenti gyakorlat szerepeit most valódi eszközökkel játsszátok el: a bemenet a <a data-route="/materials/modulok/03-specifikacio/#c4-keszito-lepes">3. modul C4 lépésében</a> rögzített <code>MAKER_SHA</code>, a kimenet egy bizonyítékokkal lezárt visszakövetési napló. Így a review nem vélemény, hanem megismételhető eljárás — és pontosan azt a commitot vizsgálja, amit a készítő átadott.</p>
     <h3>1. Indíts friss kontextusú független ellenőrzőt</h3>
     <ul>
@@ -92,11 +94,11 @@
     </ul>
     <p>Mindkét úton kötelező szabály: az ellenőrző <strong>friss kontextusban</strong> fut — SOHA nem a készítő beszélgetésében. Ugyanabban a beszélgetésben szerepet váltani nem független review, hanem önellenőrzés.</p>
     <h3>2. Add át a review-csomagot</h3>
-    <p>Az ellenőrző a <code>MAKER_SHA</code> diffjét (<code>git show MAKER_SHA</code>) és a jóváhagyott spec-csomagot kapja. A készítő gondolatmenetét, önértékelését vagy kívánt verdiktjét <strong>nem</strong> kapja meg — a friss kontextus éppen ettől ér valamit.</p>
+    <p>Kérd az ellenőrző agentet, hogy saját Git-eszközeivel olvassa ki a <code>MAKER_SHA</code> diffjét és a jóváhagyott spec-csomagot. Az agent által használt technikai kontraktus lehet <code>git show MAKER_SHA</code>, de ezt a résztvevőnek nem kell begépelnie. A készítő gondolatmenetét, önértékelését vagy kívánt verdiktjét <strong>nem</strong> kapja meg — a friss kontextus éppen ettől ér valamit.</p>
     <h3 id="false-positive-hunter">3. False-positive Hunter</h3>
     <p><strong>Mi ez, és miért?</strong> A review-megállapítás nem tény, hanem ellenőrizendő állítás — ezt itt a saját bőrödön tapasztalod meg. A tréner kioszt egy előre elrontott, kitalált változatot a nap munkadarabjából (<code>toolkit/golden-thread/fixtures/snapshots/broken</code>, másolás a <code>toolkit/golden-thread/README.md</code> szerint), és a feladat kettős:</p>
     <ol>
-      <li><strong>Találd meg a valódi hibát.</strong> Az AC-02 szerint a lemondási határ zárt: pontosan 48 órával a kezdés előtt már NEM lemondható a regisztráció. A broken változatban a viselkedés ennek ellentmond — miközben a függvény doc-kommentje továbbra is a zárt határt állítja, és minden kapu zöld, mert a pontos határeset-teszt hiányzik. A bizonyíték futtatható: írj egy egyszeri, pontosan 48 órás határeset-tesztet, és mutasd meg, hogy elbukik.</li>
+      <li><strong>Találd meg a valódi hibát.</strong> Kérd a reviewer agentet az AC-02 pontos, 48 órás határesetének vizsgálatára. A broken változatban a viselkedés ellentmond a zárt határnak, miközben a kapuk zöldek, mert a határeset-teszt hiányzik. A reviewer készítsen visszaállítható bizonyító tesztet, futtassa, és mutassa meg a várt bukást.</li>
       <li><strong>Utasítsd el bizonyítékkal a hamis pozitívot.</strong> A fájl-adapter írás után „fölöslegesnek látszó” módon visszaolvassa a most kiírt fájlt. Ez nem hiba, hanem verify-before-swap guard: a csere előtt bizonyítja, hogy a lemezre került tartalom teljes, érvényes JSON, így sérült vagy félbeszakadt írás sosem kerülhet az ismerten jó tároló helyére. A helyes döntés: <code>REJECTED</code> + ez az indoklás.</li>
     </ol>
     <p class="takeaway"><strong>Pecsét (pont) csak evidence-szel jár:</strong> az elfogadott hibához futtatható bizonyíték, az elvetett tételhez írásban rögzített indoklás tartozik. Enélkül egyik döntés sem számít.</p>
@@ -105,7 +107,7 @@
       <li>A javító a valódi hibát javítja, ÉS visszaállítja a hiányzó határeset-tesztet, hogy a kapu a jövőben is fogja a regressziót.</li>
       <li>Új commit készül: ennek azonosítója a <strong>FIX_SHA</strong>.</li>
       <li>Friss ellenőrző újravizsgálja a javítást és legalább egy kapcsolódó regressziós kockázatot.</li>
-      <li>Írd meg az evidence-fájlt: <code>workshop-evidence/C5-review.md</code> — benne a MAKER_SHA, minden review-megállapítás és döntése, az elutasított hamis pozitív indoklással, a FIX_SHA és az újraellenőrzés eredménye.</li>
+      <li>Kérd a fixer agentet a <code>workshop-evidence/C5-review.md</code> evidence-fájl frissítésére: MAKER_SHA, minden review-megállapítás és emberi döntése, az elutasított hamis pozitív indoklással, a FIX_SHA és az újraellenőrzés eredménye.</li>
     </ol>
     <p class="takeaway"><strong>Kész, ha:</strong> a <code>workshop-evidence/C5-review.md</code> fájlból visszakereshető a MAKER_SHA, minden megállapítás bizonyítékkal alátámasztott döntése, a REJECTED hamis pozitív indoklása, a FIX_SHA és az újraellenőrzés eredménye; nincs nyitott magas súlyosságú tétel.</p>
     <h3>Plan B</h3>

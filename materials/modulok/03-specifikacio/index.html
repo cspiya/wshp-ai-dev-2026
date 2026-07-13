@@ -16,7 +16,9 @@
     <h1>Specifikációból végrehajtható terv</h1>
     <p class="lead">Ebben a modulban egy homályos kérésből jóváhagyható <a data-route="/materials/fogalomtar/#spec">spec</a>, majd öt dokumentumból álló csomag készül. Ebből egy készítő chatelőzmény nélkül is dolgozhat, egy ember pedig valódi döntést tud hozni.</p>
     <p class="takeaway"><strong>Lényeg:</strong> implementáció csak jóváhagyott, végigkövethető csomagból indulhat; a bizonytalanságot nem kódba, hanem <a data-route="/materials/fogalomtar/#decision-gate">döntési pontra</a> visszük.</p>
-  </header>
+</header>
+
+  <section class="ai-companion" aria-labelledby="m03-ai"><h2 id="m03-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Te válaszolod meg az üzleti kérdéseket, zárod a <a data-route="/materials/fogalomtar/#scope">scope-ot</a>, és kizárólag te adsz APPROVED vagy BLOCKED verdiktet.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Agentfeladat</h3><p>Az agent kérdésekkel feltárja a hiányokat, majd megírja és visszaköti az ötfájlos spec-csomag tervezetét.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>Minden <a data-route="/materials/fogalomtar/#acceptance-criteria">elfogadási feltétel</a> útja a scenario, task és agent-run ellenőrzés felé; lezárt döntési napló.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>Rejtett termékdöntésnél vagy követhetetlen feltételnél a csomag visszamegy pontosításra.</p></article></div><p>Az agent szerzőtárs, nem jóváhagyó. A specifikáció az implementáló agent munkaszerződése.</p></section>
 
   <section class="meta" aria-label="A modul keretei">
     <article class="card"><h2>Előfeltétel</h2><p>A 2. modulban elfogadott repo-szabályok, közös készültségi feltételek és tényleges ellenőrzési parancsok. Ha ezek hiányoznak, előbb térj vissza a <a data-route="/materials/modulok/02-repo-felkeszitese/">repo felkészítéséhez</a>.</p></article>
@@ -84,16 +86,16 @@
     <h2>Gyakorlat: készíts jóváhagyható csomagot</h2>
     <p><strong>Cél:</strong> a kapott kitalált üzleti kérésből olyan <a data-route="/materials/fogalomtar/#artifact">munkadarabot</a> készíteni, amelyben nincs elrejtett implementációs vagy üzleti döntés.</p>
     <ol>
-      <li>Hozd létre az öt fájlt a résztvevői repóban: <code>constitution.md</code>, <code>spec.md</code>, <code>given-when-then.md</code>, <code>plan.md</code>, <code>tasks.md</code>.</li>
-      <li>A <code>spec.md</code> fájlban rögzítsd a scope határait három listában: <em>benne van / nincs benne / nyitott döntés</em>.</li>
-      <li>Adj minden elfogadási feltételnek azonosítót: <code>AC-01</code>, <code>AC-02</code>…</li>
-      <li>Minden AC-hez írj legalább egy normál és egy hibautas Given–When–Then forgatókönyvet.</li>
-      <li>A plan csak függőségi sorrendet és ellenőrzési stratégiát tartalmazzon, ne kész kódot.</li>
-      <li>A <code>tasks.md</code> fájlban minden feladat sorolja fel az elfogadási feltételt, a forgatókönyvet és a futtatandó ellenőrzést.</li>
+      <li>Add át az agentnek a kitalált üzleti kérést, a repo szabályait és a döntési határt. Kérd, hogy előbb kérdezzen, és csak a hiányok tisztázása után készítsen fájlokat.</li>
+      <li>Kérd az ötfájlos <code>constitution.md</code>, <code>spec.md</code>, <code>given-when-then.md</code>, <code>plan.md</code>, <code>tasks.md</code> csomag tervezetét.</li>
+      <li>Te válaszold meg a nyitott üzleti kérdéseket, és döntsd el a <em>benne van / nincs benne / nyitott döntés</em> scope-határokat.</li>
+      <li>Az agent azonosítsa az AC-kat, írjon hozzájuk normál és hibautas Given–When–Then forgatókönyveket, majd kösse őket taskhoz és agent-run ellenőrzéshez.</li>
+      <li>Kérj külön követhetőségi auditot: a plan csak függőségi sorrendet és ellenőrzési stratégiát tartalmazhat, rejtett termékdöntést vagy kész kódot nem.</li>
+      <li>Az agent javítsa a bizonyított hiányokat, majd adja vissza a teljes AC → scenario → task → check mátrixot.</li>
       <li>Nevezd meg a döntéshozót, majd kérj APPROVED vagy BLOCKED döntést. Hiánynál írj: <code>DECISION REQUIRED — owner — next decision point</code>.</li>
     </ol>
     <h3>Visszakövetési minta</h3>
-    <table><thead><tr><th>Elfogadási feltétel</th><th>Forgatókönyv</th><th>Feladat</th><th>Ellenőrzés</th></tr></thead><tbody><tr><td>AC-02</td><td>SC-02A, SC-02B</td><td>TASK-04</td><td><code>npm run test -- domain</code></td></tr></tbody></table>
+    <table><thead><tr><th>Elfogadási feltétel</th><th>Forgatókönyv</th><th>Feladat</th><th>Agent-run ellenőrzési kontraktus</th></tr></thead><tbody><tr><td>AC-02</td><td>SC-02A, SC-02B</td><td>TASK-04</td><td><code>npm run test -- domain</code> — ezt az agent futtatja és evidence-ként adja vissza.</td></tr></tbody></table>
     <p class="takeaway"><strong>Kész, ha:</strong> egy másik ember meg tudja nevezni a scope-ot, minden elfogadási feltétel útját az ellenőrzésig, valamint azt, ki és milyen állapotban döntött. Ha ez nem teljesül, a csomag még nem APPROVED.</p>
   </section>
 
@@ -104,10 +106,10 @@
     <ol>
       <li>Nyisd meg a saját <strong>APPROVED</strong> csomagod. Ha nincs APPROVED csomagod, használd a tréner referencia-csomagját: <code>toolkit/golden-thread/spec-package/</code> (fejléce: <code>STATUS: C3-APPROVED-CONTRACT</code>).</li>
       <li>Add az agentnek a csomagot és a repo szabályait, és kérd a <code>TASK-01</code>…<code>TASK-05</code> feladatok végrehajtását a saját workspace-edben. A készítő első lépésként mondja vissza az elfogadási feltételeket és a scope-ot, és csak utána módosítson fájlt.</li>
-      <li>Futtasd a kapukat: <code>npm run typecheck &amp;&amp; npm run lint &amp;&amp; npm run test</code>. Addig iterálj az agenttel, amíg mindhárom zöld.</li>
-      <li>Commitold az eredményt: <code>git add -A</code>, majd <code>git commit -m "feat: KK-Regisztracio slice (C4)"</code>.</li>
-      <li>Rögzítsd az azonosítót: <code>git rev-parse HEAD</code> — ez a <strong>MAKER_SHA</strong>; a 4. modul pontosan ezt a commitot fogja vizsgálni.</li>
-      <li>Írd meg az evidence-fájlt: <code>workshop-evidence/C4-maker.md</code> — benne a MAKER_SHA, a futtatott parancsok és eredményük, valamint a tervtől való eltérések.</li>
+      <li>Kérd az agentet a repo valódi typecheck-, lint- és tesztkapuinak végrehajtására. Addig adj evidence-alapú visszajelzést, amíg mindhárom zöld vagy őszintén <code>BLOCKED</code>.</li>
+      <li>A zöld eredmény után kérd az agentet a változtatások áttekintésére és egyetlen, a jóváhagyott scope-ot tartalmazó commit létrehozására.</li>
+      <li>Az agent kérje le és adja vissza a commitazonosítót; ez a <strong>MAKER_SHA</strong>, amelyet a 4. modul pontosan ezen a változaton vizsgál.</li>
+      <li>Kérd az agentet a <code>workshop-evidence/C4-maker.md</code> létrehozására: MAKER_SHA, agent-run ellenőrzések és eredmények, valamint a tervtől való eltérések.</li>
     </ol>
     <p class="takeaway"><strong>Kész, ha:</strong> mindhárom kapu zöld, létezik a MAKER_SHA, és a <code>workshop-evidence/C4-maker.md</code> mindezt rögzíti.</p>
     <h3>Elakadás és Plan B</h3>

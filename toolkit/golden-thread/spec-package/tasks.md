@@ -1,5 +1,9 @@
 # Task breakdown — KK-Regisztráció
 
+> **Agent-run technical contract:** Claude Code or Codex executes every exact check and
+> Git/API/browser operation, then records the evidence. The human approves scope,
+> findings and progression; the participant does not reproduce command syntax.
+
 `STATUS: C3-APPROVED-CONTRACT (trainer reference — a résztvevő saját csomagja ezt helyettesíti, ha APPROVED)`
 
 ## Input versions
@@ -12,13 +16,13 @@
 
 ## Ordered tasks
 
-| ID | Task/outcome | Exclusive scope | Accountable owner | Depends on/order | AC IDs | Exact verification command | Evidence location | Status |
+| ID | Task/outcome | Exclusive scope | Accountable owner | Depends on/order | AC IDs | Agent-run verification | Evidence location | Status |
 |---|---|---|---|---|---|---|---|---|
 | TASK-01 | Pure domain: `Registration` types, `canCancel` with EXCLUSIVE 48h boundary, `createRegistration` validation + duplicate callback; unit tests incl. the exact-boundary case | `src/lib/registrations/domain.ts`, `domain.test.ts` | résztvevő | — (first) | AC-01, AC-02, AC-03 | `npm run test -- domain` | work item comment | ready |
 | TASK-02 | `RegistrationRepo` port + in-memory adapter + ONE shared contract suite | `src/lib/registrations/repo.ts`, `memory-repo.ts`, `repo-contract.test.ts` | résztvevő | after TASK-01 | AC-03 | `npm run test -- repo-contract` | work item comment | ready |
 | TASK-03 | File-backed adapter over `data/registrations.json` (temp+rename write, bootstrap from `data/registrations.seed.json`), passing the SAME contract suite; add the gitignore line | `src/lib/registrations/file-repo.ts`, `data/registrations.seed.json`, `.gitignore` | résztvevő | after TASK-02 | AC-03 | `npm run test -- repo-contract` | work item comment | ready |
-| TASK-04 | API routes: `GET/POST /api/registrations` (400 invalid, 409 duplicate, 201 created) and `POST /api/registrations/[id]/cancel` (200, 409 `cancellation window closed`, 404 unknown) | `src/app/api/registrations/**` | résztvevő | after TASK-03 | AC-01, AC-02, AC-03 | `npm run typecheck && npm run test` + manual probe: `Invoke-RestMethod http://localhost:3000/api/registrations` | work item comment | ready |
-| TASK-05 | `/regisztracio` page: form (name, email, workshop select), active list with cancel buttons, visible error surface for the 409 paths; Hungarian UI copy | `src/app/regisztracio/**` | résztvevő | after TASK-04 | AC-01, AC-02, AC-03 | `npm run lint && npm run build` + browser check at `/regisztracio` | work item comment | ready |
+| TASK-04 | API routes: `GET/POST /api/registrations` (400 invalid, 409 duplicate, 201 created) and `POST /api/registrations/[id]/cancel` (200, 409 `cancellation window closed`, 404 unknown) | `src/app/api/registrations/**` | résztvevő | after TASK-03 | AC-01, AC-02, AC-03 | Agent runs typecheck/tests and its available HTTP probe against `/api/registrations` | work item comment | ready |
+| TASK-05 | `/regisztracio` page: form (name, email, workshop select), active list with cancel buttons, visible error surface for the 409 paths; Hungarian UI copy | `src/app/regisztracio/**` | résztvevő | after TASK-04 | AC-01, AC-02, AC-03 | Agent runs lint/build and browser-agent happy/failure paths at `/regisztracio` | work item comment | ready |
 
 ## Per-task execution contract
 
@@ -37,7 +41,7 @@ remaining risk has a human owner.
 
 Visszakövetési lánc a 3. modul mintája szerint (AC → scenario → task → check):
 
-| AC ID | Scenario(s) | Owned task(s) | Dependencies/order | Exact check | Evidence location | Verdict |
+| AC ID | Scenario(s) | Owned task(s) | Dependencies/order | Agent-run check | Evidence location | Verdict |
 |---|---|---|---|---|---|---|
 | AC-01 | SC-01A, SC-01B | TASK-01, TASK-04, TASK-05 | TASK-01 → TASK-04 → TASK-05 | `npm run test -- domain` | work item comment | covered |
 | AC-02 | SC-02A, SC-02B | TASK-01, TASK-04 | TASK-01 → TASK-04 | `npm run test -- domain` (exact 48h boundary case) | work item comment | covered |

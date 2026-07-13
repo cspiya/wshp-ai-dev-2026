@@ -1,5 +1,9 @@
 # Project constitution — KK-Regisztráció (trainer reference)
 
+> **Agent-run technical contract:** exact commands below are selected and executed by
+> Claude Code or Codex. The human approves behavior, scope and evidence; the participant
+> is never required to reproduce the syntax.
+
 `STATUS: C3-APPROVED-CONTRACT (trainer reference — a résztvevő saját csomagja ezt helyettesíti, ha APPROVED)`
 
 Ez a csomag a workshop KITALÁLT munkadarabjához készült referencia. Minden név,
