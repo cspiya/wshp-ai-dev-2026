@@ -166,4 +166,4 @@ nem egyetlen modell emlékezete vagy stílusa.
 | [pluginek és skillek](plugins-es-skillek.md) | Mit használunk + a plugin/skill-rendszer korlátai |
 | [setup-guide](setup-guide.md) | Résztvevői felkészülés (fiókok, telepítés) |
 | [agenda](agenda.md) | A nap időrendje |
-| notebooks/ | A modulonkénti tananyag (a napló + big picture tartalmából készül) |
+| [modulok/](modulok/) | A modulonkénti tananyag (HTML-oldalak; a korábbi notebooks/ nyugdíjazva, csak átirányít) |

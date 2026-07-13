@@ -18,6 +18,13 @@
     <p class="takeaway"><strong>Lényeg:</strong> csak az az <a data-route="/materials/fogalomtar/#evidence">ellenőrzési eredmény</a> használható döntésre, amelyből kiderül, mit futtattál, melyik verzión, milyen környezetben, melyik adapterrel és hol ellenőrizted az eredményt.</p>
 </header>
 
+<aside class="zero-cli" role="note" aria-label="A workshop állandó szabálya: nulla begépelt parancs">
+  <p class="zero-cli-kicker">A workshop állandó szabálya</p>
+  <p class="zero-cli-title">Egyetlen parancsot sem gépelsz be — mindent az agenttől kérsz</p>
+  <p>A nap során egyetlen dolgot indítasz el: a Claude Code-ot vagy a Codexet. Minden más technikai lépést — telepítést, git-műveletet, tesztet, ellenőrzést — promptban kérsz az agenttől. A lapokon látható parancsblokkok az agent munkájának nyomai és bizonyítékai, nem begépelnivalók.</p>
+  <p>Nem kell tehát megtanulnod egyetlen eszköz szintaxisát sem. Ami tőled kell: érteni, hogy melyik eszköz mire való, mik az erősségei és a korlátai — mert a döntéseket végig te hozod, az agent végrehajt és bizonyít.</p>
+</aside>
+
   <section class="ai-companion" aria-labelledby="m06-ai"><h2 id="m06-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Te választod ki az állítást és a két elkülönített, kitalált korrelációs adatot, majd eldöntöd, mit támaszt alá az evidence.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Agent-run rendszerpróba</h3><p>Az agent az API- és a felületi úthoz külön azonosítót használ; futtatja a unit-, contract-, API- és adatellenőrzést, majd a böngészőagenttel a sikeres és hibás UI-utat.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>Azonos verzió és környezet, csatornánkénti korreláció, API státuszok, screenshot és előtte/utána adatállapot.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>Te választod szét a bizonyított és nem bizonyított állításokat; környezetazonosítás nélkül STOP.</p></article></div><p><strong>Az automatizált böngészőút az alap.</strong> A kézi út csak őszintén jelölt Plan B, és nem nevezhető agent-run vagy replay bizonyítéknak.</p></section>
 
   <section class="grid">
@@ -143,13 +150,18 @@
 
   <section class="exercise">
     <h2>Gyakorlat: rétegzett bizonyítás a saját szeleteden</h2>
+    <div class="workspace-cue">
+      <p><strong>Hol dolgozol:</strong> a saját írható gyakorlórepódban, a <code>participant-repo</code> mappában — ezt a felkészülési bootstrap hozta létre a résztvevői starterből (lásd a <a data-route="/materials/repo-terkep/">repo-térképet</a>). A workshop-source repó végig csak olvasásra szolgál.</p>
+      <p><strong>Honnan olvas az agent:</strong> elsősorban a saját repód szeletéből és evidence-fájljaiból; ha a Plan B-re van szükség, a hibátlan pillanatképet a workshop-source-ból veszi: <code>toolkit/golden-thread/fixtures/snapshots/known-good</code>.</p>
+    </div>
     <p><strong>Miért rétegenként?</strong> Minden réteg más kockázatot fed le: a zöld unit teszt semmit sem mond a hálózati formátumról, a zöld API-válasz semmit a tartós tárolásról. Ezért rétegenként egy-egy bizonyítékfájlt készítesz a <code>workshop-evidence/C6-rendszerellenorzes/</code> mappába — mindegyik olyan lépésről, amely a workspace-edben ezen a ponton már valóban létezik.</p>
     <p><strong>Kitalált eset:</strong> két elkülönített próba regisztrál az „AI-alapú fejlesztés — alapozó műhely” kitalált workshopra (<code>ws-2026-08-alap</code>). Az API-út egyedi címe például <code>proba-api-&lt;csapat&gt;-&lt;idobelyeg&gt;@example.invalid</code>, a felületi úté <code>proba-ui-&lt;csapat&gt;-&lt;idobelyeg&gt;@example.invalid</code>. Mindkettő csak a saját kérését, válaszát és adattári rekordját korrelálja; így a két sikeres út és a két duplikációs elutasítás nem üti egymást. Éles vagy személyes adatot soha ne használj.</p>
     <ol>
       <li>Kérd az agentet a <code>workshop-evidence/C6-rendszerellenorzes/</code> mappa és a <code>00-eredet-es-verzio.txt</code> létrehozására. Minden szöveges evidence-ben legyen azonos <code>STATUS</code>, <code>SOURCE_SHA</code>, <code>ENVIRONMENT</code> és <code>ADAPTER=file-store</code> fejléc, buildazonosító és UTC-idő. Ha a futó verzió vagy adapter nem azonosítható, állj meg.</li>
       <li><strong>Unit réteg → <code>01-unit.txt</code>.</strong> Az agent futtassa a projekt unit tesztkontraktusát, és mentse a parancsot, kilépési kódot és eredményt. Emelje ki az AC-02 / SC-02B pontos 48 órás határesetét. A várható agent-run kontraktus <code>npm run test</code>; ezt nem a résztvevő gépeli be.</li>
       <li><strong>Contract réteg → <code>02-contract.txt</code>.</strong> Az agent futtassa ugyanazt a szerződéstesztet a memória- és fájl-adapteren, majd nevezze meg az aktív adatforrást. A várható agent-run kontraktus <code>npm run test -- repo-contract</code>.</li>
-      <li><strong>API réteg → <code>03-api.txt</code>.</strong> Az agent mentse el a kiinduló adatállapotot, indítsa el a lokális alkalmazást, majd saját HTTP-eszközével hajtsa végre a 201-es sikeres és a 409-es duplikációs utat. Az alábbi PowerShell csak <strong>agent-run technikai trace</strong>, nem résztvevői beviteli feladat:
+      <li><strong>API réteg → <code>03-api.txt</code>.</strong> Az agent mentse el a kiinduló adatállapotot, indítsa el a lokális alkalmazást, majd saját HTTP-eszközével hajtsa végre a 201-es sikeres és a 409-es duplikációs utat. Az alábbi PowerShell az agent technikai nyoma:
+<p class="agent-run">🤖 Agent futtatja — neked nem kell begépelned</p>
 <pre><code>$base = "http://localhost:3000"
 $body = @{
   workshopId = "ws-2026-08-alap"

@@ -19,6 +19,13 @@
     <p>A modulban a <a data-route="/materials/fogalomtar/#repository-rules">repo szabályait</a>, a közös <a data-route="/materials/fogalomtar/#definition-of-done">Definition of Done</a> feltételeit és a <a data-route="/materials/fogalomtar/#quality-gate">kötelező ellenőrzési pontokat</a> kapcsolod össze. A változtatást külön <a data-route="/materials/fogalomtar/#branch">branchben</a> és <a data-route="/materials/fogalomtar/#worktree">worktree-ben</a> készíted; a <a data-route="/materials/fogalomtar/#commit">commit</a>, a <a data-route="/materials/fogalomtar/#pull-request">pull request</a>, a <a data-route="/materials/fogalomtar/#ci">CI</a> és a <a data-route="/materials/fogalomtar/#preview">preview környezet</a> ugyanazt a változatot teszi ellenőrizhetővé.</p>
 </header>
 
+<aside class="zero-cli" role="note" aria-label="A workshop állandó szabálya: nulla begépelt parancs">
+  <p class="zero-cli-kicker">A workshop állandó szabálya</p>
+  <p class="zero-cli-title">Egyetlen parancsot sem gépelsz be — mindent az agenttől kérsz</p>
+  <p>A nap során egyetlen dolgot indítasz el: a Claude Code-ot vagy a Codexet. Minden más technikai lépést — telepítést, git-műveletet, tesztet, ellenőrzést — promptban kérsz az agenttől. A lapokon látható parancsblokkok az agent munkájának nyomai és bizonyítékai, nem begépelnivalók.</p>
+  <p>Nem kell tehát megtanulnod egyetlen eszköz szintaxisát sem. Ami tőled kell: érteni, hogy melyik eszköz mire való, mik az erősségei és a korlátai — mert a döntéseket végig te hozod, az agent végrehajt és bizonyít.</p>
+</aside>
+
   <section class="ai-companion" aria-labelledby="m02-ai"><h2 id="m02-ai">Az aktív AI-társ feladata ebben a modulban</h2><div class="ai-companion-grid"><article class="ai-role" data-role="human"><h3>🧑 Emberi döntés</h3><p>Te választod ki a tartós szabályt, a tiltott műveletet, a Definition of Done lécét és a mechanikus védelem célját.</p></article><article class="ai-role" data-role="agent"><h3>🤖 Agentfeladat</h3><p>Az agent elkészíti a szabály- és standardtervezetet, majd végrehajtja a PASS → FAIL → PASS próbát.</p></article><article class="ai-role" data-role="evidence"><h3>🔎 Evidence</h3><p>Változtatott fájlok, az agent által futtatott parancsok, kilépési kódok és a helyreállított zöld állapot.</p></article><article class="ai-role" data-role="risk"><h3>⚠️ RUG-kapu</h3><p>Te döntöd el, mely mechanizmus kerüljön a repóba; bizonyítatlan vagy túl széles szabályt visszaküldesz.</p></article></div><p>Egy agent elég; friss sessionnel azt is bizonyítjátok, hogy a repo, nem a chatelőzmény hordozza a működést.</p></section>
 
   <section class="grid" aria-label="A modul keretei">
@@ -75,19 +82,23 @@
 
   <section class="exercise">
     <h2>Gyakorlat: készíts végrehajtható repo-szerződést</h2>
+    <div class="workspace-cue">
+      <p><strong>Hol dolgozol:</strong> a saját írható gyakorlórepódban, a <code>participant-repo</code> mappában — ezt a felkészülési bootstrap hozta létre a résztvevői starterből (lásd a <a data-route="/materials/repo-terkep/">repo-térképet</a>). A workshop-source repó végig csak olvasásra szolgál.</p>
+      <p><strong>Honnan olvas az agent:</strong> a kanonikus mérnöki standard a workshop-source <code>toolkit/standards/engineering-standards.md</code> fájlja — a gyakorlatban készülő saját <code>docs/engineering-standard.md</code>-t az agent ebből veszi át és igazítja a repódhoz. Háttér: a <a data-route="/toolkit/utmutatok/repo-szabalyok/">repo-szabályok útmutató</a>.</p>
+    </div>
     <ol>
       <li>Mondd meg az agentnek a repo célját, scope-ját, tiltott műveleteit, emberi döntési pontjait és a kívánt készültségi lécet.</li>
       <li>Kérd, hogy a repó meglévő szerkezetét feltárva készítse el vagy pontosítsa az <code>AGENTS.md</code>, a <code>docs/engineering-standard.md</code> és a Definition of Done táblát. A parancsokat a tényleges projektkonfigurációból vezesse le.</li>
       <li>Te bíráld el, hogy mely szabály tartós, melyik túl széles, és melyikhez kell mechanikus kapu. Az elfogadott döntéseket az agent vezesse át a fájlokon.</li>
       <li>Nyiss friss agentbeszélgetést chatelőzmény nélkül, és kérd a repo-szerződés visszamondását. Legfeljebb 15 percet adj a teljes bizonyításra.</li>
-      <li>A friss agent hajtsa végre a normál minőségi kapukat, és rögzítse a parancsokat, kilépési kódokat és rövid eredményeket. A várható technikai kontraktus — <strong>agent-run, a résztvevő nem gépeli be</strong>:<pre><code>npm run typecheck
+      <li>A friss agent hajtsa végre a normál minőségi kapukat, és rögzítse a parancsokat, kilépési kódokat és rövid eredményeket. A várható technikai kontraktus:<p class="agent-run">🤖 Agent futtatja — neked nem kell begépelned</p><pre><code>npm run typecheck
 npm run lint
 npm run test
 npm run build</code></pre>Rögzítsd a parancsot, kilépési kódot és rövid eredményt.</li>
-      <li>Kérd az agentet egy visszafordítható negatív fixture létrehozására, a megfelelő kapu futtatására és a bukás okának visszaadására. A technikai nyom — <strong>agent-run evidence, nem résztvevői utasítás</strong>:<pre><code>New-Item -ItemType Directory -Force -Path src | Out-Null
+      <li>Kérd az agentet egy visszafordítható negatív fixture létrehozására, a megfelelő kapu futtatására és a bukás okának visszaadására. A technikai nyom:<p class="agent-run">🤖 Agent futtatja — neked nem kell begépelned</p><pre><code>New-Item -ItemType Directory -Force -Path src | Out-Null
 Set-Content -LiteralPath src/__workshop-negative__.ts -Value 'const count: number = "not a number"; export { count };'
 npm run typecheck</code></pre>Elvárt eredmény: FAIL, benne a <code>src/__workshop-negative__.ts</code> pontos helyével.</li>
-      <li>Kérd az agentet a fixture eltávolítására és ugyanazon kapu újrafuttatására. A technikai nyom — <strong>agent-run evidence</strong>:<pre><code>Remove-Item -LiteralPath src/__workshop-negative__.ts
+      <li>Kérd az agentet a fixture eltávolítására és ugyanazon kapu újrafuttatására. A technikai nyom:<p class="agent-run">🤖 Agent futtatja — neked nem kell begépelned</p><pre><code>Remove-Item -LiteralPath src/__workshop-negative__.ts
 npm run typecheck</code></pre>Elvárt eredmény: a fájl eltűnik és ugyanaz a typecheck ismét PASS.</li>
     </ol>
     <p class="takeaway"><strong>Kész, ha:</strong> a friss agent a repóból helyesen visszamondja a célt és a határokat; a négy normál parancs sikeres; a szándékos típushiba megállítja a kaput; törlés után ugyanaz a kapu ismét sikeres.</p>

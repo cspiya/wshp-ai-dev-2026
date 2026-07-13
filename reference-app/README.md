@@ -58,6 +58,11 @@ src/
       acceptance/           Gherkin acceptance criteria (map to tests)
       workshops.contract.ts the ONLY import surface for other modules
       AGENTS.md, README.md  module-scoped rules + docs
+    orders/                 webshop journey: catalog → cart → checkout → confirmation
+                            (guest/company buyer, qty limits, coupon, net+VAT pricing)
+    registrations/          workshop sign-up slice (in-memory + Drizzle adapters)
+    pricing/                pure pricing domain (calculation order, rounding)
+    checkout/               payment flow behind PaymentPort (fake adapter)
     identity/               minimal empty-module boundary demo (NOT the template)
   platform/                 cross-cutting: db client (Neon+Drizzle), env, tRPC init
   contracts/                zod schemas shared across module boundaries

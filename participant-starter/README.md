@@ -30,6 +30,19 @@ a nap későbbi blokkjaiban kerülnek be, lépésről lépésre.
 5. Feature csak az ember által elfogadott bootstrap-evidence után indulhat. Második agent opcionális
    portability smoke; nem feltétele a kötelező útnak.
 
+## Mi a viszonya a toolkithez és a referencia-apphoz?
+
+- **Starter (ez a mappa):** a bootstrap ezt másolja ki a saját írható repódba —
+  egyszer, a nap elején. Kézzel semmit nem kell összemásolnod; az appváz, a
+  CI-kapuk, az MCP-konfiguráció és a házirend előre be van kötve.
+- **Toolkit:** nem kerül át egyben, és nem is kell egyesével másolgatnod. Az agent
+  állomásonként veszi át a csomagjait: C1 — kanonikus mérnöki standard; C3 —
+  spec-sablonok; C4–C5 — RUG-orkesztráció és gépi kapuk; C6–C7 — projektmemória és
+  bevezetési sablonok. Hazafelé is így viszed: mindig a következő bevezetendő
+  képesség csomagját, nem az egészet.
+- **Referencia-app:** kész, tesztelt példa (a módszer próbapadja); mintát olvasol
+  belőle, de sosem szerkeszted és nem klónozod.
+
 ## Agent-run technikai szerződés
 
 Az alábbi parancsokat az agent, a hook vagy a CI futtatja. A résztvevőnek nem kell ezeket begépelnie.
