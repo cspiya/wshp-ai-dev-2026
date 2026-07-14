@@ -21,6 +21,26 @@
         max-width: none;
         height: auto;
       }
+      figure.wide-diagram svg {
+        width: 60rem;
+      }
+      .concept-grid,
+      .safety-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: 1rem;
+      }
+      .concept-grid article,
+      .safety-grid article {
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        background: var(--paper);
+      }
+      .source-note {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
       .diagram-scroll-hint {
         display: none;
         margin: 0.25rem 0;
@@ -186,6 +206,112 @@
             </tr>
           </table>
         </figure>
+      </section>
+      <section id="orchestration">
+        <h2>Orchestration: a koordináció és a kontextus mintája</h2>
+        <p>
+          Az
+          <a data-route="/materials/fogalomtar/#orchestration-pattern"
+            >orchestration patternben</a
+          >
+          az <a data-route="/materials/fogalomtar/#orchestrator">orchestrator</a>
+          nem mindentudó főagent. A célt, az állapotot, a függőségeket, a
+          lease-eket és a kapukat tartja kézben; a részleteket elkülönített
+          <a data-route="/materials/fogalomtar/#subagent">subagentekre</a>
+          bízza. Így a koordinációs kontextusban a döntés és az összegzett
+          evidence marad, nem a teljes keresési jegyzet, buildlog és stack trace.
+        </p>
+        <figure
+          class="wide-diagram"
+          id="fig-orchestration-context"
+          tabindex="0"
+          aria-label="Az orchestrator és három elkülönített subagent kontextuskapcsolata; keskeny képernyőn vízszintesen görgethető."
+        >
+          <p class="diagram-scroll-hint">
+            Az ábra keskeny képernyőn vízszintesen görgethető.
+          </p>
+          <svg viewBox="0 0 1000 390" role="img" aria-labelledby="foc-t foc-d">
+            <title id="foc-t">Minimum elégséges kontextusú orchestration</title>
+            <desc id="foc-d">
+              Az ember célokat és döntési kapukat ad az orchestratornak. Az
+              orchestrator három, elkülönített kontextusú subagentnek csak a
+              saját feladatcsomagját adja. A subagentek tömör eredményt,
+              bizonyítékot és kockázatot küldenek vissza.
+            </desc>
+            <defs>
+              <marker id="foc-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0 0L8 4L0 8Z" fill="currentColor" />
+              </marker>
+            </defs>
+            <g fill="none" stroke="currentColor" stroke-width="3" marker-end="url(#foc-arrow)">
+              <rect class="node-shape node-human" x="30" y="135" width="170" height="100" rx="14" />
+              <rect class="node-shape node-agent" x="300" y="110" width="230" height="150" rx="16" />
+              <rect class="node-shape node-agent" x="700" y="20" width="250" height="80" rx="13" />
+              <rect class="node-shape node-agent" x="700" y="155" width="250" height="80" rx="13" />
+              <rect class="node-shape node-evidence" x="700" y="290" width="250" height="80" rx="13" />
+              <path d="M200 185H292" />
+              <path d="M530 150C610 95 640 60 692 60" />
+              <path d="M530 185H692" />
+              <path d="M530 220C610 275 640 330 692 330" />
+              <path d="M700 92C610 110 590 125 538 145" />
+              <path d="M700 227C610 220 590 210 538 200" />
+              <path d="M700 322C610 290 580 250 538 225" />
+            </g>
+            <g text-anchor="middle" font-size="16">
+              <text x="115" y="168">Ember</text>
+              <text x="115" y="193">cél + kapuk</text>
+              <text x="415" y="145">Orchestrator</text>
+              <text x="415" y="174">terv · állapot · lease</text>
+              <text x="415" y="203">tömör szintézis</text>
+              <text x="825" y="53">Explorer</text>
+              <text x="825" y="77">csak a felderítési csomag</text>
+              <text x="825" y="188">Builder</text>
+              <text x="825" y="212">jóváhagyott spec + scope</text>
+              <text x="825" y="323">Fresh reviewer</text>
+              <text x="825" y="347">spec + standard + artifact</text>
+            </g>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> az orchestration elsődleges nyeresége a
+            tisztább kontextus és a tiszta felelősség; a párhuzamosság csak
+            akkor előny, ha a munkák valóban függetlenek.
+          </figcaption>
+          <table class="static-fallback" id="fig-orchestration-context-text">
+            <caption>Szöveges megfelelő</caption>
+            <tr><th>Szerep</th><th>Mit kap?</th><th>Mit ad vissza?</th></tr>
+            <tr><td>Orchestrator</td><td>Cél, AC, állapot, függőség, lease, kapuk</td><td>Döntésre kész szintézis</td></tr>
+            <tr><td>Explorer</td><td>Kérdés, keresési határ, releváns forrás</td><td>Találat, hivatkozás, bizonytalanság</td></tr>
+            <tr><td>Builder</td><td>Jóváhagyott spec, scope, standard, gate</td><td>Artifact, futási evidence, kockázat</td></tr>
+            <tr><td>Fresh reviewer</td><td>Spec, közös standard, vizsgált artifact — készítői önértékelés nélkül</td><td>Finding, reprodukció és súlyosság</td></tr>
+          </table>
+        </figure>
+        <div class="concept-grid">
+          <article>
+            <h3>Minimum elégséges csomag</h3>
+            <p>Eredmény · scope · bemenet · kanonikus szabály · bizonyítás · visszaadási szerződés.</p>
+          </article>
+          <article>
+            <h3>
+              <a data-route="/materials/fogalomtar/#instruction-budget"
+                >Instrukciókeret</a
+              >, nem varázsszám
+            </h3>
+            <p>
+              Nincs igazolt, univerzális 150–200-as plafon. A több, összetettebb,
+              versengő vagy irreleváns instrukció növeli a kihagyás kockázatát.
+            </p>
+          </article>
+          <article>
+            <h3>A kritikus szabály legyen gépi</h3>
+            <p>Amit nem szabad elfelejteni, azt guardrail, hook, gate és eval védje — ne még egy promptmondat.</p>
+          </article>
+        </div>
+        <p class="source-note">
+          Kutatási háttér:
+          <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic — context engineering</a>,
+          <a href="https://www.anthropic.com/engineering/building-effective-agents">orchestrator–workers</a>,
+          <a href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a>.
+        </p>
       </section>
       <section id="fig-review-loop">
         <h2>A review- és javítási ciklus</h2>
@@ -394,6 +520,158 @@
           </table>
         </figure>
       </section>
+      <section id="autonomia">
+        <h2>Az autonómia üzemeltetési rendszer, nem végtelen loop</h2>
+        <p>
+          A Goal, loop, schedule vagy routine képes új iterációt indítani, de
+          nem bizonyítja, hogy a rendszer egészséges, halad vagy jó eredményt
+          hoz. A megbízható hosszú futást az agenttől független supervision,
+          tartós állapot és megfigyelhetőség teszi lehetővé.
+        </p>
+        <p>
+          Ehhez időbélyegzett
+          <a data-route="/materials/fogalomtar/#heartbeat">heartbeat</a>,
+          független <a data-route="/materials/fogalomtar/#watchdog">watchdog</a>,
+          többdimenziós
+          <a data-route="/materials/fogalomtar/#health-check">health check</a> és
+          korlátozott
+          <a data-route="/materials/fogalomtar/#self-healing">self-healing</a>
+          kell.
+        </p>
+        <figure
+          class="wide-diagram"
+          id="fig-autonomy-supervision"
+          tabindex="0"
+          aria-label="A tartós agentműködés végrehajtási és felügyeleti köre; keskeny képernyőn vízszintesen görgethető."
+        >
+          <p class="diagram-scroll-hint">
+            Az ábra keskeny képernyőn vízszintesen görgethető.
+          </p>
+          <svg viewBox="0 0 1000 440" role="img" aria-labelledby="fas-t fas-d">
+            <title id="fas-t">Agent runtime és supervision plane</title>
+            <desc id="fas-d">
+              A trigger az orchestrator állapotgépét indítja, amely lease-t ad
+              a workernek. A worker eredményét teszt és evaluator ellenőrzi,
+              majd emberi kapu következik. A worker és orchestrator heartbeatet
+              küld egy független watchdognak; health check után bounded
+              self-healing vagy emberi eszkaláció történik.
+            </desc>
+            <defs>
+              <marker id="fas-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0 0L8 4L0 8Z" fill="currentColor" />
+              </marker>
+            </defs>
+            <g fill="none" stroke="currentColor" stroke-width="3" marker-end="url(#fas-arrow)">
+              <rect class="node-shape node-machine" x="20" y="35" width="140" height="72" rx="12" />
+              <rect class="node-shape node-agent" x="195" y="35" width="155" height="72" rx="12" />
+              <rect class="node-shape node-artifact" x="385" y="35" width="135" height="72" rx="12" />
+              <rect class="node-shape node-agent" x="555" y="35" width="135" height="72" rx="12" />
+              <rect class="node-shape node-machine" x="725" y="35" width="145" height="72" rx="12" />
+              <rect class="node-shape node-human" x="830" y="155" width="150" height="72" rx="12" />
+              <rect class="node-shape node-evidence" x="555" y="300" width="180" height="82" rx="12" />
+              <rect class="node-shape node-machine" x="300" y="300" width="180" height="82" rx="12" />
+              <rect class="node-shape node-risk" x="35" y="300" width="190" height="82" rx="12" />
+              <path d="M160 71H188M350 71H378M520 71H548M690 71H718" />
+              <path d="M870 107V147" />
+              <path d="M830 191C760 220 720 265 680 292" />
+              <path d="M555 340H488" />
+              <path d="M300 340H233" />
+              <path d="M130 300C120 245 145 160 220 110" />
+              <path stroke-dasharray="8 7" d="M620 107C620 185 555 245 468 300" />
+              <path stroke-dasharray="8 7" d="M273 107C273 200 320 255 360 292" />
+            </g>
+            <g text-anchor="middle" font-size="15">
+              <text x="90" y="64">Trigger</text><text x="90" y="86">schedule / event</text>
+              <text x="273" y="64">Orchestrator</text><text x="273" y="86">állapotgép</text>
+              <text x="452" y="64">Lease</text><text x="452" y="86">+ idempotency</text>
+              <text x="622" y="64">Worker</text><text x="622" y="86">checkpoint</text>
+              <text x="798" y="64">Teszt + eval</text><text x="798" y="86">quality gate</text>
+              <text x="905" y="184">Emberi kapu</text><text x="905" y="206">spec · PR · deploy</text>
+              <text x="645" y="330">Log · metric · trace</text><text x="645" y="354">+ termék-outcome</text>
+              <text x="390" y="330">Watchdog + health</text><text x="390" y="354">heartbeat · progress</text>
+              <text x="130" y="330">Bounded recovery</text><text x="130" y="354">vagy STOP + riasztás</text>
+              <text x="520" y="220">heartbeat</text>
+            </g>
+          </svg>
+          <figcaption>
+            <strong>Lényeg:</strong> a loop csak felébreszt; a watchdog figyel,
+            a health check diagnosztizál, a self-healing korlátozottan helyreállít,
+            az ismeretlen vagy ismétlődő hiba pedig emberhez kerül.
+          </figcaption>
+          <table class="static-fallback" id="fig-autonomy-supervision-text">
+            <caption>Szöveges megfelelő</caption>
+            <tr><th>Elem</th><th>Feladata</th><th>Biztonsági határa</th></tr>
+            <tr><td>Heartbeat</td><td>Futás, állapot, checkpoint és utolsó előrelépés jelzése</td><td>Önmagában nem bizonyít jó eredményt</td></tr>
+            <tr><td>Watchdog</td><td>Hiányzó/elavult heartbeat és progress-deadline észlelése</td><td>Az agenttől függetlenül fut</td></tr>
+            <tr><td>Health check</td><td>Liveness, readiness, progress, dependency és evaluator vizsgálata</td><td>Nem keveri össze az „él” és a „halad” állapotot</td></tr>
+            <tr><td>Self-healing</td><td>Ismert hibára restart, checkpoint, idempotens retry, rollback vagy quarantine</td><td>Retry-budget után stop és emberi eszkaláció</td></tr>
+          </table>
+        </figure>
+        <h3>Mit naplózunk és monitorozunk?</h3>
+        <div class="safety-grid">
+          <article><h3>Futás és állapot</h3><p>Run/issue/attempt ID, állapotváltás, lease, checkpoint, queue age, elakadás ideje.</p></article>
+          <article><h3>Agent és eszköz</h3><p>Modell-, prompt-, rule- és skill-verzió, tool időtartam/exit, timeout, retry, token és költség.</p></article>
+          <article><h3>Minőség</h3><p>AC, teszt/eval, review finding, emberi felülbírálás, rollback és helyreállítás utáni re-check.</p></article>
+          <article><h3>Rendszer és termék</h3><p>CPU, memória, disk, hálózat, DB-kapcsolat/query/lock, hibaarány, válaszidő, használat és outcome.</p></article>
+        </div>
+        <p>
+          A log, metric és trace közös korrelációs azonosítókat kap; titkot,
+          személyes adatot és teljes promptot alapból nem naplózunk.
+          <a href="https://opentelemetry.io/docs/specs/otel/logs/">OpenTelemetry</a>
+          ezt a három jelcsaládot kapcsolja össze.
+        </p>
+      </section>
+      <section id="linear-autopilot">
+        <h2>Játékos próba: Linear autopilot, biztonságos homokozóban</h2>
+        <p>
+          <strong>Cél:</strong> az állapotgép, a kontextuscsomag, a két emberi
+          stop és egy recovery-döntés megfigyelése. Nem cél production 24/7
+          rendszer vagy automatikus merge építése.
+        </p>
+        <div class="safety-grid">
+          <article>
+            <h3>DRY_RUN / READ_ONLY</h3>
+            <p>Sem Linear-, Git-, repo- vagy PR-írás nincs. Csak javasolt átmenet, artifact és szimulált trace készül.</p>
+          </article>
+          <article>
+            <h3>TRAINER_SANDBOX</h3>
+            <p>Név szerint allowlistelt projekt és gyakorló repó; 1 issue; 60 s poll; 15 perc; hibánként 2 retry; legfeljebb 2 USD becsült modellköltség; kill switch.</p>
+          </article>
+        </div>
+        <p>Automatikus merge és production deploy egyik módban sem engedélyezett.</p>
+        <h3>Agentnek adható természetes nyelvű megbízás — TRAINER_SANDBOX</h3>
+        <pre><code>A név szerint allowlistelt Linear projekt Todo állapotát figyeld. Egyszerre legfeljebb egy feladatot vegyél lease alá.
+
+Ha a spec hiányos, készíts specifikációs javaslatot, tedd emberi review-ra, majd állj meg.
+
+Ha az ember jóváhagyta és a feladat visszakerült Todo-ba, külön worktree-ben implementálj; írj és futtass teszteket; friss kontextusú review után készíts PR-javaslatot, majd állj meg.
+
+Merge-et és production deployt ne végezz. Minden állapotváltáshoz adj evidence-et. Limit, bizonytalanság vagy ismétlődő hiba esetén engedd el a lease-t és kérj emberi döntést.</code></pre>
+        <h3>DRY_RUN / READ_ONLY változat</h3>
+        <pre><code>Ugyanezt az állapotgépet értékeld, de ne írj a Linearba, Gitbe, repóba vagy PR-ba. Minden mutáció helyett add vissza a tervezett átmenetet, az elkészítendő artifactot és a bizonyítékot egy szimulált trace-ben.</code></pre>
+        <ol>
+          <li><strong>Todo, hiányos spec:</strong> specifikáció → emberi spec-review → stop.</li>
+          <li><strong>Todo, jóváhagyott spec:</strong> lease → worktree → implementáció + teszt + RUG.</li>
+          <li><strong>Zöld kapuk:</strong> PR → emberi PR-review → stop.</li>
+          <li><strong>Emberi merge után:</strong> deploy-evidence megfigyelése, éles módosítás nélkül.</li>
+          <li><strong>Telemetria:</strong> trend vagy finding-javaslat → ember által priorizált új issue.</li>
+        </ol>
+        <p>
+          <strong>Kész:</strong> a trace-ből meg tudod mutatni az állapotváltásokat,
+          a subagent-csomagokat, a két emberi stopot és legalább egy retry,
+          rollback, quarantine vagy stop döntést.
+        </p>
+        <p>
+          <strong>Tipikus hibakártyák:</strong> duplikált issue-felvétel, lejárt
+          lease, elakadt worker, hamis zöld evaluator, rate limit, nem idempotens
+          retry, túl tág jogosultság és korlátlan pollolás.
+        </p>
+        <p>
+          <strong>Plan B:</strong> kártyás szerepjáték előre rögzített trace-szel:
+          scheduler, orchestrator, worker, watchdog és emberi kapu szerepek; a
+          csoport hiba-kártyára dönt recoveryről vagy eszkalációról.
+        </p>
+      </section>
       <section>
         <h2>Miből tudod, hogy a módszer működik?</h2>
         <ul>
@@ -404,6 +682,10 @@
           <li>A hibából, ha ismétlődhet, automatikus védelem lesz.</li>
           <li>
             A referenciaalkalmazás cserélhető; a működési rendszer megmarad.
+          </li>
+          <li>
+            Hosszú futásnál a rendszer külön bizonyítja, hogy él, készen áll,
+            halad és jó eredményt ad — és ismert hibából korlátozottan helyreáll.
           </li>
         </ul>
         <p>

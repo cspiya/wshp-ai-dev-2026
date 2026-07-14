@@ -261,6 +261,15 @@
           "takeaway": "Az oldal célja, fő összefüggései és elvárt résztvevői eredménye egyetlen térképen látható."
         },
         {
+          "id": "q-method-orchestration-context",
+          "question": "Hogyan tartja tisztán az orchestrator a saját és a subagentek kontextusát?",
+          "type": "relationship",
+          "glossarySlugs": ["orchestrator", "subagent", "context-budget", "orchestration-pattern", "instruction-budget"],
+          "coverage": "page-local",
+          "diagramId": "fig-orchestration-context",
+          "takeaway": "A koordinátor célokat, állapotot és összegzett evidence-et tart; a részleteket minimum elégséges, elkülönített kontextusú subagentek végzik."
+        },
+        {
           "id": "q-method-cycle-1",
           "question": "Hogyan zajlik a döntés–review–kapu kör?",
           "type": "cycle",
@@ -277,6 +286,15 @@
           "coverage": "page-local",
           "diagramId": "fig-method-hogyan-all-ossze-az-ellenorzesi",
           "takeaway": "A lépések sorrendje és az átadási pontok együtt teszik követhetővé a folyamatot."
+        },
+        {
+          "id": "q-method-autonomy-supervision",
+          "question": "Milyen felügyelet kell egy megbízhatóan, tartósan működő agentrendszerhez?",
+          "type": "cycle",
+          "glossarySlugs": ["orchestrator", "quality-gate", "trace", "heartbeat", "watchdog", "health-check", "self-healing"],
+          "coverage": "page-local",
+          "diagramId": "fig-autonomy-supervision",
+          "takeaway": "A loop csak felébreszt; heartbeat, watchdog, health check, korlátozott recovery és emberi stop tartja működőképesen a rendszert."
         }
       ]
     },
