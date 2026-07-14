@@ -77,7 +77,12 @@ Drive-mappában; a D1-nek offline HTML-ikre is: `materials/instruktor/eloadas/d1
   - „A kontextus nem a teljes repo. Öt lépésben szűkítünk: teljes repo → érintett terület →
     szabályok és döntések → fájlok és tesztek → következő lépés. És három stop-kérdés van: mi a cél?
     mi tiltott? ki dönt? Ha bármelyik hiányzik, az agent találgatni fog." (Mutasd a
-    kontextus-tölcsér ábrát.)
+     kontextus-tölcsér ábrát.)
+  - „A nagyobb kontextusablak nem azt jelenti, hogy minden benne lévő szabály egyformán megbízhatóan
+    érvényesül. Nincs igazolt, minden modellre érvényes 150–200-as kemény plafon; a biztos tanulság:
+    az irreleváns részlet és a versengő constraint rontja a jel–zaj arányt. Ezért delegálunk: az
+    orchestrator a célt, az állapotot és a kapukat tartja, a subagent pedig csak a saját minimum
+    elégséges csomagját kapja.” (Mutasd a [módszertan orchestration-ábráját](../modszertan/index.html#orchestration).)
   - „»Nézd át és javítsd meg« — ez nem kérés, ez kockázat. A végrehajtható kérésben benne van az
     eredmény, a scope, a korlát és a pontos ellenőrzés. Nézzétek meg a modul-oldal példapárját: a
     homályos és a végrehajtható diagnózis-kérést."
@@ -250,8 +255,12 @@ párosítsd össze egy kész résztvevővel. Készítsd elő kivetítésre a 3. 
     egy valódi, minden kapun átcsúszó hibát ÉS egy hamis pozitív csalit tartalmaz. A pecsét kettős:
     a valódi hibához futtatható bizonyíték, a csalihoz indoklással rögzített REJECTED."
   - „Az orchestrator agent koordinálhatja az átadásokat, de nem veheti át az ellenőrző szerepét. És
-    az emberi review meg a gépi kapu nem helyettesíti egymást: a gép a determinisztikus hibát fogja,
-    az ember a szándékot és a kockázatot."
+     az emberi review meg a gépi kapu nem helyettesíti egymást: a gép a determinisztikus hibát fogja,
+     az ember a szándékot és a kockázatot.”
+  - „Az orchestration itt kontextus-izoláció is. A builder a jóváhagyott specet, scope-ot, standardot
+    és gate-et kapja; a friss reviewer a specet, ugyanazt a standardot és a tényleges artifactot —
+    de nem a builder gondolatmenetét. Az orchestratorhoz mindkettőtől tömör eredmény, evidence és
+    bizonytalanság tér vissza, nem a teljes nyers log.”
   - „A dogfooding-bizonyíték: ezt az anyagot is így építettük — zöld CI után a független review
     valódi hibákat talált. A zöld pipeline szükséges, nem elégséges."
 - **Amit a hallgatók csinálnak:**
@@ -502,7 +511,12 @@ DevOps nézetet a legacy blokkhoz; ellenőrizd, kinél hiányzik a 6. modul evid
     napon mégis »javítandó« lett a kapu, mert egy magas súlyú megállapítás nyitva maradt. Így néz ki
     az őszinte mérés."
   - „A 30/60/90 minden kapuja külön emberi döntés: a naptári idő nem jogosít fel bővítésre. A 60/90
-    alapállapota: DECISION REQUIRED."
+     alapállapota: DECISION REQUIRED.”
+  - „Az autonómia nem egyenlő azzal, hogy bekapcsolunk egy loopot. A Goal, `/loop` vagy schedule csak
+    új futást indít. 24/7-ben heartbeat, független watchdog, liveness/readiness/progress health,
+    checkpoint, idempotens retry, megfigyelhetőség és kill switch kell. Self-healing csak ismert
+    hibára, korlátozott playbookkal történhet; ismeretlen vagy ismétlődő hibánál megáll és embert
+    riaszt.” (Mutasd a [supervision-ábrát](../modszertan/index.html#autonomia).)
 - **Amit a hallgatók csinálnak:**
   1. (0–5) **Projektmemória-próba új sessionben (C7):** session lezárása → ÚJ session a
      workspace-ben → a négy kérdés („mi a cél, milyen döntések születtek, mik a korlátok, mi a
@@ -518,6 +532,10 @@ DevOps nézetet a legacy blokkhoz; ellenőrizd, kinél hiányzik a 6. modul evid
      nulláról; a 60/90 állapota `DECISION REQUIRED — owner — next decision point`.
   4. (checkpoint) Egy társ **csak a fájlokból** visszamondja: leggyengébb képesség, felelős szerep,
      következő feladat, mérés, leállási feltétel.
+  5. **Ha legalább 6 perc időelőny van:** „Linear autopilot” kártyás dry-run a
+     [módszertan oldal állapotgépe](../modszertan/index.html#linear-autopilot) szerint. Öt szerep:
+     scheduler, orchestrator, worker, watchdog, emberi kapu. Egy hiba-kártyánál a csoport dönt:
+     idempotens retry, rollback, quarantine vagy stop + eszkaláció. Nincs élő automatikus merge vagy deploy.
   Kimenet: **a három bevezetési fájl + `workshop-evidence/C7-memoria.md` + kitöltött kétagentes
   scorecard, kitalált szerepnevekkel**.
 - **Ezt ellenőrzöd a teremben:**

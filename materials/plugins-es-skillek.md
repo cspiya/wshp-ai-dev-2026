@@ -53,6 +53,26 @@ folyamatszerződésben hordozható RUG-ciklus:
 Termékspecifikus dinamikus workflow csak opcionális adapter. A kötelező út egyetlen Claude Code vagy
 Codex sessionnel és szükség esetén külön fresh-context reviewerrel teljesíthető.
 
+## Orchestration és tartós autonómia
+
+Az **orchestrator** nem minden részletet végző főagent. A koordinációs kontextusban a cél, a
+függőség, az állapot, a lease, a kapu és a subagentek tömör evidence-e marad; a nyers keresési,
+build- és hibakeresési részletek elkülönített worker-kontextusban élnek. A subagent csak a
+feladatához szükséges specet, scope-ot, kanonikus szabályt, artifactot, ellenőrzést és visszaadási
+szerződést kapja.
+
+A nagy kontextusablak nem garancia minden instrukció megbízható követésére. Nincs igazolt,
+modellfüggetlen „150–200 utasításos” kemény plafon: a kutatások a relevancia, a pozíció, a
+komplexitás és a több constraint miatti fokozatos minőségromlást támasztják alá. Ezért a kritikus
+szabályt nem ismételt promptszöveggel, hanem prioritásos repószabállyal, hookkal, guardraillel,
+quality gate-tel és reprezentatív eval-lal védjük.
+
+A Goal, `/loop`, schedule vagy routine a következő futást indítja; nem felügyeli önmagát. Megbízható,
+hosszú futáshoz külső supervision kell: heartbeat, watchdog, liveness/readiness/progress health,
+checkpoint, lease, idempotens retry, bounded self-healing, megfigyelhetőség és kill switch.
+Az architektúra, naplózási szerződés és a biztonságos Linear-autopilot workshop-kísérlet részletesen:
+[Orchestration és megbízható autonóm működés](orchestration-es-autonomia.md).
+
 ## Böngészőagent és biztonság
 
 Lokális fejlesztői oldalhoz és nyilvános webhelyhez a beépített, elkülönített böngésző az alapút.
@@ -81,6 +101,11 @@ Ez workshop-saját pedagógiai fogalom. Nem modelltréning, nem RLHF, és nem ka
 - [Claude Code plugins](https://code.claude.com/docs/en/plugins) és
   [plugin discovery](https://code.claude.com/docs/en/discover-plugins)
 - [Claude Code Goal](https://code.claude.com/docs/en/goal)
+- [Claude Code scheduled tasks és `/loop`](https://code.claude.com/docs/en/scheduled-tasks)
+- [Anthropic — effective context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [Anthropic — building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
+- [OpenAI — Codex subagent workflows](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+- [OpenAI — Scheduled tasks](https://learn.chatgpt.com/docs/automations)
 - [Claude Code Pro/Max használat](https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan)
 - [Claude használati korlátok](https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work)
 - [Codex hivatalos fogalomtár](https://learn.chatgpt.com/docs/glossary)

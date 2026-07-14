@@ -48,6 +48,15 @@ Négy ismérve van:
 4. **Szerződések + verifikáció** — spec, szabályok, kapuk, független review
    ([RUG](fogalomtar.md#rug)), evidence — az a pillér, amit a workshop már tanít.
 
+Az orchestration erre a négy pillérre épülő koordinációs minta: a fő agent a célt, az állapotot,
+a függőségeket és a kapukat tartja kézben, a részleteket pedig elkülönített kontextusú subagentekre
+bízza. Nem attól érett egy rendszer, hogy sok agentet indít, hanem attól, hogy minden agent a
+minimum elégséges kontextust kapja, bizonyítékkal ad vissza eredményt, és az orchestrator
+koordinációs kontextusa tiszta marad. A tartós autonómia egy további érettségi szint: a Goal, loop
+vagy schedule mellé supervisor, heartbeat, watchdog, health check, bounded self-healing,
+observability és valódi emberi stop kell. Részletesen:
+[Orchestration és megbízható autonóm működés](orchestration-es-autonomia.md).
+
 **Stack-választási elv: „AI-integrálhatóság > feature-lista."** Ezért: Neon (DB-branch
 preview-nként + MCP) · Vercel (preview PR-onként + MCP) · Linear (issue = spec + MCP) ·
 GitHub (gh CLI + PR-kapuk) · v0 / Claude Design (agenttel vezérelhető dizájnlépés) ·
@@ -132,7 +141,7 @@ a saját (részben legacy) világunkba?**
 
 | Szakasz | Miért itt van? |
 |---|---|
-| **Elméleti bevezető** (rövid!) | Közös fogalmi alap kell (agent, kontextus, spec-driven, RUG) — de csak annyi, hogy a gyakorlat érthető legyen. A tudás a csinálásból jön. |
+| **Elméleti bevezető** (rövid!) | Közös fogalmi alap kell (agent, kontextus, orchestration, spec-driven, RUG és az autonómia üzemeltetési határai) — de csak annyi, hogy a gyakorlat érthető legyen. A tudás a csinálásból jön. |
 | **Üres repo → agent-ready repo** | Előbb a fejlesztési működést építjük fel: mission, határok, standard, valódi gate-ek. A technikai starter csak hordozó, nem kész keretrendszer. |
 | **Spec + RUG + mechanikus garanciák** | Minden következő blokk ugyanahhoz a repohoz ad egy új képességet. A résztvevő nem különálló toolokat lát, hanem fokozatosan felépít egy működési rendszert. |
 | **Saját projekt mint validation workload** | A tudás akkor bizonyított, ha a rendszer reprezentatív fejlesztési terhelést is elbír. A referencia-app a másolható golden path; a saját alkalmazás a keretrendszer valós rendszerpróbája. |
@@ -191,6 +200,7 @@ nem egyetlen modell emlékezete vagy stílusa.
 | [fogalomtár](fogalomtar.md) | Minden szakszó egy helyen (.NET-párhuzamokkal) |
 | [építési napló](epitesi-naplo/) | Naponta: mit csináltunk, milyen döntéseket hoztunk és **miért** |
 | [pluginek és skillek](plugins-es-skillek.md) | Mit használunk + a plugin/skill-rendszer korlátai |
+| [orchestration és autonómia](orchestration-es-autonomia.md) | Minimum kontextusú subagentek, supervision, heartbeat, watchdog, self-healing és a Linear-autopilot kísérlet |
 | [setup-guide](setup-guide.md) | Résztvevői felkészülés (fiókok, telepítés) |
 | [agenda](agenda.md) | A nap időrendje |
 | [modulok/](modulok/) | A modulonkénti tananyag (HTML-oldalak; a korábbi notebooks/ nyugdíjazva, csak átirányít) |

@@ -22,6 +22,21 @@
       "inlineSvgHash": "74da1f6e34d103bb2467395379c9eac168f4a738fbe8e3276af600691ddd8ec8"
     },
     {
+      "id": "fig-orchestration-context",
+      "visualQuestionId": "q-method-orchestration-context",
+      "question": "Hogyan tartja tisztán az orchestrator a saját és a subagentek kontextusát?",
+      "type": "relationship",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "relationship-map",
+      "takeaway": "A koordinátor célokat, állapotot és összegzett evidence-et tart; a részleteket minimum elégséges, elkülönített kontextusú subagentek végzik.",
+      "glossarySlugs": ["orchestrator", "subagent", "context-budget", "orchestration-pattern", "instruction-budget"],
+      "figureSelector": "#fig-orchestration-context",
+      "svgSelector": "#fig-orchestration-context svg",
+      "textFallbackSelector": "#fig-orchestration-context-text",
+      "inlineSvgHash": "6be8d068759a46899c9b52567d38a3897c1659261f3e146927ba406683533944"
+    },
+    {
       "id": "fig-method-hogyan-zajlik-a-dontes-review",
       "visualQuestionId": "q-method-cycle-1",
       "question": "Hogyan zajlik a döntés–review–kapu kör?",
@@ -57,6 +72,21 @@
       "svgSelector": "#fig-method-hogyan-all-ossze-az-ellenorzesi svg",
       "textFallbackSelector": "#fig-method-hogyan-all-ossze-az-ellenorzesi-text",
       "inlineSvgHash": "d9de6d4019124d6456204fff52efb0f5c4ef2e4a1f83c10041a59a8982dfa831"
+    },
+    {
+      "id": "fig-autonomy-supervision",
+      "visualQuestionId": "q-method-autonomy-supervision",
+      "question": "Milyen felügyelet kell egy megbízhatóan, tartósan működő agentrendszerhez?",
+      "type": "cycle",
+      "disposition": "page-local",
+      "rendering": "inline-svg",
+      "diagramType": "cycle-diagram",
+      "takeaway": "A loop csak felébreszt; heartbeat, watchdog, health check, korlátozott recovery és emberi stop tartja működőképesen a rendszert.",
+      "glossarySlugs": ["orchestrator", "quality-gate", "trace", "heartbeat", "watchdog", "health-check", "self-healing"],
+      "figureSelector": "#fig-autonomy-supervision",
+      "svgSelector": "#fig-autonomy-supervision svg",
+      "textFallbackSelector": "#fig-autonomy-supervision-text",
+      "inlineSvgHash": "63fc5333c6f3dad269eadc74d24ff0980d6f29ca4083e2a0e9cdca7086092006"
     }
   ]
 }
