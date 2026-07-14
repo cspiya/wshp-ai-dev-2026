@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A nap előadásai — Wenova AI-Assisted Development Workshop (2026.07.14)</title>
+<style>
+  :root{
+    --bg:#06071a; --text:#f0f4ff; --muted:#94a3c0;
+    --cyan:#22d3ee; --blue:#3b82f6; --amber:#fbbf24;
+    --card:rgba(255,255,255,.06); --border:rgba(103,232,249,.15);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height:1.5; padding:2.5rem 1.25rem 4rem;
+  }
+  .wrap{max-width:960px; margin:0 auto}
+  header{border-bottom:1px solid var(--border); padding-bottom:1.5rem; margin-bottom:2rem}
+  .eyebrow{color:var(--cyan); font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; font-weight:600}
+  h1{font-size:1.9rem; margin:.4rem 0 .3rem; line-height:1.2}
+  .sub{color:var(--muted); font-size:.95rem}
+  .meta{color:var(--muted); font-size:.85rem; margin-top:.75rem}
+  .grid{display:grid; grid-template-columns:1fr; gap:1rem}
+  @media(min-width:680px){.grid{grid-template-columns:1fr 1fr}}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:1.15rem 1.25rem; display:flex; flex-direction:column; gap:.55rem;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:rgba(103,232,249,.4); transform:translateY(-2px)}
+  .card.wide{grid-column:1/-1}
+  .tag{
+    align-self:flex-start; font-size:.72rem; font-weight:700; letter-spacing:.06em;
+    color:var(--bg); background:var(--cyan); border-radius:6px; padding:.15rem .5rem;
+  }
+  .card.d6 .tag{background:var(--amber)}
+  .card h2{font-size:1.12rem; margin:.1rem 0; line-height:1.25}
+  .slot{color:var(--amber); font-size:.82rem; font-weight:600}
+  .desc{color:var(--muted); font-size:.9rem; margin:.1rem 0 .2rem}
+  .desc em{color:var(--text); font-style:italic}
+  .links{margin-top:auto; display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; font-size:.85rem}
+  a.btn{
+    display:inline-block; text-decoration:none; font-weight:600;
+    color:var(--bg); background:linear-gradient(45deg,var(--blue),var(--cyan));
+    padding:.4rem .8rem; border-radius:8px;
+  }
+  a.btn:hover{filter:brightness(1.08)}
+  footer{margin-top:2.5rem; padding-top:1.25rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; text-align:center}
+  footer .star{color:#fff}
+  a.back{color:var(--cyan); text-decoration:none; font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Wenova AI-Assisted Development Workshop</div>
+    <h1>A nap előadásai</h1>
+    <div class="sub">2026.07.14 · a workshop Gamma-prezentációi egy helyen, időrendben</div>
+    <div class="meta">A megnyitáshoz internet kell. A diák a nap építési ívét vizualizálják; a részletes tananyag a modulokban él.</div>
+  </header>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag">D1</span>
+      <div class="slot">09:00 · ~12'</div>
+      <h2>AI gyorstalpaló</h2>
+      <div class="desc">Hogyan működik egy modern LLM (háromréteg-modell, kontextus-tölcsér), és miért kell köré rendszer. <em>„Nem webalkalmazást építünk, hanem agent-ready fejlesztési rendszert."</em></div>
+      <div class="links"><a class="btn" href="https://gamma.app/docs/hy12yccl4lv9nsc" target="_blank" rel="noopener">Megnyitás ↗</a></div>
+    </div>
+
+    <div class="card">
+      <span class="tag">D2</span>
+      <div class="slot">09:15 · ~15'</div>
+      <h2>Eszköztérkép</h2>
+      <div class="desc">Claude &amp; Codex mélyben, és hol áll a mezőny. Tájékozódási <em>térkép, nem rangsor</em> — miért agentic CLI-vel dolgozunk.</div>
+      <div class="links"><a class="btn" href="https://gamma.app/docs/c7a6eyywo3ipjzm" target="_blank" rel="noopener">Megnyitás ↗</a></div>
+    </div>
+
+    <div class="card">
+      <span class="tag">D3</span>
+      <div class="slot">09:45 · ~12' + insertek</div>
+      <h2>Módszertan + big picture</h2>
+      <div class="desc">Big picture, módszertan, valós tanulságok az építési naplóból, és a nap terve — a doktrína vizualizációja.</div>
+      <div class="links"><a class="btn" href="https://gamma.app/docs/ecwyrpthu9seazt" target="_blank" rel="noopener">Megnyitás ↗</a></div>
+    </div>
+
+    <div class="card">
+      <span class="tag">D4</span>
+      <div class="slot">15:00 · ~10'</div>
+      <h2>.NET legacy modernizálás</h2>
+      <div class="desc">Egy valós .NET rendszer (TFS / Azure DevOps / MS SQL / Selenium) fokozatos modernizálása agentekkel. Íve: <em>fájdalom → agentmunka → tartós képesség → mért eredmény → következő loop.</em></div>
+      <div class="links"><a class="btn" href="https://gamma.app/docs/NET-legacy-modernizalas-AI-agentekkel-ja9wcq9ev25ecj4" target="_blank" rel="noopener">Megnyitás ↗</a></div>
+    </div>
+
+    <div class="card">
+      <span class="tag">D5</span>
+      <div class="slot">16:15 · ~8' + 16:50 · ~3'</div>
+      <h2>Önmagát javító rendszer + zárás</h2>
+      <div class="desc"><em>Az autonómia nem attól nő, hogy az AI többet csinál — hanem hogy mérni és visszacsatolni tudjuk.</em> Egymásba ágyazott feedback-loopok; automatizál / adaptál / autonóm; a nap zárása.</div>
+      <div class="links"><a class="btn" href="https://gamma.app/docs/Az-autonomia-nem-attol-no-hogy-az-AI-tobbet-csinal-4gywhgb9rvreuix" target="_blank" rel="noopener">Megnyitás ↗</a></div>
+    </div>
+
+    <div class="card d6 wide">
+      <span class="tag">D6 · KÜLÖN ELŐADÁS</span>
+      <div class="slot">Nem a workshop napján · ~10-15'</div>
+      <h2>Csapat operating model + eszközcsere + 30/60/90 bevezetés (.NET)</h2>
+      <div class="desc">Az egyéni gyakorlatból csapat-működés — squad-modell, modell-/eszközcsere, mit mérünk (és mit nem), .NET legacy biztonsági háló, és a <em>30/60/90</em> bevezetési playbook.</div>
+      <div class="links"><a class="btn" href="https://gamma.app/docs/szf4gosgkmxbinm" target="_blank" rel="noopener">Megnyitás ↗</a></div>
+    </div>
+
+  </div>
+
+  <p style="margin-top:1.5rem"><a class="back" href="index.html">← Vissza a tananyaghoz</a></p>
+
+  <footer>
+    <span class="star">✦</span> Wenova · edu.wenova.io · ©/™ Wenova
+  </footer>
+</div>
+</body>
+</html>

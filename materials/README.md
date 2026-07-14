@@ -9,6 +9,9 @@ helyzetben is működik.
 > [workshop előtti útvonallal](#resztvevo), majd a workshopon mindig a
 > [napi térképen](#napi-terkep) keresd meg az aktuális időt és [checkpointot](fogalomtar.md).
 
+> 📊 **[A nap előadásai — Gamma-prezentációk](prezentaciok.md)** · mind a hat deck egy
+> helyen, időrendben ([HTML-áttekintő](prezentaciok.html)).
+
 **Megjelenítési módok:** [webes tananyag](index.html) ·
 [publikált webes tananyag](https://cspiya.github.io/wshp-ai-dev-2026/materials/) ·
 [forrás a GitHubon](https://github.com/cspiya/wshp-ai-dev-2026/tree/main/materials) ·
