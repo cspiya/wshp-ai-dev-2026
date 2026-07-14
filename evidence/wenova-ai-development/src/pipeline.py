@@ -471,7 +471,11 @@ def build_manifest(lake: Path) -> dict[str, Any]:
         "normalized/usage_events.csv": ("usage SQLite snapshot", "usage-event/v1"),
         "normalized/git_commits.csv": ("Git integration refs", "git-commit/v1"),
         "normalized/gate_runs.csv": ("structured validation results", "gate-run/v1"),
+        "normalized/gate_steps.csv": ("structured validation results", "gate-step/v1"),
+        "normalized/ci_events.csv": ("squad CI event log", "ci-event/v1"),
+        "normalized/repositories.json": ("Git and cloc snapshots", "repository-snapshot/v1"),
         "raw/linear/issues.json": ("authenticated Linear export", "linear-issue/v1"),
+        "derived/report-data.json": ("normalized evidence model", "report-data/v1"),
     }
     datasets = []
     by_path = {row["path"]: row for row in rows}
@@ -479,11 +483,15 @@ def build_manifest(lake: Path) -> dict[str, Any]:
         path = lake / relative
         if not path.exists():
             continue
-        records = len(read_csv(path)) if path.suffix == ".csv" else len(read_json(path).get("issues", []))
+        if path.suffix == ".csv":
+            records = len(read_csv(path))
+        else:
+            payload = read_json(path)
+            records = len(payload) if isinstance(payload, list) else len(payload.get("issues", [])) or 1
         datasets.append({
             "path": relative,
             "source_identity": source,
-            "extracted_at": iso_now(),
+            "extracted_at": by_path[relative]["modified_at"],
             "dataset_schema": schema,
             "records": records,
             "sha256": by_path[relative]["sha256"],
@@ -890,7 +898,7 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
         {
             "id": "H1",
             "title": "A kontrollált működés rövidebb vagy kiszámíthatóbb átfutással jár.",
-            "verdict": "vegyes",
+            "verdict": "vegyes" if cycle_delta is not None and p80_delta is not None else "nem mérhető",
             "support": (
                 f"A medián ciklusidő változása a korai és a kontrollált fázis között "
                 f"{cycle_delta:+.1f}%, a p80 változása {p80_delta:+.1f}%." if cycle_delta is not None and p80_delta is not None else
@@ -917,7 +925,7 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
         {
             "id": "H3",
             "title": "A review előre tolódik, miközben a késői rework csökkenhet.",
-            "verdict": "vegyes",
+            "verdict": "vegyes" if review_delta is not None else "nem mérhető",
             "support": (
                 f"A review/bounce-back címproxy részaránya {review_delta:+.1f}% változást mutatott."
                 if review_delta is not None
@@ -971,41 +979,41 @@ def source_inventory(
             "source": "Linear",
             "records": len(issues),
             "coverage": f"{min(row['createdAt'] for row in issues)} – {max(row['updatedAt'] for row in issues)}",
-            "join_key": "WEN-n issue identifier",
-            "missingness": f"{len(completed)} completed; {sum(not row.get('startedAt') for row in completed)} completed rows lack startedAt",
-            "privacy": "Internal titles, assignee and URLs remain in the private lake.",
+            "join_key": "WEN-n issue-azonosító",
+            "missingness": f"{len(completed)} lezárt; {sum(not row.get('startedAt') for row in completed)} lezárt sornál hiányzik a startedAt",
+            "privacy": "A belső címek, felelősök és URL-ek a privát lake-ben maradnak.",
         },
         {
             "source": "Usage SQLite",
             "records": len(usage),
             "coverage": f"{min(row['timestamp'] for row in usage)} – {max(row['timestamp'] for row in usage)}" if usage else "none",
-            "join_key": "issue_id when source=worker",
-            "missingness": f"{sum(not row.get('issue_id') for row in usage)} events have no issue_id; calendar gaps exist",
-            "privacy": "Model, persona, cost and issue linkage are internal.",
+            "join_key": "issue_id, ha source=worker",
+            "missingness": f"{sum(not row.get('issue_id') for row in usage)} eseményhez nincs issue_id; vannak naptári hézagok",
+            "privacy": "A modell, persona, költség és issue-kapcsolat belső adat.",
         },
         {
             "source": "Git integration refs",
             "records": len(commits),
             "coverage": f"{min(row['author_time'] for row in commits)} – {max(row['author_time'] for row in commits)}",
-            "join_key": "WEN-n parsed from commit subject",
-            "missingness": f"{sum(not row.get('issue_ids') for row in commits)} commits have no issue id in subject",
-            "privacy": "Subjects stay internal; public report uses aggregates only.",
+            "join_key": "A commit tárgyából kinyert WEN-n",
+            "missingness": f"{sum(not row.get('issue_ids') for row in commits)} commit tárgyában nincs issue-azonosító",
+            "privacy": "A commit tárgya belső marad; a riport csak aggregátumot használ.",
         },
         {
             "source": "Structured validation",
             "records": len(gates),
             "coverage": f"{min((row.get('timestamp') or '') for row in gates)} – {max((row.get('timestamp') or '') for row in gates)}" if gates else "none",
-            "join_key": "issue_id / branch where present",
-            "missingness": f"{sum(not row.get('issue_id') for row in gates)} gate runs lack issue_id",
-            "privacy": "Raw branch, job and command data remain internal.",
+            "join_key": "issue_id / branch, ahol elérhető",
+            "missingness": f"{sum(not row.get('issue_id') for row in gates)} gate futásnál hiányzik az issue_id",
+            "privacy": "A nyers branch-, job- és parancsadat belső marad.",
         },
         {
             "source": "cloc snapshots",
             "records": len(repositories),
-            "coverage": "Current clean working-tree snapshot per repository",
-            "join_key": "repository name",
-            "missingness": "Snapshot is current-state only; generated and untracked files are excluded.",
-            "privacy": "Only language/file/line aggregates are published.",
+            "coverage": "Aktuális tiszta working-tree snapshot repository-nként",
+            "join_key": "repository-név",
+            "missingness": "Csak aktuális állapot; a generált és untracked fájlok kimaradnak.",
+            "privacy": "Csak nyelv-, fájl- és soraggregátum kerül a riportba.",
         },
     ]
 
@@ -1203,6 +1211,25 @@ def validate(config: dict[str, Any]) -> None:
         sum(int(phase["gate_runs"]) for phase in report["phases"]) == len(gates),
         "Phase gate subtotals do not reconcile",
     )
+    check(
+        len(list((lake / "raw" / "usage" / "gates").glob("*/validation-result.json")))
+        == len(gates),
+        "Raw validation files and normalized gate runs differ",
+    )
+    direct_git_count = 0
+    for repository in config["repositories"]:
+        repo = Path(repository["path"])
+        ref = integration_ref(repo)
+        direct_git_count += int(run(["git", "rev-list", "--count", ref], cwd=repo).strip())
+    check(direct_git_count == len(commits), "Direct Git ref counts do not reconcile")
+    analysis_manifest = read_json(lake / "manifests" / "analysis.json")
+    linear_dataset = next(
+        row for row in analysis_manifest["datasets"] if row["path"] == "raw/linear/issues.json"
+    )
+    check(
+        linear_dataset["sha256"] == sha256(lake / "raw" / "linear" / "issues.json"),
+        "Linear export checksum differs from the analysis manifest",
+    )
 
     required_site_files = {"index.html", "styles.css", "app.js", "data.js", "manifest.json"}
     check(site.is_dir(), "Portable site directory is missing")
@@ -1218,7 +1245,7 @@ def validate(config: dict[str, Any]) -> None:
     result = {
         "validated_at": iso_now(),
         "status": "pass" if not errors else "fail",
-        "checks": 19,
+        "checks": 22,
         "errors": errors,
         "reconciled": {
             "linear_issues": len(issues),
