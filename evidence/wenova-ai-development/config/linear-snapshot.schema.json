@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wenova.example/schemas/linear-snapshot-v1.json",
+  "title": "Private Linear issue snapshot",
+  "type": "object",
+  "required": ["schema_version", "exported_at", "row_count", "issues"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "exported_at": { "type": "string", "format": "date-time" },
+    "row_count": { "type": "integer", "minimum": 0 },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "createdAt", "updatedAt", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "startedAt": { "type": ["string", "null"] },
+          "completedAt": { "type": ["string", "null"] },
+          "canceledAt": { "type": ["string", "null"] },
+          "status": { "type": "object" },
+          "labels": { "type": "array" },
+          "project": { "type": ["object", "null"] }
+        }
+      }
+    }
+  }
+}

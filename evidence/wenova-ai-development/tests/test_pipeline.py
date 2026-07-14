@@ -53,6 +53,15 @@ class PipelineUnitTests(unittest.TestCase):
             self.assertEqual(manifest["files"][0]["path"], "raw/sample.json")
             self.assertEqual(len(manifest["files"][0]["sha256"]), 64)
 
+    def test_daily_series_preserves_calendar_gaps(self):
+        commits = [
+            {"author_time": "2026-01-01T10:00:00Z", "parent_count": "1", "additions": "1", "deletions": "0", "files_changed": "1"},
+            {"author_time": "2026-01-03T10:00:00Z", "parent_count": "1", "additions": "1", "deletions": "0", "files_changed": "1"},
+        ]
+        rows = PIPELINE.aggregate_daily([], commits, [], [])
+        self.assertEqual([row["day"] for row in rows], ["2026-01-01", "2026-01-02", "2026-01-03"])
+        self.assertEqual(rows[1]["commits"], 0)
+
 
 class StaticSiteContractTests(unittest.TestCase):
     def setUp(self):
@@ -75,6 +84,7 @@ class StaticSiteContractTests(unittest.TestCase):
             'id="repo-multiples"',
             'id="hypotheses"',
             'id="external-evidence"',
+            'id="daily-table"',
         ):
             self.assertIn(target, html)
 

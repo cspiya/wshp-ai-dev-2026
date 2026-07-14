@@ -151,6 +151,8 @@ h3 { font-size: 1.15rem; }
 .series-commit { fill: var(--blue); stroke: var(--blue); }
 .series-review { fill: var(--amber); stroke: var(--amber); }
 .phase-line { stroke: var(--rose); stroke-width: 1; stroke-dasharray: 4 4; }
+.data-table { margin-top: 0.8rem; }
+.data-table > div { max-height: 22rem; overflow: auto; }
 .phase-multiples, .repo-multiples {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

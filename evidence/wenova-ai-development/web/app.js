@@ -77,9 +77,7 @@
 
   function renderDailyChart() {
     var svg = document.getElementById("daily-chart");
-    var rows = data.daily.filter(function (row) {
-      return row.issues_completed || row.commits || row.token_events || row.gate_runs;
-    });
+    var rows = data.daily;
     var width = 1080;
     var height = 340;
     var margin = { top: 34, right: 28, bottom: 58, left: 42 };
@@ -105,6 +103,18 @@
       svg.appendChild(svgNode("text", {
         x: margin.left - 8, y: lineY + 4, "text-anchor": "end", "class": "axis-label"
       }, fmtInt(maxValue * ratio)));
+    });
+    data.phases.forEach(function (phase) {
+      var phaseIndex = rows.findIndex(function (row) { return row.day === phase.start; });
+      if (phaseIndex < 0) return;
+      var phaseX = x(phaseIndex);
+      svg.appendChild(svgNode("line", {
+        x1: phaseX, y1: margin.top, x2: phaseX, y2: margin.top + innerHeight,
+        "class": "phase-line", "stroke-dasharray": "5 5"
+      }));
+      svg.appendChild(svgNode("text", {
+        x: phaseX + 4, y: margin.top + 12, "class": "axis-label"
+      }, phase.label));
     });
 
     var commitPoints = rows.map(function (row, index) {
@@ -138,6 +148,12 @@
       }));
       svg.appendChild(svgNode("text", { x: offset + 30, y: 19, "class": "chart-label" }, item[1]));
     });
+    document.getElementById("daily-table").innerHTML =
+      '<table><thead><tr><th>Dátum</th><th>Lezárt issue</th><th>Integration commit</th></tr></thead><tbody>' +
+      rows.map(function (row) {
+        return "<tr><td>" + escapeHtml(row.day) + "</td><td>" + fmtInt(row.issues_completed) +
+          "</td><td>" + fmtInt(row.commits) + "</td></tr>";
+      }).join("") + "</tbody></table>";
   }
 
   function renderBarMultiple(containerId, title, unit, rows, valueKey, colorClass) {

@@ -467,7 +467,28 @@ def build_manifest(lake: Path) -> dict[str, Any]:
                 ).isoformat(),
             }
         )
-    return {"schema_version": 1, "files": rows}
+    dataset_specs = {
+        "normalized/usage_events.csv": ("usage SQLite snapshot", "usage-event/v1"),
+        "normalized/git_commits.csv": ("Git integration refs", "git-commit/v1"),
+        "normalized/gate_runs.csv": ("structured validation results", "gate-run/v1"),
+        "raw/linear/issues.json": ("authenticated Linear export", "linear-issue/v1"),
+    }
+    datasets = []
+    by_path = {row["path"]: row for row in rows}
+    for relative, (source, schema) in dataset_specs.items():
+        path = lake / relative
+        if not path.exists():
+            continue
+        records = len(read_csv(path)) if path.suffix == ".csv" else len(read_json(path).get("issues", []))
+        datasets.append({
+            "path": relative,
+            "source_identity": source,
+            "extracted_at": iso_now(),
+            "dataset_schema": schema,
+            "records": records,
+            "sha256": by_path[relative]["sha256"],
+        })
+    return {"schema_version": 2, "files": rows, "datasets": datasets}
 
 
 def phase_for(day: str | None, phases: list[dict[str, Any]]) -> str | None:
@@ -559,6 +580,12 @@ def aggregate_daily(
         days[day]["gate_runs"] += 1
         overall = (gate.get("overall") or "").lower()
         days[day]["gate_passes"] += int(overall in {"pass", "passed", "success", "ok"})
+    if days:
+        current = date.fromisoformat(min(days))
+        finish = date.fromisoformat(max(days))
+        while current <= finish:
+            days[current.isoformat()]
+            current = date.fromordinal(current.toordinal() + 1)
     return [{"day": key, **days[key]} for key in sorted(days)]
 
 
@@ -685,6 +712,7 @@ def summarize_phases(
                 "issues_per_active_day": round(len(completed) / active_days, 2)
                 if active_days
                 else None,
+                "issues_per_calendar_day": round(len(completed) / days, 2),
                 "review_proxy_completed": sum(
                     bool(REVIEW_RE.search(issue.get("title") or ""))
                     for issue in completed
@@ -841,8 +869,8 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     cycle_delta = change(
         baseline.get("cycle_median_hours"), governed.get("cycle_median_hours")
     )
-    throughput_delta = change(
-        baseline.get("issues_per_active_day"), governed.get("issues_per_active_day")
+    closure_delta = change(
+        baseline.get("issues_per_calendar_day"), governed.get("issues_per_calendar_day")
     )
     review_delta = change(
         baseline.get("review_proxy_share"), governed.get("review_proxy_share")
@@ -874,15 +902,15 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
         },
         {
             "id": "H2",
-            "title": "A nagyobb throughput nem pusztán több churnből ered.",
-            "verdict": "vegyes",
+            "title": "A nagyobb lezárási ráta nem pusztán több churnből ered.",
+            "verdict": "nem mérhető",
             "support": (
-                f"Az aktív napra jutó lezárt issue változása {throughput_delta:+.1f}%; "
+                f"A naptári napra jutó adminisztratív lezárás {closure_delta:+.1f}%-kal változott; "
                 f"közben az egy lezárásra jutó churn {churn_per_issue_delta:+.1f}%."
-                if throughput_delta is not None and churn_per_issue_delta is not None
-                else "A throughput mérhető, de az összehasonlítás nem teljes."
+                if closure_delta is not None and churn_per_issue_delta is not None
+                else "A lezárási ráta és a churn összehasonlítása nem teljes."
             ),
-            "counter": "Issue-méret és elfogadott üzleti érték nincs közvetlenül pontozva; a fájl- és sorszám csak terhelési proxy.",
+            "counter": "A lezárási burst adminisztratív lehet; issue-méret és elfogadott üzleti érték nincs pontozva, ezért throughput nem állapítható meg.",
             "sample": f"{governed['commits']} integration-ref commit a kontrollált fázisban",
             "next_test": "Issue-nként előre rögzített complexity és outcome score, majd churn-normalizált throughput.",
         },
@@ -911,10 +939,15 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
         {
             "id": "H5",
             "title": "A tokenhatékonyság javul az issue-hoz kötött, verifikált munkában.",
-            "verdict": "nem támogatott",
+            "verdict": (
+                "támogatott jel" if token_delta is not None and token_delta <= -10
+                else "nem támogatott" if token_delta is not None and token_delta >= 10
+                else "vegyes" if token_delta is not None
+                else "nem mérhető"
+            ),
             "support": (
                 f"A worker-token/kapcsolt issue {token_delta:+.1f}%-kal változott az instrumentált "
-                "és a kontrollált fázis között; a mért irány romlás, nem javulás."
+                "és a kontrollált fázis között; negatív érték javulást, pozitív romlást jelent."
                 if token_delta is not None
                 else "Az issue-hoz kötött worker-eseményekből nem képezhető stabil kétfázisú arány."
             ),
@@ -1151,6 +1184,25 @@ def validate(config: dict[str, Any]) -> None:
         len(issues_payload.get("issues", [])) == issues_payload.get("row_count"),
         "Linear snapshot row_count mismatch",
     )
+    raw_db = lake / "raw" / "usage" / "usage.sqlite"
+    with sqlite3.connect(raw_db) as connection:
+        raw_usage_count = connection.execute("SELECT COUNT(*) FROM usage_events").fetchone()[0]
+    check(raw_usage_count == len(usage), "Raw SQLite and normalized usage counts differ")
+    normalized_tokens = sum(
+        int(numeric(row, key))
+        for row in usage
+        for key in ("input_tokens", "output_tokens", "cache_read_tokens", "cache_creation_tokens")
+    )
+    check(normalized_tokens == kpis["total_tokens"], "Token components do not reconcile")
+    check(
+        sum(int(phase["issues_completed"]) for phase in report["phases"])
+        == kpis["completed_issues"],
+        "Phase completion subtotals do not reconcile",
+    )
+    check(
+        sum(int(phase["gate_runs"]) for phase in report["phases"]) == len(gates),
+        "Phase gate subtotals do not reconcile",
+    )
 
     required_site_files = {"index.html", "styles.css", "app.js", "data.js", "manifest.json"}
     check(site.is_dir(), "Portable site directory is missing")
@@ -1166,7 +1218,7 @@ def validate(config: dict[str, Any]) -> None:
     result = {
         "validated_at": iso_now(),
         "status": "pass" if not errors else "fail",
-        "checks": 15,
+        "checks": 19,
         "errors": errors,
         "reconciled": {
             "linear_issues": len(issues),
