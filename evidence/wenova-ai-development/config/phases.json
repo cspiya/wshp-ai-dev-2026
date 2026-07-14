@@ -1,0 +1,30 @@
+[
+  {
+    "id": "baseline",
+    "label": "Korai, széttartó fejlesztés",
+    "start": "2026-06-09",
+    "end": "2026-06-22",
+    "evidence": "Linear activity predates the instrumented squad; repositories are developed without one shared measured control loop."
+  },
+  {
+    "id": "instrumented",
+    "label": "Mért agent-orchestration",
+    "start": "2026-06-23",
+    "end": "2026-07-07",
+    "evidence": "The usage database and squad telemetry begin recording model, token, duration and error events."
+  },
+  {
+    "id": "validation",
+    "label": "Specifikált validációs workload",
+    "start": "2026-07-08",
+    "end": "2026-07-10",
+    "evidence": "The workshop repository starts as a validation workload with issue-linked delivery."
+  },
+  {
+    "id": "governed",
+    "label": "RUG + standard + worktree kontroll",
+    "start": "2026-07-11",
+    "end": "2026-07-14",
+    "evidence": "Git history adds engineering standards (10:41), PARALLEL-WORK (21:39), root spec-first AGENTS (22:06), and material standards (22:07) on 2026-07-11."
+  }
+]

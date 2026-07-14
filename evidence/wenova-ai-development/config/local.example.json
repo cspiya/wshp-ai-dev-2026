@@ -1,0 +1,11 @@
+{
+  "lake_root": "C:\\Zulu\\git_we\\.evidence\\wenova-ai-development",
+  "state_root": "C:\\Zulu\\git_we\\wenova-squad\\.state",
+  "repositories": [
+    { "name": "wenova-squad", "path": "C:\\Zulu\\git_we\\wenova-squad" },
+    { "name": "wenova-site", "path": "C:\\Zulu\\git_we\\wenova-site" },
+    { "name": "wenova-os", "path": "C:\\Zulu\\git_we\\wenova-os" },
+    { "name": "wenova-edu-site", "path": "C:\\Zulu\\git_we\\wenova-edu-site" },
+    { "name": "wshp-ai-dev-2026", "path": "C:\\Zulu\\git_we\\wshp-ai-dev-2026" }
+  ]
+}
