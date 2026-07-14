@@ -19,10 +19,10 @@
     "published": "2024-10-22",
     "method": "Felmérésalapú statisztikai modell",
     "sample": "Iparági felmérés; a pontos elemzési minta modellenként eltér",
-    "finding": "Az AI-használat 25%-os növekedése 1,5%-kal alacsonyabb szállítási throughputtal és 7,2%-kal gyengébb stabilitással járt együtt; a DORA lehetséges mechanizmusként a nagyobb batchméretet jelölte meg.",
+    "finding": "Az AI-használat 25%-os növekedése 1,5%-kal alacsonyabb szállítási teljesítménnyel és 7,2%-kal gyengébb stabilitással járt együtt; a DORA lehetséges okként a nagyobb munkacsomagokat jelölte meg.",
     "quality": "B",
     "comparability": "közepes",
-    "limitation": "Megfigyelési összefüggés, nem kísérlet; a 2025-ös DORA-riport később változó kapcsolatot írt le a throughputtal és az instabilitással.",
+    "limitation": "Megfigyelési összefüggés, nem kísérlet; a 2025-ös DORA-riport később változó kapcsolatot írt le a szállítási teljesítménnyel és az instabilitással.",
     "url": "https://dora.dev/research/ai/gen-ai-report/dora-impact-of-generative-ai-in-software-development.pdf"
   },
   {
@@ -30,12 +30,12 @@
     "title": "Experienced open-source developer productivity RCT",
     "publisher": "METR",
     "published": "2025-07-10",
-    "method": "Randomizált kontrollált vizsgálat valós repository-issue-kon",
+    "method": "Randomizált kontrollált vizsgálat valós repók fejlesztési feladatain",
     "sample": "16 tapasztalt fejlesztő, 246 feladat, feladatonként körülbelül 2 óra",
     "finding": "Az AI-val végezhető feladatok 19%-kal tovább tartottak; a fejlesztők előre 24%-os, utólag pedig még mindig 20%-os gyorsulást érzékeltek.",
     "quality": "A",
     "comparability": "közepes",
-    "limitation": "2025 eleji eszközök, nagyon tapasztalt maintainer-ek és érett nyílt forrású repository-k; nem agent-ready többágenses működési rendszer.",
+    "limitation": "A vizsgálat 2025 eleji eszközöket, nagyon tapasztalt karbantartókat és érett nyílt forrású repókat vizsgált; nem több ágensre épülő fejlesztési működést.",
     "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
   },
   {
@@ -45,10 +45,10 @@
     "published": "2026-02-24",
     "method": "Utánkövetéses randomizált vizsgálat súlyos szelekciós és időmérési korlátokkal",
     "sample": "10 visszatérő és 47 újonnan bevont fejlesztő",
-    "finding": "A nyers becslések körülbelül 18%-os, illetve 4%-os gyorsulást jeleztek a visszatérő és az új kohorszban, de mindkét konfidenciaintervallum metszette a nullát, ezért a METR megbízhatatlannak ítélte a jelet.",
+    "finding": "A nyers becslések körülbelül 18%-os, illetve 4%-os gyorsulást jeleztek a visszatérő és az új csoportban, de mindkét konfidenciaintervallum metszette a nullát, ezért a METR megbízhatatlannak ítélte az eredményt.",
     "quality": "C",
     "comparability": "alacsony",
-    "limitation": "A részvétel elmaradása, a feladatszelekció és a párhuzamos ágensek időelszámolása torzítja a becslést; csak arra evidencia, hogy az eszközhatás gyorsan változik.",
+    "limitation": "A részvétel elmaradása, a feladatok kiválasztása és a párhuzamos ágensek időelszámolása torzítja a becslést; legfeljebb arra ad bizonyítékot, hogy az eszközök hatása gyorsan változik.",
     "url": "https://metr.org/blog/2026-02-24-uplift-update/"
   },
   {
@@ -61,7 +61,7 @@
     "finding": "Az AI-hozzáférés 26,08%-kal növelte a lezárt feladatok számát (standard hiba: 10,3%); a hatás a kevésbé tapasztalt fejlesztőknél nagyobb volt.",
     "quality": "A",
     "comparability": "közepes",
-    "limitation": "A kódkiegészítő asszisztens mint kezelés és a vállalati feladatdefiníció eltér az autonóm issue-to-evidence szállítástól.",
+    "limitation": "A vizsgálatban használt kódkiegészítő asszisztens és a vállalati feladatdefiníció eltér attól, amikor egy ágens az issue teljes folyamatát végigviszi és bizonyítékokkal zárja le.",
     "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4945566"
   },
   {
@@ -74,7 +74,7 @@
     "finding": "A Copilot-csoport 55%-kal gyorsabban teljesített egy JavaScript HTTP-szerver feladatot; a befejezési arány 78% volt a 70%-kal szemben.",
     "quality": "A",
     "comparability": "alacsony",
-    "limitation": "Egyetlen, automatizáltan pontozott greenfield feladat; nem méri a production integrációt, a review-t vagy a hosszú életű repository-munkát.",
+    "limitation": "Egyetlen, automatizáltan pontozott, újonnan indított feladat; nem méri az éles környezetbe integrálást, a review-t vagy a tartós repómunkát.",
     "url": "https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/"
   },
   {
@@ -82,12 +82,12 @@
     "title": "GitHub Copilot code-quality experiment",
     "publisher": "GitHub Research",
     "published": "2024-11-18",
-    "method": "Randomizált fejlesztési feladat, majd vak szakértői review",
+    "method": "Randomizált fejlesztési feladat, majd vak szakértői értékelés",
     "sample": "202 érvényes megoldás és 1 293 review",
-    "finding": "A Copilot-hozzáférés 53,2%-kal növelte annak valószínűségét, hogy minden teszt sikeres legyen; a vak értékelés 2,47–4,16%-kal, az elfogadás esélye 5%-kal javult.",
+    "finding": "A Copilot-hozzáférés 53,2%-kal növelte annak valószínűségét, hogy minden teszt sikeres legyen; a vak szakértői értékelések eredménye 2,47–4,16%-kal, az elfogadás esélye pedig 5%-kal javult.",
     "quality": "A",
     "comparability": "alacsony",
-    "limitation": "Gyártó által végzett, behatárolt Python-feladat; a valószínűségi és értékelési változások nem olvashatók production hibacsökkenésként.",
+    "limitation": "A gyártó által végzett, behatárolt Python-feladat; a valószínűségi és értékelési változások nem tekinthetők az éles környezetben jelentkező hibák csökkenésének.",
     "url": "https://github.blog/news-insights/research/does-github-copilot-improve-code-quality-heres-what-the-data-says/"
   },
   {
@@ -95,12 +95,12 @@
     "title": "Task-stratified AI-agent pull-request acceptance",
     "publisher": "Pinna et al. / arXiv",
     "published": "2026-02-09",
-    "method": "Ágensek által készített GitHub pull requestek megfigyelési elemzése",
+    "method": "Ágensek által készített GitHub pull requestek elfogadási arányának megfigyelési elemzése",
     "sample": "7 156 pull request öt kódoló ágenstől",
-    "finding": "A feladattípus több eltérést magyarázott, mint a tipikus ágenskülönbség: a dokumentációs PR-ek elfogadása 82,1%, az új feature-öké 66,1% volt.",
+    "finding": "A feladattípus több eltérést magyarázott, mint az ágensek közötti tipikus különbség: a dokumentációs PR-ek elfogadása 82,1%, az új funkcióké 66,1% volt.",
     "quality": "B",
     "comparability": "közepes",
-    "limitation": "A nyilvános GitHub-szelekció és elfogadás nem azonos a belső értékkel, stabilitással vagy költséggel; a taskmix jelentős zavaró tényező.",
+    "limitation": "A nyilvános GitHub-adatmintában látott kiválasztási és elfogadási minták nem azonosak a belső értékkel, stabilitással vagy költséggel; a feladattípusok összetétele jelentős zavaró tényező.",
     "url": "https://arxiv.org/abs/2602.08915"
   },
   {
@@ -109,11 +109,11 @@
     "publisher": "Vella and Blincoe / arXiv",
     "published": "2026-05-22",
     "method": "Két kérdőív hat hónap különbséggel",
-    "sample": "158 kezdeti válaszadó; 95 párosítható longitudinális résztvevő",
-    "finding": "Mindkét hullámban 84% érzékelt produktivitásjavulást, miközben a legalább egy dimenzióban romló fejlesztői élmény aránya 14%-ról 27%-ra nőtt; a munka az alkotástól a verifikáció felé tolódott.",
+    "sample": "158 kezdeti válaszadó; közülük 95-en mindkét időpontban részt vettek",
+    "finding": "Mindkét mérésben 84% érzékelt produktivitásjavulást, miközben a legalább egy dimenzióban romló fejlesztői élmény aránya 14%-ról 27%-ra nőtt; a munka az alkotástól az ellenőrzés felé tolódott.",
     "quality": "B",
     "comparability": "közepes",
-    "limitation": "Önbevallásos és lemorzsolódással terhelt; a felügyeleti munka hipotéziseihez hasznos, oksági throughput-becsléshez nem.",
+    "limitation": "Önbevallásos és lemorzsolódással terhelt; a felügyeleti munkáról szóló feltételezésekhez hasznos, oksági teljesítménybecsléshez nem.",
     "url": "https://arxiv.org/abs/2605.23135"
   }
 ]

@@ -149,7 +149,7 @@
       svg.appendChild(svgNode("text", { x: offset + 30, y: 19, "class": "chart-label" }, item[1]));
     });
     document.getElementById("daily-table").innerHTML =
-      '<table><thead><tr><th>Dátum</th><th>Lezárt issue</th><th>Integration commit</th></tr></thead><tbody>' +
+      '<table><thead><tr><th>Dátum</th><th>Lezárt issue</th><th>Integrált commit</th></tr></thead><tbody>' +
       rows.map(function (row) {
         return "<tr><td>" + escapeHtml(row.day) + "</td><td>" + fmtInt(row.issues_completed) +
           "</td><td>" + fmtInt(row.commits) + "</td></tr>";

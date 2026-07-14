@@ -4,14 +4,14 @@
     "label": "Korai, széttartó működés",
     "start": "2026-06-09",
     "end": "2026-06-22",
-    "evidence": "A Linear-aktivitás korábban kezdődik, mint a squad mérése; a repository-k még közös, mérhető ellenőrzési ciklus nélkül fejlődnek."
+    "evidence": "A Linear-aktivitás korábban kezdődik, mint a csapat saját mérései; a repository-k még közös, mérhető ellenőrzési ciklus nélkül fejlődnek."
   },
   {
     "id": "instrumented",
     "label": "Mért ágensmunka",
     "start": "2026-06-23",
     "end": "2026-07-07",
-    "evidence": "A használati adatbázis és a squad telemetriája ekkortól rögzíti a modelleket, tokeneket, futási időket és hibákat."
+    "evidence": "A használati adatbázis és a csapat telemetriája ekkortól rögzíti a modelleket, tokeneket, futási időket és hibákat."
   },
   {
     "id": "validation",

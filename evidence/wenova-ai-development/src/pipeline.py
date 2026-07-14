@@ -900,8 +900,8 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "title": "A szabályozottabb működés mellett rövidülhet és kiszámíthatóbbá válhat az átfutási idő.",
             "verdict": "vegyes" if cycle_delta is not None and p80_delta is not None else "nem mérhető",
             "support": (
-                f"A medián ciklusidő változása a korai és a kontrollált fázis között "
-                f"{cycle_delta:+.1f}%, a p80 változása {p80_delta:+.1f}%." if cycle_delta is not None and p80_delta is not None else
+                f"A medián ciklusidő változása a korai és a szabályozott fázis között "
+                f"{cycle_delta:+.1f}%, a 80. percentilisé {p80_delta:+.1f}%." if cycle_delta is not None and p80_delta is not None else
                 "A két fázis ciklusideje nem hasonlítható össze teljesen."
             ),
             "counter": "A fázisokban eltérnek a feladattípusok, a repository-k érettsége és az adatok lefedettsége, ezért oksági kapcsolat nem állapítható meg.",
@@ -924,12 +924,12 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
         },
         {
             "id": "H3",
-            "title": "A review korábban történik, ezért csökkenhet a későbbi javítások száma.",
+            "title": "Ha a review korábbra kerül, csökkenhet a későbbi javítások száma.",
             "verdict": "vegyes" if review_delta is not None else "nem mérhető",
             "support": (
                 f"A review-ra vagy visszajavításra utaló címek aránya {review_delta:+.1f}%-kal változott."
                 if review_delta is not None
-                else "A review-ra utaló adatok csak a későbbi fázisban elég sűrűek."
+                else "Csak a későbbi fázisban áll rendelkezésre elegendő review-ra utaló adat."
             ),
             "counter": "A címekből képzett mutató azt is jelezheti, hogy a review-k dokumentálása javult. A kiadás utáni hibák és újranyitások története nem teljes.",
             "sample": f"{baseline['review_proxy_completed']} és {governed['review_proxy_completed']} review-ra utaló lezárás",
@@ -937,7 +937,7 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
         },
         {
             "id": "H4",
-            "title": "A párhuzamos munka csak korlátozott feladatszám mellett növeli az elkészült munkát.",
+            "title": "A párhuzamos munka eredményessége függhet a folyamatban lévő feladatok számától.",
             "verdict": "nem mérhető",
             "support": f"A szabályozott fázisban naponta átlagosan {governed['wip_mean']:.1f}, legfeljebb {governed['wip_peak']} issue volt folyamatban.",
             "counter": "Nincs megbízható korábbi viszonyítási alap, és a worktree-foglalások kezdete és vége sem áll rendelkezésre egységes adatsorként.",
@@ -954,8 +954,8 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 else "nem mérhető"
             ),
             "support": (
-                f"A kapcsolt issue-nként felhasznált worker-token {token_delta:+.1f}%-kal változott a mért "
-                "és a szabályozott fázis között. A negatív érték javulást, a pozitív romlást jelent."
+                f"Az issue-hoz kapcsolt ágensfuttatások tokenfelhasználása issue-nként {token_delta:+.1f}%-kal változott a mért "
+                "és a szabályozott fázis között. A negatív érték a hipotézis szempontjából kedvező, a pozitív kedvezőtlen irányt jelez."
                 if token_delta is not None
                 else "Az issue-hoz kötött worker-eseményekből nem számítható megbízható összehasonlítás."
             ),
@@ -986,7 +986,7 @@ def source_inventory(
         {
             "source": "Használati adatok",
             "records": len(usage),
-            "coverage": f"{min(row['timestamp'] for row in usage)} – {max(row['timestamp'] for row in usage)}" if usage else "none",
+            "coverage": f"{min(row['timestamp'] for row in usage)} – {max(row['timestamp'] for row in usage)}" if usage else "nincs adat",
             "join_key": "issue_id, ha az esemény forrása worker",
             "missingness": f"{sum(not row.get('issue_id') for row in usage)} eseményhez nincs issue_id; vannak naptári hézagok",
             "privacy": "A modell, persona, költség és issue-kapcsolat belső adat.",
@@ -1002,7 +1002,7 @@ def source_inventory(
         {
             "source": "Strukturált ellenőrzések",
             "records": len(gates),
-            "coverage": f"{min((row.get('timestamp') or '') for row in gates)} – {max((row.get('timestamp') or '') for row in gates)}" if gates else "none",
+            "coverage": f"{min((row.get('timestamp') or '') for row in gates)} – {max((row.get('timestamp') or '') for row in gates)}" if gates else "nincs adat",
             "join_key": "issue_id / branch, ahol elérhető",
             "missingness": f"{sum(not row.get('issue_id') for row in gates)} gate futásnál hiányzik az issue_id",
             "privacy": "A nyers branch-, job- és parancsadat belső marad.",
@@ -1010,9 +1010,9 @@ def source_inventory(
         {
             "source": "cloc pillanatfelvételek",
             "records": len(repositories),
-            "coverage": "Aktuális, tiszta working-tree pillanatfelvétel repository-nként",
+            "coverage": "Aktuális pillanatfelvétel repónként, módosítatlan munkafából",
             "join_key": "repository-név",
-            "missingness": "Csak aktuális állapot; a generált és untracked fájlok kimaradnak.",
+            "missingness": "Csak az aktuális állapotot mutatja; a generált és a Git által nem követett fájlok kimaradnak.",
             "privacy": "Csak nyelv-, fájl- és soraggregátum kerül a riportba.",
         },
     ]
