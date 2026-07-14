@@ -1,30 +1,30 @@
 [
   {
     "id": "baseline",
-    "label": "Korai, széttartó fejlesztés",
+    "label": "Korai, széttartó működés",
     "start": "2026-06-09",
     "end": "2026-06-22",
-    "evidence": "Linear activity predates the instrumented squad; repositories are developed without one shared measured control loop."
+    "evidence": "A Linear-aktivitás korábban kezdődik, mint a squad mérése; a repository-k még közös, mérhető ellenőrzési ciklus nélkül fejlődnek."
   },
   {
     "id": "instrumented",
-    "label": "Mért agent-orchestration",
+    "label": "Mért ágensmunka",
     "start": "2026-06-23",
     "end": "2026-07-07",
-    "evidence": "The usage database and squad telemetry begin recording model, token, duration and error events."
+    "evidence": "A használati adatbázis és a squad telemetriája ekkortól rögzíti a modelleket, tokeneket, futási időket és hibákat."
   },
   {
     "id": "validation",
-    "label": "Specifikált validációs workload",
+    "label": "Előre meghatározott ellenőrzési feladatok",
     "start": "2026-07-08",
     "end": "2026-07-10",
-    "evidence": "The workshop repository starts as a validation workload with issue-linked delivery."
+    "evidence": "A workshop repository előre meghatározott, issue-khoz kapcsolt ellenőrzési feladatként jelenik meg."
   },
   {
     "id": "governed",
-    "label": "RUG + standard + worktree kontroll",
+    "label": "RUG, közös standardok és worktree-k",
     "start": "2026-07-11",
     "end": "2026-07-14",
-    "evidence": "Git history adds engineering standards (10:41), PARALLEL-WORK (21:39), root spec-first AGENTS (22:06), and material standards (22:07) on 2026-07-11."
+    "evidence": "A Git-történet szerint 2026. július 11-én megjelennek a fejlesztési standardok (10:41), a PARALLEL-WORK (21:39), a gyökérszintű spec-first AGENTS (22:06) és az anyagkészítési standardok (22:07)."
   }
 ]

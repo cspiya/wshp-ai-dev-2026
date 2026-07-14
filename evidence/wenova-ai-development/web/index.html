@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark light">
-    <meta name="description" content="A Wenova AI-támogatott fejlesztési folyamatának mérési evidenciái.">
-    <title>Wenova Engineering Evidence</title>
+    <meta name="description" content="A Wenova AI-támogatott fejlesztési folyamatának mérőszámai és bizonyítékai.">
+    <title>Wenova fejlesztési mérések</title>
     <link rel="stylesheet" href="./styles.css">
     <script src="./data.js" defer></script>
     <script src="./app.js" defer></script>
@@ -17,7 +17,7 @@
         <span class="brand-star" aria-hidden="true">✦</span>
         <span>WENOVA</span>
       </div>
-      <span class="edition">ENGINEERING EVIDENCE · 2026.07</span>
+      <span class="edition">FEJLESZTÉSI MÉRÉSEK · 2026.07</span>
     </header>
 
     <main id="content">
@@ -25,9 +25,9 @@
         <p class="eyebrow">Megfigyelés, nem marketingállítás</p>
         <h1 id="hero-title">Mérhetőbb lett-e az AI-támogatott fejlesztésünk?</h1>
         <p class="hero-lead">
-          Öt repository, Linear, token- és gate-telemetria alapján azt kerestük,
-          hogy a spec-first, RUG, standardok és worktree-k bevezetése együtt járt-e
-          gyorsabb, stabilabb és hatékonyabb szállítással.
+          Öt repository, a Linear, valamint a token- és ellenőrzési adatok alapján
+          azt vizsgáltuk, hogy a spec-first működés, a RUG, a közös standardok és
+          a worktree-k bevezetésével együtt gyorsult-e és kiszámíthatóbbá vált-e a fejlesztés.
         </p>
         <div class="hero-answer" id="hero-answer" aria-live="polite"></div>
         <div class="kpi-strip" id="kpis" aria-label="A mérés fő számai"></div>
@@ -36,7 +36,7 @@
       <section class="section" aria-labelledby="coverage-title">
         <div class="section-heading">
           <p class="eyebrow">01 · Lefedettség</p>
-          <h2 id="coverage-title">Nem minden forrás ugyanazt az időszakot látja</h2>
+          <h2 id="coverage-title">A források eltérő időszakokat fednek le</h2>
           <p>
             A számok csak a saját mérési ablakukban értelmezhetők. A tokenadat
             szakaszos, a Git történeti, a cloc pedig aktuális pillanatfelvétel.
@@ -48,16 +48,16 @@
       <section class="section section-emphasis" aria-labelledby="timeline-title">
         <div class="section-heading">
           <p class="eyebrow">02 · Fordulópontok</p>
-          <h2 id="timeline-title">A kontroll bevezetése után változik a munka alakja</h2>
+          <h2 id="timeline-title">A szabályozottabb működéssel együtt megváltozott a fejlesztési ritmus</h2>
           <p>
-            A fázishatárok Git- és telemetria-evidenciák. Nem kísérleti
-            kezelések: a feladatmix és a repository-érettség is változik.
+            A fázishatárokat Git- és telemetriaadatok alapján jelöltük ki.
+            Ezek nem kísérleti csoportok: közben a feladattípusok és a repository-k érettsége is változott.
           </p>
         </div>
         <div class="chart-wrap">
           <svg id="daily-chart" class="chart" role="img" aria-labelledby="daily-title daily-desc"></svg>
           <div class="sr-only">
-            <span id="daily-title">Napi lezárt issue-k és integration commitok</span>
+            <span id="daily-title">Napi lezárt issue-k és integrált commitok</span>
             <span id="daily-desc">Idősor, amely a négy fejlesztési fázis mellett mutatja a napi aktivitást.</span>
           </div>
         </div>
@@ -69,14 +69,14 @@
         <div>
           <div class="section-heading compact">
             <p class="eyebrow">03 · Átfutás</p>
-            <h2 id="cycle-title">Az átlag elrejtené a hosszú farkat</h2>
-            <p>A ciklusidőt eloszlásként mutatjuk, csak startedAt és completedAt mezővel.</p>
+            <h2 id="cycle-title">A medián nem mutatja meg a lassú eseteket</h2>
+            <p>A diagram csak azokat a lezárt issue-kat mutatja, amelyeknél a kezdés és a befejezés időpontja is ismert.</p>
           </div>
           <div class="chart-wrap">
             <svg id="cycle-chart" class="chart chart-tall" role="img" aria-labelledby="cycle-svg-title cycle-svg-desc"></svg>
             <div class="sr-only">
               <span id="cycle-svg-title">Lezárt issue-k ciklusidő-eloszlása</span>
-              <span id="cycle-svg-desc">Vízszintes oszlopdiagram a ciklusidő-tartományok darabszámával.</span>
+              <span id="cycle-svg-desc">Vízszintes oszlopdiagram az egyes ciklusidő-tartományokba eső issue-k számával.</span>
             </div>
           </div>
         </div>
@@ -84,9 +84,10 @@
           <p class="eyebrow">Olvasási szabály</p>
           <h3 id="reading-title">A gyorsabb nem automatikusan jobb</h3>
           <p>
-            Egy rövid ciklus lehet kis feladat, bontott spec vagy felületes munka is.
-            Ezért együtt olvassuk a throughputot, review-proxyt, gate-eket, churnt
-            és tokenfelhasználást.
+            A rövid ciklusidő önmagában nem bizonyít jobb teljesítményt: származhat
+            kisebb feladatból vagy más feladatbontásból is. Ezért a lezárási ütemet,
+            a review-ra utaló jeleket, az ellenőrzések eredményét, a kódváltozást és
+            a tokenfelhasználást együtt értelmezzük.
           </p>
           <div id="quality-notes"></div>
         </aside>
@@ -95,10 +96,10 @@
       <section class="section" aria-labelledby="repos-title">
         <div class="section-heading">
           <p class="eyebrow">04 · Repository-k</p>
-          <h2 id="repos-title">A kódsor helyett a terhelés mintázata számít</h2>
+          <h2 id="repos-title">A kódszám önmagában nem teljesítménymutató</h2>
           <p>
-            Külön skálán látszik az aktuális kódméret, az integration commit és
-            a történeti churn. Ezek nem egyenértékű produktivitási pontok.
+            Külön skálán mutatjuk a jelenlegi kódméretet, az integrált commitok
+            számát és a történeti kódváltozást. Egyik sem azonos önmagában a produktivitással.
           </p>
         </div>
         <div id="repo-multiples" class="repo-multiples"></div>
@@ -107,9 +108,9 @@
       <section class="section section-emphasis" aria-labelledby="hypothesis-title">
         <div class="section-heading">
           <p class="eyebrow">05 · Hipotézisek</p>
-          <h2 id="hypothesis-title">A számok nem igazolták automatikusan a történetünket</h2>
+          <h2 id="hypothesis-title">A számok nem minden feltételezést támasztanak alá</h2>
           <p>
-            Minden állítás mellett ott van az ellenbizonyíték és a következő
+            Minden állítás mellett bemutatjuk azt is, mi szól ellene, és mi legyen a következő
             mérés. A „nem mérhető” is eredmény.
           </p>
         </div>
@@ -119,10 +120,10 @@
       <section class="section" aria-labelledby="research-title">
         <div class="section-heading">
           <p class="eyebrow">06 · Külső kutatás</p>
-          <h2 id="research-title">A nagyvilágban sincs egyetlen AI-produktivitási szám</h2>
+          <h2 id="research-title">A kutatások sem adnak egyetlen általános AI-produktivitási értéket</h2>
           <p>
-            A kontrollált kis feladatok, a valós repository-munka és a szervezeti
-            survey-k eltérő kérdést válaszolnak meg. A módszer erősségét és a
+            A kontrollált, rövid feladatok, a valós repository-munka és a szervezeti
+            felmérések más-más kérdésre válaszolnak. A módszer megbízhatóságát és a
             Wenovával való összevethetőséget külön jelöljük.
           </p>
         </div>
@@ -133,7 +134,7 @@
                 <th scope="col">Forrás</th>
                 <th scope="col">Minta és módszer</th>
                 <th scope="col">Mit talált?</th>
-                <th scope="col">Erő</th>
+                <th scope="col">Bizonyítóerő</th>
                 <th scope="col">Összevethetőség</th>
               </tr>
             </thead>
@@ -144,7 +145,7 @@
 
       <section class="section method" aria-labelledby="method-title">
         <div class="section-heading">
-          <p class="eyebrow">07 · Audit</p>
+          <p class="eyebrow">07 · Módszertan</p>
           <h2 id="method-title">Mi az, amit ebből még nem szabad kijelenteni?</h2>
         </div>
         <div class="method-grid">
@@ -153,7 +154,7 @@
             <ul id="data-quality"></ul>
           </div>
           <div>
-            <h3>Mérési szerződés</h3>
+            <h3>A mérés szabályai</h3>
             <ul id="method-notes"></ul>
           </div>
         </div>
@@ -163,7 +164,7 @@
 
     <footer>
       <div class="brand footer-brand"><span aria-hidden="true">✦</span> WENOVA</div>
-      <p>edu.wenova.io · © 2026 Wenova™ · belső mérési evidence</p>
+      <p>edu.wenova.io · © 2026 Wenova™ · belső mérési jelentés</p>
     </footer>
   </body>
 </html>

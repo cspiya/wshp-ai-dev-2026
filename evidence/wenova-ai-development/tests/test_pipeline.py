@@ -87,6 +87,9 @@ class StaticSiteContractTests(unittest.TestCase):
             'id="daily-table"',
         ):
             self.assertIn(target, html)
+        self.assertNotIn("hosszú farok", html)
+        self.assertNotIn("produktivitási pont", html)
+        self.assertNotIn("belső mérési evidence", html)
 
 
 if __name__ == "__main__":

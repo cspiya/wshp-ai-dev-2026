@@ -897,56 +897,56 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [
         {
             "id": "H1",
-            "title": "A kontrollált működés rövidebb vagy kiszámíthatóbb átfutással jár.",
+            "title": "A szabályozottabb működés mellett rövidülhet és kiszámíthatóbbá válhat az átfutási idő.",
             "verdict": "vegyes" if cycle_delta is not None and p80_delta is not None else "nem mérhető",
             "support": (
                 f"A medián ciklusidő változása a korai és a kontrollált fázis között "
                 f"{cycle_delta:+.1f}%, a p80 változása {p80_delta:+.1f}%." if cycle_delta is not None and p80_delta is not None else
                 "A két fázis ciklusideje nem hasonlítható össze teljesen."
             ),
-            "counter": "A fázisok feladatmixet, repository-érettséget és mérési lefedettséget is váltanak; okság nem állapítható meg.",
-            "sample": f"n={baseline['cycle_n']} és n={governed['cycle_n']} lezárt, startedAt mezővel rendelkező issue",
-            "next_test": "Azonos feladattípuson, előre rögzített méretosztállyal ismételt 30 napos mérés.",
+            "counter": "A fázisokban eltérnek a feladattípusok, a repository-k érettsége és az adatok lefedettsége, ezért oksági kapcsolat nem állapítható meg.",
+            "sample": f"n={baseline['cycle_n']} és n={governed['cycle_n']} lezárt issue, ismert kezdési idővel",
+            "next_test": "Harmincnapos ismételt mérés azonos feladattípusokkal és előre rögzített méretkategóriákkal.",
         },
         {
             "id": "H2",
-            "title": "A nagyobb lezárási ráta nem pusztán több churnből ered.",
+            "title": "A több lezárás nem pusztán a nagyobb kódváltozás következménye.",
             "verdict": "nem mérhető",
             "support": (
-                f"A naptári napra jutó adminisztratív lezárás {closure_delta:+.1f}%-kal változott; "
-                f"közben az egy lezárásra jutó churn {churn_per_issue_delta:+.1f}%."
+                f"A naptári napra jutó lezárások száma {closure_delta:+.1f}%-kal változott; "
+                f"közben az egy lezárásra jutó kódváltozás {churn_per_issue_delta:+.1f}%."
                 if closure_delta is not None and churn_per_issue_delta is not None
-                else "A lezárási ráta és a churn összehasonlítása nem teljes."
+                else "A lezárási ütem és a kódváltozás nem hasonlítható össze teljesen."
             ),
-            "counter": "A lezárási burst adminisztratív lehet; issue-méret és elfogadott üzleti érték nincs pontozva, ezért throughput nem állapítható meg.",
-            "sample": f"{governed['commits']} integration-ref commit a kontrollált fázisban",
-            "next_test": "Issue-nként előre rögzített complexity és outcome score, majd churn-normalizált throughput.",
+            "counter": "Az issue-k utólagos, tömeges lezárása felfújhatja ezt az értéket. Az issue-k méretét és üzleti eredményét nem pontoztuk, ezért a tényleges teljesítményváltozás nem állapítható meg.",
+            "sample": f"{governed['commits']} commit az integrációs ágakon a szabályozott fázisban",
+            "next_test": "Minden issue-hoz előre rögzített bonyolultsági és eredménypontszám, majd ezekkel korrigált lezárási ütem.",
         },
         {
             "id": "H3",
-            "title": "A review előre tolódik, miközben a késői rework csökkenhet.",
+            "title": "A review korábban történik, ezért csökkenhet a későbbi javítások száma.",
             "verdict": "vegyes" if review_delta is not None else "nem mérhető",
             "support": (
-                f"A review/bounce-back címproxy részaránya {review_delta:+.1f}% változást mutatott."
+                f"A review-ra vagy visszajavításra utaló címek aránya {review_delta:+.1f}%-kal változott."
                 if review_delta is not None
-                else "A review proxy csak a későbbi fázisban elég sűrű."
+                else "A review-ra utaló adatok csak a későbbi fázisban elég sűrűek."
             ),
-            "counter": "A címproxy a láthatóság növekedését is mérheti; post-release hibakapcsolat és reopen history nem teljes.",
-            "sample": f"{baseline['review_proxy_completed']} és {governed['review_proxy_completed']} review-proxy lezárás",
-            "next_test": "Kötelező finding/reopen relation és 7/30 napos post-completion korrekciós ablak.",
+            "counter": "A címekből képzett mutató azt is jelezheti, hogy a review-k dokumentálása javult. A kiadás utáni hibák és újranyitások története nem teljes.",
+            "sample": f"{baseline['review_proxy_completed']} és {governed['review_proxy_completed']} review-ra utaló lezárás",
+            "next_test": "Kötelező kapcsolat a findingek és az újranyitások között, valamint 7 és 30 napos utánkövetés minden lezárásnál.",
         },
         {
             "id": "H4",
-            "title": "A párhuzamosság csak kontrollált WIP mellett növeli az elkészült munkát.",
+            "title": "A párhuzamos munka csak korlátozott feladatszám mellett növeli az elkészült munkát.",
             "verdict": "nem mérhető",
-            "support": f"A kontrollált fázis napi átlag WIP-je {governed['wip_mean']:.1f}, csúcsa {governed['wip_peak']}.",
-            "counter": "Nincs konzisztens, korábbi párhuzamossági baseline és a worktree-lease események nem állnak rendelkezésre strukturált sorozatként.",
+            "support": f"A szabályozott fázisban naponta átlagosan {governed['wip_mean']:.1f}, legfeljebb {governed['wip_peak']} issue volt folyamatban.",
+            "counter": "Nincs megbízható korábbi viszonyítási alap, és a worktree-foglalások kezdete és vége sem áll rendelkezésre egységes adatsorként.",
             "sample": f"{governed['calendar_days']} naptári nap",
-            "next_test": "Lease start/end események és lane-onkénti wait/active idő kötelező naplózása.",
+            "next_test": "A worktree-foglalások kezdő- és végidőpontjának, valamint sávonként a várakozási és aktív időnek a kötelező naplózása.",
         },
         {
             "id": "H5",
-            "title": "A tokenhatékonyság javul az issue-hoz kötött, verifikált munkában.",
+            "title": "Kevesebb token kell egy issue ellenőrzött lezárásához.",
             "verdict": (
                 "támogatott jel" if token_delta is not None and token_delta <= -10
                 else "nem támogatott" if token_delta is not None and token_delta >= 10
@@ -954,14 +954,14 @@ def hypothesis_results(phases: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 else "nem mérhető"
             ),
             "support": (
-                f"A worker-token/kapcsolt issue {token_delta:+.1f}%-kal változott az instrumentált "
-                "és a kontrollált fázis között; negatív érték javulást, pozitív romlást jelent."
+                f"A kapcsolt issue-nként felhasznált worker-token {token_delta:+.1f}%-kal változott a mért "
+                "és a szabályozott fázis között. A negatív érték javulást, a pozitív romlást jelent."
                 if token_delta is not None
-                else "Az issue-hoz kötött worker-eseményekből nem képezhető stabil kétfázisú arány."
+                else "Az issue-hoz kötött worker-eseményekből nem számítható megbízható összehasonlítás."
             ),
-            "counter": "A cache tokenek dominálnak, a source-mix megváltozott, és a token nem azonos az elfogadott értékkel.",
-            "sample": f"n={instrumented['worker_issue_n']} és n={governed['worker_issue_n']} kapcsolt worker issue",
-            "next_test": "Accepted outcome egység, modellár-független tokenbontás és azonos feladattípusú kontroll.",
+            "counter": "A gyorsítótár tokenjei adják a forgalom nagy részét, közben megváltozott az események összetétele, és a tokenmennyiség nem azonos az elkészült értékkel.",
+            "sample": f"n={instrumented['worker_issue_n']} és n={governed['worker_issue_n']} worker-eseményhez kapcsolt issue",
+            "next_test": "Egységes eredménymérték, a gyorsítótár és a közvetlen tokenek külön kezelése, valamint azonos feladattípusok összevetése.",
         },
     ]
 
@@ -981,18 +981,18 @@ def source_inventory(
             "coverage": f"{min(row['createdAt'] for row in issues)} – {max(row['updatedAt'] for row in issues)}",
             "join_key": "WEN-n issue-azonosító",
             "missingness": f"{len(completed)} lezárt; {sum(not row.get('startedAt') for row in completed)} lezárt sornál hiányzik a startedAt",
-            "privacy": "A belső címek, felelősök és URL-ek a privát lake-ben maradnak.",
+            "privacy": "A belső címek, felelősök és URL-ek a belső adattárban maradnak.",
         },
         {
-            "source": "Usage SQLite",
+            "source": "Használati adatok",
             "records": len(usage),
             "coverage": f"{min(row['timestamp'] for row in usage)} – {max(row['timestamp'] for row in usage)}" if usage else "none",
-            "join_key": "issue_id, ha source=worker",
+            "join_key": "issue_id, ha az esemény forrása worker",
             "missingness": f"{sum(not row.get('issue_id') for row in usage)} eseményhez nincs issue_id; vannak naptári hézagok",
             "privacy": "A modell, persona, költség és issue-kapcsolat belső adat.",
         },
         {
-            "source": "Git integration refs",
+            "source": "Git integrációs ágak",
             "records": len(commits),
             "coverage": f"{min(row['author_time'] for row in commits)} – {max(row['author_time'] for row in commits)}",
             "join_key": "A commit tárgyából kinyert WEN-n",
@@ -1000,7 +1000,7 @@ def source_inventory(
             "privacy": "A commit tárgya belső marad; a riport csak aggregátumot használ.",
         },
         {
-            "source": "Structured validation",
+            "source": "Strukturált ellenőrzések",
             "records": len(gates),
             "coverage": f"{min((row.get('timestamp') or '') for row in gates)} – {max((row.get('timestamp') or '') for row in gates)}" if gates else "none",
             "join_key": "issue_id / branch, ahol elérhető",
@@ -1008,9 +1008,9 @@ def source_inventory(
             "privacy": "A nyers branch-, job- és parancsadat belső marad.",
         },
         {
-            "source": "cloc snapshots",
+            "source": "cloc pillanatfelvételek",
             "records": len(repositories),
-            "coverage": "Aktuális tiszta working-tree snapshot repository-nként",
+            "coverage": "Aktuális, tiszta working-tree pillanatfelvétel repository-nként",
             "join_key": "repository-név",
             "missingness": "Csak aktuális állapot; a generált és untracked fájlok kimaradnak.",
             "privacy": "Csak nyelv-, fájl- és soraggregátum kerül a riportba.",
@@ -1058,7 +1058,7 @@ def analyze(config: dict[str, Any]) -> None:
         "schema_version": 1,
         "generated_at": iso_now(),
         "title": "Wenova AI-fejlesztés: mérhetőbb lett-e a működés?",
-        "subtitle": "Belső evidence-lake + külső kutatási kontextus",
+        "subtitle": "Belső mérések és külső kutatási eredmények",
         "kpis": {
             "linear_issues": len(issues),
             "completed_issues": len(completed),
@@ -1098,18 +1098,18 @@ def analyze(config: dict[str, Any]) -> None:
             issues, commits, usage, gates, repositories
         ),
         "data_quality": [
-            "A fázisok naptári kohorszok, nem randomizált kezelések; repository- és feladatmixet is váltanak.",
-            f"A usage adat csak {len({row['day'] for row in usage})} aktív napot fed le, ezért a token-idősor szakaszos.",
-            f"A usage események {sum(not row.get('issue_id') for row in usage)}/{len(usage)} részéhez nincs issue-kapcsolat.",
-            f"A cache tokenek a teljes tokenforgalom {cache_tokens / tokens:.1%}-át adják; ezért az input/output és cache nézetet külön kell olvasni.",
-            "A review/rework címproxy a folyamat láthatóságát is méri, nem csak a hibák számát.",
-            "A cloc aktuális állapotot mér; a Git additions/deletions történeti churn, a kettő nem adható össze.",
+            "A fázisok naptári időszakok, nem randomizált kísérleti csoportok; közben a repository-k és a feladattípusok összetétele is változik.",
+            f"A használati adatok csak {len({row['day'] for row in usage})} aktív napot fednek le, ezért a tokenek időbeli alakulása hiányos.",
+            f"A {len(usage)} használati eseményből {sum(not row.get('issue_id') for row in usage)} nem kapcsolható issue-hoz.",
+            f"A gyorsítótár tokenjei a teljes tokenforgalom {cache_tokens / tokens:.1%}-át adják, ezért ezeket külön kell értelmezni a közvetlen be- és kimeneti tokenektől.",
+            "A címekből képzett review-mutató a dokumentálás javulását is jelezheti, nem csak a hibák számának változását.",
+            "A cloc a jelenlegi állapotot mutatja, a Git pedig a történeti sorváltozásokat; a kettő nem adható össze.",
         ],
         "method_notes": [
-            "Megfigyelt korrelációt közlünk, oksági állítást nem.",
-            "Az integration ref commitjait mérjük; a nem integrált branchek nem növelik a szállított churnt.",
-            "Bináris fájlok fájlérintésként számítanak, sorváltozásként nem.",
-            "A nyilvános kutatások eltérő feladatot, populációt és AI-kezelést mérnek; csak kontextust adnak.",
+            "Megfigyelt együttjárásokat mutatunk be, nem állítunk oksági kapcsolatot.",
+            "Csak az integrációs ágak commitjait mérjük; a még nem integrált branchek változásai kimaradnak.",
+            "A bináris fájlokat érintett fájlként számoljuk, módosított sorként nem.",
+            "A nyilvános kutatások más feladatokat, résztvevőket és AI-használatot vizsgálnak, ezért csak összehasonlítási keretet adnak.",
         ],
     }
     write_json(lake / "derived" / "report-data.json", report)

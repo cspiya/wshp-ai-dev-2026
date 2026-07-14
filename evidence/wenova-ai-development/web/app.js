@@ -36,9 +36,9 @@
     var k = data.kpis;
     var items = [
       [fmtInt(k.completed_issues), "lezárt Linear-issue"],
-      [fmtInt(k.integration_commits), "integration-ref commit"],
-      [compact(k.total_tokens), "mért token, cache-sel"],
-      [fmtInt(k.gate_runs), "strukturált gate · " + percent.format(k.gate_pass_rate || 0) + " pass"]
+      [fmtInt(k.integration_commits), "integrált commit"],
+      [compact(k.total_tokens), "mért token, a gyorsítótár forgalmával együtt"],
+      [fmtInt(k.gate_runs), "strukturált ellenőrzés · " + percent.format(k.gate_pass_rate || 0) + " sikeres"]
     ];
     document.getElementById("kpis").innerHTML = items.map(function (item) {
       return '<div class="kpi"><strong class="kpi-value">' + escapeHtml(item[0]) +
@@ -52,17 +52,17 @@
       cycleDirection = governed.cycle_median_hours < baseline.cycle_median_hours ? "rövidebb" : "hosszabb";
     }
     document.getElementById("hero-answer").innerHTML =
-      "<strong>Rövid válasz:</strong> a folyamat láthatóan jobban kontrollált, a lezárások sűrűbbek és a review korábban jelenik meg. " +
+      "<strong>Rövid válasz:</strong> a szabályok és az ellenőrzések láthatóbbá váltak; a későbbi szakaszban több lezárást és több dokumentált review-t látunk. " +
       "A medián ciklusidő " + escapeHtml(cycleDirection) +
-      ", de a rövid és eltérő fázisok miatt ez még <strong>nem okozati bizonyíték</strong>.";
+      ", de a rövid, eltérő összetételű időszakok miatt ebből <strong>nem következik oksági kapcsolat</strong>.";
   }
 
   function setCoverage() {
     document.getElementById("coverage").innerHTML = data.source_inventory.map(function (row) {
       return '<article class="coverage-row"><strong>' + escapeHtml(row.source) +
         '</strong><span>' + escapeHtml(row.records) + " rekord<br>" + escapeHtml(row.coverage) +
-        '</span><p><b>Kapcsolás:</b> ' + escapeHtml(row.join_key) +
-        '<br><b>Hiány:</b> ' + escapeHtml(row.missingness) + "</p></article>";
+        '</span><p><b>Kapcsolómező:</b> ' + escapeHtml(row.join_key) +
+        '<br><b>Hiányzó adatok:</b> ' + escapeHtml(row.missingness) + "</p></article>";
     }).join("");
   }
 
@@ -141,7 +141,7 @@
         }, label));
       }
     });
-    [["series-issue", "lezárt issue"], ["series-commit", "integration commit"]].forEach(function (item, index) {
+    [["series-issue", "lezárt issue"], ["series-commit", "integrált commit"]].forEach(function (item, index) {
       var offset = margin.left + index * 155;
       svg.appendChild(svgNode("line", {
         x1: offset, y1: 15, x2: offset + 22, y2: 15, "class": item[0], "stroke-width": 5
@@ -178,12 +178,12 @@
   function renderPhaseMultiples() {
     var container = document.getElementById("phase-multiples");
     container.replaceChildren();
-    renderBarMultiple("phase-multiples", "Lezárás / aktív nap", "darab", data.phases, "issues_per_active_day", "");
+    renderBarMultiple("phase-multiples", "Lezárások az aktív napokon", "lezárt issue / aktív nap", data.phases, "issues_per_active_day", "");
     renderBarMultiple("phase-multiples", "Medián ciklusidő", "óra · csak teljes időbélyeggel", data.phases, "cycle_median_hours", "blue");
     var reviewRows = data.phases.map(function (phase) {
       return Object.assign({}, phase, { review_share_percent: Number(phase.review_proxy_share || 0) * 100 });
     });
-    renderBarMultiple("phase-multiples", "Review-proxy részarány", "% a lezárt issue-kból", reviewRows, "review_share_percent", "amber");
+    renderBarMultiple("phase-multiples", "Review-ra utaló lezárások aránya", "% a lezárt issue-kból", reviewRows, "review_share_percent", "amber");
   }
 
   function renderCycleChart() {
@@ -215,12 +215,12 @@
   function renderRepos() {
     var container = document.getElementById("repo-multiples");
     container.replaceChildren();
-    renderBarMultiple("repo-multiples", "Aktuális kódméret", "cloc kódsor", data.repositories, "code_lines", "");
-    renderBarMultiple("repo-multiples", "Integrált aktivitás", "commit az integration refen", data.repositories, "commits", "blue");
+    renderBarMultiple("repo-multiples", "Jelenlegi kódméret", "forrássor a cloc szerint", data.repositories, "code_lines", "");
+    renderBarMultiple("repo-multiples", "Integrált commitok", "commit az integrációs ágon", data.repositories, "commits", "blue");
     var churn = data.repositories.map(function (row) {
       return Object.assign({}, row, { churn: row.additions + row.deletions });
     });
-    renderBarMultiple("repo-multiples", "Történeti churn", "hozzáadás + törlés", churn, "churn", "amber");
+    renderBarMultiple("repo-multiples", "Történeti kódváltozás", "hozzáadott + törölt sor", churn, "churn", "amber");
   }
 
   function renderHypotheses() {
@@ -228,9 +228,9 @@
       return '<article class="hypothesis"><div class="hypothesis-id">' + escapeHtml(item.id) +
         '</div><div><span class="verdict">' + escapeHtml(item.verdict) + "</span><h3>" +
         escapeHtml(item.title) + '</h3><p class="evidence-for">' + escapeHtml(item.support) +
-        "</p><p><strong>Ellenbizonyíték:</strong> " + escapeHtml(item.counter) +
+        "</p><p><strong>Mi szól ellene?</strong> " + escapeHtml(item.counter) +
         "</p></div><dl><dt>Minta</dt><dd>" + escapeHtml(item.sample) +
-        "</dd><dt>Következő teszt</dt><dd>" + escapeHtml(item.next_test) +
+        "</dd><dt>Következő mérés</dt><dd>" + escapeHtml(item.next_test) +
         "</dd></dl></article>";
     }).join("");
   }
@@ -259,7 +259,7 @@
       return "<li>" + escapeHtml(item) + "</li>";
     }).join("");
     document.getElementById("generated").textContent =
-      "Adatcsomag generálva: " + new Date(data.generated_at).toLocaleString("hu-HU") +
+      "Adatcsomag létrehozva: " + new Date(data.generated_at).toLocaleString("hu-HU") +
       " · séma v" + data.schema_version;
   }
 
